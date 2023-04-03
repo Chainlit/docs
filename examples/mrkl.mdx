@@ -1,0 +1,41 @@
+---
+title: MRKL
+---
+
+Example inspired from the [LangChain doc](https://python.langchain.com/en/latest/modules/agents/agents/examples/mrkl_chat.html)
+
+## MRKL with LangChain
+```python
+from langchain import OpenAI, LLMMathChain, SerpAPIWrapper
+from langchain.agents import initialize_agent, Tool
+from langchain.chat_models import ChatOpenAI
+import os
+from chainlit import langchain_factory
+
+os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
+os.environ["SERPAPI_API_KEY"] = "SERPAPI_API_KEY"
+
+@langchain_factory
+def load():
+    llm = ChatOpenAI(temperature=0)
+    llm1 = OpenAI(temperature=0)
+    search = SerpAPIWrapper()
+    llm_math_chain = LLMMathChain(llm=llm1, verbose=True)
+
+    tools = [
+        Tool(
+            name = "Search",
+            func=search.run,
+            description="useful for when you need to answer questions about current events. You should ask targeted questions"
+        ),
+        Tool(
+            name="Calculator",
+            func=llm_math_chain.run,
+            description="useful for when you need to answer questions about math"
+        ),
+    ]
+    return initialize_agent(tools, llm, agent="chat-zero-shot-react-description", verbose=True)
+```
+
+The main change is that we grouped all the instantiation logic in the `load` function and decorated it with `@langchain_factory`.
+You can return any kind of instance from LangChain (Chain, LLM, Agent...).

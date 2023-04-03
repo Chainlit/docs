@@ -1,0 +1,16 @@
+---
+title: Debug prompts
+---
+
+As your app becomes more complex (Chain of Thoughts, LangChain...), understanding how a specific answer has been generated becomes painful.
+To address that issue, Chainlit introduced the `Show steps` button.
+
+Here is a screenshot from the [LangChain MRKL](/examples/mrkl) example:
+![Debug](/images/debug.png)
+
+We can see that several intermediate steps are required to answer the original question.
+Being able to scroll through the steps in the UI is helpful, but being able to iterate on the prompt of each step on the fly is even more powerful.  
+
+That is exactly what the `edit button` is for. Clicking on it opens a prompt playground where you can modify and iterate on the prompt:
+![Playground](/images/playground.png)
+
