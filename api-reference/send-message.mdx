@@ -1,0 +1,47 @@
+---
+title: "send_message"
+---
+
+Send a message to the chatbot UI.
+If a project ID is configured, the messages will be uploaded to the cloud storage.
+
+### Parameters
+
+<ParamField path="author" type="str">
+  The author of the message, this will be used in the UI.
+</ParamField>
+<ParamField path="content" type="str">
+  The content of the message.
+</ParamField>
+<ParamField path="prompt" type="str" optional>
+  The prompt used to generate the message. If provided, enables the prompt playground for this message.
+</ParamField>
+<ParamField path="language" type="str" optional>
+  Language of the code if the content is code. See https://react-code-blocks-rajinwonderland.vercel.app/?path=/story/codeblock--supported-languages for a list of supported languages.
+</ParamField>
+<ParamField path="indent" type="int" optional>
+  Number of indents to add to the message in the UI.
+</ParamField>
+<ParamField path="is_error" type="bool" optional>
+  Whether the message indicates an error.
+</ParamField>
+<ParamField path="final" type="bool" optional>
+  Whether the message is the final answer (vs a chain of thought step).
+</ParamField>
+<ParamField path="llm_settings" type="LLMSettings" optional>
+  Settings of the LLM used to generate the prompt. This is useful for debug purposes in the prompt playground.
+</ParamField>
+
+<RequestExample>
+```python
+from chainlit import send_message, @on_message
+
+@on_message
+def main(message: str):
+    send_message(
+      author="Test",
+      content=f"Received: {message}",
+      final=True, 
+    )
+```
+</RequestExample>

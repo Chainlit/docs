@@ -24,8 +24,12 @@
   ],
   "navigation": [
     {
-      "group": "Get started",
+      "group": "Get Started",
       "pages": ["installation", "concepts", "create-app", "debug"]
+    },
+    {
+      "group": "Api Reference",
+      "pages": ["api-reference/on-message", "api-reference/send-message", "api-reference/send-text-document"]
     },
     {
       "group": "Cloud",

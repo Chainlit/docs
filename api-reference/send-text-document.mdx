@@ -1,0 +1,35 @@
+---
+title: "send_text_document"
+---
+
+This function uploads a text document to the chatbot UI. If a project ID is configured, the document will be uploaded to the cloud storage.
+
+### Parameters
+
+<ParamField path="text" type="str">
+  The content of the text document
+</ParamField>
+
+<ParamField path="name" type="str">
+  The name of the text document to be displayed in the UI
+</ParamField>
+
+<ParamField path="display" type="DocumentDisplay" optional>
+  Determines how the document should be displayed in the UI. Choices are "side" (default), "inline", or "page".
+</ParamField>
+
+<RequestExample>
+```python
+from chainlit import send_message, send_text_document, @on_message
+
+@on_message
+def main(message: str):
+    send_text_document(text="A random text", name="bar")
+
+    send_message(
+      author="Test",
+      content=f"The answer is foo, according to source bar.",
+      final=True, 
+    )
+```
+</RequestExample>
