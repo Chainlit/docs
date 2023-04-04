@@ -77,8 +77,8 @@ def process_response(res):
     return output
 ```
 
-We are making use of the `@langchain_factory` decorator to tell Chainlit on how to get the LangChain agent.
-Then, we use `@langchain_postprocess` (which takes the raw response from the agent) as well as `send_text_document` to:
+We are making use of the [@langchain_factory](/api-reference/langchain-factory) decorator to tell Chainlit on how to get the LangChain agent.
+Then, we use [@langchain_postprocess](/api-reference/langchain-postprocess) (which takes the raw response from the agent) as well as [send_text_document](/api-reference/send-text-document) to:
 - Add the relevant sources to the final answer
 - Send the sources to the UI
 

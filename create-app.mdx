@@ -2,59 +2,24 @@
 title: Create an app
 ---
 
-For this example, we are going to build a simple app that helps users to create SQL queries with natural language using the `openai` python package.
+Let's build a simple app that helps users to create SQL queries with natural language. We are going to use:
+- the [@on_message](api-reference/on-message) and [send_message](api-reference/send-message) functions from the `chainlit` package.
+- the `openai` python package
 
-## Original app code
+## Imports
 
 <Warning>It is not a good practice to hard code environment variables. For a better way, check the [Chainlit config](/cloud/config).</Warning>
 
 ```python app.py
+from chainlit import on_message, send_message, LLMSettings
 import openai
 
 openai.api_key = "YOUR_OPEN_AI_API_KEY"
-
-prompt = """SQL tables (and columns):
-* Customers(customer_id, signup_date)
-* Streaming(customer_id, video_id, watch_date, watch_minutes)
-
-A well-written SQL query that {input}:
-```"""
-
-model_name = "text-davinci-003"
-
-settings = {
-    "temperature": 0,
-    "max_tokens": 500,
-    "top_p": 1,
-    "frequency_penalty": 0,
-    "presence_penalty": 0,
-    "stop": ["```"]
-}
-
-def main(message: str):
-    fromatted_prompt = prompt.format(input=message)
-    response = openai.Completion.create(
-        model=model_name,
-        prompt=fromatted_prompt,
-        **settings  
-    )
-    content = response["choices"][0]["text"]
-    return content
-
-message = "Compute the number of customers that watched more than 50 minutes of video"
-print(main(message))
 ```
 
-## With Chainlit
-While functional, this program makes it hard for you to ask multiple questions, and reading answers in a terminal or jupyter notebook is not ideal.
-Let's see how you can spawn a UI with minimal changes.
+## Define a prompt and LLM settings
 
 ```python app.py
-import openai
-from chainlit import on_message, send_message, LLMSettings
-
-openai.api_key = "YOUR_OPEN_AI_API_KEY"
-
 prompt = """SQL tables (and columns):
 * Customers(customer_id, signup_date)
 * Streaming(customer_id, video_id, watch_date, watch_minutes)
@@ -72,7 +37,11 @@ settings = {
     "presence_penalty": 0,
     "stop": ["```"]
 }
+```
 
+## Listen to the UI messages
+
+```python app.py
 @on_message
 def main(message: str):
     fromatted_prompt = prompt.format(input=message)
@@ -92,10 +61,11 @@ def main(message: str):
         llm_settings=LLMSettings(model_name=model_name, **settings)
     )
 ```
-Here, we decorated our `main` function with the `@on_message` decorator to tell Chainlit to run the `main` function each time a user sends a message.
-Then, we send back the answer to the UI with the `send_message` function.
 
-To spawn the UI, simply run:
+Here, we decorated our `main` function with the [@on_message](api-reference/on-message) decorator to tell Chainlit to run the `main` function each time a user sends a message.
+Then, we send back the answer to the UI with the [send_message](api-reference/send-message) function.
+
+## Run the UI
 ```bash
 chainlit run app.py
 ```
