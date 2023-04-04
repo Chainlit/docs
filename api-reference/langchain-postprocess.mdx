@@ -1,0 +1,35 @@
+---
+title: "langchain_postprocess"
+---
+
+This function is useful to post-process the response of a LangChain object instantiated with the [@langchain_factory](/api-reference/langchain-factory) decorator. The decorated function takes the raw output of the LangChain object and returns a string as the final response.
+
+### Parameters
+
+<ParamField path="func" type="Callable[[Any], str]">
+  The post-processing function to apply after generating a response.
+</ParamField>
+
+### Returns
+
+<ResponseField name="result" type="Callable[[Any], str]" required>
+  The decorated post-processing function.
+</ResponseField>
+
+<RequestExample>
+```python
+from langchain import OpenAI, LLMMathChain
+from chainlit import langchain_factory, langchain_postprocess
+
+@langchain_factory
+def load():
+    llm = OpenAI(temperature=0)
+    llm_math = LLMMathChain(llm=llm)
+    return llm_math
+
+@langchain_postprocess
+def post_process(llm_math_res):
+    response = # do something with llm_math_res
+    return response
+```
+</RequestExample>

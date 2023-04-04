@@ -1,0 +1,35 @@
+---
+title: "send_local_image"
+---
+
+This function sends a local image to the chatbot UI. If a project ID is configured, the image will be uploaded to the cloud storage.
+
+#### Parameters
+
+<ParamField path="path" type="str">
+  The local file path of the image.
+</ParamField>
+
+<ParamField path="name" type="str">
+  The name of the image to be displayed in the UI.
+</ParamField>
+
+<ParamField path="display" type="DocumentDisplay" optional>
+  Determines how the image should be displayed in the UI. Choices are "side" (default), "inline", or "page".
+</ParamField>
+
+<RequestExample>
+```python
+from chainlit import send_message, send_local_image, on_message
+
+@on_message
+def main(message: str):
+    send_local_image(path="./foo.jpg", name="foo", display="inline")
+
+    send_message(
+      author="Test",
+      content="Look at this image! foo",
+      final=True, 
+    )
+```
+</RequestExample>

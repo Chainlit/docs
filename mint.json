@@ -29,7 +29,14 @@
     },
     {
       "group": "Api Reference",
-      "pages": ["api-reference/on-message", "api-reference/send-message", "api-reference/send-text-document"]
+      "pages": [
+        "api-reference/on-message",
+        "api-reference/send-message",
+        "api-reference/send-text-document",
+        "api-reference/send-local-image",
+        "api-reference/langchain-factory",
+        "api-reference/langchain-postprocess"
+      ]
     },
     {
       "group": "Cloud",
