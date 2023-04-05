@@ -2,13 +2,36 @@
 title: Create an app
 ---
 
-Let's build a simple app that helps users to create SQL queries with natural language. We are going to use:
-- the [@on_message](api-reference/on-message) and [send_message](api-reference/send-message) functions from the `chainlit` package.
-- the `openai` python package
+## Basics
 
-## Imports
+Chainlit can turn your python code into a chatbot in a few lines of code.
 
-<Warning>It is not a good practice to hard code environment variables. For a better way, check the [Chainlit config](/cloud/config).</Warning>
+```python
+from chainlit import send_message, on_message
+
+@on_message # this function will be called every time a user inputs a message in the UI
+def main(message: str):
+
+    # custom logic...
+
+    # send back a reply to the user
+    send_message(
+      author="Test",
+      content=f"Received: {message}",
+      final=True,
+    )
+```
+
+## The App
+
+Let's build a simple app that helps users to create SQL queries with natural language.
+
+### Imports
+
+<Warning>
+  It is not a good practice to hard code environment variables. For a better
+  way, check the [Chainlit config](/cloud/config).
+</Warning>
 
 ```python app.py
 from chainlit import on_message, send_message, LLMSettings
@@ -17,9 +40,9 @@ import openai
 openai.api_key = "YOUR_OPEN_AI_API_KEY"
 ```
 
-## Define a prompt and LLM settings
+### Define a prompt and LLM settings
 
-```python app.py
+````python app.py
 prompt = """SQL tables (and columns):
 * Customers(customer_id, signup_date)
 * Streaming(customer_id, video_id, watch_date, watch_minutes)
@@ -37,9 +60,12 @@ settings = {
     "presence_penalty": 0,
     "stop": ["```"]
 }
-```
+````
 
-## Listen to the UI messages
+### Listen and Reply
+
+Here, we decorate the `main` function with the [@on_message](api-reference/on-message) decorator to tell Chainlit to run the `main` function each time a user sends a message.
+Then, we send back the answer to the UI with the [send_message](api-reference/send-message) function.
 
 ```python app.py
 @on_message
@@ -48,7 +74,7 @@ def main(message: str):
     response = openai.Completion.create(
         model=model_name,
         prompt=fromatted_prompt,
-        **settings  
+        **settings
     )
     content = response["choices"][0]["text"]
 
@@ -57,15 +83,13 @@ def main(message: str):
         language="sql",
         content=content,
         prompt=fromatted_prompt,
-        final=True, 
+        final=True,
         llm_settings=LLMSettings(model_name=model_name, **settings)
     )
 ```
 
-Here, we decorated our `main` function with the [@on_message](api-reference/on-message) decorator to tell Chainlit to run the `main` function each time a user sends a message.
-Then, we send back the answer to the UI with the [send_message](api-reference/send-message) function.
+### Run the UI
 
-## Run the UI
 ```bash
 chainlit run app.py
 ```
