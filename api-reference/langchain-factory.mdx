@@ -7,15 +7,9 @@ The decorated function should instantiate a new LangChain instance (Chain, Agent
 
 ### Parameters
 
-<ParamField path="func" type="Callable">
-  The factory function to create a new LangChain instance.
+<ParamField path="user_env" type="Dict[str, str]">
+  The user env variables if defined in the config file, else an empty dict.
 </ParamField>
-
-### Returns
-
-<ResponseField name="Callable" type="Callable" required>
-  The decorated factory function.
-</ResponseField>
 
 <RequestExample>
 ```python
@@ -23,7 +17,7 @@ from langchain import OpenAI, LLMMathChain
 from chainlit import langchain_factory
 
 @langchain_factory
-def load():
+def load(user_env):
     llm = OpenAI(temperature=0)
     llm_math = LLMMathChain(llm=llm)
     return llm_math

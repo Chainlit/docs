@@ -6,14 +6,18 @@ This function is useful to post-process the response of a LangChain object insta
 
 ### Parameters
 
-<ParamField path="func" type="Callable[[Any], str]">
-  The post-processing function to apply after generating a response.
+<ParamField path="res" type="Any">
+  The raw response of the langchain agent
+</ParamField>
+
+<ParamField path="user_env" type="Dict[str, str]">
+  The user env variables if defined in the config file, else an empty dict.
 </ParamField>
 
 ### Returns
 
-<ResponseField name="result" type="Callable[[Any], str]" required>
-  The decorated post-processing function.
+<ResponseField name="response" type="str" required>
+  The final response string.
 </ResponseField>
 
 <RequestExample>
@@ -22,13 +26,13 @@ from langchain import OpenAI, LLMMathChain
 from chainlit import langchain_factory, langchain_postprocess
 
 @langchain_factory
-def load():
+def load(user_env):
     llm = OpenAI(temperature=0)
     llm_math = LLMMathChain(llm=llm)
     return llm_math
 
 @langchain_postprocess
-def post_process(llm_math_res):
+def post_process(llm_math_res, user_env):
     response = # do something with llm_math_res
     return response
 ```
