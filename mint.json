@@ -31,7 +31,9 @@
       "group": "Api Reference",
       "pages": [
         "api-reference/on-message",
+        "api-reference/on-chat-start",
         "api-reference/send-message",
+        "api-reference/ask-user",
         "api-reference/send-text-document",
         "api-reference/send-local-image",
         "api-reference/langchain-factory",

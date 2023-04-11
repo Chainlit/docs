@@ -18,7 +18,6 @@ def main(message: str):
     send_message(
       author="Test",
       content=f"Received: {message}",
-      final=True,
     )
 ```
 
@@ -83,7 +82,6 @@ def main(message: str):
         language="sql",
         content=content,
         prompt=fromatted_prompt,
-        final=True,
         llm_settings=LLMSettings(model_name=model_name, **settings)
     )
 ```

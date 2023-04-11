@@ -20,13 +20,10 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
   Language of the code if the content is code. See https://react-code-blocks-rajinwonderland.vercel.app/?path=/story/codeblock--supported-languages for a list of supported languages.
 </ParamField>
 <ParamField path="indent" type="int" optional>
-  Number of indents to add to the message in the UI.
+  If positive, the message will be nested in the UI.
 </ParamField>
 <ParamField path="is_error" type="bool" optional>
   Whether the message indicates an error.
-</ParamField>
-<ParamField path="final" type="bool" optional>
-  Whether the message is the final answer (vs a chain of thought step).
 </ParamField>
 <ParamField path="llm_settings" type="LLMSettings" optional>
   Settings of the LLM used to generate the prompt. This is useful for debug purposes in the prompt playground.
@@ -41,7 +38,6 @@ def main(message: str):
     send_message(
       author="Test",
       content=f"Received: {message}",
-      final=True, 
     )
 ```
 </RequestExample>

@@ -1,0 +1,38 @@
+---
+title: "ask_user"
+---
+
+Asks a question to the user and waits for the answer
+If a project ID is configured, the messages will be uploaded to the cloud storage.
+
+### Parameters
+<ParamField path="author" type="str">
+  The author of the message, this will be used in the UI.
+</ParamField>
+<ParamField path="content" type="str">
+  The content of the message.
+</ParamField>
+<ParamField path="timeout" type="int" optional>
+  The number of seconds to wait for an answer before raising a TimeoutError.
+</ParamField>
+<ParamField path="raise_on_timeout" type="bool" optional>
+  Whether to raise a socketio TimeoutError if the user does not answer in time.
+</ParamField>
+
+<RequestExample>
+```python
+from chainlit import send_message, ask_user, on_chat_start
+
+bot_name = "Example"
+
+
+@on_chat_start
+def main(env):
+    res = ask_user(author=bot_name, content="What is your name?", timeout=10)
+    if res:
+        send_message(
+            author=bot_name,
+            content=f"Your name is: {res['content']}",
+        )
+```
+</RequestExample>
