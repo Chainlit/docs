@@ -1,0 +1,38 @@
+---
+title: With LangChain
+---
+
+## Basics
+
+Chainlit seamlessly integrates with any LangChain agent or chain.
+
+```python app.py
+from langchain import PromptTemplate, OpenAI, LLMChain
+from chainlit import langchain_factory
+import os
+
+os.environ["OPENAI_API_KEY"] = "YOUR_OPEN_AI_API_KEY"
+
+template = """Question: {question}
+
+Answer: Let's think step by step."""
+
+@langchain_factory
+def factory():
+    prompt = PromptTemplate(template=template, input_variables=["question"])
+    llm_chain = LLMChain(prompt=prompt, llm=OpenAI(temperature=0), verbose=True)
+
+    return llm_chain
+```
+
+Just wrap the logic that instantiate the LangChain object in a function and add the [@langchain_factory](/api-reference/langchain-factory) decorator.
+
+That's it. Now just run:
+
+```bash
+chainlit run app.py -w
+```
+
+<Card title="Advanced example" icon="link" href="/examples/qa">
+   Learn how Chainlit can help you debug and serve complex LangChain use cases.
+</Card>

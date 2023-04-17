@@ -25,7 +25,19 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["installation", "concepts", "create-app", "debug"]
+      "pages": ["installation", "pure-python", "langchain", "debug"]
+    },
+    {
+      "group": "Streaming",
+      "pages": ["streaming/python", "streaming/langchain"]
+    },
+    {
+      "group": "Examples",
+      "pages": [
+        "examples/mrkl",
+        "examples/qa",
+        "examples/openai-sql"
+      ]
     },
     {
       "group": "Api Reference",
@@ -43,13 +55,6 @@
     {
       "group": "Cloud",
       "pages": ["cloud/create-project", "cloud/config", "cloud/deploy"]
-    },
-    {
-      "group": "Examples",
-      "pages": [
-        "examples/mrkl",
-        "examples/qa"
-      ]
     }
   ]
 }

@@ -1,0 +1,15 @@
+---
+title: With LangChain
+---
+
+Chainlit supports LangChain's stream API natively. To use streaming just pass `streaming=True` when instantiating the LLM:
+
+```python
+llm = OpenAI(temperature=0, streaming=True)
+```
+
+## MRKL demo
+<video controls height="200" src="/images/langchain_streaming.mp4" />
+
+
+

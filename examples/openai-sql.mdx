@@ -1,27 +1,8 @@
 ---
-title: Create an app
+title: Text to SQL
 ---
 
-## Basics
-
-Chainlit can turn your python code into a chatbot in a few lines of code.
-
-```python
-from chainlit import send_message, on_message
-
-@on_message # this function will be called every time a user inputs a message in the UI
-def main(message: str):
-
-    # custom logic...
-
-    # send back a reply to the user
-    send_message(
-      author="Test",
-      content=f"Received: {message}",
-    )
-```
-
-## The App
+## Text to SQL with OpenAI
 
 Let's build a simple app that helps users to create SQL queries with natural language.
 
@@ -88,11 +69,6 @@ def main(message: str):
 
 ### Run the UI
 
-```bash
-chainlit run app.py
-```
-
-You can also automatically reload the UI on file change with the `-w` flag like so:
 ```bash
 chainlit run app.py -w
 ```
