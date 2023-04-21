@@ -4,6 +4,7 @@ title: With Python
 
 Chainlit supports streaming with any Python code. Here is an example with `openai`.
 
+## OpenAI Completion
 ```python
 import openai
 from chainlit import on_message, start_stream, send_token, send_message, LLMSettings
@@ -51,5 +52,63 @@ def main(message: str):
 ## Result
 <video controls height="200" src="https://chainlit-cloud.s3.eu-west-3.amazonaws.com/docs/python_streaming.mp4" />
 
+## OpenAI Chat Completion
+```python
+import openai
+import chainlit as cl
 
+openai.api_key = "YOUR_API_KEY"
+
+model_name = "gpt-3.5-turbo"
+settings = {
+    "temperature": 0.7,
+    "max_tokens": 500,
+    "top_p": 1,
+    "frequency_penalty": 0,
+    "presence_penalty": 0
+}
+
+
+@cl.on_chat_start
+def start_chat():
+    cl.user_session.set(
+        "message_history",
+        [
+            {"role": "system", "content": "You are a helpful assistant."}
+        ]
+    )
+
+
+def generate_response(message: str):
+    message_history = cl.user_session.get("message_history")
+    message_history.append({"role": "user", "content": message})
+
+    cl.start_stream()
+
+    response = openai.ChatCompletion.create(
+        model=model_name,
+        messages=message_history,
+        stream=True,
+        **settings
+
+    )
+    response_text = ""
+    for resp in response:
+        token = resp.choices[0]['delta'].get("content", "")
+        cl.send_token(token)
+        response_text += token
+
+    message_history.append({"role": "assistant", "content": response_text})
+    return response_text
+
+
+@cl.on_message
+def main(message: str):
+    response_content = generate_response(message)
+
+    cl.send_message(
+        content=response_content,
+        end_stream=True,
+    )
+```
 
