@@ -7,11 +7,11 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 
 ### Parameters
 
-<ParamField path="author" type="str">
-  The author of the message, this will be used in the UI.
-</ParamField>
 <ParamField path="content" type="str">
   The content of the message.
+</ParamField>
+<ParamField path="author" type="str" optional>
+  The author of the message, defaults to the chatbot name. See [Chainlit config](/cloud/config).
 </ParamField>
 <ParamField path="prompt" type="str" optional>
   The prompt used to generate the message. If provided, enables the prompt playground for this message.
@@ -35,9 +35,6 @@ from chainlit import send_message, on_message
 
 @on_message
 def main(message: str):
-    send_message(
-      author="Test",
-      content=f"Received: {message}",
-    )
+    send_message(content=f"Received: {message}")
 ```
 </RequestExample>

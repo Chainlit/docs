@@ -5,19 +5,13 @@ Plug and play decorator for the LangChain library.
 
 The decorated function should instantiate a new LangChain instance (Chain, Agent...). One instance per user session is created and cached. The per user instance is called every time a new message is received.
 
-### Parameters
-
-<ParamField path="user_env" type="Dict[str, str]">
-  The user env variables if defined in the config file, else an empty dict.
-</ParamField>
-
 <RequestExample>
 ```python
 from langchain import OpenAI, LLMMathChain
 from chainlit import langchain_factory
 
 @langchain_factory
-def load(user_env):
+def load():
     llm = OpenAI(temperature=0)
     llm_math = LLMMathChain(llm=llm)
     return llm_math

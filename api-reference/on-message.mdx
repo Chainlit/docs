@@ -11,16 +11,12 @@ The decorated function is called every time a new message is received.
   The message coming from the UI.
 </ParamField>
 
-<ParamField path="user_env" type="Dict[str, str]">
-  The user env variables if defined in the config file, else an empty dict.
-</ParamField>
-
 <RequestExample>
 ```python
 from chainlit import on_message
 
 @on_message
-def main(message: str, user_env):
+def main(message: str):
   # do something
 ```
 </RequestExample>

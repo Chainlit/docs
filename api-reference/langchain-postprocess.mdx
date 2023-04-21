@@ -10,10 +10,6 @@ This function is useful to post-process the response of a LangChain object insta
   The raw response of the langchain agent
 </ParamField>
 
-<ParamField path="user_env" type="Dict[str, str]">
-  The user env variables if defined in the config file, else an empty dict.
-</ParamField>
-
 ### Returns
 
 <ResponseField name="response" type="str" required>
@@ -26,13 +22,13 @@ from langchain import OpenAI, LLMMathChain
 from chainlit import langchain_factory, langchain_postprocess
 
 @langchain_factory
-def load(user_env):
+def load():
     llm = OpenAI(temperature=0)
     llm_math = LLMMathChain(llm=llm)
     return llm_math
 
 @langchain_postprocess
-def post_process(llm_math_res, user_env):
+def post_process(llm_math_res):
     response = # do something with llm_math_res
     return response
 ```

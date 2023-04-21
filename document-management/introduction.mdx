@@ -1,0 +1,33 @@
+---
+title: "Handling Documents"
+---
+
+One of the key features of Chainlit is its ability to handle documents seamlessly. In this guide, we'll introduce you to the methods available in Chainlit for sending and receiving documents, and show you examples of how to integrate these methods into your application.
+
+## Sending Documents
+
+Chainlit provides two primary methods for sending documents to the user interface:
+
+1. **send_local_image**: This function sends a local image to the chatbot UI. You can find the detailed documentation [here](/api-reference/send-local-image).
+
+2. **send_text_document**: This function uploads a text document to the chatbot UI. You can find the detailed documentation [here](/api-reference/send-text-document).
+
+These methods allow you to send various types of documents, such as images and text files, and control how they are displayed in the UI.
+
+## Receiving Documents
+
+Chainlit also provides a method for receiving documents from the user:
+
+1. **ask_for_file**: This function asks the user to upload a file before continuing. You can find the detailed documentation [here](/api-reference/ask-for-file).
+
+By using this method, you can request specific types of files from the user, such as text files or images, and set constraints on the file size and accepted file formats.
+
+## Example: Document Question Answering
+
+In this example, we'll demonstrate how to create a document question-answering application using Chainlit. The application will allow users to upload a text file, and then ask questions related to the content of the file. The application will use the LangChain library to generate answers based on the uploaded file.
+
+You can find the step-by-step implementation of this example [here](/examples/document-qa).
+
+## Conclusion
+
+Handling documents with Chainlit is simple and effective. With the ability to send and receive various types of documents, you can create interactive and engaging applications that make the most of the documents your users provide. Whether it's a simple image display or a more complex document analysis application, Chainlit has the tools you need to build powerful UIs for your Python LLM applications.

@@ -26,9 +26,6 @@ from chainlit import send_message, send_local_image, on_message
 def main(message: str):
     send_local_image(path="./foo.jpg", name="foo", display="inline")
 
-    send_message(
-      author="Test",
-      content="Look at this image! foo",
-    )
+    send_message(content="Look at this image! foo")
 ```
 </RequestExample>

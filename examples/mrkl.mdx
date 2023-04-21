@@ -4,7 +4,7 @@ title: MRKL
 
 Example inspired from the [LangChain doc](https://python.langchain.com/en/latest/modules/agents/agents/examples/mrkl_chat.html)
 
-## MRKL with LangChain
+## Code
 ```python
 from langchain import OpenAI, LLMMathChain, SerpAPIWrapper
 from langchain.agents import initialize_agent, Tool
@@ -37,5 +37,5 @@ def load():
     return initialize_agent(tools, llm, agent="chat-zero-shot-react-description", verbose=True)
 ```
 
-The main change is that we grouped all the instantiation logic in the `load` function and decorated it with [@langchain_factory](/api-reference/langchain-factory).
-You can return any kind of instance from LangChain (Chain, LLM, Agent...).
+## Result
+<video controls height="200" src="https://chainlit-cloud.s3.eu-west-3.amazonaws.com/docs/langchain_streaming.mp4" />

@@ -28,12 +28,21 @@
       "pages": ["installation", "pure-python", "langchain", "debug"]
     },
     {
+      "group": "Document Management",
+      "pages": [
+        "document-management/introduction",
+        "document-management/send-documents",
+        "document-management/ask-document"
+      ]
+    },
+    {
       "group": "Streaming",
       "pages": ["streaming/python", "streaming/langchain"]
     },
     {
       "group": "Examples",
       "pages": [
+        "examples/auto-gpt",
         "examples/mrkl",
         "examples/qa",
         "examples/openai-sql"
@@ -45,10 +54,12 @@
         "api-reference/on-message",
         "api-reference/on-chat-start",
         "api-reference/send-message",
-        "api-reference/ask-user",
+        "api-reference/ask-for-input",
+        "api-reference/ask-for-file",
         "api-reference/send-text-document",
         "api-reference/send-local-image",
         "api-reference/langchain-factory",
+        "api-reference/langchain-run",
         "api-reference/langchain-postprocess"
       ]
     },

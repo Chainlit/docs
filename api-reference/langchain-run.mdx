@@ -1,0 +1,38 @@
+---
+title: "langchain_run"
+---
+
+Useful to override the default behavior of the LangChain object instantiated with @langchain_factory.
+Use when your agent run method has custom parameters.
+
+### Parameters
+
+<ParamField path="agent" type="Any">
+  The LangChain agent instance
+</ParamField>
+<ParamField path="input_str" type="str">
+  The message coming from the UI.
+</ParamField>
+
+### Returns
+
+<ResponseField name="response" type="str" required>
+  The final response string.
+</ResponseField>
+
+<RequestExample>
+```python
+from langchain import OpenAI, LLMMathChain
+from chainlit import langchain_factory, langchain_run
+
+@langchain_factory
+def load():
+    llm = OpenAI(temperature=0)
+    llm_math = LLMMathChain(llm=llm)
+    return llm_math
+
+@langchain_run
+def run(agent, input_str):
+    return agent(input_str)
+```
+</RequestExample>

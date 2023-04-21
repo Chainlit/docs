@@ -1,0 +1,24 @@
+---
+title: Ask a document
+---
+
+Here is an example on how to ask a user to upload a text file:
+
+```python
+from chainlit import on_chat_start, ask_for_file
+
+@on_chat_start
+def start():
+    file = None
+
+    # Wait for the user to upload a file
+    while file == None:
+        file = ask_for_file(
+            title="Please upload a text file to begin!", accept=["text/plain"])
+
+    # Decode the file
+    text = file.content.decode("utf-8")
+```
+
+## Result
+![Ask file](/images/ask-file.png)

@@ -1,0 +1,35 @@
+---
+title: Display documents
+---
+
+Chainlit will automatically check if messages contain references to existing documents. In the following example, we send an image document and a text document, and then send a message referencing both of the documents by name:
+
+```python
+from chainlit import on_chat_start, send_local_image, send_message, send_text_document
+
+@on_chat_start
+def start():
+    send_local_image(path="./cat.jpeg", name="image1", display="inline")
+    send_text_document(text="Here is a text document", name="text1", display="inline")
+
+    msg = "Here is image1, a nice image of a cat! As well as text1!"
+    send_message(content=msg)
+```
+
+## Result
+![QA](/images/inline-documents.png)
+
+## Display Options
+In the example above, both of the documents are inlined in the message. Chainlit provides three options to display documents:
+- `inline` (embedded in the message)
+- `side` (the document will be displayed in a side panel)
+- `page` (the document will be displayed in a dedicated page)
+
+## Side example
+By changing the text document display mode from the previous example, the document name becomes clickable and opens in a side panel:
+
+```python
+send_text_document(text="Here is a text document", name="text1", display="side")
+```
+
+![QA](/images/side-document.png)
