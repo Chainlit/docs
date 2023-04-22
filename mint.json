@@ -25,7 +25,7 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["installation", "pure-python", "langchain", "debug"]
+      "pages": ["installation", "pure-python", "langchain", "user-session", "debug"]
     },
     {
       "group": "Document Management",
@@ -45,7 +45,8 @@
         "examples/auto-gpt",
         "examples/mrkl",
         "examples/qa",
-        "examples/openai-sql"
+        "examples/openai-sql",
+        "examples/Action"
       ]
     },
     {
