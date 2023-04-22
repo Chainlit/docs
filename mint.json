@@ -46,7 +46,7 @@
         "examples/mrkl",
         "examples/qa",
         "examples/openai-sql",
-        "examples/Action"
+        "examples/action"
       ]
     },
     {
