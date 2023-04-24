@@ -7,7 +7,7 @@ import chainlit as cl
 
 
 @cl.action("action1")
-def on_action():
+def on_action(action):
     cl.send_message("Executed action 1!")
 
 
@@ -18,5 +18,5 @@ def main():
                    description="Click on this to run action1!")
 ```
 
-## Result:
+## Result
 ![Action](/images/action.png)
