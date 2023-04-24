@@ -36,9 +36,9 @@ index = faiss.IndexFlatL2(embedding_size)
 
 from langchain.experimental import AutoGPT
 from langchain.chat_models import ChatOpenAI
-from chainlit import langchain_factory, langchain_run
+import chainlit as cl
 
-@langchain_factory
+@cl.langchain_factory
 def agent():
     vectorstore = FAISS(embeddings_model.embed_query, index, InMemoryDocstore({}), {})
     agent = AutoGPT.from_llm_and_tools(
@@ -52,7 +52,7 @@ def agent():
     agent.chain.verbose = True
     return agent
 
-@langchain_run
+@cl.langchain_run
 def run(agent, input):
     return agent.run([input])
 ```

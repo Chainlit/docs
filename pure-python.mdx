@@ -1,19 +1,19 @@
 ---
-title: With Python
+title: Share Python Agents
 ---
 
-Chainlit can turn your python code into a chatbot in a few lines of code.
+Chainlit turns your python code into sharable app in a few lines of code.
 
 ```python
-from chainlit import send_message, on_message
+import chainlit as cl
 
-@on_message # this function will be called every time a user inputs a message in the UI
+@cl.on_message # this function will be called every time a user inputs a message in the UI
 def main(message: str):
 
     # custom logic...
 
     # send back a reply to the user
-    send_message(
+    cl.send_message(
       content=f"Received: {message}",
     )
 ```
@@ -24,8 +24,8 @@ Now just run:
 chainlit run app.py -w
 ```
 
-Congratulations, you built your first chainlit app 🥳
+Congratulations, your first chainlit app is ready 🥳
 
-<Card title="Advanced example" icon="link" href="/examples/openai-sql">
-   Learn how Chainlit can help you debug and serve complex use cases.
+<Card title="Deployment" icon="link" href="/cloud/deploy">
+   Learn how to deploy your agent to the cloud.
 </Card>

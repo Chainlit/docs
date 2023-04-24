@@ -11,10 +11,6 @@
     "light": "#ed4b82",
     "dark": "#a31545"
   },
-  "topbarCtaButton": {
-    "name": "Get Started",
-    "url": "https://cloud.chainlit.io"
-  },
   "anchors": [
     {
       "name": "Community",
@@ -25,19 +21,30 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["installation", "pure-python", "langchain", "user-session", "debug"]
+      "pages": ["installation", "pure-python", "langchain"]
     },
     {
-      "group": "Document Management",
+      "group": "Concepts",
       "pages": [
-        "document-management/introduction",
-        "document-management/send-documents",
-        "document-management/ask-document"
+        "concepts/prompt-playground",
+        {
+          "group": "Elements",
+          "pages": [
+            "concepts/elements/send-elements",
+            "concepts/elements/element-display",
+            "concepts/elements/ask-element",
+            "concepts/elements/action-element"
+          ]
+        },
+        {
+          "group": "Streaming",
+          "pages": [
+            "concepts/streaming/python",
+            "concepts/streaming/langchain"
+          ]
+        },
+        "concepts/user-session"
       ]
-    },
-    {
-      "group": "Streaming",
-      "pages": ["streaming/python", "streaming/langchain"]
     },
     {
       "group": "Examples",
@@ -45,8 +52,7 @@
         "examples/auto-gpt",
         "examples/mrkl",
         "examples/qa",
-        "examples/openai-sql",
-        "examples/action"
+        "examples/openai-sql"
       ]
     },
     {
@@ -57,8 +63,9 @@
         "api-reference/send-message",
         "api-reference/ask-for-input",
         "api-reference/ask-for-file",
-        "api-reference/send-text-document",
+        "api-reference/send-text",
         "api-reference/send-local-image",
+        "api-reference/send-action",
         "api-reference/langchain-factory",
         "api-reference/langchain-run",
         "api-reference/langchain-postprocess"

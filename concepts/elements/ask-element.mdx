@@ -1,19 +1,20 @@
 ---
-title: Ask a document
+title: Ask Element
 ---
 
-Here is an example on how to ask a user to upload a text file:
+The ask element is used to ask the user for a file.
 
 ```python
-from chainlit import on_chat_start, ask_for_file
+import chainlit as cl
 
-@on_chat_start
+
+@cl.on_chat_start
 def start():
     file = None
 
     # Wait for the user to upload a file
     while file == None:
-        file = ask_for_file(
+        file = cl.ask_for_file(
             title="Please upload a text file to begin!", accept=["text/plain"])
 
     # Decode the file

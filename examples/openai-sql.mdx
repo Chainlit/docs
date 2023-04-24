@@ -4,7 +4,7 @@ title: Text to SQL
 
 ## Text to SQL with OpenAI
 
-Let's build a simple app that helps users to create SQL queries with natural language.
+Let's build a simple agent that helps users to create SQL queries with natural language.
 
 ### Imports
 
@@ -14,7 +14,7 @@ Let's build a simple app that helps users to create SQL queries with natural lan
 </Warning>
 
 ```python app.py
-from chainlit import on_message, send_message, LLMSettings
+import chainlit as cl
 import openai
 
 openai.api_key = "YOUR_OPEN_AI_API_KEY"
@@ -48,7 +48,7 @@ Here, we decorate the `main` function with the [@on_message](api-reference/on-me
 Then, we send back the answer to the UI with the [send_message](api-reference/send-message) function.
 
 ```python app.py
-@on_message
+@cl.on_message
 def main(message: str):
     fromatted_prompt = prompt.format(input=message)
     response = openai.Completion.create(
@@ -58,11 +58,11 @@ def main(message: str):
     )
     content = response["choices"][0]["text"]
 
-    send_message(
+    cl.send_message(
         content=content,
         language="sql",
         prompt=fromatted_prompt,
-        llm_settings=LLMSettings(model_name=model_name, **settings)
+        llm_settings=cl.LLMSettings(model_name=model_name, **settings)
     )
 ```
 

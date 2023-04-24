@@ -1,12 +1,12 @@
 ---
-title: With LangChain
+title: Share LangChain Agents
 ---
 
-Chainlit seamlessly integrates with any LangChain agent or chain.
+Chainlit seamlessly integrates with LangChain to create sharable apps in seconds.
 
 ```python app.py
 from langchain import PromptTemplate, OpenAI, LLMChain
-from chainlit import langchain_factory
+import chainlit as cl
 import os
 
 os.environ["OPENAI_API_KEY"] = "YOUR_OPEN_AI_API_KEY"
@@ -15,7 +15,7 @@ template = """Question: {question}
 
 Answer: Let's think step by step."""
 
-@langchain_factory
+@cl.langchain_factory
 def factory():
     prompt = PromptTemplate(template=template, input_variables=["question"])
     llm_chain = LLMChain(prompt=prompt, llm=OpenAI(temperature=0), verbose=True)
@@ -23,7 +23,7 @@ def factory():
     return llm_chain
 ```
 
-Just wrap the logic that instantiate the LangChain object in a function and add the [@langchain_factory](/api-reference/langchain-factory) decorator.
+Wrap the logic that instantiate the LangChain agent in a function and add the [@langchain_factory](/api-reference/langchain-factory) decorator.
 
 That's it. Now just run:
 
@@ -31,6 +31,6 @@ That's it. Now just run:
 chainlit run app.py -w
 ```
 
-<Card title="Advanced example" icon="link" href="/examples/qa">
-   Learn how Chainlit can help you debug and serve complex LangChain use cases.
+<Card title="Deployment" icon="link" href="/cloud/deploy">
+   Learn how to deploy your agent to the cloud.
 </Card>

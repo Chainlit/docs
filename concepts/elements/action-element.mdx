@@ -1,6 +1,11 @@
 ---
-title: Action
+title: Action Element
 ---
+
+Action elements are clickable buttons triggering python function calls. When a user clicks on the button, the according python function is called.
+
+## Usage
+You can define a callback for the action by using the `@cl.action` decorator. The callback will be called with the action as the first argument.
 
 ```python
 import chainlit as cl
