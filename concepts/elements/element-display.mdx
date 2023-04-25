@@ -4,9 +4,8 @@ title: Elements Display
 
 Chainlit will automatically check if messages contain references to elements. In the following example, we send an image element and a text element, then send a message referencing both of the elements by name:
 
-```python
+```python Code Example
 import chainlit as cl
-
 
 @cl.on_chat_start
 def start():
@@ -29,7 +28,7 @@ In the example above, both of the elements are inlined in the message. Chainlit 
 ## Side example
 By changing the text element display mode from the previous example, the element name becomes clickable and opens in a side panel:
 
-```python
+```python Code Example
 send_text(text="Here is a text element", name="text1", display="side")
 ```
 

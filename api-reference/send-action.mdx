@@ -18,14 +18,12 @@ The description of the action. Defaults to "".
 
 
 <RequestExample>
-```python
+```python Code Example
 import chainlit as cl
-
 
 @cl.action("action1")
 def on_action(action):
     cl.send_message("Executed action 1!")
-
 
 @cl.on_chat_start
 def main():

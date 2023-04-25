@@ -6,7 +6,7 @@ Plug and play decorator for the LangChain library.
 The decorated function should instantiate a new LangChain instance (Chain, Agent...). One instance per user session is created and cached. The per user instance is called every time a new message is received.
 
 <RequestExample>
-```python
+```python Code Example
 from langchain import OpenAI, LLMMathChain
 from chainlit import langchain_factory
 

@@ -38,12 +38,10 @@
         },
         {
           "group": "Streaming",
-          "pages": [
-            "concepts/streaming/python",
-            "concepts/streaming/langchain"
-          ]
+          "pages": ["concepts/streaming/python", "concepts/streaming/langchain"]
         },
-        "concepts/user-session"
+        "concepts/user-session",
+        "concepts/watcher"
       ]
     },
     {
@@ -61,14 +59,26 @@
         "api-reference/on-message",
         "api-reference/on-chat-start",
         "api-reference/send-message",
+        {
+          "group": "streaming",
+          "pages": [
+            "api-reference/start-stream",
+            "api-reference/send-token"
+          ]
+        },
         "api-reference/ask-for-input",
         "api-reference/ask-for-file",
         "api-reference/send-text",
         "api-reference/send-local-image",
         "api-reference/send-action",
-        "api-reference/langchain-factory",
-        "api-reference/langchain-run",
-        "api-reference/langchain-postprocess"
+        {
+          "group": "langchain",
+          "pages": [
+            "api-reference/langchain-factory",
+            "api-reference/langchain-run",
+            "api-reference/langchain-postprocess"
+          ]
+        }
       ]
     },
     {
