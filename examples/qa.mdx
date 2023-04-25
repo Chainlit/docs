@@ -7,7 +7,7 @@ Example inspired from the [LangChain doc](https://huggingface.co/spaces/hwchase1
 <Note>The state of the union file is available [here](https://github.com/hwchase17/langchain/blob/master/docs/modules/state_of_the_union.txt)</Note>
 
 ## Document QA with LangChain
-````python
+````python Code Example
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Chroma
@@ -19,7 +19,6 @@ from langchain.prompts.chat import (
     HumanMessagePromptTemplate,
 )
 import chainlit as cl
-
 
 text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 

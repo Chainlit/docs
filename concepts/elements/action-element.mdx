@@ -7,14 +7,12 @@ Action elements are clickable buttons triggering python function calls. When a u
 ## Usage
 You can define a callback for the action by using the `@cl.action` decorator. The callback will be called with the action as the first argument.
 
-```python
+```python Code Example
 import chainlit as cl
-
 
 @cl.action("action1")
 def on_action(action):
     cl.send_message("Executed action 1!")
-
 
 @cl.on_chat_start
 def main():
