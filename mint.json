@@ -21,7 +21,7 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["installation", "pure-python", "langchain"]
+      "pages": ["installation", "pure-python", "langchain", "env-variables"]
     },
     {
       "group": "Concepts",
