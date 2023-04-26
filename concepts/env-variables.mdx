@@ -1,0 +1,34 @@
+---
+title: Environment Variables
+---
+
+Hardcoding API keys in your code is not a good practice. It makes your code less portable and less flexible. It also makes it harder to keep your code secure. Instead, you should use environment variables to store values that are specific to your development environment.
+
+Chainlit will automatically load environment variables from a `.env` file in the root of your project. This file should be added to your `.gitignore` file so that it is not committed to your repository.
+
+## Public Agents & Environment Variables
+If you want to share your agent to a broader audience, you should not put your own OpenAI API keys in the `.env` file.
+Instead, you should use [user_env](/cloud/config) in the Chainlit config to ask each user to provide their own keys.
+
+You can then access the user's keys in your agent code using:
+
+```python
+from chainlit import user_session
+
+user_env = user_session.get("env")
+```
+
+## LangChain Example
+
+Let's say you added `OPENAI_API_KEY` in [user_env](/cloud/config).
+
+```python
+import chainlit as cl
+from langchain.chat_models import ChatOpenAI
+
+@cl.langchain_factory
+def main():
+    user_env = cl.user_session.get("env")
+    llm = ChatOpenAI(temperature=0, openai_api_key=user_env.get("OPENAI_API_KEY"),
+
+    return llm

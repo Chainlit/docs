@@ -21,7 +21,7 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["installation", "pure-python", "langchain", "env-variables"]
+      "pages": ["installation", "pure-python", "langchain"]
     },
     {
       "group": "Concepts",
@@ -41,6 +41,7 @@
           "pages": ["concepts/streaming/python", "concepts/streaming/langchain"]
         },
         "concepts/user-session",
+        "concepts/env-variables",
         "concepts/watcher"
       ]
     },
