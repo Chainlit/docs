@@ -77,7 +77,8 @@
           "pages": [
             "api-reference/langchain-factory",
             "api-reference/langchain-run",
-            "api-reference/langchain-postprocess"
+            "api-reference/langchain-postprocess",
+            "api-reference/langchain-rename"
           ]
         }
       ]
