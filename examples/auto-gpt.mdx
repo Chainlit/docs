@@ -15,6 +15,11 @@ from langchain.agents import Tool
 from langchain.tools.file_management.write import WriteFileTool
 from langchain.tools.file_management.read import ReadFileTool
 
+
+os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
+os.environ["SERPAPI_API_KEY"] = "SERPAPI_API_KEY"
+
+
 search = SerpAPIWrapper()
 tools = [
     Tool(

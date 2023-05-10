@@ -9,6 +9,7 @@ Example inspired from the [LangChain doc](https://python.langchain.com/en/latest
 <Note>The state of the union file is available [here](https://github.com/hwchase17/langchain/blob/master/docs/modules/state_of_the_union.txt)</Note>
 
 ## Document QA with LangChain
+
 ````python qa.py
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
@@ -21,6 +22,11 @@ from langchain.prompts.chat import (
     HumanMessagePromptTemplate,
 )
 import chainlit as cl
+
+
+os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
+os.environ["SERPAPI_API_KEY"] = "SERPAPI_API_KEY"
+
 
 text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 
