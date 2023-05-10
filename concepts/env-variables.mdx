@@ -6,6 +6,11 @@ Hardcoding API keys in your code is not a good practice. It makes your code less
 
 Chainlit will automatically load environment variables from a `.env` file in the root of your project. This file should be added to your `.gitignore` file so that it is not committed to your repository.
 
+```bash .env
+OPENAI_API_KEY=sk-...
+PINECONE_API_KEY=...
+```
+
 ## Public Agents & Environment Variables
 If you want to share your agent to a broader audience, you should not put your own OpenAI API keys in the `.env` file.
 Instead, you should use [user_env](/cloud/config) in the Chainlit config to ask each user to provide their own keys.
