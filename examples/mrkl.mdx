@@ -4,8 +4,10 @@ title: MRKL
 
 Example inspired from the [LangChain doc](https://python.langchain.com/en/latest/modules/agents/agents/examples/mrkl_chat.html)
 
+<Info>This example has extra dependencies, such as `google-search-results`. You might have to install them manually.</Info>
+
 ## Code
-```python Code Example
+```python mrkl.py
 from langchain import OpenAI, LLMMathChain, SerpAPIWrapper
 from langchain.agents import initialize_agent, Tool
 from langchain.chat_models import ChatOpenAI
@@ -15,27 +17,37 @@ import chainlit as cl
 os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
 os.environ["SERPAPI_API_KEY"] = "SERPAPI_API_KEY"
 
+
 @cl.langchain_factory
 def load():
     llm = ChatOpenAI(temperature=0)
     llm1 = OpenAI(temperature=0)
     search = SerpAPIWrapper()
-    llm_math_chain = LLMMathChain(llm=llm1, verbose=True)
+    llm_math_chain = LLMMathChain.from_llm(llm=llm, verbose=True)
 
     tools = [
         Tool(
-            name = "Search",
+            name="Search",
             func=search.run,
-            description="useful for when you need to answer questions about current events. You should ask targeted questions"
+            description="useful for when you need to answer questions about current events. You should ask targeted questions",
         ),
         Tool(
             name="Calculator",
             func=llm_math_chain.run,
-            description="useful for when you need to answer questions about math"
+            description="useful for when you need to answer questions about math",
         ),
     ]
-    return initialize_agent(tools, llm, agent="chat-zero-shot-react-description", verbose=True)
+    return initialize_agent(
+        tools, llm, agent="chat-zero-shot-react-description", verbose=True
+    )
 ```
 
-## Result
+## Try it out
+
+```bash
+$ chainlit run mrkl.py
+```
+
+You can ask questions like `Who is Leo DiCaprio's girlfriend? What is her current age raised to the 0.43 power?`.
+
 <video controls height="200" src="https://chainlit-cloud.s3.eu-west-3.amazonaws.com/docs/langchain_streaming.mp4" />

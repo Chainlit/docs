@@ -4,8 +4,12 @@ title: Auto GPT
 
 Example inspired from the [LangChain doc](https://python.langchain.com/en/latest/use_cases/autonomous_agents/autogpt.html)
 
+<Info>This example has extra dependencies, such as `google-search-results` and `faiss`. You might have to install them manually.</Info>
+
+<Info>If you have trouble installing `faiss`, try `pip install faiss-cpu`.</Info>
+
 ## Code
-```python Code Example
+```python autogpt.py
 from langchain.utilities import SerpAPIWrapper
 from langchain.agents import Tool
 from langchain.tools.file_management.write import WriteFileTool
@@ -14,9 +18,9 @@ from langchain.tools.file_management.read import ReadFileTool
 search = SerpAPIWrapper()
 tools = [
     Tool(
-        name = "search",
+        name="search",
         func=search.run,
-        description="useful for when you need to answer questions about current events. You should ask targeted questions"
+        description="useful for when you need to answer questions about current events. You should ask targeted questions",
     ),
     WriteFileTool(),
     ReadFileTool(),
@@ -38,6 +42,7 @@ from langchain.experimental import AutoGPT
 from langchain.chat_models import ChatOpenAI
 import chainlit as cl
 
+
 @cl.langchain_factory
 def agent():
     vectorstore = FAISS(embeddings_model.embed_query, index, InMemoryDocstore({}), {})
@@ -46,16 +51,24 @@ def agent():
         ai_role="Assistant",
         tools=tools,
         llm=ChatOpenAI(temperature=0, streaming=True),
-        memory=vectorstore.as_retriever()
+        memory=vectorstore.as_retriever(),
     )
     # Set verbose to be true
     agent.chain.verbose = True
     return agent
+
 
 @cl.langchain_run
 def run(agent, input):
     return agent.run([input])
 ```
 
-## Result
+## Try it out
+
+```bash
+$ chainlit run autogpt.py
+```
+
+You can ask questions like `Create a weather report for san francisco`.
+
 ![QA](/images/auto-gpt.png)
