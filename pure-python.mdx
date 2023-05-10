@@ -10,7 +10,7 @@ import chainlit as cl
 @cl.on_message # this function will be called every time a user inputs a message in the UI
 def main(message: str):
 
-    # custom logic...
+    # your custom logic...
 
     # send back a reply to the user
     cl.send_message(
@@ -18,7 +18,7 @@ def main(message: str):
     )
 ```
 
-Run:
+That's it. Run the following command to start the chatbot UI.
 
 ```bash
 $ chainlit run app.py -w
