@@ -29,6 +29,7 @@ from chainlit import send_message, ask_for_file, on_chat_start
 
 @on_chat_start
 def main():
+    file=None
     # Wait for the user to upload a file
     while file == None:
         file = ask_for_file(
