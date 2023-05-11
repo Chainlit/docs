@@ -4,7 +4,7 @@ title: Document QA
 
 Example inspired from the [LangChain doc](https://python.langchain.com/en/latest/use_cases/question_answering.html)
 
-<Note>This example has extra dependencies, such as `chromadb`. You might have to install them manually.</Note>
+<Note>This example has extra dependencies, such as `chromadb`, `tiktoken` and `openai`. You might have to install them manually.</Note>
 
 <Note>The state of the union file is available [here](https://github.com/hwchase17/langchain/blob/master/docs/modules/state_of_the_union.txt)</Note>
 
@@ -21,12 +21,11 @@ from langchain.prompts.chat import (
     SystemMessagePromptTemplate,
     HumanMessagePromptTemplate,
 )
+import os
 import chainlit as cl
 
 
 os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
-os.environ["SERPAPI_API_KEY"] = "SERPAPI_API_KEY"
-
 
 text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 
@@ -100,6 +99,8 @@ def process_response(res):
 
     # Get the metadata and texts from the user session
     metadatas = cl.user_session.get("metadatas")
+    all_sources = [m["source"] for m in metadatas]
+
     texts = cl.user_session.get("texts")
 
     if sources:
@@ -107,10 +108,13 @@ def process_response(res):
         answer += f"\nSources: {sources}"
         # Add the sources to the message
         for source in sources.split(","):
-            name = source.strip()
-            # Get the index of the source document
-            index = [m["source"] for m in metadatas].index(name)
-            text = texts[index]
+            name = source.strip().replace(".", "")
+            try:
+                # Get the index of the source document
+                index = all_sources.index(name)
+                text = texts[index]
+            except ValueError:
+                continue
             # Send the source element referenced in the message
             cl.send_text(text=text, name=name)
 
