@@ -38,7 +38,7 @@ def load():
         ),
     ]
     return initialize_agent(
-        tools, llm, agent="chat-zero-shot-react-description", verbose=True
+        tools, llm1, agent="chat-zero-shot-react-description", verbose=True
     )
 ```
 
@@ -48,6 +48,6 @@ def load():
 $ chainlit run mrkl.py
 ```
 
-You can ask questions like `Who is Leo DiCaprio's girlfriend? What is her current age raised to the 0.43 power?`.
+You can ask questions like `What is the Paris weather forecast for tomorrow? How does it compare to today's?`.
 
-<video controls height="200" src="https://chainlit-cloud.s3.eu-west-3.amazonaws.com/docs/langchain_streaming.mp4" />
+![QA](/images/mrkl.png)
