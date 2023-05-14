@@ -2,9 +2,19 @@
 title: Document QA
 ---
 
-Example inspired from the [LangChain doc](https://python.langchain.com/en/latest/use_cases/question_answering.html)
+In this example, we're going to build an chatbot QA app. In this example, we'll learn how to:
+- Upload a document
+- Create vector embeddings from a file
+- Create a chatbot app with the ability to display sources used to generate an answer
 
-<Note>This example has extra dependencies, such as `chromadb`, `tiktoken` and `openai`. You might have to install them manually.</Note>
+This example is inspired from the [LangChain doc](https://python.langchain.com/en/latest/use_cases/question_answering.html)
+
+<Note>This example has extra dependencies, such as `chromadb`, `tiktoken` and `openai`.</Note>
+```bash
+pip install chainlit langchain openai chromadb tiktoken
+```
+
+Then, you need to go to create an OpenAI key [here](https://platform.openai.com/account/api-keys) and get a SperpApi key [here](https://serpapi.com/).
 
 <Note>The state of the union file is available [here](https://github.com/hwchase17/langchain/blob/master/docs/modules/state_of_the_union.txt)</Note>
 
@@ -129,7 +139,7 @@ Then, we use [@langchain_postprocess](/api-reference/langchain-postprocess) (whi
 ## Try it out
 
 ```bash
-$ chainlit run qa.py
+chainlit run qa.py
 ```
 
 You can then upload any `.txt` file to the UI and ask questions about it.

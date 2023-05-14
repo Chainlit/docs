@@ -48,10 +48,10 @@
     {
       "group": "Examples",
       "pages": [
-        "examples/auto-gpt",
+        "examples/openai-sql",
         "examples/mrkl",
-        "examples/qa",
-        "examples/openai-sql"
+        "examples/auto-gpt",
+        "examples/qa"
       ]
     },
     {
