@@ -18,6 +18,11 @@
       "url": "https://discord.gg/ZThrUxbAYw"
     }
   ],
+  "topbarCtaButton": {
+    "type": "link",
+    "name": "Get Started",
+    "url": "https://github.com/Chainlit/chainlit"
+  },
   "navigation": [
     {
       "group": "Get Started",
