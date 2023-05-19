@@ -2,12 +2,21 @@
 title: Auto GPT
 ---
 
-Example inspired from the [LangChain doc](https://python.langchain.com/en/latest/use_cases/autonomous_agents/autogpt.html)
+Auto-GPT is an AI tool that uses OpenAI's GPT-4 or GPT-3.5 APIs to perform autonomous tasks. It is an "AI agent" that can be given a goal in natural language and will attempt to achieve it by breaking it into sub-tasks and using the internet and other tools in an automatic loop.
 
-<Note>
-  This example has extra dependencies, such as `openai`, `google-search-results`
-  and `faiss-cpu`. You might have to install them manually.
-</Note>
+Unlike interactive systems such as ChatGPT, which require manual commands for every task, Auto-GPT assigns itself new objectives to work on with the aim of reaching a greater goal, without a mandatory need for human input.
+
+This example is inspired from the [LangChain doc](https://python.langchain.com/en/latest/use_cases/autonomous_agents/autogpt.html).
+
+## Prerequisites
+
+This example has extra dependencies. You can install them with:
+
+```bash
+pip install chainlit langchain openai google-search-results faiss-cpu
+```
+
+Then, you need to go to create an OpenAI key [here](https://platform.openai.com/account/api-keys) and get a SperpApi key [here](https://serpapi.com/).
 
 ## Code
 
@@ -18,10 +27,20 @@ from langchain.tools.file_management.write import WriteFileTool
 from langchain.tools.file_management.read import ReadFileTool
 import os
 
+from langchain.vectorstores import FAISS
+from langchain.docstore import InMemoryDocstore
+from langchain.embeddings import OpenAIEmbeddings
+import faiss
+
+from langchain.experimental import AutoGPT
+from langchain.chat_models import ChatOpenAI
+import chainlit as cl
+
+
 os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
 os.environ["SERPAPI_API_KEY"] = "SERPAPI_API_KEY"
 
-
+# Tools the langchain agent will have access to
 search = SerpAPIWrapper()
 tools = [
     Tool(
@@ -33,23 +52,16 @@ tools = [
     ReadFileTool(),
 ]
 
-from langchain.vectorstores import FAISS
-from langchain.docstore import InMemoryDocstore
-from langchain.embeddings import OpenAIEmbeddings
 
 # Define your embedding model
 embeddings_model = OpenAIEmbeddings()
 # Initialize the vectorstore as empty
-import faiss
 
 embedding_size = 1536
 index = faiss.IndexFlatL2(embedding_size)
 
-from langchain.experimental import AutoGPT
-from langchain.chat_models import ChatOpenAI
-import chainlit as cl
 
-
+# Create the agent with the chainlit decorator
 @cl.langchain_factory
 def agent():
     vectorstore = FAISS(embeddings_model.embed_query, index, InMemoryDocstore({}), {})
@@ -71,10 +83,13 @@ def run(agent, input):
     cl.send_message(res)
 ```
 
+Here you can see [langchain_run](/api-reference/langchain-run) and [langchain_factory](/api-reference/langchain-factory) were used.
+Langchain agents usually take a string as input. The `AutoGPT` class takes in a list. These two helper functions allow to change the default behavior.
+
 ## Try it out
 
 ```bash
-$ chainlit run autogpt.py
+chainlit run autogpt.py
 ```
 
 You can ask questions like `Create a weather report for san francisco`.

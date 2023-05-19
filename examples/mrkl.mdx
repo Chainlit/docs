@@ -4,9 +4,16 @@ title: MRKL
 
 Example inspired from the [LangChain doc](https://python.langchain.com/en/latest/modules/agents/agents/examples/mrkl_chat.html)
 
-<Note>This example has extra dependencies, such as `google-search-results` and `openai`. You might have to install them manually.</Note>
+## Prerequisites
+
+This example has extra dependencies. You can install them with:
+
+```bash
+pip install chainlit langchain openai google-search-results
+```
 
 ## Code
+
 ```python mrkl.py
 from langchain import OpenAI, LLMMathChain, SerpAPIWrapper
 from langchain.agents import initialize_agent, Tool
@@ -45,7 +52,7 @@ def load():
 ## Try it out
 
 ```bash
-$ chainlit run mrkl.py
+chainlit run mrkl.py
 ```
 
 You can ask questions like `What is the Paris weather forecast for tomorrow? How does it compare to today's?`.

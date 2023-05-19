@@ -18,6 +18,11 @@
       "url": "https://discord.gg/ZThrUxbAYw"
     }
   ],
+  "topbarCtaButton": {
+    "type": "link",
+    "name": "Get Started",
+    "url": "https://github.com/Chainlit/chainlit"
+  },
   "navigation": [
     {
       "group": "Get Started",
@@ -42,10 +47,10 @@
     {
       "group": "Examples",
       "pages": [
-        "examples/auto-gpt",
+        "examples/openai-sql",
         "examples/mrkl",
-        "examples/qa",
-        "examples/openai-sql"
+        "examples/auto-gpt",
+        "examples/qa"
       ]
     },
     {
