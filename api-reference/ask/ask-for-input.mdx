@@ -7,11 +7,13 @@ If the user does not answer in time (see timeout), a TimeoutError will be raised
 If a project ID is configured, the messages will be uploaded to the cloud storage.
 
 ### Parameters
+
 <ParamField path="content" type="str">
   The content of the message.
 </ParamField>
 <ParamField path="author" type="str" optional>
-  The author of the message, defaults to the chatbot name. See [Chainlit config](/cloud/config).
+  The author of the message, defaults to the chatbot name. See [Chainlit
+  config](/cloud/config).
 </ParamField>
 <ParamField path="timeout" type="int" optional>
   The number of seconds to wait for an answer before raising a TimeoutError.
@@ -20,7 +22,14 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
   Whether to raise a socketio TimeoutError if the user does not answer in time.
 </ParamField>
 
-<RequestExample>
+### Returns
+
+<ResponseField name="response" type="str" required>
+  The response of the user.
+</ResponseField>
+
+### Usage
+
 ```python Code Example
 from chainlit import send_message, ask_for_input, on_chat_start
 
@@ -33,4 +42,3 @@ def main():
             content=f"Your name is: {res['content']}",
         )
 ```
-</RequestExample>

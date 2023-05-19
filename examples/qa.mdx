@@ -4,9 +4,15 @@ title: Document QA
 
 Example inspired from the [LangChain doc](https://python.langchain.com/en/latest/use_cases/question_answering.html)
 
-<Note>This example has extra dependencies, such as `chromadb`, `tiktoken` and `openai`. You might have to install them manually.</Note>
+<Note>
+  This example has extra dependencies, such as `chromadb`, `tiktoken` and
+  `openai`. You might have to install them manually.
+</Note>
 
-<Note>The state of the union file is available [here](https://github.com/hwchase17/langchain/blob/master/docs/modules/state_of_the_union.txt)</Note>
+<Note>
+  The state of the union file is available
+  [here](https://github.com/hwchase17/langchain/blob/master/docs/modules/state_of_the_union.txt)
+</Note>
 
 ## Document QA with LangChain
 
@@ -29,7 +35,7 @@ os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
 
 text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 
-system_template = """Use the following pieces of context to answer the users question. 
+system_template = """Use the following pieces of context to answer the users question.
 If you don't know the answer, just say that you don't know, don't try to make up an answer.
 ALWAYS return a "SOURCES" part in your answer.
 The "SOURCES" part should be a reference to the source of the document from which you got your answer.
@@ -92,37 +98,45 @@ def init():
     return chain
 
 
+
 @cl.langchain_postprocess
 def process_response(res):
     answer = res["answer"]
-    sources = res["sources"]
+    sources = res["sources"].strip()
+    source_elements = []
 
     # Get the metadata and texts from the user session
     metadatas = cl.user_session.get("metadatas")
     all_sources = [m["source"] for m in metadatas]
-
     texts = cl.user_session.get("texts")
 
     if sources:
-        # Add the sources to the message
-        answer += f"\nSources: {sources}"
+        found_sources = []
+
         # Add the sources to the message
         for source in sources.split(","):
-            name = source.strip().replace(".", "")
+            source_name = source.strip().replace(".", "")
+            # Get the index of the source
             try:
-                # Get the index of the source document
-                index = all_sources.index(name)
-                text = texts[index]
+                index = all_sources.index(source_name)
             except ValueError:
                 continue
-            # Send the source element referenced in the message
-            cl.send_text(text=text, name=name)
+            text = texts[index]
+            found_sources.append(source_name)
+            # Create the text element referenced in the message
+            source_elements.append(cl.Text(text=text, name=source_name))
 
-    return answer
+        if found_sources:
+            answer += f"\nSources: {', '.join(found_sources)}"
+        else:
+            answer += "\nNo sources found"
+
+    cl.send_message(answer, elements=source_elements)
 ````
 
-We are making use of the [@langchain_factory](/api-reference/langchain-factory) decorator to tell Chainlit on how to get the LangChain agent.
-Then, we use [@langchain_postprocess](/api-reference/langchain-postprocess) (which takes the raw response from the agent) as well as [send_text](/api-reference/send-text) to:
+We are making use of the [@langchain_factory](/api-reference/langchain/langchain-factory) decorator to tell Chainlit on how to get the LangChain agent.
+Then, we use [@langchain_postprocess](/api-reference/langchain/langchain-postprocess) (which takes the raw response from the agent) as well as [send_text](/api-reference/send-text) to:
+
 - Add the relevant sources to the final answer
 - Send the sources to the UI
 

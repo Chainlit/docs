@@ -26,16 +26,10 @@
     {
       "group": "Concepts",
       "pages": [
+        "concepts/elements",
+        "concepts/actions",
+        "concepts/ask-user",
         "concepts/prompt-playground",
-        {
-          "group": "Elements",
-          "pages": [
-            "concepts/elements/send-elements",
-            "concepts/elements/element-display",
-            "concepts/elements/ask-element",
-            "concepts/elements/action-element"
-          ]
-        },
         {
           "group": "Streaming",
           "pages": ["concepts/streaming/python", "concepts/streaming/langchain"]
@@ -60,25 +54,36 @@
         "api-reference/on-message",
         "api-reference/on-chat-start",
         "api-reference/send-message",
+        "api-reference/action",
         {
-          "group": "streaming",
+          "group": "Elements",
           "pages": [
-            "api-reference/start-stream",
-            "api-reference/send-token"
+            "api-reference/elements/local-image",
+            "api-reference/elements/remote-image",
+            "api-reference/elements/text"
           ]
         },
-        "api-reference/ask-for-input",
-        "api-reference/ask-for-file",
-        "api-reference/send-text",
-        "api-reference/send-local-image",
-        "api-reference/send-action",
         {
-          "group": "langchain",
+          "group": "LangChain",
           "pages": [
-            "api-reference/langchain-factory",
-            "api-reference/langchain-run",
-            "api-reference/langchain-postprocess",
-            "api-reference/langchain-rename"
+            "api-reference/langchain/langchain-postprocess",
+            "api-reference/langchain/langchain-rename",
+            "api-reference/langchain/langchain-run",
+            "api-reference/langchain/langchain-factory"
+          ]
+        },
+        {
+          "group": "Ask",
+          "pages": [
+            "api-reference/ask/ask-for-input",
+            "api-reference/ask/ask-for-file"
+          ]
+        },
+        {
+          "group": "Streaming",
+          "pages": [
+            "api-reference/streaming/start-stream",
+            "api-reference/streaming/send-token"
           ]
         }
       ]

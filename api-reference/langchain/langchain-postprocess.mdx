@@ -1,0 +1,34 @@
+---
+title: "langchain_postprocess"
+---
+
+Useful to post process the response a LangChain object instantiated with [@langchain_factory](/api-reference/langchain/langchain-factory).
+The decorated function takes the raw output of the LangChain object as input.
+The response will NOT be automatically sent to the UI, you need to call [send_message](/api-reference/send-message).
+
+### Parameters
+
+<ParamField path="res" type="Any">
+  The raw response of the langchain agent
+</ParamField>
+
+### Usage
+
+```python Code Example
+from langchain import OpenAI, LLMChain, PromptTemplate
+import chainlit as cl
+
+prompt_template = "What is a good name for a company that makes {product}?"
+
+
+@cl.langchain_factory
+def main():
+    llm = OpenAI(temperature=0)
+    chain = LLMChain(llm=llm, prompt=PromptTemplate.from_template(prompt_template))
+    return chain
+
+
+@cl.langchain_postprocess
+def postprocess(output: str):
+    cl.send_message("In the end it doesn't even matter.")
+```

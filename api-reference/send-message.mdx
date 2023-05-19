@@ -11,13 +11,27 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
   The content of the message.
 </ParamField>
 <ParamField path="author" type="str" optional>
-  The author of the message, defaults to the chatbot name. See [Chainlit config](/cloud/config).
+  The author of the message, defaults to the chatbot name. See [Chainlit
+  config](/cloud/config).
+</ParamField>
+<ParamField path="elements" type="Element[]" optional>
+  The list of elements scoped to this message.
+</ParamField>
+<ParamField path="actions" type="Action[]" optional>
+  The list of actions scoped to this message.
 </ParamField>
 <ParamField path="prompt" type="str" optional>
-  The prompt used to generate the message. If provided, enables the prompt playground for this message.
+  The prompt used to generate the message. If provided, enables the prompt
+  playground for this message.
+</ParamField>
+<ParamField path="llm_settings" type="LLMSettings" optional>
+  Settings of the LLM used to generate the prompt. This is useful for debug
+  purposes in the prompt playground.
 </ParamField>
 <ParamField path="language" type="str" optional>
-  Language of the code if the content is code. See https://react-code-blocks-rajinwonderland.vercel.app/?path=/story/codeblock--supported-languages for a list of supported languages.
+  Language of the code if the content is code. See
+  https://react-code-blocks-rajinwonderland.vercel.app/?path=/story/codeblock--supported-languages
+  for a list of supported languages.
 </ParamField>
 <ParamField path="indent" type="int" optional>
   If positive, the message will be nested in the UI.
@@ -25,16 +39,19 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 <ParamField path="is_error" type="bool" optional>
   Whether the message indicates an error.
 </ParamField>
-<ParamField path="llm_settings" type="LLMSettings" optional>
-  Settings of the LLM used to generate the prompt. This is useful for debug purposes in the prompt playground.
-</ParamField>
 
-<RequestExample>
+### Returns
+
+<ResponseField name="response" type="str" required>
+  The message ID.
+</ResponseField>
+
+### Usage
+
 ```python Code Example
 from chainlit import send_message, on_message
 
 @on_message
 def main(message: str):
-    send_message(content=f"Received: {message}")
+  send_message(content=f"Received: {message}")
 ```
-</RequestExample>

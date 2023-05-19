@@ -1,0 +1,49 @@
+---
+title: "Action"
+---
+
+The `Action` class is designed to create and manage actions to be sent and displayed in the chatbot user interface. Actions consist of buttons that the user can interact with, and these interactions trigger specific functionalities within your app.
+
+### Parameters
+
+<ParamField path="name" type="str">
+  The unique identifier for the action, used to reference the action within the
+  chatbot.
+</ParamField>
+
+<ParamField path="value" type="str">
+  The value associated with the action. This is useful to differentiate between
+  multiple actions with the same name.
+</ParamField>
+
+<ParamField path="description" type="str" optional>
+  A short, descriptive text for the action, used to provide additional
+  information about the action to the user.
+</ParamField>
+
+<ParamField path="forId" type="str" optional>
+  The optional target element identifier to which the action is bound. You
+  should not use this parameter.
+</ParamField>
+
+### Usage
+
+```python Code Example
+import chainlit as cl
+from chainlit import Action
+
+@cl.action("action_button")
+def on_action(action):
+    cl.send_message(f"Executed {action.name}")
+    # Optionally remove the action button from the chatbot user interface
+    action.remove()
+
+@cl.on_chat_start
+def start():
+    # Sending an action button within a chatbot message
+    actions = [
+        Action(name="action_button", value="example_value", description="Click me!")
+    ]
+
+    cl.send_message(content="Interact with this action button:", actions=actions)
+```

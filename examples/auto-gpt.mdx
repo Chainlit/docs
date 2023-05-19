@@ -4,9 +4,13 @@ title: Auto GPT
 
 Example inspired from the [LangChain doc](https://python.langchain.com/en/latest/use_cases/autonomous_agents/autogpt.html)
 
-<Note>This example has extra dependencies, such as `openai`, `google-search-results` and `faiss-cpu`. You might have to install them manually.</Note>
+<Note>
+  This example has extra dependencies, such as `openai`, `google-search-results`
+  and `faiss-cpu`. You might have to install them manually.
+</Note>
 
 ## Code
+
 ```python autogpt.py
 from langchain.utilities import SerpAPIWrapper
 from langchain.agents import Tool
@@ -63,7 +67,8 @@ def agent():
 
 @cl.langchain_run
 def run(agent, input):
-    return agent.run([input])
+    res = agent.run([input])
+    cl.send_message(res)
 ```
 
 ## Try it out
