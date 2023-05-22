@@ -1,0 +1,35 @@
+---
+title: "send_error_message"
+---
+
+Send an error message to the chatbot UI.
+If a project ID is configured, the message will be uploaded to the cloud storage.
+
+### Parameters
+
+<ParamField path="content" type="str">
+  The error message.
+</ParamField>
+<ParamField path="author" type="str" optional>
+  The author of the message, defaults to the chatbot name. See [Chainlit
+  config](/cloud/config).
+</ParamField>
+<ParamField path="indent" type="int" optional>
+  If positive, the message will be nested in the UI.
+</ParamField>
+
+### Returns
+
+<ResponseField name="response" type="str" required>
+  The message ID.
+</ResponseField>
+
+### Usage
+
+```python Code Example
+import chainlit as cl
+
+@cl.on_message
+def main(message: str):
+  cl.send_error_message(content=f"This is an error!")
+```
