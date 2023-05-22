@@ -59,6 +59,7 @@
         "api-reference/on-message",
         "api-reference/on-chat-start",
         "api-reference/send-message",
+        "api-reference/send-error-message",
         "api-reference/action",
         {
           "group": "Elements",
