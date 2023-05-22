@@ -7,9 +7,9 @@
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#e91e63",
-    "light": "#ed4b82",
-    "dark": "#a31545"
+    "primary": "#F80061",
+    "light": "#FFE7EB",
+    "dark": "#980039"
   },
   "anchors": [
     {
@@ -20,7 +20,7 @@
   ],
   "topbarCtaButton": {
     "type": "link",
-    "name": "Get Started",
+    "name": "Github Repo",
     "url": "https://github.com/Chainlit/chainlit"
   },
   "navigation": [
