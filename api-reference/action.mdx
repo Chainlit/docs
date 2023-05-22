@@ -30,9 +30,8 @@ The `Action` class is designed to create and manage actions to be sent and displ
 
 ```python Code Example
 import chainlit as cl
-from chainlit import Action
 
-@cl.action("action_button")
+@cl.action_callback("action_button")
 def on_action(action):
     cl.send_message(f"Executed {action.name}")
     # Optionally remove the action button from the chatbot user interface
@@ -42,7 +41,7 @@ def on_action(action):
 def start():
     # Sending an action button within a chatbot message
     actions = [
-        Action(name="action_button", value="example_value", description="Click me!")
+        cl.Action(name="action_button", value="example_value", description="Click me!")
     ]
 
     cl.send_message(content="Interact with this action button:", actions=actions)
