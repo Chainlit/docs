@@ -34,6 +34,7 @@
         "concepts/elements",
         "concepts/actions",
         "concepts/ask-user",
+        "concepts/chain-of-thought",
         "concepts/prompt-playground",
         {
           "group": "Streaming",
