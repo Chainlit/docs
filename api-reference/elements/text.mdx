@@ -15,10 +15,18 @@ The `Text` class allows you to display a text element in the chatbot UI. This cl
 </ParamField>
 
 <ParamField path="display" type="ElementDisplay" optional>
-  Determines how the text element should be displayed in the UI. Choices are "side" (default), "inline", or "page".
+  Determines how the text element should be displayed in the UI. Choices are
+  "side" (default), "inline", or "page".
+</ParamField>
+
+<ParamField path="language" type="str" optional>
+  Language of the code if the text is a piece of code. See
+  https://react-code-blocks-rajinwonderland.vercel.app/?path=/story/codeblock--supported-languages
+  for a list of supported languages.
 </ParamField>
 
 ### Usage with message scope
+
 ```python
 import chainlit as cl
 
@@ -31,6 +39,7 @@ cl.send_message(content="Check out this text element!", elements=elements)
 ```
 
 ### Usage without scope
+
 ```python
 import chainlit as cl
 

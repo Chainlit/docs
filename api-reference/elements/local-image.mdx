@@ -4,14 +4,20 @@ title: "Local Image"
 
 The `LocalImage` class is designed to create and handle local image elements to be sent and displayed in the chatbot user interface.
 
-
 ### Parameters
+
 <ParamField path="name" type="str">
   The name of the image to be displayed in the UI.
 </ParamField>
 
 <ParamField path="display" type="ElementDisplay" optional>
-  Determines how the image element should be displayed in the UI. Choices are "side" (default), "inline", or "page".
+  Determines how the image element should be displayed in the UI. Choices are
+  "side" (default), "inline", or "page".
+</ParamField>
+
+<ParamField path="size" type="ElementSize" optional>
+  Determines the size of the image. Only works with display="inline". Choices
+  are "small", "medium" (default), or "large".
 </ParamField>
 
 <ParamField path="path" type="str" optional>
@@ -19,10 +25,12 @@ The `LocalImage` class is designed to create and handle local image elements to 
 </ParamField>
 
 <ParamField path="content" type="bytes" optional>
-  The file content of the image in bytes format. Must provide either path or content.
+  The file content of the image in bytes format. Must provide either path or
+  content.
 </ParamField>
 
 ### Usage with message scope
+
 ```python Code Example
 from chainlit import LocalImage
 
@@ -35,6 +43,7 @@ cl.send_message(content="Look at this local image!", elements=elements)
 ```
 
 ### Usage without scope
+
 ```python Code Example
 from chainlit import LocalImage
 

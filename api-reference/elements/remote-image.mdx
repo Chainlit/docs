@@ -15,10 +15,17 @@ The `RemoteImage` class allows you to display an image hosted remotely in the ch
 </ParamField>
 
 <ParamField path="display" type="ElementDisplay" optional>
-  Determines how the image element should be displayed in the UI. Choices are "side" (default), "inline", or "page".
+  Determines how the image element should be displayed in the UI. Choices are
+  "side" (default), "inline", or "page".
+</ParamField>
+
+<ParamField path="size" type="ElementSize" optional>
+  Determines the size of the image. Only works with display="inline". Choices
+  are "small", "medium" (default), or "large".
 </ParamField>
 
 ### Usage with message scope
+
 ```python Code Example
 import chainlit as cl
 
@@ -31,6 +38,7 @@ cl.send_message(content="Look at this remote image!", elements=elements)
 ```
 
 ### Usage without scope
+
 ```python Code Example
 import chainlit as cl
 
