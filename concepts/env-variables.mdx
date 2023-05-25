@@ -11,7 +11,8 @@ OPENAI_API_KEY=sk-...
 PINECONE_API_KEY=...
 ```
 
-## Public Agents & Environment Variables
+## Public Apps & Environment Variables
+
 If you want to share your agent to a broader audience, you should not put your own OpenAI API keys in the `.env` file.
 Instead, you should use [user_env](/cloud/config) in the Chainlit config to ask each user to provide their own keys.
 
@@ -37,3 +38,4 @@ def main():
     llm = ChatOpenAI(temperature=0, openai_api_key=user_env.get("OPENAI_API_KEY"),
 
     return llm
+```
