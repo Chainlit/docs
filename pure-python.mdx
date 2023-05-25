@@ -2,32 +2,54 @@
 title: In Pure Python
 ---
 
-Chainlit turns your python code into a chatbot UI in a few lines of code.
+In this tutorial, we'll walk through the steps to create a minimal LLM app.
+
+## Prerequisites
+
+Before getting started, make sure you have the following:
+
+- A working installation of Chainlit
+- Basic understanding of Python programming
+
+## Step 1: Create a Python file
+
+Create a new Python file named `app.py` in your project directory. This file will contain the main logic for your LLM application.
+
+## Step 2: Write the Application Logic
+
+In `app.py`, import the Chainlit package and define a function that will handle incoming messages from the chatbot UI. Decorate the function with the `@cl.on_message` decorator to ensure it gets called whenever a user inputs a message.
+
+Here's the basic structure of the script:
 
 ```python app.py
 import chainlit as cl
 
-@cl.on_message # this function will be called every time a user inputs a message in the UI
+@cl.on_message
 def main(message: str):
+    # Your custom logic goes here...
 
-    # your custom logic...
-
-    # send back a reply to the user
+    # Send a response back to the user
     cl.send_message(
       content=f"Received: {message}",
     )
 ```
 
-That's it. Run the following command to start the chatbot UI.
+This function will be called every time a user inputs a message in the chatbot UI. You can put your custom logic within the function to process the user's input, such as analyzing the text, calling an API, or computing a result.
+
+The [cl.send_message()](/api-reference/send-message) function is responsible for sending a reply back to the user. In this example, we simply send a message containing the user's input.
+
+## Step 4: Run the Application
+
+To start your Chainlit app, open a terminal and navigate to the directory containing `app.py`. Then run the following command:
 
 ```bash
 chainlit run app.py -w
 ```
 
-Congratulations, your first chainlit app is ready 🥳
+The `-w` flag tells Chainlit to enable auto-reloading, so you don't need to restart the server every time you make changes to your application. Your chatbot UI should now be accessible at http://localhost:8000.
 
 ![PythonExample](/images/python-example.png)
 
-<Card title="Deployment" icon="link" href="/cloud/deploy">
-  Learn how to deploy your agent to the cloud.
-</Card>
+## Next Steps
+
+Congratulations! You've just created your first Chainlit application using pure Python. From here, you can add [elements](/concepts/elements), [actions](/concepts/actions) and [integrate with LLMs](/examples/openai-sql) to create a more sophisticated app. Happy coding! 🎉

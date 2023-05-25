@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Documentation Starter Kit",
+  "name": "Chainlit",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
@@ -31,11 +31,11 @@
     {
       "group": "Concepts",
       "pages": [
+        "concepts/chain-of-thought",
+        "concepts/prompt-playground",
         "concepts/elements",
         "concepts/actions",
         "concepts/ask-user",
-        "concepts/chain-of-thought",
-        "concepts/prompt-playground",
         {
           "group": "Streaming",
           "pages": ["concepts/streaming/python", "concepts/streaming/langchain"]

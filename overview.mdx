@@ -1,16 +1,20 @@
 ---
-title: "Chainlit - Overview"
+title: "Overview"
 ---
 
 Chainlit is an open-source Python package that makes it incredibly fast to build and share LLM apps.
+
+<Frame caption="Demo of the image gen app available in the chainlit cookbook repo.">
+  <img src="/images/overview.gif" />
+</Frame>
 
 ## Advantages of Chainlit
 
 1. [Build fast:](/examples/openai-sql) Integrate seamlessly with an existing code base or start from scratch in minutes
 
-2. [Visualize:](/concepts/chain-of-thought) Understand the intermediary steps that produced the final output at a glance
+2. [Visualize:](/concepts/chain-of-thought) Understand the intermediary steps that produced an output at a glance
 
-3. [Debug:](/concepts/prompt-playground) Deep dive into prompts in the Prompt Playground to understand where things went wrong
+3. [Debug:](/concepts/prompt-playground) Deep dive into prompts in the Prompt Playground to understand where things went wrong and iterate
 
 4. [Collaborate:](/cloud/create-project) Invite your teammates, create annotated datasets and run experiments together
 
@@ -20,10 +24,12 @@ Chainlit is an open-source Python package that makes it incredibly fast to build
 
 Chainlit is compatible with all Python programs and libraries. That being said, it comes with a set of integrations with popular libraries and frameworks.
 
-<Card title="LangChain Integration" icon="link" href="/langchain">
-  Learn how to use any LangChain agent with Chainlit.
-</Card>
+<CardGroup cols={2}>
+  <Card title="LangChain Integration" icon="link" href="/langchain">
+    Learn how to use any LangChain agent with Chainlit.
+  </Card>
 
-<Card title="LangChain MRKL with Chainlit" icon="link" href="/examples/mrkl">
-  Learn how to turn the LangChain miracle (MRKL) agent into an Chainlit app.
-</Card>
+  <Card title="LangChain MRKL with Chainlit" icon="link" href="/examples/mrkl">
+    Learn how to turn the LangChain miracle (MRKL) agent into an Chainlit app.
+  </Card>
+</CardGroup>

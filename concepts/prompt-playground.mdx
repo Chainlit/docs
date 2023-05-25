@@ -4,7 +4,7 @@ title: Prompt Playground
 
 In the previous section, we learned about Chain of Thought and intermediary steps.
 
-Being able to visualize the intermediary steps is great, but what if you want to **check on the specific prompt** that produced a step in particular? And what if you want to modify that prompt and see how it affects the step? Should you have to go back to code, print the prompt, and go the OpenAI playground to test it out?
+Being able to visualize the intermediary steps is great, but what if you want to **check on the specific prompt** that produced a step in particular? And what if you want to modify that prompt and see how it affects the step? Should you have to go back to the code, add a print statement, rerun your app and go to the OpenAI playground to test it out?
 
 No! You can do all of that from Chainlit UI.
 
@@ -13,4 +13,9 @@ Below each message you will find an `edit button` if that message was generated 
 
 To iterate, remove the previous completion (the text highlighted in green), and edit the prompt as needed. Then, click on the `Submit` button to generate a new completion.
 
-Your experiments will **not impact** your actual code nor the chat history. The Prompt Playground is a way for builders to quickly debug and iterate on prompts in a sandbox.
+<Note>
+  Your experiments will **not impact** your actual code nor the chat history.
+  You will have to propagate the changes in your code manually. The Prompt
+  Playground is a way for builders to quickly debug and iterate on prompts in a
+  sandbox.
+</Note>
