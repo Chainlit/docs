@@ -15,7 +15,7 @@ This example is inspired from the [LangChain doc](https://python.langchain.com/e
 This example has extra dependencies. You can install them with:
 
 ```bash
-pip installchromadb tiktoken openai
+pip install chromadb tiktoken openai
 ```
 
 Then, you need to go to create an OpenAI key [here](https://platform.openai.com/account/api-keys) and get a SperpApi key [here](https://serpapi.com/).
@@ -29,7 +29,7 @@ Then, you need to go to create an OpenAI key [here](https://platform.openai.com/
 
 ````python qa.py
 from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from langchain.chains import RetrievalQAWithSourcesChain
 from langchain.chat_models import ChatOpenAI
@@ -44,7 +44,7 @@ import chainlit as cl
 
 os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
 
-text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
 
 system_template = """Use the following pieces of context to answer the users question.
 If you don't know the answer, just say that you don't know, don't try to make up an answer.
