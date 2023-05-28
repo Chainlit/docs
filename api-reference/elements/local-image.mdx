@@ -4,7 +4,7 @@ title: "Local Image"
 
 The `LocalImage` class is designed to create and handle local image elements to be sent and displayed in the chatbot user interface.
 
-### Parameters
+### Attributes
 
 <ParamField path="name" type="str">
   The name of the image to be displayed in the UI.
@@ -39,7 +39,7 @@ elements = [
   LocalImage(name="image1", display="inline", path="./image1.jpg")
 ]
 
-cl.send_message(content="Look at this local image!", elements=elements)
+cl.Message(content="Look at this local image!", elements=elements).send()
 ```
 
 ### Usage without scope

@@ -1,11 +1,10 @@
 ---
-title: "send_message"
+title: "Message"
 ---
 
-Send a message to the chatbot UI.
-If a project ID is configured, the message will be uploaded to the cloud storage.
+The `Message` class is designed to send, stream, edit or remove messages in the chatbot user interface.
 
-### Parameters
+### Attributes
 
 <ParamField path="content" type="str">
   The content of the message.
@@ -37,18 +36,60 @@ If a project ID is configured, the message will be uploaded to the cloud storage
   If positive, the message will be nested in the UI.
 </ParamField>
 
-### Returns
-
-<ResponseField name="response" type="str" required>
-  The message ID.
-</ResponseField>
-
-### Usage
+### Send a message
 
 ```python Code Example
-from chainlit import send_message, on_message
+import chainlit as cl
 
-@on_message
+
+@cl.on_message
 def main(message: str):
-  send_message(content=f"Received: {message}")
+    cl.Message(
+        content=f"Received: {message}",
+    ).send()
+```
+
+### Stream a message
+
+```python Code Example
+import chainlit as cl
+
+token_list = ["the", "quick", "brown", "fox"]
+
+
+@cl.on_chat_start
+def main():
+    msg = cl.Message(content="")
+    for token in token_list:
+        msg.stream_token(token)
+
+    msg.send()
+```
+
+### Update a message
+
+```python Code Example
+import chainlit as cl
+
+
+@cl.on_chat_start
+def main():
+    msg = cl.Message(content="Hello!")
+    msg.send()
+    cl.sleep(2)
+    msg.update(content="Hello again!")
+```
+
+### Remove a message
+
+```python Code Example
+import chainlit as cl
+
+
+@cl.on_chat_start
+def main():
+    msg = cl.Message(content="Message 1")
+    msg.send()
+    cl.sleep(2)
+    msg.remove()
 ```

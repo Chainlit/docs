@@ -24,19 +24,21 @@ Here's the basic structure of the script:
 ```python app.py
 import chainlit as cl
 
+
 @cl.on_message
 def main(message: str):
     # Your custom logic goes here...
 
     # Send a response back to the user
-    cl.send_message(
-      content=f"Received: {message}",
-    )
+    cl.Message(
+        content=f"Received: {message}",
+    ).send()
+
 ```
 
-This function will be called every time a user inputs a message in the chatbot UI. You can put your custom logic within the function to process the user's input, such as analyzing the text, calling an API, or computing a result.
+The `main` function will be called every time a user inputs a message in the chatbot UI. You can put your custom logic within the function to process the user's input, such as analyzing the text, calling an API, or computing a result.
 
-The [cl.send_message()](/api-reference/send-message) function is responsible for sending a reply back to the user. In this example, we simply send a message containing the user's input.
+The [Message](/api-reference/message) class is responsible for sending a reply back to the user. In this example, we simply send a message containing the user's input.
 
 ## Step 4: Run the Application
 

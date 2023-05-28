@@ -4,7 +4,7 @@ title: "Remote Image"
 
 The `RemoteImage` class allows you to display an image hosted remotely in the chatbot UI. Instead of uploading a local image, this class takes a URL of an image hosted online, creates an image element and sends it to the UI.
 
-### Parameters
+### Attributes
 
 <ParamField path="name" type="str">
   The name of the image to be displayed in the UI.
@@ -34,7 +34,7 @@ elements = [
     cl.RemoteImage(name="remote_image", url=image_url, display="inline")
 ]
 
-cl.send_message(content="Look at this remote image!", elements=elements)
+cl.Message(content="Look at this remote image!", elements=elements).send()
 ```
 
 ### Usage without scope

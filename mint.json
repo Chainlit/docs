@@ -59,8 +59,14 @@
       "pages": [
         "api-reference/on-message",
         "api-reference/on-chat-start",
-        "api-reference/send-message",
-        "api-reference/send-error-message",
+        "api-reference/message",
+        {
+          "group": "Ask Message",
+          "pages": [
+            "api-reference/ask/ask-for-input",
+            "api-reference/ask/ask-for-file"
+          ]
+        },
         "api-reference/action",
         {
           "group": "Elements",
@@ -77,20 +83,6 @@
             "api-reference/langchain/langchain-rename",
             "api-reference/langchain/langchain-run",
             "api-reference/langchain/langchain-factory"
-          ]
-        },
-        {
-          "group": "Ask",
-          "pages": [
-            "api-reference/ask/ask-for-input",
-            "api-reference/ask/ask-for-file"
-          ]
-        },
-        {
-          "group": "Streaming",
-          "pages": [
-            "api-reference/streaming/start-stream",
-            "api-reference/streaming/send-token"
           ]
         }
       ]

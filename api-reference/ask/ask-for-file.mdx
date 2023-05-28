@@ -1,14 +1,14 @@
 ---
-title: "ask_for_file"
+title: "AskFileMessage"
 ---
 
 Ask the user to upload a file before continuing.
 If the user does not answer in time (see timeout), a TimeoutError will be raised or None will be returned depending on raise_on_timeout.
 If a project ID is configured, the messages will be uploaded to the cloud storage.
 
-### Parameters
+### Attributes
 
-<ParamField path="title" type="str">
+<ParamField path="content" type="str">
   Text displayed above the upload button.
 </ParamField>
 <ParamField path="accept" type="List[str]">
@@ -33,20 +33,23 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 ### Usage
 
 ```python Code Example
-from chainlit import send_message, ask_for_file, on_chat_start
+import chainlit as cl
 
 
-@on_chat_start
-def main():
-    file = None  # Wait for the user to upload a file
+@cl.on_chat_start
+def start():
+    file = None
+
+    # Wait for the user to upload a file
     while file == None:
-        file = ask_for_file(
-            title="Please upload a text file to begin!", accept=["text/plain"]
-        )
-
-    # Decode bytes to text
+        file = cl.AskFileMessage(
+            content="Please upload a text file to begin!", accept=["text/plain"]
+        ).send()
+    # Decode the file
     text = file.content.decode("utf-8")
 
-    send_message(f"`{file.name}` uploaded, you can now ask questions!")
-
+    # Let the user know that the system is ready
+    cl.Message(
+        content=f"`{file.name}` uploaded, it contains {len(text)} characters!"
+    ).send()
 ```

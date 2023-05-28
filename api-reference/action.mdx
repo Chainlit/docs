@@ -4,7 +4,7 @@ title: "Action"
 
 The `Action` class is designed to create and manage actions to be sent and displayed in the chatbot user interface. Actions consist of buttons that the user can interact with, and these interactions trigger specific functionalities within your app.
 
-### Parameters
+### Attributes
 
 <ParamField path="name" type="str">
   Name of the action, this should be used in the action_callback
@@ -32,7 +32,7 @@ import chainlit as cl
 
 @cl.action_callback("action_button")
 def on_action(action):
-    cl.send_message(f"Executed {action.name}")
+    cl.Message(content=f"Executed {action.name}").send()
     # Optionally remove the action button from the chatbot user interface
     action.remove()
 
@@ -43,5 +43,5 @@ def start():
         cl.Action(name="action_button", value="example_value", description="Click me!")
     ]
 
-    cl.send_message(content="Interact with this action button:", actions=actions)
+    cl.Message(content="Interact with this action button:", actions=actions).send()
 ```

@@ -4,7 +4,7 @@ title: "Text"
 
 The `Text` class allows you to display a text element in the chatbot UI. This class takes a string and creates a text element that can be sent to the UI.
 
-### Parameters
+### Attributes
 
 <ParamField path="name" type="str">
   The name of the text element to be displayed in the UI.
@@ -35,7 +35,7 @@ elements = [
     cl.Text(name="simple_text", text=text_content, display="inline")
 ]
 
-cl.send_message(content="Check out this text element!", elements=elements)
+cl.Message(content="Check out this text element!", elements=elements).send()
 ```
 
 ### Usage without scope

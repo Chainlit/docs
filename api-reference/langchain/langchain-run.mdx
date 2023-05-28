@@ -5,7 +5,7 @@ title: "langchain_run"
 Useful to override the default behavior of the LangChain object instantiated with [@langchain_factory](/api-reference/langchain/langchain-factory).
 Use when your agent run method has custom parameters.
 Takes the LangChain agent and the user input as parameters.
-The response will NOT be automatically sent to the UI, you need to call [send_message](/api-reference/send-message).
+The response will NOT be automatically sent to the UI, you need to send a [Message](/api-reference/message).
 
 ### Parameters
 
@@ -35,5 +35,5 @@ def main():
 @cl.langchain_run
 def run(agent, input_str):
     res = agent("2+2")
-    cl.send_message(res["text"])
+    cl.Message(content=res["text"]).send()
 ```

@@ -4,7 +4,7 @@ title: "langchain_postprocess"
 
 Useful to post process the response a LangChain object instantiated with [@langchain_factory](/api-reference/langchain/langchain-factory).
 The decorated function takes the raw output of the LangChain object as input.
-The response will NOT be automatically sent to the UI, you need to call [send_message](/api-reference/send-message).
+The response will NOT be automatically sent to the UI, you need to send a [Message](/api-reference/message).
 
 ### Parameters
 
@@ -30,5 +30,5 @@ def main():
 
 @cl.langchain_postprocess
 def postprocess(output: str):
-    cl.send_message("In the end it doesn't even matter.")
+    cl.Message(content="In the end it doesn't even matter.").send()
 ```

@@ -49,13 +49,13 @@ def start():
 
     # Send the same message twice
     content = "Here is image1, a nice image of a cat! As well as text1 and text2!"
-    cl.send_message(
+    cl.Message(
         content=content,
-    )
+    ).send()
 
-    cl.send_message(
+    cl.Message(
         content=content,
-    )
+    ).send()
 ```
 
 If we look at the rendering of the above code, we can see that the elements are displayed in BOTH of the messages.
@@ -75,9 +75,9 @@ import chainlit as cl
 def start():
     # Send the first message without the elements
     content = "Here is image1, a nice image of a cat! As well as text1 and text2!"
-    cl.send_message(
+    cl.Message(
         content=content,
-    )
+    ).send()
 
     elements = [
         cl.LocalImage(path="./cat.jpeg", name="image1", display="inline"),
@@ -86,10 +86,10 @@ def start():
     ]
 
     # Send the second message with the elements
-    cl.send_message(
+    cl.Message(
         content=content,
         elements=elements,
-    )
+    ).send()
 ```
 
 If we look at the rendering of the above code, we can see that the elements are only displayed in the second message.

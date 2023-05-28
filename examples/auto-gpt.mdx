@@ -80,7 +80,7 @@ def agent():
 @cl.langchain_run
 def run(agent, input):
     res = agent.run([input])
-    cl.send_message(res)
+    cl.Message(content=res).send()
 ```
 
 Here you can see [langchain_run](/api-reference/langchain-run) and [langchain_factory](/api-reference/langchain-factory) were used.

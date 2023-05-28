@@ -75,9 +75,9 @@ def init():
 
     # Wait for the user to upload a file
     while file == None:
-        file = cl.ask_for_file(
-            title="Please upload a text file to begin!", accept=["text/plain"]
-        )
+        file = cl.AskFileMessage(
+            content="Please upload a text file to begin!", accept=["text/plain"]
+        ).send()
 
     # Decode the file
     text = file.content.decode("utf-8")
@@ -104,7 +104,7 @@ def init():
     cl.user_session.set("texts", texts)
 
     # Let the user know that the system is ready
-    cl.send_message(f"`{file.name}` uploaded, you can now ask questions!")
+    cl.Message(content=f"`{file.name}` uploaded, you can now ask questions!").send()
 
     return chain
 
@@ -142,7 +142,7 @@ def process_response(res):
         else:
             answer += "\nNo sources found"
 
-    cl.send_message(answer, elements=source_elements)
+    cl.Message(content=answer, elements=source_elements).send()
 ````
 
 We are making use of the [@langchain_factory](/api-reference/langchain/langchain-factory) decorator to tell Chainlit on how to get the LangChain agent.

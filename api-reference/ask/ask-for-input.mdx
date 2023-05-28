@@ -1,12 +1,12 @@
 ---
-title: "ask_for_input"
+title: "AskUserMessage"
 ---
 
 Ask for the user input before continuing.
 If the user does not answer in time (see timeout), a TimeoutError will be raised or None will be returned depending on raise_on_timeout.
 If a project ID is configured, the messages will be uploaded to the cloud storage.
 
-### Parameters
+### Attributes
 
 <ParamField path="content" type="str">
   The content of the message.
@@ -31,14 +31,14 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 ### Usage
 
 ```python Code Example
-from chainlit import send_message, ask_for_input, on_chat_start
+import chainlit as cl
 
 
-@on_chat_start
+@cl.on_chat_start
 def main():
-    res = ask_for_input(content="What is your name?")
+    res = cl.AskUserMessage(content="What is your name?", timeout=10).send()
     if res:
-        send_message(
+        cl.Message(
             content=f"Your name is: {res['content']}",
-        )
+        ).send()
 ```
