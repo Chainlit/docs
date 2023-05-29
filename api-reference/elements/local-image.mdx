@@ -54,6 +54,6 @@ image1.send()
 # Sending an image with file content as bytes
 with open("./image2.jpg", "rb") as f:
     image_content = f.read()
-image2 = LocalImage(name="image2", display="inline", content=image_content)
-image2.send()
+    image2 = LocalImage(name="image2", display="inline", content=image_content)
+    image2.send()
 ```
