@@ -11,11 +11,12 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 <ParamField path="content" type="str">
   Text displayed above the upload button.
 </ParamField>
-<ParamField path="accept" type="List[str]">
-  List of mime type to accept like ["text/csv", "application/pdf"]
+<ParamField path="accept" type="Union[List[str], Dict[str, List[str]]]">
+  List of mime type to accept like ["text/csv", "application/pdf"] or a dict like {"text/plain": [".txt", ".py"]}.
+  More infos here https://react-dropzone.org/#!/Accepting%20specific%20file%20types.
 </ParamField>
 <ParamField path="max_size_mb" type="int" optional>
-  Maximum file size in MB. Defaults to 2.
+  Maximum file size in MB. Defaults to 2. Max 100.
 </ParamField>
 <ParamField path="timeout" type="int" optional>
   The number of seconds to wait for an answer before raising a TimeoutError.
@@ -52,4 +53,14 @@ def start():
     cl.Message(
         content=f"`{file.name}` uploaded, it contains {len(text)} characters!"
     ).send()
+```
+
+You can also pass a dict to the `accept` parameter to precise the file extension for each mime type:
+
+```python Code Example
+import chainlit as cl
+
+file = cl.AskFileMessage(
+        content="Please upload a python file to begin!", accept={"text/plain": [".py"]}
+      ).send()
 ```
