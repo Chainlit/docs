@@ -31,11 +31,11 @@ The `PDF` class allows you to display a pdf hosted remotely or locally in the ch
 ### Usage with message scope
 
 ```python Code Example
-from chainlit import PDF
+import chainlit as cl
 
 # Sending a pdf with the local file path
 elements = [
-  PDF(name="pdf1", display="inline", path="./pdf1.pdf")
+  cl.PDF(name="pdf1", display="inline", path="./pdf1.pdf")
 ]
 
 cl.Message(content="Look at this local pdf!", elements=elements).send()
@@ -44,15 +44,15 @@ cl.Message(content="Look at this local pdf!", elements=elements).send()
 ### Usage without scope
 
 ```python Code Example
-from chainlit import PDF
+import chainlit as cl
 
 # Sending a pdf with the remote url
-pdf1 = PDF(name="pdf1", display="inline", url="https://example.com/example.pdf")
+pdf1 = cl.PDF(name="pdf1", display="inline", url="https://example.com/example.pdf")
 pdf1.send()
 
 # Sending a pdf with file content as bytes
 with open("./pdf2.pdf", "rb") as f:
     pdf_content = f.read()
-    pdf2 = PDF(name="pdf2", display="inline", content=pdf_content)
+    pdf2 = cl.PDF(name="pdf2", display="inline", content=pdf_content)
     pdf2.send()
 ```
