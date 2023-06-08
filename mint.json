@@ -72,6 +72,7 @@
           "group": "Elements",
           "pages": [
             "api-reference/elements/local-image",
+            "api-reference/elements/pdf",
             "api-reference/elements/remote-image",
             "api-reference/elements/text"
           ]

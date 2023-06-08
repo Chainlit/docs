@@ -32,11 +32,11 @@ The `LocalImage` class is designed to create and handle local image elements to 
 ### Usage with message scope
 
 ```python Code Example
-from chainlit import LocalImage
+import chainlit as cl
 
 # Sending an image with the local file path
 elements = [
-  LocalImage(name="image1", display="inline", path="./image1.jpg")
+  cl.LocalImage(name="image1", display="inline", path="./image1.jpg")
 ]
 
 cl.Message(content="Look at this local image!", elements=elements).send()
@@ -45,15 +45,15 @@ cl.Message(content="Look at this local image!", elements=elements).send()
 ### Usage without scope
 
 ```python Code Example
-from chainlit import LocalImage
+import chainlit as cl
 
 # Sending an image with the local file path
-image1 = LocalImage(name="image1", display="inline", path="./image1.jpg")
+image1 = cl.LocalImage(name="image1", display="inline", path="./image1.jpg")
 image1.send()
 
 # Sending an image with file content as bytes
 with open("./image2.jpg", "rb") as f:
     image_content = f.read()
-    image2 = LocalImage(name="image2", display="inline", content=image_content)
+    image2 = cl.LocalImage(name="image2", display="inline", content=image_content)
     image2.send()
 ```
