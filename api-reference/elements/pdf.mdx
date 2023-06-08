@@ -2,7 +2,7 @@
 title: "PDF viewer"
 ---
 
-The `PDF` class allows you to display a pdf hosted remotely or locally in the chatbot UI. This class either takes a URL of a PDF hosted online, or the path of a local PDF.
+The `Pdf` class allows you to display a PDF hosted remotely or locally in the chatbot UI. This class either takes a URL of a PDF hosted online, or the path of a local PDF.
 
 ### Attributes
 
@@ -35,7 +35,7 @@ import chainlit as cl
 
 # Sending a pdf with the local file path
 elements = [
-  cl.PDF(name="pdf1", display="inline", path="./pdf1.pdf")
+  cl.Pdf(name="pdf1", display="inline", path="./pdf1.pdf")
 ]
 
 cl.Message(content="Look at this local pdf!", elements=elements).send()
@@ -47,12 +47,12 @@ cl.Message(content="Look at this local pdf!", elements=elements).send()
 import chainlit as cl
 
 # Sending a pdf with the remote url
-pdf1 = cl.PDF(name="pdf1", display="inline", url="https://example.com/example.pdf")
+pdf1 = cl.Pdf(name="pdf1", display="inline", url="https://example.com/example.pdf")
 pdf1.send()
 
 # Sending a pdf with file content as bytes
 with open("./pdf2.pdf", "rb") as f:
     pdf_content = f.read()
-    pdf2 = cl.PDF(name="pdf2", display="inline", content=pdf_content)
+    pdf2 = cl.Pdf(name="pdf2", display="inline", content=pdf_content)
     pdf2.send()
 ```
