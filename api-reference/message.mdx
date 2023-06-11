@@ -43,8 +43,8 @@ import chainlit as cl
 
 
 @cl.on_message
-def main(message: str):
-    cl.Message(
+async def main(message: str):
+    await cl.Message(
         content=f"Received: {message}",
     ).send()
 ```
@@ -58,12 +58,12 @@ token_list = ["the", "quick", "brown", "fox"]
 
 
 @cl.on_chat_start
-def main():
+async def main():
     msg = cl.Message(content="")
     for token in token_list:
-        msg.stream_token(token)
+        await msg.stream_token(token)
 
-    msg.send()
+    await msg.send()
 ```
 
 ### Update a message
@@ -73,11 +73,11 @@ import chainlit as cl
 
 
 @cl.on_chat_start
-def main():
+async def main():
     msg = cl.Message(content="Hello!")
-    msg.send()
-    cl.sleep(2)
-    msg.update(content="Hello again!")
+    await msg.send()
+    await cl.sleep(2)
+    await msg.update(content="Hello again!")
 ```
 
 ### Remove a message
@@ -87,9 +87,9 @@ import chainlit as cl
 
 
 @cl.on_chat_start
-def main():
+async def main():
     msg = cl.Message(content="Message 1")
-    msg.send()
-    cl.sleep(2)
-    msg.remove()
+    await msg.send()
+    await cl.sleep(2)
+    await msg.remove()
 ```

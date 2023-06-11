@@ -61,15 +61,17 @@ embedding_size = 1536
 index = faiss.IndexFlatL2(embedding_size)
 
 
-# Create the agent with the chainlit decorator
-@cl.langchain_factory
+# The search tool has no async implementation, we fall back to sync
+@cl.langchain_factory(use_async=False)
 def agent():
     vectorstore = FAISS(embeddings_model.embed_query, index, InMemoryDocstore({}), {})
     agent = AutoGPT.from_llm_and_tools(
         ai_name="Tom",
         ai_role="Assistant",
         tools=tools,
-        llm=ChatOpenAI(temperature=0, streaming=True),
+        llm=ChatOpenAI(
+            temperature=0, streaming=True, callbacks=[cl.ChainlitCallbackHandler()]
+        ),
         memory=vectorstore.as_retriever(),
     )
     # Set verbose to be true
@@ -78,9 +80,10 @@ def agent():
 
 
 @cl.langchain_run
-def run(agent, input):
-    res = agent.run([input])
-    cl.Message(content=res).send()
+async def run(agent, input):
+    # Since the agent is sync, we need to asyncify it
+    res = await cl.asyncify(agent.run)([input])
+    await cl.Message(content=res).send()
 ```
 
 Here you can see [langchain_run](/api-reference/langchain-run) and [langchain_factory](/api-reference/langchain-factory) were used.

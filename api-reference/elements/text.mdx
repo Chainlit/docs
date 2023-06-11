@@ -3,6 +3,9 @@ title: "Text"
 ---
 
 The `Text` class allows you to display a text element in the chatbot UI. This class takes a string and creates a text element that can be sent to the UI.
+It supports the markdown syntax for formatting text.
+
+You must provide either an url or a path or content bytes.
 
 ### Attributes
 
@@ -10,8 +13,17 @@ The `Text` class allows you to display a text element in the chatbot UI. This cl
   The name of the text element to be displayed in the UI.
 </ParamField>
 
-<ParamField path="text" type="str">
-  The text string that should be displayed as the content of the text element.
+<ParamField path="content" type="Union[str, bytes]" optional>
+  The text string or bytes that should be displayed as the content of the text
+  element.
+</ParamField>
+
+<ParamField path="url" type="str" optional>
+  The remote URL of the text source.
+</ParamField>
+
+<ParamField path="path" type="str" optional>
+  The local file path of the text file.
 </ParamField>
 
 <ParamField path="display" type="ElementDisplay" optional>
@@ -32,10 +44,10 @@ import chainlit as cl
 
 text_content = "Hello, this is a text element."
 elements = [
-    cl.Text(name="simple_text", text=text_content, display="inline")
+    cl.Text(name="simple_text", content=text_content, display="inline")
 ]
 
-cl.Message(content="Check out this text element!", elements=elements).send()
+await cl.Message(content="Check out this text element!", elements=elements).send()
 ```
 
 ### Usage without scope
@@ -44,5 +56,5 @@ cl.Message(content="Check out this text element!", elements=elements).send()
 import chainlit as cl
 
 text_content = "Hello, this is a text element."
-cl.Text(name="simple_text", text=text_content, display="inline").send()
+await cl.Text(name="simple_text", content=text_content, display="inline").send()
 ```

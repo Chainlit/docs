@@ -71,9 +71,9 @@
         {
           "group": "Elements",
           "pages": [
-            "api-reference/elements/local-image",
+            "api-reference/elements/image",
             "api-reference/elements/pdf",
-            "api-reference/elements/remote-image",
+            "api-reference/elements/avatar",
             "api-reference/elements/text"
           ]
         },
@@ -87,6 +87,10 @@
           ]
         }
       ]
+    },
+    {
+      "group": "Migration",
+      "pages": ["migration/0.3.0"]
     },
     {
       "group": "Cloud",

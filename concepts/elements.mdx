@@ -41,19 +41,20 @@ import chainlit as cl
 
 
 @cl.on_chat_start
-def start():
+async def start():
     # Send the elements globally
-    cl.LocalImage(path="./cat.jpeg", name="image1", display="inline").send()
-    cl.Text(text="Here is a side text document", name="text1", display="side").send()
-    cl.Text(text="Here is a page text document", name="text2", display="page").send()
+    await cl.LocalImage(path="./cat.jpeg", name="image1", display="inline").send()
+    await cl.Text(content="Here is a side text document", name="text1", display="side").send()
+    await cl.Text(content="Here is a page text document", name="text2", display="page").send()
 
     # Send the same message twice
     content = "Here is image1, a nice image of a cat! As well as text1 and text2!"
-    cl.Message(
+
+    await cl.Message(
         content=content,
     ).send()
 
-    cl.Message(
+    await cl.Message(
         content=content,
     ).send()
 ```
@@ -72,21 +73,22 @@ import chainlit as cl
 
 
 @cl.on_chat_start
-def start():
+async def start():
     # Send the first message without the elements
     content = "Here is image1, a nice image of a cat! As well as text1 and text2!"
-    cl.Message(
+
+    await cl.Message(
         content=content,
     ).send()
 
     elements = [
         cl.LocalImage(path="./cat.jpeg", name="image1", display="inline"),
-        cl.Text(text="Here is a side text document", name="text1", display="side"),
-        cl.Text(text="Here is a page text document", name="text2", display="page"),
+        cl.Text(content="Here is a side text document", name="text1", display="side"),
+        cl.Text(content="Here is a page text document", name="text2", display="page"),
     ]
 
     # Send the second message with the elements
-    cl.Message(
+    await cl.Message(
         content=content,
         elements=elements,
     ).send()

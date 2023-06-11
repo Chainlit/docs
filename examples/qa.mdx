@@ -69,15 +69,17 @@ prompt = ChatPromptTemplate.from_messages(messages)
 chain_type_kwargs = {"prompt": prompt}
 
 
-@cl.langchain_factory
-def init():
-    file = None
+@cl.langchain_factory(use_async=True)
+async def init():
+    files = None
 
     # Wait for the user to upload a file
-    while file == None:
-        file = cl.AskFileMessage(
+    while files == None:
+        files = await cl.AskFileMessage(
             content="Please upload a text file to begin!", accept=["text/plain"]
         ).send()
+
+    file = files[0]
 
     # Decode the file
     text = file.content.decode("utf-8")
@@ -104,14 +106,15 @@ def init():
     cl.user_session.set("texts", texts)
 
     # Let the user know that the system is ready
-    cl.Message(content=f"`{file.name}` uploaded, you can now ask questions!").send()
+    await cl.Message(
+        content=f"`{file.name}` uploaded, you can now ask questions!"
+    ).send()
 
     return chain
 
 
-
 @cl.langchain_postprocess
-def process_response(res):
+async def process_response(res):
     answer = res["answer"]
     sources = res["sources"].strip()
     source_elements = []
@@ -135,14 +138,14 @@ def process_response(res):
             text = texts[index]
             found_sources.append(source_name)
             # Create the text element referenced in the message
-            source_elements.append(cl.Text(text=text, name=source_name))
+            source_elements.append(cl.Text(content=text, name=source_name))
 
         if found_sources:
             answer += f"\nSources: {', '.join(found_sources)}"
         else:
             answer += "\nNo sources found"
 
-    cl.Message(content=answer, elements=source_elements).send()
+    await cl.Message(content=answer, elements=source_elements).send()
 ````
 
 We are making use of the [@langchain_factory](/api-reference/langchain/langchain-factory) decorator to tell Chainlit on how to get the LangChain agent.
