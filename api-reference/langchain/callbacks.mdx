@@ -1,0 +1,34 @@
+---
+title: "Callback Handlers"
+---
+
+When running your own LangChain agent, typically using [langchain_run](/api-reference/langchain/langchain-run), it is essential to provide the appropriate callback handler. This ensures seamless communication between the Chainlit UI and your agent.
+
+There are two ways to pass the callback handler:
+
+1. Pass the callback handler during runtime. This will apply the handler to all calls made by your agent.
+2. Pass the callback handler to individual components, such as an `llm`, allowing you to control what information is returned to the UI.
+
+### Asynchronous Callback Handler
+
+The following code example demonstrates how to pass an asynchronous callback handler:
+
+```python
+@cl.langchain_run
+async def run(agent, input_str):
+    res = await agent.acall(input_str, callbacks=[cl.AsyncChainlitCallbackHandler()])
+    await cl.Message(content=res["text"]).send()
+```
+
+### Synchronous Callback Handler
+
+Alternatively, you can pass a synchronous callback handler, as shown in the example below:
+
+```python
+@cl.langchain_run
+async def run(agent, input_str):
+    res = await cl.asyncify(agent)(input_str, callbacks=[cl.ChainlitCallbackHandler()])
+    await cl.Message(content=res["text"]).send()
+```
+
+Choose the appropriate callback handler based on your specific requirements, ensuring seamless interaction between your LangChain agent and the Chainlit UI.

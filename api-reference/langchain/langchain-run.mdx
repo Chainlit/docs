@@ -2,28 +2,28 @@
 title: "langchain_run"
 ---
 
-Useful to override the default behavior of the LangChain object instantiated with [@langchain_factory](/api-reference/langchain/langchain-factory).
-Use when your agent run method has custom parameters.
-Takes the LangChain agent and the user input as parameters.
-The response will NOT be automatically sent to the UI, you need to send a [Message](/api-reference/message).
+This document demonstrates how to override the default behavior of a LangChain object instantiated with `@langchain_factory`. This is useful when your agent's `run` method requires custom parameters. The response is not automatically sent to the UI, so remember to send a `Message`.
+
+Also, ensure to specify the appropriate [callback handler](/api-reference/langchain/callbacks) for your agent.
 
 ### Parameters
 
 <ParamField path="agent" type="Any">
-  The LangChain agent instance
+  The instantiated LangChain agent.
 </ParamField>
 <ParamField path="input_str" type="str">
-  The message coming from the UI.
+  The user input message from the UI.
 </ParamField>
 
-### Run a async agent
+### Running an Asynchronous Agent
 
-```python Code Example
+Use the following code example to run an asynchronous agent:
+
+```python
 from langchain import OpenAI, LLMChain, PromptTemplate
 import chainlit as cl
 
 prompt_template = "{input}?"
-
 
 @cl.langchain_factory(use_async=True)
 def main():
@@ -31,21 +31,21 @@ def main():
     chain = LLMChain(llm=llm, prompt=PromptTemplate.from_template(prompt_template))
     return chain
 
-
 @cl.langchain_run
 async def run(agent, input_str):
     res = await agent.acall(input_str, callbacks=[cl.AsyncChainlitCallbackHandler()])
     await cl.Message(content=res["text"]).send()
 ```
 
-### Run an sync agent
+### Running a Synchronous Agent
 
-```python Code Example
+Use the following code example to run a synchronous agent:
+
+```python
 from langchain import OpenAI, LLMChain, PromptTemplate
 import chainlit as cl
 
 prompt_template = "{input}?"
-
 
 @cl.langchain_factory(use_async=False)
 def main():
@@ -53,9 +53,10 @@ def main():
     chain = LLMChain(llm=llm, prompt=PromptTemplate.from_template(prompt_template))
     return chain
 
-
 @cl.langchain_run
 async def run(agent, input_str):
     res = await cl.asyncify(agent)(input_str, callbacks=[cl.ChainlitCallbackHandler()])
     await cl.Message(content=res["text"]).send()
 ```
+
+In both examples, the `run` method takes a LangChain agent and user input string as parameters. The agent processes the user input and returns a response that you need to send as a `Message`.

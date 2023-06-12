@@ -58,6 +58,11 @@ async def main(message: str):
 
 Notice the `async` keyword before the function definition, and the `await` keyword in front of calls to `Message.send()`.
 
+### LangChain Callback Handler
+
+Since Chainlit launched, LangChain has improved its callback handling, which mean we no longer need to patch the LangChain package.
+This also means that you will need to pass the appropriate callback handler your LangChain agent as described [here](/api-reference/langchain/callbacks) and below.
+
 ### langchain_factory
 
 The [langchain_factory](/api-reference/langchain-factory) decorator now requires a `use_async` argument, determining whether to use the async (`agent.acall()`) or sync (`agent()`) agent implementation. If the synchronous implementation is used, the agent runs in a separate thread to avoid blocking the event loop.

@@ -83,7 +83,8 @@
             "api-reference/langchain/langchain-postprocess",
             "api-reference/langchain/langchain-rename",
             "api-reference/langchain/langchain-run",
-            "api-reference/langchain/langchain-factory"
+            "api-reference/langchain/langchain-factory",
+            "api-reference/langchain/callbacks"
           ]
         }
       ]

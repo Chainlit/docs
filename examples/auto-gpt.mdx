@@ -65,17 +65,17 @@ index = faiss.IndexFlatL2(embedding_size)
 @cl.langchain_factory(use_async=False)
 def agent():
     vectorstore = FAISS(embeddings_model.embed_query, index, InMemoryDocstore({}), {})
+    callbacks = [cl.ChainlitCallbackHandler()]
     agent = AutoGPT.from_llm_and_tools(
         ai_name="Tom",
         ai_role="Assistant",
         tools=tools,
-        llm=ChatOpenAI(
-            temperature=0, streaming=True, callbacks=[cl.ChainlitCallbackHandler()]
-        ),
+        llm=ChatOpenAI(temperature=0, streaming=True, callbacks=callbacks),
         memory=vectorstore.as_retriever(),
     )
     # Set verbose to be true
     agent.chain.verbose = True
+    agent.chain.callbacks = callbacks
     return agent
 
 
