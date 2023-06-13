@@ -81,8 +81,8 @@ def agent():
 
 @cl.langchain_run
 async def run(agent, input):
-    # Since the agent is sync, we need to asyncify it
-    res = await cl.asyncify(agent.run)([input])
+    # Since the agent is sync, we need to make it async
+    res = await cl.make_async(agent.run)([input])
     await cl.Message(content=res).send()
 ```
 

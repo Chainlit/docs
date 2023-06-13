@@ -91,12 +91,12 @@ async def run(agent, input_str):
     await cl.Message(content=res["text"]).send()
 ```
 
-If the agent doesn't have an async implementation, use [asyncify](/api-reference/asyncify) to run the agent in a different thread.
+If the agent doesn't have an async implementation, use [make_async](/api-reference/asyncify) to run the agent in a different thread.
 
 ```python
 @cl.langchain_run
 async def run(agent, input_str):
-    res = await cl.asyncify(agent)(input_str, callbacks=[cl.ChainlitCallbackHandler()])
+    res = await cl.make_async(agent)(input_str, callbacks=[cl.ChainlitCallbackHandler()])
     await cl.Message(content=res["text"]).send()
 ```
 
