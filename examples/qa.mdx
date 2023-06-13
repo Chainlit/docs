@@ -81,6 +81,9 @@ async def init():
 
     file = files[0]
 
+    msg = cl.Message(content=f"Processing `{file.name}`...")
+    await msg.send()
+
     # Decode the file
     text = file.content.decode("utf-8")
 
@@ -92,8 +95,9 @@ async def init():
 
     # Create a Chroma vector store
     embeddings = OpenAIEmbeddings()
-    docsearch = Chroma.from_texts(texts, embeddings, metadatas=metadatas)
-
+    docsearch = await cl.make_async(Chroma.from_texts)(
+        texts, embeddings, metadatas=metadatas
+    )
     # Create a chain that uses the Chroma vector store
     chain = RetrievalQAWithSourcesChain.from_chain_type(
         ChatOpenAI(temperature=0),
@@ -106,9 +110,8 @@ async def init():
     cl.user_session.set("texts", texts)
 
     # Let the user know that the system is ready
-    await cl.Message(
-        content=f"`{file.name}` uploaded, you can now ask questions!"
-    ).send()
+    await msg.update(content=f"`{file.name}` processed. You can now ask questions!")
+
 
     return chain
 

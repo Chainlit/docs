@@ -1,88 +1,102 @@
 ---
-title: Guide to v0.3.0
+title: Migration Guide to Chainlit v0.3.0
 ---
 
 ## Reasons to migrate
 
-Chainlit v0.3.0 brings several enhancements, including bug fixes, performance improvements, and new features.
+Chainlit v0.3.0 brings a range of enhancements, including bug fixes, performance improvements, and new features. Some key improvements are:
 
-The most notable improvement is the adoption of an asynchronous architecture, resulting in significant performance gains and better compatibility with the async Python ecosystem.
+- The adoption of an asynchronous architecture, which results in better performance and compatibility with the async Python ecosystem.
+- A smaller memory footprint, faster streaming, and support for concurrent tasks.
+- A cleaner, more maintainable codebase with the removal of multiple workarounds, leading to a more stable installation process.
 
-Moreover, the codebase is cleaner and more maintainable with the removal of multiple monkey-patching hacks and other workarounds, leading to a more stable installation process.
+## New features
 
-## Update Chainlit and LangChain
+- The [Avatar](/api-reference/elements/avatar) element for displaying an avatar image next to a message.
+- [AskFileMessage](/api-reference/ask/ask-for-file) now supports multiple file uploads. (See breaking changes below)
+- A new user menu in the UI, offering settings to expand or retract messages for user convenience.
 
-To begin migration, update Chainlit and LangChain (if you use it) to the latest version.
+## Updating Chainlit and LangChain
+
+Begin the migration by updating Chainlit and LangChain (if you use it) to the latest version:
 
 ```bash
 pip install --upgrade chainlit langchain
 ```
 
-## New features
-
-- The [Avatar](/api-reference/elements/avatar) element allows for the display of an avatar image beside a message.
-- [AskFileMessage](/api-reference/ask/ask-for-file) now supports multiple file uploads (refer to the breaking changes for more information).
-- The UI features a new user menu containing a settings list, allowing users to expand or retract messages as needed.
-
 ## Breaking changes
 
-To take advantage of the new features and performance enhancements, migrate your code to the new APIs. While this process should be straightforward, be aware of the following breaking changes:
+To benefit from the new features and performance enhancements, migrate your code to the new APIs. Be aware of the following breaking changes:
 
 ### Asynchronous APIs
 
-These changes impact [messages](http://localhost:3000/api-reference/message), [elements](/api-reference/elements/), [actions](/api-reference/action/), and [asks](http://localhost:3000/api-reference/ask).
+These changes affect [messages](http://localhost:3000/api-reference/message), [elements](/api-reference/elements/), [actions](/api-reference/action/), and [asks](http://localhost:3000/api-reference/ask).
 
-Add an `await` in front of calls to these classes and wrap them in an `async` function.
+Add the `await` keyword in front of calls to these class methods, such as `.send`, and wrap them in an `async` function.
 
-Here's an example demonstrating the changes:
+For example, observe the changes below:
+
+<CodeGroup>
 
 ```python Before
 import chainlit as cl
 
-@cl.on_message  # this function is called every time a user inputs a message in the UI
+@cl.on_message
 def main(message: str):
     cl.Message(author="Tool 1", content=f"Response from tool1", indent=1).send()
     cl.Message(content=f"This is the final answer").send()
 ```
 
-The updated version:
-
 ```python After
 import chainlit as cl
 
-@cl.on_message  # this function is called every time a user inputs a message in the UI
+@cl.on_message
 async def main(message: str):
     await cl.Message(author="Tool 1", content=f"Response from tool1", indent=1).send()
     await cl.Message(content=f"This is the final answer").send()
 ```
 
-Notice the `async` keyword before the function definition, and the `await` keyword in front of calls to `Message.send()`.
+</CodeGroup>
 
-### LangChain Callback Handler
-
-Since Chainlit launched, LangChain has improved its callback handling, which mean we no longer need to patch the LangChain package.
-This also means that you will need to pass the appropriate callback handler your LangChain agent as described [here](/api-reference/langchain/callbacks) and below.
+Now there's an `async` keyword before the function definition and an `await` keyword in front of calls to `Message.send()`.
 
 ### langchain_factory
 
-The [langchain_factory](/api-reference/langchain-factory) decorator now requires a `use_async` argument, determining whether to use the async (`agent.acall()`) or sync (`agent()`) agent implementation. If the synchronous implementation is used, the agent runs in a separate thread to avoid blocking the event loop.
+The [langchain_factory](/api-reference/langchain/langchain-factory) decorator requires a `use_async` argument to determine whether to use the async (`agent.acall()`) or sync (`agent()`) agent implementation. If synchronous implementation is used, the agent runs in a separate thread, preventing the event loop from blocking.
 
-For example:
+<CodeGroup>
 
-```python
+```python Async
 from langchain import OpenAI, LLMMathChain
-from chainlit import langchain_factory
+import chainlit as cl
 
-@langchain_factory(use_async=True)
+@cl.langchain_factory(use_async=True)
 def factory():
     llm = OpenAI(temperature=0)
     llm_math = LLMMathChain.from_llm(llm=llm)
     return llm_math
 ```
 
+```python Sync
+from langchain import OpenAI, LLMMathChain
+import chainlit as cl
+
+@cl.langchain_factory(use_async=False)
+def factory():
+    llm = OpenAI(temperature=0)
+    llm_math = LLMMathChain.from_llm(llm=llm)
+    return llm_math
+```
+
+</CodeGroup>
+
+### LangChain Callback Handler
+
+Since Chainlit's launch, LangChain has improved its callback handling, eliminating the need to patch the LangChain package. This update means you'll need to pass the appropriate callback handler to your LangChain agent, as described [here](/api-reference/langchain/callbacks). If you're using the [langchain_factory](/api-reference/langchain/langchain-factory) decorator, this is done for you.
+
 ### langchain_run
 
-If using [langchain_run](/api-reference/langchain-run) to run the agent yourself, use the asynchronous version, `agent.acall()`, if possible.
+When using [langchain_run](/api-reference/langchain/langchain-run) to run the agent yourself, opt for the async version, `agent.acall()`, if possible.
 
 ```python
 @cl.langchain_run
@@ -91,7 +105,7 @@ async def run(agent, input_str):
     await cl.Message(content=res["text"]).send()
 ```
 
-If the agent doesn't have an async implementation, use [make_async](/api-reference/asyncify) to run the agent in a different thread.
+If the agent doesn't have an async implementation, use [make_async](/api-reference/make-async) to run the agent in a different thread.
 
 ```python
 @cl.langchain_run
@@ -102,7 +116,7 @@ async def run(agent, input_str):
 
 ### Text Element
 
-The [Text Element](/api-reference/elements/text) now requires a `content` argument instead of a `text` argument for consistency with other elements.
+For consistency with other elements, the [Text Element](/api-reference/elements/text) now requires a `content` argument rather than a `text` argument.
 
 ```python
 @cl.on_message
@@ -115,7 +129,7 @@ async def main(message: str):
 
 ### LocalImage/RemoteImage
 
-`LocalImage` and `RemoteImage` have been combined into [Image](/api-reference/elements/image) for a more straightforward API.
+Both `LocalImage` and `RemoteImage` have been combined into the [Image](/api-reference/elements/image) for a simpler API.
 
 ```python
 @cl.on_message
@@ -130,7 +144,7 @@ async def main(message: str):
 
 ### AskFileMessage
 
-[AskFileMessage](/api-reference/ask/ask-for-file) now has an optional `max_files` parameter enabling multiple file uploads. The returned type is a list of `AskFileResponse`.
+With the additional optional `max_files` parameter [AskFileMessage](/api-reference/ask/ask-for-file) now supports multiple file uploads. The returned type is a list of `AskFileResponse`.
 
 ```python
 @cl.on_chat_start
@@ -150,4 +164,4 @@ async def start():
 
 ## Resources
 
-The documentation, [examples](/examples), and [cookbook](https://github.com/Chainlit/cookbook) have all been updated to reflect the new APIs. If you have any questions, feel free to reach out on our [Discord](https://discord.gg/ZThrUxbAYw) server.
+The documentation, [examples](/examples), and [cookbook](https://github.com/Chainlit/cookbook) have been updated to reflect the new APIs. If you have any questions, don't hesitate to reach out on our [Discord](https://discord.gg/ZThrUxbAYw) server.

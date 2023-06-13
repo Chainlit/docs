@@ -86,7 +86,8 @@
             "api-reference/langchain/langchain-factory",
             "api-reference/langchain/callbacks"
           ]
-        }
+        },
+        "api-reference/make-async"
       ]
     },
     {

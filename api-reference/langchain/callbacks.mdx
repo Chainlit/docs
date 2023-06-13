@@ -11,7 +11,7 @@ There are two ways to pass the callback handler:
 
 ### Asynchronous Callback Handler
 
-The following code example demonstrates how to pass an asynchronous callback handler:
+The following code example demonstrates how to pass an asynchronous callback handler.
 
 ```python
 @cl.langchain_run
@@ -19,6 +19,8 @@ async def run(agent, input_str):
     res = await agent.acall(input_str, callbacks=[cl.AsyncChainlitCallbackHandler()])
     await cl.Message(content=res["text"]).send()
 ```
+
+Notice the `acall` here, that could also be `arun` or any other async function. Since we are calling the asynchronous implementation of the agent, we need to use the asynchronous callback handler.
 
 ### Synchronous Callback Handler
 
@@ -30,5 +32,8 @@ async def run(agent, input_str):
     res = await cl.make_async(agent)(input_str, callbacks=[cl.ChainlitCallbackHandler()])
     await cl.Message(content=res["text"]).send()
 ```
+
+Since we are calling a long running synchronous function, we need to wrap it in `cl.make_async` to make it asynchronous and not block the event loop.
+The function will still run synchronously in its own thread, hence we use the synchronous callback handler.
 
 Choose the appropriate callback handler based on your specific requirements, ensuring seamless interaction between your LangChain agent and the Chainlit UI.
