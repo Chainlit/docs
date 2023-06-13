@@ -18,6 +18,9 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 <ParamField path="max_size_mb" type="int" optional>
   Maximum file size in MB. Defaults to 2. Max 100.
 </ParamField>
+<ParamField path="max_files" type="int" optional>
+  Maximum number of files to upload. Defaults to 1. Maximum value is 10.
+</ParamField>
 <ParamField path="timeout" type="int" optional>
   The number of seconds to wait for an answer before raising a TimeoutError.
 </ParamField>
@@ -27,8 +30,8 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 
 ### Returns
 
-<ResponseField name="response" type="AskFileResponse" required>
-  The file uploaded by the user.
+<ResponseField name="response" type="List[AskFileResponse]" required>
+  The files uploaded by the user.
 </ResponseField>
 
 ### Usage
@@ -38,20 +41,21 @@ import chainlit as cl
 
 
 @cl.on_chat_start
-def start():
+async def start():
     file = None
 
     # Wait for the user to upload a file
-    while file == None:
-        file = cl.AskFileMessage(
+    while files == None:
+        files = await cl.AskFileMessage(
             content="Please upload a text file to begin!", accept=["text/plain"]
         ).send()
     # Decode the file
-    text = file.content.decode("utf-8")
+    text_file = files[0]
+    text = text_file.content.decode("utf-8")
 
     # Let the user know that the system is ready
-    cl.Message(
-        content=f"`{file.name}` uploaded, it contains {len(text)} characters!"
+    await cl.Message(
+        content=f"`{text_file.name}` uploaded, it contains {len(text)} characters!"
     ).send()
 ```
 
@@ -60,7 +64,7 @@ You can also pass a dict to the `accept` parameter to precise the file extension
 ```python Code Example
 import chainlit as cl
 
-file = cl.AskFileMessage(
+file = await cl.AskFileMessage(
         content="Please upload a python file to begin!", accept={"text/plain": [".py"]}
       ).send()
 ```

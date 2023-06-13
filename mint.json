@@ -71,9 +71,9 @@
         {
           "group": "Elements",
           "pages": [
-            "api-reference/elements/local-image",
+            "api-reference/elements/image",
             "api-reference/elements/pdf",
-            "api-reference/elements/remote-image",
+            "api-reference/elements/avatar",
             "api-reference/elements/text"
           ]
         },
@@ -83,10 +83,16 @@
             "api-reference/langchain/langchain-postprocess",
             "api-reference/langchain/langchain-rename",
             "api-reference/langchain/langchain-run",
-            "api-reference/langchain/langchain-factory"
+            "api-reference/langchain/langchain-factory",
+            "api-reference/langchain/callbacks"
           ]
-        }
+        },
+        "api-reference/make-async"
       ]
+    },
+    {
+      "group": "Migration",
+      "pages": ["migration/0.3.0"]
     },
     {
       "group": "Cloud",

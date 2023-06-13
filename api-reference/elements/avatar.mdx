@@ -1,0 +1,54 @@
+---
+title: "Avatar"
+---
+
+The `Avatar` class allows you to display an avatar image next to a message instead of the author name.
+
+You need to send the element once. Next if the name of an avatar matches the name of an author, the avatar will be automatically displayed.
+
+You must provide either an url or a path or content bytes.
+
+### Attributes
+
+<ParamField path="name" type="str">
+  The name of the avatar. This will be used to replace author names.
+</ParamField>
+
+<ParamField path="url" type="str" optional>
+  The remote URL of the avatar image source.
+</ParamField>
+
+<ParamField path="path" type="str" optional>
+  The local file path of the avatar image.
+</ParamField>
+
+<ParamField path="content" type="bytes" optional>
+  The file content of the avatar image in bytes format.
+</ParamField>
+
+### Usage
+
+```python Code Example
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def start():
+    await cl.Avatar(
+        name="Tool 1",
+        url="https://avatars.githubusercontent.com/u/128686189?s=400&u=a1d1553023f8ea0921fba0debbe92a8c5f840dd9&v=4",
+    ).send()
+
+    await cl.Message(
+        content="This message should not have an avatar!", author="Tool 0"
+    ).send()
+
+    await cl.Message(
+        content="This message should have an avatar!", author="Tool 1"
+    ).send()
+
+    await cl.Message(
+        content="This message should not have an avatar!", author="Tool 2"
+    ).send()
+
+```

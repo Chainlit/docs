@@ -32,7 +32,7 @@ template = """Question: {question}
 
 Answer: Let's think step by step."""
 
-@cl.langchain_factory
+@cl.langchain_factory(use_async=True)
 def factory():
     prompt = PromptTemplate(template=template, input_variables=["question"])
     llm_chain = LLMChain(prompt=prompt, llm=OpenAI(temperature=0), verbose=True)
@@ -46,6 +46,7 @@ Behind the scenes, Chainlit takes care of:
 
 - Websocket connections
 - Instantiating one LangChain instance per user session
+- Pass the right [callback handler](/api-reference/langchain/callbacks) to the LangChain instance
 - Running the LangChain instance on user input
 - Sending the output of the LangChain instance back to the user
 
@@ -63,7 +64,8 @@ The `-w` flag tells Chainlit to enable auto-reloading, so you don't need to rest
 
 <Warning>
   When using LangChain, prompts and completions are cached locally! The cache
-  lives in the .chainlit folder.
+  lives in the .chainlit folder. You can start the app with the `--no-cache`
+  flag to disable it.
 </Warning>
 
 ## Next Steps

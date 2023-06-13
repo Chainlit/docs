@@ -21,7 +21,7 @@ import chainlit as cl
 prompt_template = "What is a good name for a company that makes {product}?"
 
 
-@cl.langchain_factory
+@cl.langchain_factory(use_async=True)
 def main():
     llm = OpenAI(temperature=0)
     chain = LLMChain(llm=llm, prompt=PromptTemplate.from_template(prompt_template))
@@ -29,6 +29,6 @@ def main():
 
 
 @cl.langchain_postprocess
-def postprocess(output: str):
-    cl.Message(content="In the end it doesn't even matter.").send()
+async def postprocess(output: str):
+    await cl.Message(content="In the end it doesn't even matter.").send()
 ```

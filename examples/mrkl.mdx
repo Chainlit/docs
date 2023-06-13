@@ -25,10 +25,11 @@ os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
 os.environ["SERPAPI_API_KEY"] = "SERPAPI_API_KEY"
 
 
-@cl.langchain_factory
+# The search tool has no async implementation, we fall back to sync
+@cl.langchain_factory(use_async=False)
 def load():
-    llm = ChatOpenAI(temperature=0)
-    llm1 = OpenAI(temperature=0)
+    llm = ChatOpenAI(temperature=0, streaming=True)
+    llm1 = OpenAI(temperature=0, streaming=True)
     search = SerpAPIWrapper()
     llm_math_chain = LLMMathChain.from_llm(llm=llm, verbose=True)
 

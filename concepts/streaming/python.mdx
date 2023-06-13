@@ -29,7 +29,7 @@ prompt = """Answer the following question:
 
 
 @cl.on_message
-def main(message: str):
+async def main(message: str):
     fromatted_prompt = prompt.format(question=message)
     msg = cl.Message(
         content="",
@@ -37,13 +37,13 @@ def main(message: str):
         llm_settings=cl.LLMSettings(model_name=model_name, **settings),
     )
 
-    for resp in openai.Completion.create(
+    async for stream_resp in await openai.Completion.acreate(
         model=model_name, prompt=fromatted_prompt, stream=True, **settings
     ):
-        token = resp.choices[0].text
-        msg.stream_token(token)
+        token = stream_resp.get("choices")[0].get("text")
+        await msg.stream_token(token)
 
-    msg.send()
+    await msg.send()
 ````
 
 ## OpenAI Chat Completion
@@ -73,19 +73,18 @@ def start_chat():
 
 
 @cl.on_message
-def main(message: str):
+async def main(message: str):
     message_history = cl.user_session.get("message_history")
     message_history.append({"role": "user", "content": message})
 
     msg = cl.Message(content="")
 
-    response = openai.ChatCompletion.create(
+    async for stream_resp in await openai.ChatCompletion.acreate(
         model=model_name, messages=message_history, stream=True, **settings
-    )
-    for resp in response:
-        token = resp.choices[0]["delta"].get("content", "")
-        msg.stream_token(token)
+    ):
+        token = stream_resp.choices[0]["delta"].get("content", "")
+        await msg.stream_token(token)
 
     message_history.append({"role": "assistant", "content": msg.content})
-    msg.send()
+    await msg.send()
 ```

@@ -1,8 +1,10 @@
 ---
-title: "Local Image"
+title: "Image"
 ---
 
-The `LocalImage` class is designed to create and handle local image elements to be sent and displayed in the chatbot user interface.
+The `Image` class is designed to create and handle image elements to be sent and displayed in the chatbot user interface.
+
+You must provide either an url or a path or content bytes.
 
 ### Attributes
 
@@ -20,13 +22,16 @@ The `LocalImage` class is designed to create and handle local image elements to 
   are "small", "medium" (default), or "large".
 </ParamField>
 
+<ParamField path="url" type="str" optional>
+  The remote URL of the image source.
+</ParamField>
+
 <ParamField path="path" type="str" optional>
-  The local file path of the image. Must provide either path or content.
+  The local file path of the image.
 </ParamField>
 
 <ParamField path="content" type="bytes" optional>
-  The file content of the image in bytes format. Must provide either path or
-  content.
+  The file content of the image in bytes format.
 </ParamField>
 
 ### Usage with message scope
@@ -36,24 +41,25 @@ import chainlit as cl
 
 # Sending an image with the local file path
 elements = [
-  cl.LocalImage(name="image1", display="inline", path="./image1.jpg")
+  cl.Image(name="image1", display="inline", path="./image1.jpg")
 ]
 
-cl.Message(content="Look at this local image!", elements=elements).send()
+await cl.Message(content="Look at this local image!", elements=elements).send()
 ```
 
 ### Usage without scope
 
 ```python Code Example
 import chainlit as cl
+import aiofiles
 
 # Sending an image with the local file path
-image1 = cl.LocalImage(name="image1", display="inline", path="./image1.jpg")
-image1.send()
+image1 = cl.Image(name="image1", display="inline", path="./image1.jpg")
+await image1.send()
 
 # Sending an image with file content as bytes
-with open("./image2.jpg", "rb") as f:
-    image_content = f.read()
-    image2 = cl.LocalImage(name="image2", display="inline", content=image_content)
-    image2.send()
+async with aiofiles.open("./image2.jpg", "rb") as f:
+    image_content = await f.read()
+    image2 = cl.Image(name="image2", display="inline", content=image_content)
+    await image2.send()
 ```
