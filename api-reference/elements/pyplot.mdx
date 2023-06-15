@@ -1,0 +1,64 @@
+---
+title: "Pyplot"
+---
+
+The `Pyplot` class allows you to display a Matplotlib pyplot chart in the chatbot UI. This class takes a pyplot figure.
+
+### Attributes
+
+<ParamField path="name" type="str">
+  The name of the chart to be displayed in the UI.
+</ParamField>
+
+<ParamField path="display" type="ElementDisplay" optional>
+  Determines how the chart element should be displayed in the UI. Choices are
+  "side" (default), "inline", or "page".
+</ParamField>
+
+<ParamField path="size" type="ElementSize" optional>
+  Determines the size of the chart. Only works with display="inline". Choices
+  are "small", "medium" (default), or "large".
+</ParamField>
+
+<ParamField path="figure" type="str">
+  The `matplotlib.figure.Figure` instance that you want to display.
+</ParamField>
+
+### Usage with message scope
+
+```python Code Example
+import matplotlib.pyplot as plt
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def main():
+    fig, ax = plt.subplots()
+    ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
+
+    elements = [
+        cl.Pyplot(name="plot", figure=fig, display="inline"),
+    ]
+    await cl.Message(
+        content="Here is a simple plot",
+        elements=elements,
+    ).send()
+```
+
+### Usage without scope
+
+```python Code Example
+import matplotlib.pyplot as plt
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def main():
+    fig, ax = plt.subplots()
+    ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
+
+    await cl.Pyplot(name="simple plot", figure=fig, display="side").send()
+    await cl.Message(
+        content="Here is a simple plot",
+    ).send()
+```

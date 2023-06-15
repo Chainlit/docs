@@ -71,9 +71,10 @@
         {
           "group": "Elements",
           "pages": [
+            "api-reference/elements/avatar",
             "api-reference/elements/image",
             "api-reference/elements/pdf",
-            "api-reference/elements/avatar",
+            "api-reference/elements/pyplot",
             "api-reference/elements/text"
           ]
         },
