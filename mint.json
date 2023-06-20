@@ -89,7 +89,8 @@
             "api-reference/langchain/callbacks"
           ]
         },
-        "api-reference/make-async"
+        "api-reference/make-async",
+        "api-reference/cache"
       ]
     },
     {
