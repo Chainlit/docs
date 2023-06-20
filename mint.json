@@ -51,7 +51,8 @@
         "examples/openai-sql",
         "examples/mrkl",
         "examples/auto-gpt",
-        "examples/qa"
+        "examples/qa",
+        "examples/community"
       ]
     },
     {
