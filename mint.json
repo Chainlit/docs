@@ -56,7 +56,8 @@
         "examples/mrkl",
         "examples/auto-gpt",
         "examples/qa",
-        "examples/community"
+        "examples/community",
+        "examples/cookbook"
       ]
     },
     {
