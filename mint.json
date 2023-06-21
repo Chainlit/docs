@@ -23,6 +23,10 @@
     "name": "Github Repo",
     "url": "https://github.com/Chainlit/chainlit"
   },
+  "feedback": {
+    "suggestEdit": true,
+    "raiseIssue": true
+  },
   "navigation": [
     {
       "group": "Get Started",
