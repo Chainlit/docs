@@ -23,21 +23,6 @@ async def another_async_function():
     result = await my_async_function()
 ```
 
-### Using asyncio
-
-The `asyncio` library provides an event loop and various utilities to manage asynchronous tasks. The event loop is the core component that schedules and runs coroutines concurrently.
-
-To run a coroutine, you can use `asyncio.run()`:
-
-```python
-import asyncio
-
-async def main():
-    # Your async code goes here
-
-asyncio.run(main())
-```
-
 ### Working with Chainlit
 
 Chainlit uses asynchronous programming to handle events and tasks efficiently. When creating a Chainlit agent, you'll often need to define async functions to handle events and perform actions.
@@ -57,15 +42,18 @@ async def main(message: str):
     ).send()
 ```
 
-### Converting synchronous functions to asynchronous
+### Long running synchronous tasks
 
-In some cases, you might need to use synchronous functions in your Chainlit project. To avoid blocking the event loop, you can use the `make_async` function provided in the Chainlit library to convert a synchronous function into an asynchronous one:
+In some cases, you need to run long running synchronous functions in your Chainlit project. To prevent blocking the event loop, you can utilize the `make_async` function provided by the Chainlit library to transform a synchronous function into an asynchronous one:
 
 ```python
 from chainlit import make_async
 
 def my_sync_function():
     # Your synchronous code goes here
+    import time
+    time.sleep(10)
+    return 0
 
 async_function = make_async(my_sync_function)
 
@@ -73,19 +61,23 @@ async def main():
     result = await async_function()
 ```
 
-### Running asynchronous code in synchronous functions
+By using this approach, you can maintain the non-blocking nature of your project while still incorporating synchronous functions when necessary.
 
-If you need to run an asynchronous function inside a sync function, you can use the `run_sync` function provided in the Chainlit library:
+### Call an async function from a sync function
+
+If you need to run an asynchronous function inside a sync function, you can use the `run_sync` function provided by the Chainlit library:
 
 ```python
 from chainlit import run_sync
 
 async def my_async_function():
-    # Your synchronous code goes here
+    # Your asynchronous code goes here
 
 def main():
     result = run_sync(my_async_function())
+
+main()
 ```
 
-By following this guide, you should now have a basic understanding of asynchronous programming in Python and how to use it in your Chainlit project. 
+By following this guide, you should now have a basic understanding of asynchronous programming in Python and how to use it in your Chainlit project.
 As you continue to work with Chainlit, you'll find that async/await and the asyncio library provide a powerful and efficient way to handle multiple agents/tasks concurrently.
