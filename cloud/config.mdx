@@ -15,6 +15,12 @@ public = true
 # The project ID is required when public is set to false.
 #id = ""
 
+# Uncomment if you want to persist the chats.
+# local will create a database in your .chainlit directory (requires node.js installed).
+# cloud will use the Chainlit cloud database.
+# custom will load use your custom client.
+# database = "local"
+
 # Whether to enable telemetry (default: true). No personal data is collected.
 enable_telemetry = true
 
@@ -54,10 +60,3 @@ id = "test-MbHXZmUMAnxX"
 ## Make your app private
 
 By setting the boolean `public` to `false`, you can make your app private. This means that users will need to authenticate as well as be a part of your team to use your app.
-
-## Restart your app
-
-After restarting your app, and logging in if not already, you should see new elements in the ui:
-
-- The history tab, where you can find your persisted conversations
-- The user avatar, where you can logout
