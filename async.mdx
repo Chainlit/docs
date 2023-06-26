@@ -1,0 +1,91 @@
+---
+title: Async / Sync
+---
+
+Asynchronous programming is a powerful way to handle multiple tasks concurrently without blocking the execution of your program. Chainlit is async by default to allow agents to execute tasks in parallel and allow multiple users on a single app.
+Python introduced the `asyncio` library to make it easier to write asynchronous code using the `async/await` syntax. This onboarding guide will help you understand the basics of asynchronous programming in Python and how to use it in your Chainlit project.
+
+### Understanding async/await
+
+The `async` and `await` keywords are used to define and work with asynchronous code in Python. An `async` function is a coroutine, which is a special type of function that can pause its execution and resume later, allowing other tasks to run in the meantime.
+
+To define an async function, use the `async def` syntax:
+
+```python
+async def my_async_function():
+    # Your async code goes here
+```
+
+To call an async function, you need to use the `await` keyword:
+
+```python
+async def another_async_function():
+    result = await my_async_function()
+```
+
+### Using asyncio
+
+The `asyncio` library provides an event loop and various utilities to manage asynchronous tasks. The event loop is the core component that schedules and runs coroutines concurrently.
+
+To run a coroutine, you can use `asyncio.run()`:
+
+```python
+import asyncio
+
+async def main():
+    # Your async code goes here
+
+asyncio.run(main())
+```
+
+### Working with Chainlit
+
+Chainlit uses asynchronous programming to handle events and tasks efficiently. When creating a Chainlit agent, you'll often need to define async functions to handle events and perform actions.
+
+For example, to create an async function that responds to messages in Chainlit:
+
+```python
+import chainlit as cl
+
+@cl.on_message
+async def main(message: str):
+    # Your custom logic goes here
+
+    # Send a response back to the user
+    await cl.Message(
+        content=f"Received: {message}",
+    ).send()
+```
+
+### Converting synchronous functions to asynchronous
+
+In some cases, you might need to use synchronous functions in your Chainlit project. To avoid blocking the event loop, you can use the `make_async` function provided in the Chainlit library to convert a synchronous function into an asynchronous one:
+
+```python
+from chainlit import make_async
+
+def my_sync_function():
+    # Your synchronous code goes here
+
+async_function = make_async(my_sync_function)
+
+async def main():
+    result = await async_function()
+```
+
+### Running asynchronous code in synchronous functions
+
+If you need to run an asynchronous function inside a sync function, you can use the `run_sync` function provided in the Chainlit library:
+
+```python
+from chainlit import run_sync
+
+async def my_async_function():
+    # Your synchronous code goes here
+
+def main():
+    result = run_sync(my_async_function())
+```
+
+By following this guide, you should now have a basic understanding of asynchronous programming in Python and how to use it in your Chainlit project. 
+As you continue to work with Chainlit, you'll find that async/await and the asyncio library provide a powerful and efficient way to handle multiple agents/tasks concurrently.

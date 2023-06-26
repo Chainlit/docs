@@ -30,7 +30,7 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["overview", "installation", "pure-python", "langchain"]
+      "pages": ["overview", "installation", "pure-python", "langchain", "async"]
     },
     {
       "group": "Concepts",
