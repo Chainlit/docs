@@ -12,16 +12,9 @@
     "light": "#FFE7EB",
     "dark": "#980039"
   },
-  "anchors": [
-    {
-      "name": "Community",
-      "icon": "discord",
-      "url": "https://discord.gg/ZThrUxbAYw"
-    }
-  ],
   "topbarCtaButton": {
-    "name": "Github Repo",
-    "url": "https://github.com/Chainlit/chainlit"
+    "name": "Join Discord",
+    "url": "https://discord.gg/ZThrUxbAYw"
   },
   "feedback": {
     "suggestEdit": true,
