@@ -1,0 +1,51 @@
+---
+title: Introduction
+---
+
+By default, the chats and elements produced by your Chainlit app are not persisted. Persisting and utilizing this data can be an essential aspect of your app/company.
+
+Enabling data persistence will add new features in your Chainlit app.
+
+## Human Feedback
+
+Each message sent by your app will have a thumb up/down icons below it, enabling users to give feedback.
+
+<Frame caption="Human feedback">
+  <img src="/images/human-feedback.gif" />
+</Frame>
+
+## Chat History
+
+Previous chats will be available in the `history` tab. You can browse, filter, delete and visualize previous chats.
+
+<Frame caption="Human feedback">
+  <img src="/images/history.gif" />
+</Frame>
+
+## Enabling Data Persistence
+
+Chainlit offers several persistence modes, each designed for different use cases.
+
+<CardGroup cols={2}>
+  <Card
+    title="Local Persistence"
+    icon="link"
+    href="/concepts/data-persistence/local"
+  >
+    Data will be persisted locally.
+  </Card>
+  <Card
+    title="Cloud Persistence"
+    icon="link"
+    href="/concepts/data-persistence/cloud"
+  >
+    Data will be stored on the Chainlit cloud.
+  </Card>
+  <Card
+    title="Custom Persistence"
+    icon="link"
+    href="/concepts/data-persistence/custom"
+  >
+    Data will be stored in your own database and file system.
+  </Card>
+</CardGroup>
