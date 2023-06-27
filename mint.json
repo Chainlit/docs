@@ -3,7 +3,8 @@
   "name": "Chainlit",
   "logo": {
     "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "light": "/logo/light.svg",
+    "href": "https://github.com/Chainlit/chainlit"
   },
   "favicon": "/favicon.svg",
   "colors": {
@@ -19,7 +20,6 @@
     }
   ],
   "topbarCtaButton": {
-    "type": "link",
     "name": "Github Repo",
     "url": "https://github.com/Chainlit/chainlit"
   },
@@ -27,10 +27,36 @@
     "suggestEdit": true,
     "raiseIssue": true
   },
+  "tabs": [
+    {
+      "name": "Examples",
+      "url": "examples"
+    },
+    {
+      "name": "Cloud",
+      "url": "cloud"
+    },
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["overview", "installation", "pure-python", "langchain", "data"]
+      "pages": [
+        "overview",
+        "installation",
+        "pure-python",
+        {
+          "group": "Integrations",
+          "pages": [
+            "integrations/langchain",
+            "integrations/llama-index",
+            "integrations/langflow"
+          ]
+        }
+      ]
     },
     {
       "group": "Concepts",
@@ -61,7 +87,7 @@
       ]
     },
     {
-      "group": "Api Reference",
+      "group": "API Reference",
       "pages": [
         "api-reference/on-message",
         "api-reference/on-chat-start",
@@ -94,6 +120,14 @@
             "api-reference/langchain/callbacks"
           ]
         },
+        {
+          "group": "Langflow",
+          "pages": ["api-reference/langflow/langflow-factory"]
+        },
+        {
+          "group": "Llama Index",
+          "pages": ["api-reference/llama-index/llama-index-factory"]
+        },
         "api-reference/make-async",
         "api-reference/cache"
       ]
@@ -106,5 +140,10 @@
       "group": "Cloud",
       "pages": ["cloud/create-project", "cloud/config", "cloud/deploy"]
     }
-  ]
+  ],
+  "footerSocials": {
+    "github": "https://github.com/Chainlit/chainlit",
+    "discord": "https://discord.gg/ZThrUxbAYw",
+    "twitter": "https://twitter.com/chainlit_io"
+  }
 }

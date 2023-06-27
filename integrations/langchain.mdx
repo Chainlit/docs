@@ -1,0 +1,109 @@
+---
+title: LangChain
+---
+
+In this tutorial, we'll walk through the steps to create a Chainlit application integrated with [LangChain](https://github.com/hwchase17/langchain).
+
+<Frame caption="Preview of what you will build">
+  <img src="/images/langchain-example.gif" />
+</Frame>
+
+## Prerequisites
+
+Before getting started, make sure you have the following:
+
+- A working installation of Chainlit
+- The LangChain package installed
+- An OpenAI API key
+- Basic understanding of Python programming
+
+## Step 1: Create a Python file
+
+Create a new Python file named `app.py` in your project directory. This file will contain the main logic for your LLM application.
+
+## Step 2: Write the Application Logic
+
+In `app.py`, import the necessary packages and define a factory function decorated with [langchain_factory](/api-reference/langchain/langchain-factory) that returns any LangChain instance. In this tutorial, we are going to use `LLMChain` to keep it simple. Here's the basic structure of the script:
+
+<Note>
+  If your agent does not have an async implementation, fallback to the sync
+  implementation.
+</Note>
+
+<CodeGroup>
+
+```python Async
+import os
+from langchain import PromptTemplate, OpenAI, LLMChain
+import chainlit as cl
+
+os.environ["OPENAI_API_KEY"] = "YOUR_OPEN_AI_API_KEY"
+
+template = """Question: {question}
+
+Answer: Let's think step by step."""
+
+@cl.langchain_factory(use_async=True)
+def factory():
+    prompt = PromptTemplate(template=template, input_variables=["question"])
+    llm_chain = LLMChain(prompt=prompt, llm=OpenAI(temperature=0), verbose=True)
+
+    return llm_chain
+```
+
+```python Sync
+import os
+from langchain import PromptTemplate, LLMChain
+from langchain.chat_models import ChatOpenAI
+import chainlit as cl
+
+os.environ["OPENAI_API_KEY"] = "YOUR_OPEN_AI_API_KEY"
+
+template = """Question: {question}
+
+Answer: Let's think step by step."""
+
+@cl.langchain_factory(use_async=False)
+def factory():
+    prompt = PromptTemplate(template=template, input_variables=["question"])
+    llm_chain = LLMChain(prompt=prompt, llm=ChatOpenAI(temperature=0, streaming=True))
+
+    return llm_chain
+```
+
+</CodeGroup>
+
+This function sets up an instance of `LLMChain` with a custom `PromptTemplate`. The `LLMChain` is responsible for generating responses based on the input provided by users.
+
+Behind the scenes, Chainlit takes care of:
+
+- Websocket connections
+- Instantiating one LangChain instance per user session
+- Pass the right [callback handler](/api-reference/langchain/callbacks) to the LangChain instance
+- Running the LangChain instance on user input
+- Sending the output of the LangChain instance back to the user
+
+## Step 3: Run the Application
+
+To start your LLM app, open a terminal and navigate to the directory containing `app.py`. Then run the following command:
+
+```bash
+chainlit run app.py -w
+```
+
+The `-w` flag tells Chainlit to enable auto-reloading, so you don't need to restart the server every time you make changes to your application. Your chatbot UI should now be accessible at http://localhost:8000.
+
+<Warning>
+  When using LangChain, prompts and completions are cached locally! The cache
+  lives in the .chainlit folder. You can start the app with the `--no-cache`
+  flag to disable it.
+</Warning>
+
+## Next Steps
+
+Congratulations! You've just created your first LLM app with Chainlit and LangChain. From here, you can:
+
+- Learn more about the [LangChain integration](/api-reference/langchain)
+- Add [elements](/concepts/elements) and [actions](/concepts/actions) to create a more sophisticated app
+
+Happy coding! 🎉

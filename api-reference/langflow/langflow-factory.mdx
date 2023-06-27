@@ -1,0 +1,55 @@
+---
+title: "langflow_factory"
+---
+
+Plug and play decorator for the Langflow library.
+
+The decorated function should return the Langflow agent. One instance per user session is created and cached. The per user instance is called every time a new message is received.
+
+Under the hood, this factory call the [langchain_factory](/api-reference/langchain/langchain-factory). This means that other LangChain decorators (such as [langchain_postprocess](/api-reference/langchain/langchain-postprocess)) also works with this factory.
+
+### Parameters
+
+<ParamField path="use_async" type="bool">
+  Whether to use the async implementation of the agent or not.
+</ParamField>
+<ParamField path="schema" type="Union[Dict, str]">
+  The langflow schema dict or url.
+</ParamField>
+<ParamField path="tweaks" type="Optional[Dict]">
+  Optional Langflow tweaks to be processed.
+</ParamField>
+
+### Usage
+
+<CodeGroup>
+
+```python from_json
+import json
+from langchain.agents import AgentExecutor
+import chainlit as cl
+
+with open("./schema.json", "r") as f:
+    schema = json.load(f)
+
+@cl.langflow_factory(schema=schema, tweaks={}, use_async=False)
+def factory(agent: AgentExecutor):
+    # Modify your agent here if needed
+    agent.agent.llm_chain.llm.streaming = True
+    return agent
+```
+
+```python from_api
+from langchain.agents import AgentExecutor
+import chainlit as cl
+
+api_endpoint = "http://127.0.0.1:7860/api/v1/flows/2a0aa566-bc57-4a97-909a-43328d87daa5"
+
+@cl.langflow_factory(schema=api_endpoint, tweaks={}, use_async=False)
+def factory(agent: AgentExecutor):
+    # Modify your agent here if needed
+    agent.agent.llm_chain.llm.streaming = True
+    return agent
+```
+
+</CodeGroup>
