@@ -2,21 +2,21 @@
 title: Cloud
 ---
 
-This is the recommended method for persisting data. Chats and files will be stored in Chainlit's cloud.
+Chainlit Cloud is the preferred method for data storage, ensuring that users are authenticated and that all chats and files are securely stored in the cloud.
 
-## Authentication
+## User Authentication
 
-This mode will require your users to be members of your [Chainlit project](/cloud/create-project) and to authenticate through Chainlit's Auth0.
+Your app will only be accessible to members of your [Chainlit project](/cloud/create-project).
 
-<Frame caption="Authentication with Chainlit">
+<Frame caption="User Authentication Process with Chainlit">
   <img src="/images/auth.png" />
 </Frame>
 
-Users with role `user` will only be able to see their own chats in the `history` tab while `admin` and `owner` have access to all chats.
+Users assigned the `user` role will only have access to their personal chat history in the `history` tab. However, users with `admin` or `owner` roles will have access to all chat histories.
 
-## Enable Cloud Mode
+## Activating Chainlit Cloud Mode
 
-To enable Chainlit Cloud, first [create a project](/cloud/create-project). Then, update your [config](/cloud/config) file:
+To activate Chainlit Cloud, you must first [create a project](/cloud/create-project). Following this, update your [configuration](/cloud/config) file as shown below:
 
 ```toml
 [project]

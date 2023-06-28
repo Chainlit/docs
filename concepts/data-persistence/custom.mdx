@@ -2,7 +2,7 @@
 title: Custom
 ---
 
-Choose this option if you want to store data in your own database and file system.
+If your organization can't utilize cloud services for data hosting, you can use the custom persistence mode.
 
 <Note>
   Authentication and roles are not yet supported with the custom persistence
@@ -20,7 +20,7 @@ database = "custom"
 
 ## Define your Custom Client
 
-To use custom persistence, you need to create your own `Client` that extends the [BaseClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/base.py) class. For reference, check the [CloudClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/cloud.py) and [LocalClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/local.py) implementations.
+To use custom persistence, create your own `Client` that extends the [BaseClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/base.py) class. For reference, check the [CloudClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/cloud.py) and [LocalClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/local.py) implementations.
 
 Finally, modify your Chainlit app code to include the `client_factory` and provide your custom client.
 

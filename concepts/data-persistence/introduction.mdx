@@ -1,45 +1,47 @@
 ---
-title: Introduction
+title: Getting Started
 ---
 
-By default, the chats and elements produced by your Chainlit app are not persisted. Persisting and utilizing this data can be an essential aspect of your app/company.
+By default, your Chainlit app does not retain the chats and elements it generates. However, the ability to store and utilize this data can be a crucial part of your project or organization.
 
-Enabling data persistence will add new features in your Chainlit app.
+Chainlit offers multiple persistence modes, each designed for a specific use case.
 
-## Human Feedback
+Before diving in, let's explore the new features that data persistence will introduce to your application.
 
-Each message sent by your app will have a thumb up/down icons below it, enabling users to give feedback.
+## User Feedback
+
+When data persistence is enabled, each message sent by your application will be accompanied by thumbs up and thumbs down icons. This feature allows your users to give spontaneous and direct feedback on specific interactions.
 
 <Frame caption="Human feedback">
   <img src="/images/human-feedback.gif" />
 </Frame>
 
-## Chat History
+## Conversation History
 
-Previous chats will be available in the `history` tab. You can browse, filter, delete and visualize previous chats.
+Past conversations will be stored and made available in the 'history' tab. This feature allows you to navigate, apply filters, delete, or simply visualize previous chats.
 
-<Frame caption="Human feedback">
+<Frame caption="Conversation history">
   <img src="/images/history.gif" />
 </Frame>
 
-## Enabling Data Persistence
+## Activating Data Persistence
 
-Chainlit offers several persistence modes, each designed for different use cases.
+Learn how to activate each mode in the next sections.
 
 <CardGroup cols={2}>
-  <Card
-    title="Local Persistence"
-    icon="link"
-    href="/concepts/data-persistence/local"
-  >
-    Data will be persisted locally.
-  </Card>
   <Card
     title="Cloud Persistence"
     icon="link"
     href="/concepts/data-persistence/cloud"
   >
-    Data will be stored on the Chainlit cloud.
+    Data will be saved on the Chainlit cloud.
+  </Card>
+  <Card
+    title="Local Persistence"
+    icon="link"
+    href="/concepts/data-persistence/local"
+  >
+    Data will be stored locally.
   </Card>
   <Card
     title="Custom Persistence"

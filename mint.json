@@ -58,8 +58,8 @@
           "group": "Data Persistence",
           "pages": [
             "concepts/data-persistence/introduction",
-            "concepts/data-persistence/local",
             "concepts/data-persistence/cloud",
+            "concepts/data-persistence/local",
             "concepts/data-persistence/custom"
           ]
         },
