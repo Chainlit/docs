@@ -101,7 +101,7 @@ When using [langchain_run](/api-reference/langchain/langchain-run) to run the ag
 ```python
 @cl.langchain_run
 async def run(agent, input_str):
-    res = await agent.acall(input_str, callbacks=[cl.AsyncChainlitCallbackHandler()])
+    res = await agent.acall(input_str, callbacks=[cl.AsyncLangchainCallbackHandler()])
     await cl.Message(content=res["text"]).send()
 ```
 
@@ -110,7 +110,7 @@ If the agent doesn't have an async implementation, use [make_async](/api-referen
 ```python
 @cl.langchain_run
 async def run(agent, input_str):
-    res = await cl.make_async(agent)(input_str, callbacks=[cl.ChainlitCallbackHandler()])
+    res = await cl.make_async(agent)(input_str, callbacks=[cl.LangchainCallbackHandler()])
     await cl.Message(content=res["text"]).send()
 ```
 
