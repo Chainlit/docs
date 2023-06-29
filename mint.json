@@ -109,6 +109,7 @@
             "api-reference/elements/image",
             "api-reference/elements/pdf",
             "api-reference/elements/pyplot",
+            "api-reference/elements/tasklist",
             "api-reference/elements/text"
           ]
         },
