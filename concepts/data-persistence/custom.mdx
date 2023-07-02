@@ -100,3 +100,7 @@ async def client_factory():
 async def on_chat_start():
     await cl.Message("Hello").send()
 ```
+
+## Disable Custom Persistence
+
+To disable custom persistence, comment or remove the `database` field in your config file.

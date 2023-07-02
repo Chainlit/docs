@@ -9,9 +9,16 @@ This is the simplest way to persist data. Chats will be saved in the `.chainlit/
   the Prisma CLI.
 </Note>
 
+## Enable
+
 To enable local persistence, update the database field in your [config](/cloud/config) file:
 
 ```toml
 [project]
 database = "local"
 ```
+
+## Disable
+
+To disable local persistence, comment or remove the `database` field in your config file.
+If you also want to delete the data, delete the `.chainlit/chat.db` file and `.chainlit/chat_files` folder.

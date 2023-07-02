@@ -14,9 +14,9 @@ Your app will only be accessible to members of your [Chainlit project](/cloud/cr
 
 Users assigned the `user` role will only have access to their personal chat history in the `history` tab. However, users with `admin` or `owner` roles will have access to all chat histories.
 
-## Activating Chainlit Cloud Mode
+## Enable Chainlit Cloud Mode
 
-To activate Chainlit Cloud, you must first [create a project](/cloud/create-project). Following this, update your [configuration](/cloud/config) file as shown below:
+To enable Chainlit Cloud, you must first [create a project](/cloud/create-project). Following this, update your [configuration](/cloud/config) file as shown below:
 
 ```toml
 [project]
@@ -24,3 +24,7 @@ public = false
 id = "my-project-id"
 database = "cloud"
 ```
+
+## Disable
+
+To disable Chainlit cloud, comment or remove the `database` and `id` fields in your config file. You will also need to to revert the `public` field to `true`.
