@@ -2,12 +2,19 @@
 title: Local
 ---
 
-This is the simplest way to persist data. Chats will be saved in the `.chainlit/chat.db` (SQLite database), and files will be stored in the `.chainlit/chat_files` folder. This mode does not support multiple users or authentication.
+This is the simplest way to persist data during development. Chats will be saved in the `.chainlit/chat.db` (SQLite database), and files will be stored in the `.chainlit/chat_files` folder.
 
 <Note>
   A working Node.js installation is required to use local mode, as it relies on
   the Prisma CLI.
 </Note>
+
+## Authentication
+
+`Local` mode supports authentication but does not require it.
+
+If authentication is enabled, chats authors will be set according to the user email.
+If authentication is not enabled, all chats will have author `LocalUser` and role `owner`.
 
 ## Enable
 
