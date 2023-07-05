@@ -65,7 +65,7 @@ index = faiss.IndexFlatL2(embedding_size)
 @cl.langchain_factory(use_async=False)
 def agent():
     vectorstore = FAISS(embeddings_model.embed_query, index, InMemoryDocstore({}), {})
-    callbacks = [cl.ChainlitCallbackHandler()]
+    callbacks = [cl.LangchainCallbackHandler()]
     agent = AutoGPT.from_llm_and_tools(
         ai_name="Tom",
         ai_role="Assistant",

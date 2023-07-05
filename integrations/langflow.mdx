@@ -1,0 +1,97 @@
+---
+title: Langflow
+---
+
+In this tutorial, we will guide you through the steps to create a Chainlit application from your [Langflow](https://github.com/logspace-ai/langflow) agent.
+
+<Frame caption="Preview of the app you'll build">
+  <img src="/images/langflow-example.gif" />
+</Frame>
+
+## Prerequisites
+
+Before diving in, ensure that the following prerequisites are met:
+
+- A working installation of Chainlit
+- The Langflow package installed
+- An OpenAI API key
+- A basic understanding of Python programming
+
+## Step 1: Create your agent in Langflow
+
+Start your local Langflow server, and create an agent. For this tutorial I am going to create a Wikipedia aware agent.
+
+<Frame caption="Langflow graph of the agent">
+  <img src="/images/langflow-graph.png" />
+</Frame>
+
+Here is the exported json [schema file](https://chainlit-cloud.s3.eu-west-3.amazonaws.com/docs/langflow_schema.json) for this agent.
+
+## Step 2: Export the agent
+
+You have two options to export your agent:
+
+1. Download the JSON schema from the Langflow interface
+2. Use the Langflow API endpoint. You can derive it from your flow URL.
+
+<CodeGroup>
+```txt Flow URL
+http://127.0.0.1:7860/flow/2a0aa566-bc57-4a97-909a-43328d87daa5
+```
+
+```txt API endpoint
+http://127.0.0.1:7860/api/v1/flows/2a0aa566-bc57-4a97-909a-43328d87daa5
+```
+
+</CodeGroup>
+
+## Step 3: Write the Application Logic
+
+In `app.py`, import the necessary packages and define a factory function decorated with [langflow_factory](/api-reference/langflow/langflow-factory) that returns a LangChain instance:
+
+```python app.py
+import json
+from langchain.agents import AgentExecutor
+import chainlit as cl
+
+# Here we are using the exported schema from step 2. You can skip this step if you are planning to directly pass the API endpoint
+with open("./schema.json", "r") as f:
+    schema = json.load(f)
+
+
+@cl.langflow_factory(
+    schema=schema,  # dict or the API endpoint serving your langflow schema
+    tweaks={},  # optional Langflow tweaks dict
+    use_async=True,
+)
+def factory(agent: AgentExecutor):
+    # Modify your agent here if needed
+    agent.agent.llm_chain.llm.streaming = True
+    return agent
+```
+
+Chainlit takes care of the following behind the scenes:
+
+- Managing WebSocket connections
+- Instantiating your Agent instance for each user session
+- Executing the Agent based on user input
+- Sending the generated output back to the user
+
+## Step 4: Launch the Application
+
+To kick off your LLM app, open a terminal, navigate to the directory containing `app.py`, and run the following command:
+
+```bash
+chainlit run app.py -w
+```
+
+The `-w` flag enables auto-reloading so that you don't have to restart the server each time you modify your application. Your chatbot UI should now be accessible at http://localhost:8000.
+
+## Next Steps
+
+Congratulations! You've just created your first LLM app with Chainlit and Langflow. From here, you can:
+
+- Learn more about the [LangChain integration](/api-reference/langchain) (under the hood the Langflow integration uses the Langchain integration).
+- Add [elements](/concepts/elements) and [actions](/concepts/actions) to create a more sophisticated app
+
+Happy coding! 🎉
