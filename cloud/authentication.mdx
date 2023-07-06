@@ -43,3 +43,11 @@ Once these changes are made and your application is restarted, users will be req
 <Frame caption="User Authentication Flow in Chainlit">
   <img src="/images/auth.png" />
 </Frame>
+
+## Step 3: Access user info
+
+Once a user logged in, its info is available in the user session. You can simply access it like this:
+
+```py
+infos = cl.user_session.get("user_infos")
+```
