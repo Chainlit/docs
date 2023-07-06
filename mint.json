@@ -52,6 +52,10 @@
       ]
     },
     {
+      "group": "Guides",
+      "pages": ["guides/sync-async", "guides/migration/0.3.0"]
+    },
+    {
       "group": "Concepts",
       "pages": [
         {
@@ -133,10 +137,6 @@
         "api-reference/make-async",
         "api-reference/cache"
       ]
-    },
-    {
-      "group": "Migration",
-      "pages": ["migration/0.3.0"]
     },
     {
       "group": "Cloud",
