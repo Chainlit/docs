@@ -22,12 +22,12 @@
   },
   "tabs": [
     {
-      "name": "Examples",
-      "url": "examples"
-    },
-    {
       "name": "Cloud",
       "url": "cloud"
+    },
+    {
+      "name": "Examples",
+      "url": "examples"
     },
     {
       "name": "API Reference",
@@ -58,15 +58,6 @@
     {
       "group": "Concepts",
       "pages": [
-        {
-          "group": "Data Persistence",
-          "pages": [
-            "concepts/data-persistence/introduction",
-            "concepts/data-persistence/cloud",
-            "concepts/data-persistence/local",
-            "concepts/data-persistence/custom"
-          ]
-        },
         "concepts/chain-of-thought",
         "concepts/prompt-playground",
         "concepts/elements",
@@ -141,7 +132,19 @@
     },
     {
       "group": "Cloud",
-      "pages": ["cloud/create-project", "cloud/config", "cloud/deploy"]
+      "pages": [
+        "cloud/authentication",
+        {
+          "group": "Data Persistence",
+          "pages": [
+            "cloud/persistence/introduction",
+            "cloud/persistence/cloud",
+            "cloud/persistence/local",
+            "cloud/persistence/custom"
+          ]
+        },
+        "cloud/deploy"
+      ]
     }
   ],
   "footerSocials": {
