@@ -109,6 +109,7 @@
         {
           "group": "Elements",
           "pages": [
+            "api-reference/elements/audio",
             "api-reference/elements/avatar",
             "api-reference/elements/image",
             "api-reference/elements/pdf",
