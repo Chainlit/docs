@@ -34,6 +34,12 @@
       "url": "api-reference"
     }
   ],
+  "topbarLinks": [
+    {
+      "name": "Github",
+      "url": "https://github.com/Chainlit/chainlit"
+    }
+  ],
   "navigation": [
     {
       "group": "Get Started",
