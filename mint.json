@@ -106,6 +106,7 @@
           "group": "Elements",
           "pages": [
             "api-reference/elements/avatar",
+            "api-reference/elements/file",
             "api-reference/elements/image",
             "api-reference/elements/pdf",
             "api-reference/elements/pyplot",
