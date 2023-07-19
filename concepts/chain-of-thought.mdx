@@ -13,10 +13,13 @@ It's evident that several intermediate steps are needed to answer the initial qu
 
 Chainlit simplifies this process by enabling you to visualize and navigate through these otherwise complicated reasoning pathways.
 
-<Note>You can hide the chain of thought by setting the `hide_cot` parameter to true in your config file!</Note>
+<Note>
+  You can hide the chain of thought by setting the `hide_cot` parameter to true
+  in your config file!
+</Note>
 
 ## How it works
 
-If you are using the [LangChain integration](/langchain), every intermediary step is automatically sent and displayed in the Chainlit UI.
+If you are using the [LangChain integration](/integrations/langchain), every intermediary step is automatically sent and displayed in the Chainlit UI.
 
-In Pure Python, you can use the `indent`, `prompt` and `llm_settings` parameters of the [Message](/api-reference/message) class to display the intermediary steps.
+In Pure Python, you can use the `parent_id`, `prompt` and `llm_settings` parameters of the [Message](/api-reference/message) class to display the intermediary steps.

@@ -59,7 +59,11 @@
     },
     {
       "group": "Guides",
-      "pages": ["guides/sync-async", "guides/migration/0.3.0"]
+      "pages": [
+        "guides/sync-async",
+        "guides/migration/0.3.0",
+        "guides/migration/0.6.0"
+      ]
     },
     {
       "group": "Concepts",
@@ -83,7 +87,6 @@
       "pages": [
         "examples/openai-sql",
         "examples/mrkl",
-        "examples/auto-gpt",
         "examples/qa",
         "examples/community",
         "examples/cookbook"
@@ -94,6 +97,7 @@
       "pages": [
         "api-reference/on-message",
         "api-reference/on-chat-start",
+        "api-reference/author-rename",
         "api-reference/message",
         {
           "group": "Ask Message",
@@ -118,21 +122,15 @@
         },
         {
           "group": "LangChain",
-          "pages": [
-            "api-reference/langchain/langchain-postprocess",
-            "api-reference/langchain/langchain-rename",
-            "api-reference/langchain/langchain-run",
-            "api-reference/langchain/langchain-factory",
-            "api-reference/langchain/callbacks"
-          ]
+          "pages": ["api-reference/langchain/callbacks"]
         },
         {
           "group": "Langflow",
-          "pages": ["api-reference/langflow/langflow-factory"]
+          "pages": ["api-reference/langflow/load-flow"]
         },
         {
           "group": "Llama Index",
-          "pages": ["api-reference/llama-index/llama-index-factory"]
+          "pages": ["api-reference/llama-index/callback"]
         },
         "api-reference/make-async",
         "api-reference/cache"

@@ -32,10 +32,5 @@ Let's say you added `OPENAI_API_KEY` in `user_env`.
 import chainlit as cl
 from langchain.chat_models import ChatOpenAI
 
-@cl.langchain_factory
-def main():
-    user_env = cl.user_session.get("env")
-    llm = ChatOpenAI(temperature=0, openai_api_key=user_env.get("OPENAI_API_KEY"),
-
-    return llm
+llm = ChatOpenAI(temperature=0, openai_api_key=user_env.get("OPENAI_API_KEY"))
 ```

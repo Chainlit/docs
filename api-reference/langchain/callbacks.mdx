@@ -2,7 +2,7 @@
 title: "Callback Handlers"
 ---
 
-When running your own LangChain agent, typically using [langchain_run](/api-reference/langchain/langchain-run), it is essential to provide the appropriate callback handler. This ensures seamless communication between the Chainlit UI and your agent.
+When running your LangChain agent, it is essential to provide the appropriate callback handler. This ensures seamless communication between the Chainlit UI and your agent.
 
 There are two ways to pass the callback handler:
 
@@ -14,10 +14,14 @@ There are two ways to pass the callback handler:
 The following code example demonstrates how to pass an asynchronous callback handler.
 
 ```python
-@cl.langchain_run
-async def run(agent, input_str):
-    res = await agent.acall(input_str, callbacks=[cl.AsyncLangchainCallbackHandler()])
-    await cl.Message(content=res["text"]).send()
+llm = OpenAI(temperature=0)
+llm_math = LLMMathChain.from_llm(llm=llm)
+
+@cl.on_message
+async def main(message: str):
+    res = await llm_math.acall(message, callbacks=[cl.AsyncLangchainCallbackHandler()])
+
+    await cl.Message(content="Hello").send()
 ```
 
 Notice the `acall` here, that could also be `arun` or any other async function. Since we are calling the asynchronous implementation of the agent, we need to use the asynchronous callback handler.
@@ -27,13 +31,40 @@ Notice the `acall` here, that could also be `arun` or any other async function. 
 Alternatively, you can pass a synchronous callback handler, as shown in the example below:
 
 ```python
-@cl.langchain_run
-async def run(agent, input_str):
-    res = await cl.make_async(agent)(input_str, callbacks=[cl.LangchainCallbackHandler()])
-    await cl.Message(content=res["text"]).send()
+llm = OpenAI(temperature=0)
+llm_math = LLMMathChain.from_llm(llm=llm)
+
+@cl.on_message
+async def main(message: str):
+
+    res = await cl.make_async(llm_math)(message, callbacks=[cl.LangchainCallbackHandler()])
+
+    await cl.Message(content="Hello").send()
 ```
 
 Since we are calling a long running synchronous function, we need to wrap it in `cl.make_async` to make it asynchronous and not block the event loop.
 The function will still run synchronously in its own thread, hence we use the synchronous callback handler.
+
+### Final Answer streaming
+
+If streaming is enabled at the LLM level, Langchain will only stream the intermediate steps. You can enable final answer streaming by passing `stream_final_answer=True` to the callback handler.
+
+```python
+# Optionally, you can also pass the prefix tokens that will be used to identify the final answer
+answer_prefix_tokens=["FINAL", "ANSWER"]
+
+cl.AsyncLangchainCallbackHandler(
+        stream_final_answer=True,
+        answer_prefix_tokens=answer_prefix_tokens,
+    )
+```
+
+<Warning>
+  Final answer streaming will only work with prompts that have a consistent
+  final answer pattern. It will also not work with
+  `AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION`
+</Warning>
+
+### Conclusion
 
 Choose the appropriate callback handler based on your specific requirements, ensuring seamless interaction between your LangChain agent and the Chainlit UI.

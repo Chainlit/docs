@@ -16,7 +16,7 @@ pip install chainlit langchain openai google-search-results
 
 ```python mrkl.py
 from langchain import OpenAI, LLMMathChain, SerpAPIWrapper
-from langchain.agents import initialize_agent, Tool
+from langchain.agents import initialize_agent, Tool, AgentExecutor
 from langchain.chat_models import ChatOpenAI
 import os
 import chainlit as cl
@@ -25,9 +25,8 @@ os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
 os.environ["SERPAPI_API_KEY"] = "SERPAPI_API_KEY"
 
 
-# The search tool has no async implementation, we fall back to sync
-@cl.langchain_factory(use_async=False)
-def load():
+@cl.on_chat_start
+def start():
     llm = ChatOpenAI(temperature=0, streaming=True)
     llm1 = OpenAI(temperature=0, streaming=True)
     search = SerpAPIWrapper()
@@ -45,9 +44,18 @@ def load():
             description="useful for when you need to answer questions about math",
         ),
     ]
-    return initialize_agent(
+    agent = initialize_agent(
         tools, llm1, agent="chat-zero-shot-react-description", verbose=True
     )
+    cl.user_session.set("agent", agent)
+
+
+@cl.on_message
+async def main(message):
+    agent = cl.user_session.get("agent")  # type: AgentExecutor
+    cb = cl.LangchainCallbackHandler(stream_final_answer=True)
+
+    await cl.make_async(agent.run)(message, callbacks=[cb])
 ```
 
 ## Try it out
