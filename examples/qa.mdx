@@ -69,7 +69,7 @@ prompt = ChatPromptTemplate.from_messages(messages)
 chain_type_kwargs = {"prompt": prompt}
 
 
-@cl.langchain_factory(use_async=True)
+@cl.on_chat_start
 async def init():
     files = None
 
@@ -100,7 +100,7 @@ async def init():
     )
     # Create a chain that uses the Chroma vector store
     chain = RetrievalQAWithSourcesChain.from_chain_type(
-        ChatOpenAI(temperature=0),
+        ChatOpenAI(temperature=0, streaming=True),
         chain_type="stuff",
         retriever=docsearch.as_retriever(),
     )
@@ -110,14 +110,21 @@ async def init():
     cl.user_session.set("texts", texts)
 
     # Let the user know that the system is ready
-    await msg.update(content=f"`{file.name}` processed. You can now ask questions!")
+    msg.content = f"Processing `{file.name}` done. You can now ask questions!"
+    await msg.update()
+
+    cl.user_session.set("chain", chain)
 
 
-    return chain
+@cl.on_message
+async def main(message):
+    chain = cl.user_session.get("chain")  # type: RetrievalQAWithSourcesChain
+    cb = cl.AsyncLangchainCallbackHandler(
+        stream_final_answer=True, answer_prefix_tokens=["FINAL", "ANSWER"]
+    )
+    cb.answer_reached = True
+    res = await chain.acall(message, callbacks=[cb])
 
-
-@cl.langchain_postprocess
-async def process_response(res):
     answer = res["answer"]
     sources = res["sources"].strip()
     source_elements = []
@@ -148,14 +155,12 @@ async def process_response(res):
         else:
             answer += "\nNo sources found"
 
-    await cl.Message(content=answer, elements=source_elements).send()
+    if cb.has_streamed_final_answer:
+        cb.final_stream.elements = source_elements
+        await cb.final_stream.update()
+    else:
+        await cl.Message(content=answer, elements=source_elements).send()
 ````
-
-We are making use of the [@langchain_factory](/api-reference/langchain/langchain-factory) decorator to tell Chainlit on how to get the LangChain agent.
-Then, we use [@langchain_postprocess](/api-reference/langchain/langchain-postprocess) (which takes the raw response from the agent) as well as the [Text Element](/api-reference/elements/text) to:
-
-- Add the relevant sources to the final answer
-- Send the sources to the UI
 
 ## Try it out
 

@@ -49,6 +49,17 @@ async def main(message: str):
     ).send()
 ```
 
+### Nest a message
+
+```python Code Example
+import chainlit as cl
+
+@cl.on_chat_start
+async def start():
+    id = await cl.Message(content="Hello!").send()
+    await cl.Message(content="Hello nested!", parent_id=id).send()
+```
+
 ### Stream a message
 
 ```python Code Example
@@ -76,8 +87,11 @@ import chainlit as cl
 async def main():
     msg = cl.Message(content="Hello!")
     await msg.send()
+
     await cl.sleep(2)
-    await msg.update(content="Hello again!")
+
+    msg.content = "Hello again!"
+    await msg.update()
 ```
 
 ### Remove a message

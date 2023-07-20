@@ -47,35 +47,44 @@ http://127.0.0.1:7860/api/v1/flows/2a0aa566-bc57-4a97-909a-43328d87daa5
 
 ## Step 3: Write the Application Logic
 
-In `app.py`, import the necessary packages and define a factory function decorated with [langflow_factory](/api-reference/langflow/langflow-factory) that returns a LangChain instance:
+In `app.py`, import the necessary packages and define one function to handle a new chat session and another function to handle messages incoming from the UI.
 
 ```python app.py
 import json
+
 from langchain.agents import AgentExecutor
+
+from chainlit.langflow import load_flow
 import chainlit as cl
 
-# Here we are using the exported schema from step 2. You can skip this step if you are planning to directly pass the API endpoint
+
 with open("./schema.json", "r") as f:
     schema = json.load(f)
 
 
-@cl.langflow_factory(
-    schema=schema,  # dict or the API endpoint serving your langflow schema
-    tweaks={},  # optional Langflow tweaks dict
-    use_async=True,
-)
-def factory(agent: AgentExecutor):
-    # Modify your agent here if needed
-    agent.agent.llm_chain.llm.streaming = True
-    return agent
+@cl.on_chat_start
+async def start():
+    flow = await load_flow(schema=schema)
+    cl.user_session.set("flow", flow)
+
+
+@cl.on_message
+async def main(message):
+    # Load the flow from the user session
+    flow = cl.user_session.get("flow")  # type: AgentExecutor
+
+    # Enable streaming
+    flow.agent.llm_chain.llm.streaming = True
+
+    # Run the flow
+    res = await cl.make_async(flow.run)(
+        message, callbacks=[cl.LangchainCallbackHandler()]
+    )
+
+    # Send the response
+    await cl.Message(content=res).send()
+
 ```
-
-Chainlit takes care of the following behind the scenes:
-
-- Managing WebSocket connections
-- Instantiating your Agent instance for each user session
-- Executing the Agent based on user input
-- Sending the generated output back to the user
 
 ## Step 4: Launch the Application
 
@@ -89,9 +98,6 @@ The `-w` flag enables auto-reloading so that you don't have to restart the serve
 
 ## Next Steps
 
-Congratulations! You've just created your first LLM app with Chainlit and Langflow. From here, you can:
-
-- Learn more about the [LangChain integration](/api-reference/langchain) (under the hood the Langflow integration uses the Langchain integration).
-- Add [elements](/concepts/elements) and [actions](/concepts/actions) to create a more sophisticated app
+Congratulations! You've just created your first LLM app with Chainlit and LangFlow. From here, you can add [elements](/concepts/elements) and [actions](/concepts/actions) to create a more sophisticated app.
 
 Happy coding! 🎉

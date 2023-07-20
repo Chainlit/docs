@@ -27,32 +27,34 @@ Create a new Python file named `app.py` in your project directory. This file wil
 
 ## Step 3: Write the Application Logic
 
-In `app.py`, import the necessary packages and define a factory function decorated with [llama_index_factory](/api-reference/llama-index/llama-index-factory) that returns an instance of either `QueryEngine` or `ChatEngine`:
+In `app.py`, import the necessary packages and define one function to handle a new chat session and another function to handle messages incoming from the UI.
+
+In this tutorial, we are going to use `RetrieverQueryEngine`. Here's the basic structure of the script:
 
 ```python app.py
 import os
+import openai
+
+from llama_index.query_engine.retriever_query_engine import RetrieverQueryEngine
 from llama_index.callbacks.base import CallbackManager
 from llama_index import (
     LLMPredictor,
     ServiceContext,
     StorageContext,
-    SimpleDirectoryReader,
     load_index_from_storage,
 )
 from langchain.chat_models import ChatOpenAI
-import openai
-
 import chainlit as cl
+
 
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 try:
-    # Rebuild the storage context
+    # rebuild storage context
     storage_context = StorageContext.from_defaults(persist_dir="./storage")
-    # Load the index
+    # load index
     index = load_index_from_storage(storage_context)
 except:
-    # Storage not found; create a new one
     from llama_index import GPTVectorStoreIndex, SimpleDirectoryReader
 
     documents = SimpleDirectoryReader("./data").load_data()
@@ -60,8 +62,8 @@ except:
     index.storage_context.persist()
 
 
-@cl.llama_index_factory
-def factory():
+@cl.on_chat_start
+async def factory():
     llm_predictor = LLMPredictor(
         llm=ChatOpenAI(
             temperature=0,
@@ -74,20 +76,34 @@ def factory():
         chunk_size=512,
         callback_manager=CallbackManager([cl.LlamaIndexCallbackHandler()]),
     )
+
     query_engine = index.as_query_engine(
         service_context=service_context,
         streaming=True,
     )
 
-    return query_engine
+    cl.user_session.set("query_engine", query_engine)
+
+
+@cl.on_message
+async def main(message):
+    query_engine = cl.user_session.get("query_engine")  # type: RetrieverQueryEngine
+    response = await cl.make_async(query_engine.query)(message)
+
+    response_message = cl.Message(content="")
+
+    for token in response.response_gen:
+        await response_message.stream_token(token=token)
+
+    if response.response_txt:
+        response_message.content = response.response_txt
+
+    await response_message.send()
 ```
 
-Chainlit takes care of the following behind the scenes:
+This code sets up an instance of `RetrieverQueryEngine` for each chat session. The `RetrieverQueryEngine` is invoked everytime a user sends a message to generate the response.
 
-- Managing WebSocket connections
-- Instantiating a `QueryEngine` instance for each user session
-- Executing the `QueryEngine` based on user input
-- Sending the generated output back to the user
+The callback handlers are responsible for listening to the intermediate steps and sending them to the UI.
 
 ## Step 4: Launch the Application
 

@@ -23,65 +23,91 @@ Create a new Python file named `app.py` in your project directory. This file wil
 
 ## Step 2: Write the Application Logic
 
-In `app.py`, import the necessary packages and define a factory function decorated with [langchain_factory](/api-reference/langchain/langchain-factory) that returns any LangChain instance. In this tutorial, we are going to use `LLMChain` to keep it simple. Here's the basic structure of the script:
+In `app.py`, import the necessary packages and define one function to handle a new chat session and another function to handle messages incoming from the UI.
+
+In this tutorial, we are going to use `LLMChain` to keep it simple. Here's the basic structure of the script:
 
 <Note>
-  If your agent does not have an async implementation, fallback to the sync
-  implementation.
+  If your agent/chain does not have an async implementation, fallback to the
+  sync implementation.
 </Note>
 
 <CodeGroup>
 
 ```python Async
-import os
 from langchain import PromptTemplate, OpenAI, LLMChain
 import chainlit as cl
 
-os.environ["OPENAI_API_KEY"] = "YOUR_OPEN_AI_API_KEY"
-
 template = """Question: {question}
 
 Answer: Let's think step by step."""
 
-@cl.langchain_factory(use_async=True)
-def factory():
+
+@cl.on_chat_start
+def main():
+    # Instantiate the chain for that user session
     prompt = PromptTemplate(template=template, input_variables=["question"])
     llm_chain = LLMChain(prompt=prompt, llm=OpenAI(temperature=0), verbose=True)
 
-    return llm_chain
+    # Store the chain in the user session
+    cl.user_session.set("llm_chain", llm_chain)
+
+
+@cl.on_message
+async def main(message: str):
+    # Retrieve the chain from the user session
+    llm_chain = cl.user_session.get("llm_chain")  # type: LLMChain
+
+    # Call the chain asynchronously
+    res = await llm_chain.acall(message, callbacks=[cl.AsyncLangchainCallbackHandler()])
+
+    # Do any post processing here
+
+    # Send the response
+    await cl.Message(content=res["text"]).send()
 ```
 
 ```python Sync
-import os
-from langchain import PromptTemplate, LLMChain
-from langchain.chat_models import ChatOpenAI
+from langchain import PromptTemplate, OpenAI, LLMChain
 import chainlit as cl
-
-os.environ["OPENAI_API_KEY"] = "YOUR_OPEN_AI_API_KEY"
 
 template = """Question: {question}
 
 Answer: Let's think step by step."""
 
-@cl.langchain_factory(use_async=False)
-def factory():
-    prompt = PromptTemplate(template=template, input_variables=["question"])
-    llm_chain = LLMChain(prompt=prompt, llm=ChatOpenAI(temperature=0, streaming=True))
 
+@cl.on_chat_start
+def main():
+    # Instantiate the chain for that user session
+    prompt = PromptTemplate(template=template, input_variables=["question"])
+    llm_chain = LLMChain(prompt=prompt, llm=OpenAI(temperature=0), verbose=True)
+
+    # Store the chain in the user session
+    cl.user_session.set("llm_chain", llm_chain)
+
+
+@cl.on_message
+async def main(message: str):
+    # Retrieve the chain from the user session
+    llm_chain = cl.user_session.get("llm_chain")  # type: LLMChain
+
+    # Call the chain synchronously in a different thread
+    res = await cl.make_async(llm_chain)(
+        message, callbacks=[cl.LangchainCallbackHandler()]
+    )
+
+    # Do any post processing here
+
+    # Send the response
+    await cl.Message(content=res["text"]).send()
     return llm_chain
 ```
 
 </CodeGroup>
 
-This function sets up an instance of `LLMChain` with a custom `PromptTemplate`. The `LLMChain` is responsible for generating responses based on the input provided by users.
+This code sets up an instance of `LLMChain` with a custom `PromptTemplate` for each chat session. The `LLMChain` is invoked everytime a user sends a message to generate the response.
 
-Behind the scenes, Chainlit takes care of:
-
-- Websocket connections
-- Instantiating one LangChain instance per user session
-- Pass the right [callback handler](/api-reference/langchain/callbacks) to the LangChain instance
-- Running the LangChain instance on user input
-- Sending the output of the LangChain instance back to the user
+The callback handler is responsible for listening to the chain's intermediate steps and sending them to the UI.
 
 ## Step 3: Run the Application
 
@@ -101,9 +127,6 @@ The `-w` flag tells Chainlit to enable auto-reloading, so you don't need to rest
 
 ## Next Steps
 
-Congratulations! You've just created your first LLM app with Chainlit and LangChain. From here, you can:
-
-- Learn more about the [LangChain integration](/api-reference/langchain)
-- Add [elements](/concepts/elements) and [actions](/concepts/actions) to create a more sophisticated app
+Congratulations! You've just created your first LLM app with Chainlit and LangChain. From here, you can add [elements](/concepts/elements) and [actions](/concepts/actions) to create a more sophisticated app.
 
 Happy coding! 🎉
