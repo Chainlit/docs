@@ -1,0 +1,27 @@
+---
+title: Custom API endpoints
+---
+
+Custom API endpoints allow you to extend Chainlit's Fast API backend with your own endpoints.
+One good use case for this is to serve an agent to external services.
+
+<Note>
+  If you create or update a custom endpoint, you will have to restart your
+  Chainlit process. The file watcher will not pick up changes.
+</Note>
+
+## How it works
+
+To add a custom endpoint, import the FastAPI `app` instance from `chainlit.server` and declare your endpoint as you would in FastAPI.
+
+```python
+from chainlit.server import app
+from fastapi.responses import (
+    HTMLResponse,
+)
+
+
+@app.get("/hello")
+def hello():
+    return HTMLResponse("Hello World")
+```

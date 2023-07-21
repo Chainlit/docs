@@ -79,6 +79,7 @@
         },
         "concepts/user-session",
         "concepts/env-variables",
+        "concepts/custom-endpoint",
         "concepts/watcher"
       ]
     },
