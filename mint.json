@@ -80,7 +80,8 @@
         "concepts/user-session",
         "concepts/env-variables",
         "concepts/custom-endpoint",
-        "concepts/watcher"
+        "concepts/watcher",
+        "concepts/custom-theme"
       ]
     },
     {
