@@ -21,6 +21,6 @@ The decorated function is called every time a new message is received.
 from chainlit import on_message
 
 @on_message
-def main(message: str):
+def main(message: str, message_id: str):
   # do something
 ```
