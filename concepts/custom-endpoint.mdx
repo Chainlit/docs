@@ -16,12 +16,14 @@ To add a custom endpoint, import the FastAPI `app` instance from `chainlit.serve
 
 ```python
 from chainlit.server import app
+from fastapi import Request
 from fastapi.responses import (
     HTMLResponse,
 )
 
 
 @app.get("/hello")
-def hello():
+def hello(request: Request):
+    print(request.headers)
     return HTMLResponse("Hello World")
 ```
