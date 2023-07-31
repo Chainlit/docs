@@ -63,7 +63,8 @@ async def main(message: str):
 
     # Do any post processing here
 
-    # Send the response
+    # "res" is a Dict. For this chain, we get the response by reading the "text" key.
+    # This varies from chain to chain, you should check which key to read.
     await cl.Message(content=res["text"]).send()
 ```
 
@@ -98,7 +99,8 @@ async def main(message: str):
 
     # Do any post processing here
 
-    # Send the response
+    # "res" is a Dict. For this chain, we get the response by reading the "text" key.
+    # This varies from chain to chain, you should check which key to read.
     await cl.Message(content=res["text"]).send()
     return llm_chain
 ```
