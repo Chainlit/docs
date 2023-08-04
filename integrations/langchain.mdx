@@ -37,6 +37,7 @@ In this tutorial, we are going to use `LLMChain` to keep it simple. Here's the b
 ```python Async
 from langchain import PromptTemplate, OpenAI, LLMChain
 import chainlit as cl
+from chainlit.langchain.callbacks import AsyncLangchainCallbackHandler
 
 template = """Question: {question}
 
@@ -59,7 +60,7 @@ async def main(message: str):
     llm_chain = cl.user_session.get("llm_chain")  # type: LLMChain
 
     # Call the chain asynchronously
-    res = await llm_chain.acall(message, callbacks=[cl.AsyncLangchainCallbackHandler()])
+    res = await llm_chain.acall(message, callbacks=[AsyncLangchainCallbackHandler()])
 
     # Do any post processing here
 
@@ -71,6 +72,7 @@ async def main(message: str):
 ```python Sync
 from langchain import PromptTemplate, OpenAI, LLMChain
 import chainlit as cl
+from chainlit.langchain.callbacks import LangchainCallbackHandler
 
 template = """Question: {question}
 
@@ -94,7 +96,7 @@ async def main(message: str):
 
     # Call the chain synchronously in a different thread
     res = await cl.make_async(llm_chain)(
-        message, callbacks=[cl.LangchainCallbackHandler()]
+        message, callbacks=[LangchainCallbackHandler()]
     )
 
     # Do any post processing here

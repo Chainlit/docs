@@ -14,12 +14,14 @@ There are two ways to pass the callback handler:
 The following code example demonstrates how to pass an asynchronous callback handler.
 
 ```python
+from chainlit.langchain.callbacks import AsyncLangchainCallbackHandler
+
 llm = OpenAI(temperature=0)
 llm_math = LLMMathChain.from_llm(llm=llm)
 
 @cl.on_message
 async def main(message: str):
-    res = await llm_math.acall(message, callbacks=[cl.AsyncLangchainCallbackHandler()])
+    res = await llm_math.acall(message, callbacks=[AsyncLangchainCallbackHandler()])
 
     await cl.Message(content="Hello").send()
 ```
@@ -31,13 +33,15 @@ Notice the `acall` here, that could also be `arun` or any other async function. 
 Alternatively, you can pass a synchronous callback handler, as shown in the example below:
 
 ```python
+from chainlit.langchain.callbacks import LangchainCallbackHandler
+
 llm = OpenAI(temperature=0)
 llm_math = LLMMathChain.from_llm(llm=llm)
 
 @cl.on_message
 async def main(message: str):
 
-    res = await cl.make_async(llm_math)(message, callbacks=[cl.LangchainCallbackHandler()])
+    res = await cl.make_async(llm_math)(message, callbacks=[LangchainCallbackHandler()])
 
     await cl.Message(content="Hello").send()
 ```
@@ -53,7 +57,7 @@ If streaming is enabled at the LLM level, Langchain will only stream the interme
 # Optionally, you can also pass the prefix tokens that will be used to identify the final answer
 answer_prefix_tokens=["FINAL", "ANSWER"]
 
-cl.AsyncLangchainCallbackHandler(
+AsyncLangchainCallbackHandler(
         stream_final_answer=True,
         answer_prefix_tokens=answer_prefix_tokens,
     )

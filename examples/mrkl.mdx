@@ -15,11 +15,14 @@ pip install chainlit langchain openai google-search-results
 ## Code
 
 ```python mrkl.py
+import os
+
 from langchain import OpenAI, LLMMathChain, SerpAPIWrapper
 from langchain.agents import initialize_agent, Tool, AgentExecutor
 from langchain.chat_models import ChatOpenAI
-import os
+
 import chainlit as cl
+from chainlit.langchain.callbacks import LangchainCallbackHandler
 
 os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
 os.environ["SERPAPI_API_KEY"] = "SERPAPI_API_KEY"
@@ -53,7 +56,7 @@ def start():
 @cl.on_message
 async def main(message):
     agent = cl.user_session.get("agent")  # type: AgentExecutor
-    cb = cl.LangchainCallbackHandler(stream_final_answer=True)
+    cb = LangchainCallbackHandler(stream_final_answer=True)
 
     await cl.make_async(agent.run)(message, callbacks=[cb])
 ```

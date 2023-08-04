@@ -28,6 +28,8 @@ Then, you need to go to create an OpenAI key [here](https://platform.openai.com/
 ## Document QA with LangChain
 
 ````python qa.py
+import os
+
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
@@ -38,8 +40,9 @@ from langchain.prompts.chat import (
     SystemMessagePromptTemplate,
     HumanMessagePromptTemplate,
 )
-import os
+
 import chainlit as cl
+from chainlit.langchain.callbacks import AsyncLangchainCallbackHandler
 
 
 os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"
@@ -119,7 +122,7 @@ async def init():
 @cl.on_message
 async def main(message):
     chain = cl.user_session.get("chain")  # type: RetrievalQAWithSourcesChain
-    cb = cl.AsyncLangchainCallbackHandler(
+    cb = AsyncLangchainCallbackHandler(
         stream_final_answer=True, answer_prefix_tokens=["FINAL", "ANSWER"]
     )
     cb.answer_reached = True

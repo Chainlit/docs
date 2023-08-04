@@ -14,8 +14,9 @@ from llama_index import (
 
 )
 from langchain.chat_models import ChatOpenAI
-import chainlit as cl
 
+import chainlit as cl
+from chainlit.llama_index.callbacks import LlamaIndexCallbackHandler
 
 
 @cl.on_chat_start
@@ -30,6 +31,6 @@ async def factory():
     service_context = ServiceContext.from_defaults(
         llm_predictor=llm_predictor,
         chunk_size=512,
-        callback_manager=CallbackManager([cl.LlamaIndexCallbackHandler()]),
+        callback_manager=CallbackManager([LlamaIndexCallbackHandler()]),
     )
 ```

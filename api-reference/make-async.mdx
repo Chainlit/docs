@@ -23,6 +23,7 @@ This is useful to run long running synchronous tasks without blocking the event 
 ```python Pure Python
 import time
 import chainlit as cl
+from chainlit.langchain.callbacks import LangchainCallbackHandler
 
 def sync_func():
     time.sleep(5)
@@ -39,6 +40,6 @@ async def main(message: str):
 ```python LangChain agent
 import chainlit as cl
 
-res = await cl.make_async(agent)(input_str, callbacks=[cl.LangchainCallbackHandler()])
+res = await cl.make_async(agent)(input_str, callbacks=[LangchainCallbackHandler()])
 await cl.Message(content=res["text"]).send()
 ```

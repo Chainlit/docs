@@ -22,8 +22,9 @@ import json
 
 from langchain.agents import AgentExecutor
 
-from chainlit.langflow import load_flow
 import chainlit as cl
+from chainlit.langflow import load_flow
+from chainlit.langchain.callbacks import LangchainCallbackHandler
 
 
 with open("./schema.json", "r") as f:
@@ -43,7 +44,7 @@ async def main(message):
 
     # Run the flow
     res = await cl.make_async(flow.run)(
-        message, callbacks=[cl.LangchainCallbackHandler()]
+        message, callbacks=[LangchainCallbackHandler()]
     )
 
     # Send the response
@@ -52,8 +53,10 @@ async def main(message):
 
 ```python from_api
 from langchain.agents import AgentExecutor
-from chainlit.langflow import load_flow
+
 import chainlit as cl
+from chainlit.langflow import load_flow
+from chainlit.langchain.callbacks import LangchainCallbackHandler
 
 api_endpoint = "http://127.0.0.1:7860/api/v1/flows/2a0aa566-bc57-4a97-909a-43328d87daa5"
 
@@ -70,7 +73,7 @@ async def main(message):
 
     # Run the flow
     res = await cl.make_async(flow.run)(
-        message, callbacks=[cl.LangchainCallbackHandler()]
+        message, callbacks=[LangchainCallbackHandler()]
     )
 
     # Send the response
