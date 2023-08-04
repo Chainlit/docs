@@ -15,7 +15,7 @@ database = "custom"
 
 ## Authentication
 
-`Custom` mode supports authentication but does not require it.
+`custom` mode supports authentication but does not require it.
 
 The `BaseDBClient` class (which your custom client will extends) has a `user_infos` attribute.
 
@@ -34,11 +34,11 @@ class BaseDBClient():
 
 If authentication is enabled `user_infos` will be available. If not, it will be `None`.
 
-## Define your Custom Client
+## Define your Custom DBClient
 
-To use custom persistence, create your own `Client` that extends the [BaseDBClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/base.py) class. For reference, check the [CloudDBClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/cloud.py) and [LocalDBClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/local.py) implementations.
+To use custom persistence, create your own `DBClient` that extends the [BaseDBClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/base.py) class. For reference, check the [CloudDBClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/cloud.py) and [LocalDBClient](https://github.com/Chainlit/chainlit/blob/main/src/chainlit/client/local.py) implementations.
 
-Finally, modify your Chainlit app code to add a `client_factory` and provide your custom client.
+Finally, modify your Chainlit app code to add a `db_client_factory` and provide your custom client.
 
 ```py
 from typing import Literal, List, Dict
@@ -104,8 +104,8 @@ class CustomClient(BaseDBClient):
         raise NotImplementedError
 
 
-@cl.client_factory
-async def client_factory(user_infos):
+@cl.db_client_factory
+async def db_client_factory(user_infos):
     return CustomClient()
 
 
