@@ -70,6 +70,7 @@
       "pages": [
         "concepts/chain-of-thought",
         "concepts/prompt-playground",
+        "concepts/chat-settings",
         "concepts/elements",
         "concepts/actions",
         "concepts/ask-user",
@@ -77,11 +78,13 @@
           "group": "Streaming",
           "pages": ["concepts/streaming/python", "concepts/streaming/langchain"]
         },
+        {
+          "group": "Customization",
+          "pages": ["concepts/custom-endpoint", "concepts/custom-theme"]
+        },
         "concepts/user-session",
         "concepts/env-variables",
-        "concepts/custom-endpoint",
-        "concepts/watcher",
-        "concepts/custom-theme"
+        "concepts/watcher"
       ]
     },
     {
@@ -122,6 +125,7 @@
             "api-reference/elements/text"
           ]
         },
+        "api-reference/chat-settings",
         {
           "group": "LangChain",
           "pages": ["api-reference/langchain/callbacks"]
@@ -141,7 +145,10 @@
     {
       "group": "Cloud",
       "pages": [
-        "cloud/authentication",
+        {
+          "group": "Authentication",
+          "pages": ["cloud/authentication/cloud", "cloud/authentication/custom"]
+        },
         {
           "group": "Data Persistence",
           "pages": [
