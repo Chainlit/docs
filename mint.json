@@ -52,6 +52,7 @@
           "pages": [
             "integrations/langchain",
             "integrations/llama-index",
+            "integrations/haystack",
             "integrations/langflow"
           ]
         }
