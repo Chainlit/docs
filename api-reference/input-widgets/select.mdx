@@ -1,0 +1,61 @@
+---
+title: "Select"
+---
+
+### Attributes
+
+<ParamField path="id" type="str">
+  The identifier used to retrieve the widget value from the settings.
+</ParamField>
+
+<ParamField path="label" type="str">
+  The label of the input widget.
+</ParamField>
+
+<ParamField path="values" type="List[str]" optional>
+  Labels for the select options.
+</ParamField>
+
+<ParamField path="items" type="Dict[str, str]" optional>
+  Labels with corresponding values for the select options.
+</ParamField>
+
+<ParamField path="initial_value" type="int" optional>
+  The initial value of the input widget.
+</ParamField>
+
+<ParamField path="initial_index" type="int" optional>
+  Index of the initial value of the input widget.
+  Can only be used in combination with 'values'.
+</ParamField>
+
+<ParamField path="tooltip" type="str" optional>
+  The tooltip text shown when hovering over the tooltip icon next to the label.
+</ParamField>
+
+<ParamField path="description" type="str" optional>
+  The text displayed underneath the input widget.
+</ParamField>
+
+### Usage
+
+```python Code Example
+import chainlit as cl
+from chainlit.input_widget import Select
+
+
+@cl.on_chat_start
+async def start():
+    settings = await cl.ChatSettings(
+        [
+            Select(
+                id="Model",
+                label="OpenAI - Model",
+                values=["gpt-3.5-turbo", "gpt-3.5-turbo-16k", "gpt-4", "gpt-4-32k"],
+                initial_index=0,
+            )
+        ]
+    ).send()
+    value = settings["Model"]
+
+```
