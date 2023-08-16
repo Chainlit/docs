@@ -85,7 +85,7 @@
         },
         "concepts/user-session",
         "concepts/env-variables",
-        "concepts/watcher"
+        "concepts/command-line"
       ]
     },
     {
