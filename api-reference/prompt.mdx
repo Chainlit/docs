@@ -1,0 +1,129 @@
+---
+title: "Prompt"
+---
+
+The `Prompt` class is a dataclass that represents the prompt to be sent to the LLM.
+It is designed to be passed to a [Message](/api-reference/message) to enable the [Prompt Playground](/concepts/prompt-playground).
+
+### Attributes
+
+<ParamField path="template" type="str" optional>
+  The template of the prompt if not chat mode.
+</ParamField>
+
+<ParamField path="formatted" type="str" optional>
+  The formatted version of the template if not chat mode.
+</ParamField>
+
+<ParamField path="completion" type="str" optional>
+  The completion of the prompt.
+</ParamField>
+
+<ParamField path="template_format" type="str" optional>
+  The format of the template, defaults to "f-string".
+</ParamField>
+
+<ParamField path="inputs" type="Dict[str, str]" optional>
+  The inputs (variables) to the prompt, represented as a dictionary.
+</ParamField>
+
+<ParamField path="messages" type="Optional[List[PromptMessage]]" optional>
+  The list of messages that form the prompt if in chat mode.
+</ParamField>
+
+<ParamField path="provider" type="str" optional>
+  The provider of the LLM, such as "openai-chat".
+</ParamField>
+
+<ParamField path="settings" type="Dict[str, Any]" optional>
+  The settings the LLM provider was called with.
+</ParamField>
+
+### Usage in non chat mode
+
+```python
+import chainlit as cl
+from chainlit.prompt import Prompt
+from chainlit.playground.providers import ChatOpenAI
+
+
+
+template = """Hello, this is a template.
+This is a variable1 {variable1}
+And this is variable2 {variable2}
+"""
+
+inputs = {
+    "variable1": "variable1 value",
+    "variable2": "variable2 value",
+}
+
+settings = {
+    "model": "gpt-3.5-turbo",
+    "temperature": 0,
+    #... more settings
+}
+
+# Let's pretend we made the call to openai and this is the response
+completion = "The openai completion"
+
+prompt = Prompt(
+        provider=ChatOpenAI.id,
+        completion=completion,
+        template=template,
+        inputs=inputs,
+        settings=settings,
+    )
+
+@cl.on_chat_start
+async def start():
+    await cl.Message(
+        content="This is a message with a prompt",
+        prompt=prompt,
+    ).send()
+```
+
+### Usage in chat mode
+
+```python
+import chainlit as cl
+from chainlit.prompt import Prompt, PromptMessage
+from chainlit.playground.providers import ChatOpenAI
+
+
+template = """Hello, this is a template.
+This is a variable1 {variable1}
+And this is variable2 {variable2}
+"""
+
+inputs = {
+    "variable1": "variable1 value",
+    "variable2": "variable2 value",
+}
+
+settings = {
+    "model": "gpt-3.5-turbo",
+    "temperature": 0,
+    # ... more settings
+}
+
+# Let's pretend we made the call to openai and this is the response
+completion = "The openai completion"
+
+prompt = Prompt(
+    provider=ChatOpenAI.id,
+    completion=completion,
+    template=template,
+    inputs=inputs,
+    messages=[
+        PromptMessage(template=template, role="system"),
+    ],
+)
+
+@cl.on_chat_start
+async def start():
+    await cl.Message(
+        content="This is a message with a chat prompt",
+        prompt=prompt,
+    ).send()
+```

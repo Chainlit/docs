@@ -1,0 +1,21 @@
+---
+title: Template & Variables
+---
+
+As we use LLMs for more complex tasks, prompts are growing longer and are often formatted on the fly with variables.
+
+This is making the development process significantly harder. One template could work with a certain set of variables and break with another.
+The developer experience is also impacted since printing large texts in a notebook/terminal is far from ideal.
+
+The Template & Variables feature tackles those issue by providing a segmented visualization of your prompts.
+
+## Setup
+
+If you did not already setup the Prompt Template, go [here](/concepts/prompt-playground/setup).
+Once this is done, open the Prompt Playground.
+
+## Template View
+
+The template view will only be displayed if the `template` property is set in your [Prompt](/api-reference/prompt) instance. For Chat LLMs, the `template` property is at the `PromptMessage` level.
+
+![Template View](/images/pp-template.png)
