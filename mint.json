@@ -67,7 +67,9 @@
           "pages": [
             "concepts/prompt-playground/overview",
             "concepts/prompt-playground/setup",
-            "concepts/prompt-playground/template-and-variables"
+            "concepts/prompt-playground/template-and-variables",
+            "concepts/prompt-playground/formatted-prompts",
+            "concepts/prompt-playground/llm-providers"
           ]
         },
         "concepts/chat-settings",

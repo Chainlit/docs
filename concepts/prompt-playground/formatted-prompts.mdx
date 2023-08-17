@@ -1,0 +1,53 @@
+---
+title: Formatted Prompts
+---
+
+Formatted Prompts are another option to define Prompt without defining the template and variables used.
+
+This enables an easier integration, although the debugging interface will offer less features (no variable management or template view).
+
+![Formatted Prompt](/images/prompt-playground-formatted-prompt.png)
+
+Here is an example of code used with a formatted prompt:
+
+```python
+import openai
+import chainlit as cl
+from chainlit.prompt import Prompt, PromptMessage
+from chainlit.playground.providers import ChatOpenAI
+
+
+@cl.on_chat_start
+async def start():
+    # Prepare OpenAI call
+    template = "Hello, {name}!"
+    inputs = {"name": "John"}
+    formatted = template.format(**inputs)
+    role = "assistant"
+
+    settings = {
+        "model": "gpt-3.5-turbo",
+        "temperature": 0,
+        # ... more settings
+    }
+
+    # Make the call to OpenAI
+    response = await openai.ChatCompletion.acreate(
+        messages=[{"content": formatted, "role": role}], **settings
+    )
+
+    completion = response.choices[0]["message"]["content"]
+
+    # Create the Chainlit Prompt instance
+    prompt = Prompt(
+        provider=ChatOpenAI.id,
+        settings=settings,
+        messages=[PromptMessage(formatted=formatted, role=role)],
+        completion=completion,
+    )
+
+    await cl.Message(
+        content=completion,
+        prompt=prompt,
+    ).send()
+```
