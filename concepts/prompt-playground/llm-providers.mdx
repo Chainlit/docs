@@ -22,6 +22,8 @@ You can define your own provider to connect with your LLM provider of choice. Be
 
 The `create_completion` method is required, it is where you should place the logic where you communicate with your LLM provider.
 
+The `format_message` and `message_to_string` function are encouraged. Defining them allows the provider to work with both defining prompts as one string or as a list of messages.
+
 The environment variables are required to auto-detect which provider is configured. Chainlit only shows configured LLM providers in the prompt playground.
 
 The `inputs` is a list of controls that this LLM provider offers that Chainlit will display in the side panel of the prompt playground.
@@ -34,9 +36,17 @@ from fastapi.responses import StreamingResponse
 
 from chainlit.input_widget import Select, Slider
 from chainlit.playground.provider import BaseProvider
+from chainlit.types import PromptMessage
 
 
 class ExampleProvider(BaseProvider):
+    def format_message(self, message: PromptMessage):
+        """Transforms a Prompt Message to a structure that a chat LLM can understand."""
+        return message
+    
+    def message_to_string(self, message: PromptMessage):
+        """Transforms a Prompt Message to a string that a non-chat LLM can understand."""
+        return message.formatted
 
     async def create_completion(self, request):
         await super().create_completion(request)
