@@ -33,8 +33,6 @@ async def main(message: str):
     fromatted_prompt = prompt.format(question=message)
     msg = cl.Message(
         content="",
-        prompt=fromatted_prompt,
-        llm_settings=cl.LLMSettings(model_name=model_name, **settings),
     )
 
     async for stream_resp in await openai.Completion.acreate(

@@ -24,36 +24,36 @@ import chainlit as cl
 from chainlit.prompt import Prompt, PromptMessage
 from chainlit.playground.providers import ChatOpenAI
 
+template = "Hello, {name}!"
+inputs = {"name": "John"}
+
+settings = {
+    "model": "gpt-3.5-turbo",
+    "temperature": 0,
+    # ... more settings
+}
 
 @cl.on_chat_start
 async def start():
-    # Prepare OpenAI call
-    template = "Hello, {name}!"
-    inputs = {"name": "John"}
-    formatted = template.format(**inputs)
-    role = "assistant"
-
-    settings = {
-        "model": "gpt-3.5-turbo",
-        "temperature": 0,
-        # ... more settings
-    }
-
-    # Make the call to OpenAI
-    response = await openai.ChatCompletion.acreate(
-        messages=[{"content": formatted, "role": role}], **settings
-    )
-
-    completion = response.choices[0]["message"]["content"]
-
     # Create the Chainlit Prompt instance
     prompt = Prompt(
         provider=ChatOpenAI.id,
         inputs=inputs,
         settings=settings,
-        messages=[PromptMessage(template=template, formatted=formatted, role=role)],
-        completion=completion,
+        messages=[
+          PromptMessage(
+            template=template,
+            formatted=template.format(**inputs),
+            role="assistant")
+          ]
     )
+
+    # Make the call to OpenAI
+    response = await openai.ChatCompletion.acreate(
+        messages=[m.to_openai() for m in prompt.messages], **settings
+    )
+
+    prompt.completion = response.choices[0]["message"]["content"]
 ```
 
 You can check the [Prompt API reference](/api-reference/prompt) to learn about all the attributes available.
@@ -79,3 +79,7 @@ await cl.Message(
 ## Step 3: Open the Prompt Playground
 
 Once the message is sent, a new button will be available beneath it. Clicking on that button will open the Prompt Playground in the context of that message.
+
+<Frame caption="Open the Prompt Playground">
+  <img src="/images/open-pp.gif" />
+</Frame>
