@@ -59,18 +59,19 @@
       ]
     },
     {
-      "group": "Guides",
-      "pages": [
-        "guides/sync-async",
-        "guides/migration/0.3.0",
-        "guides/migration/0.6.0"
-      ]
-    },
-    {
       "group": "Concepts",
       "pages": [
         "concepts/chain-of-thought",
-        "concepts/prompt-playground",
+        {
+          "group": "Prompt Playground",
+          "pages": [
+            "concepts/prompt-playground/overview",
+            "concepts/prompt-playground/setup",
+            "concepts/prompt-playground/template-and-variables",
+            "concepts/prompt-playground/formatted-prompts",
+            "concepts/prompt-playground/llm-providers"
+          ]
+        },
         "concepts/chat-settings",
         "concepts/elements",
         "concepts/actions",
@@ -89,6 +90,14 @@
       ]
     },
     {
+      "group": "Guides",
+      "pages": [
+        "guides/sync-async",
+        "guides/migration/0.3.0",
+        "guides/migration/0.6.0"
+      ]
+    },
+    {
       "group": "Examples",
       "pages": [
         "examples/openai-sql",
@@ -101,9 +110,8 @@
     {
       "group": "API Reference",
       "pages": [
-        "api-reference/on-message",
         "api-reference/on-chat-start",
-        "api-reference/author-rename",
+        "api-reference/on-message",
         "api-reference/message",
         {
           "group": "Ask Message",
@@ -112,6 +120,7 @@
             "api-reference/ask/ask-for-file"
           ]
         },
+        "api-reference/prompt",
         "api-reference/action",
         {
           "group": "Elements",
@@ -126,6 +135,7 @@
             "api-reference/elements/text"
           ]
         },
+        "api-reference/author-rename",
         "api-reference/chat-settings",
         {
           "group": "Input Widgets",

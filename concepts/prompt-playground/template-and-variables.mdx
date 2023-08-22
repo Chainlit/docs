@@ -1,0 +1,55 @@
+---
+title: Template & Variables
+---
+
+As we use LLMs for more complex tasks, prompts are growing longer and are often formatted on the fly with variables.
+
+This is making the development process significantly harder. One template could work with a certain set of variables and break with another.
+The developer experience is also impacted since printing large texts in a notebook/terminal is far from ideal.
+
+The Template & Variables feature tackles those issues by providing a segmented visualization of your prompts.
+
+## Setup
+
+If you did not already setup the Prompt Template, go [here](/concepts/prompt-playground/setup).
+Once this is done, open the Prompt Playground.
+
+## Template View
+
+The template view will only be displayed if the `template` property is set in your [Prompt](/api-reference/prompt) instance. For Chat LLMs, the `template` property is at the `PromptMessage` level.
+
+![Template View](/images/pp-template.png)
+
+## Template format
+
+The template format is the [Python f-string format](https://docs.python.org/3/reference/lexical_analysis.html#f-strings). In the future we might support more template formats.
+
+This means variables are encapsulated by curly brackets like `{name}`. If you want curly brackets in your output like `"Hi {world}!"`, you should escape them by doubling them like so: `Hi {{world}}!`.
+
+## Highlighting
+
+When using a variable in your template, the variable will be highlighted to clarify that it will get replaced by the content of the variable in the formatted template.
+
+You can click on the highlighted variable to edit them.
+
+## Update a variable
+
+One of the common use cases is to use the prompt playground to try different variable content.
+
+Start with selecting the variable you want to edit.
+
+Or simply click on the highlighted variable from the prompt template or formatted view.
+
+You can then edit the variable in the opened modal. Click on "Save" to save the variable.
+
+<Frame caption="Edit a variable in the Prompt Playground">
+  <img src="/images/edit-variable.gif" />
+</Frame>
+
+You can then click on "Submit" to get an updated completion.
+
+If you want to preview the full prompt with your updated variables, go to the formatted view. Note that you can edit variables either from the Template or Formatted views.
+
+<Frame caption="Switch to the formatted view">
+  <img src="/images/pp-switch-view.gif" />
+</Frame>

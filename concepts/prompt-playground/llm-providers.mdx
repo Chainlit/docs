@@ -1,0 +1,81 @@
+---
+title: LLM Providers
+---
+
+LLM Providers allow you to configure the prompt playground so that it can work with any LLM provider.
+
+## Provider library
+
+We currently offer the implementation for OpenAI, Anthropic and HuggingFace. This enables you to get started quickly without having to re-implement the connection to these LLM providers.
+
+There are three providers for OpenAI:
+
+- `OpenAI`: supports the gpt-3 models
+- `ChatOpenAI`: supports the gpt-3.5 and gpt-4 models
+- `AzureChatOpenAI`: supports the Azure-hosted gpt-3.5 and gpt-4 models
+
+Note that the HugginFace provider example is available to help you customize it to the HugginFace-hosted model of your choice.
+
+## Custom provider
+
+You can define your own provider to connect with your LLM provider of choice. Below is an example of how it would look like.
+
+The `create_completion` method is required, it is where you should place the logic where you communicate with your LLM provider.
+
+The `format_message` and `message_to_string` function are encouraged. Defining them allows the provider to work with both defining prompts as one string or as a list of messages.
+
+The environment variables are required to auto-detect which provider is configured. Chainlit only shows configured LLM providers in the prompt playground.
+
+The `inputs` is a list of controls that this LLM provider offers that Chainlit will display in the side panel of the prompt playground.
+
+The `is_chat` property is a toggle to define whether you feed a list of messages to the LLM provider (like OpenAI's `gpt-4` model) or one text string (like Anthropic's `claude-2` model).
+
+
+```python
+from fastapi.responses import StreamingResponse
+
+from chainlit.input_widget import Select, Slider
+from chainlit.playground.provider import BaseProvider
+from chainlit.prompt import PromptMessage
+
+
+class ExampleProvider(BaseProvider):
+    def format_message(self, message: PromptMessage):
+        """Transforms a Prompt Message to a structure that a chat LLM can understand."""
+        return message
+    
+    def message_to_string(self, message: PromptMessage):
+        """Transforms a Prompt Message to a string that a non-chat LLM can understand."""
+        return message.formatted
+
+    async def create_completion(self, request):
+        await super().create_completion(request)
+
+        return StreamingResponse(content="completion content")
+
+
+example_env_vars = {"api_key": "EXAMPLE_API_KEY"}
+
+Example = ExampleProvider(
+    id="example",
+    name="Example",
+    env_vars=example_env_vars,
+    inputs=[
+        Select(
+            id="model",
+            label="Model",
+            values=["text-001", "text-002"],
+            initial_value="text-002",
+        ),
+        Slider(
+            id="temperature",
+            label="Temperature",
+            min=0.0,
+            max=1.0,
+            step=0.01,
+            initial=0.9,
+        )
+    ],
+    is_chat=False,
+)
+```

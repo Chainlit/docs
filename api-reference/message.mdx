@@ -19,13 +19,9 @@ The `Message` class is designed to send, stream, edit or remove messages in the 
 <ParamField path="actions" type="Action[]" optional>
   The list of actions scoped to this message.
 </ParamField>
-<ParamField path="prompt" type="str" optional>
+<ParamField path="prompt" type="Prompt" optional>
   The prompt used to generate the message. If provided, enables the prompt
   playground for this message.
-</ParamField>
-<ParamField path="llm_settings" type="LLMSettings" optional>
-  Settings of the LLM used to generate the prompt. This is useful for debug
-  purposes in the prompt playground.
 </ParamField>
 <ParamField path="language" type="str" optional>
   Language of the code if the content is code. See
