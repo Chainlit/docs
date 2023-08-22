@@ -1,0 +1,62 @@
+---
+title: "Video"
+---
+
+The `Video` class allows you to display an video player for a specific video file in the chatbot user interface.
+
+You must provide either an url or a path or content bytes.
+
+### Attributes
+
+<ParamField path="name" type="str">
+  The name of the video file to be displayed in the UI. This is shown to users.
+</ParamField>
+
+<ParamField path="display" type="ElementDisplay" optional>
+  Determines where the element should be displayed in the UI. Choices are
+  "side" (default), "inline", or "page".
+</ParamField>
+
+<ParamField path="url" type="str" optional>
+  The remote URL of the video.
+</ParamField>
+
+<ParamField path="path" type="str" optional>
+  The local file path of the video.
+</ParamField>
+
+<ParamField path="content" type="bytes" optional>
+  The file content of the video in bytes format.
+</ParamField>
+
+
+### Usage with message scope
+
+```python Code Example
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def main():
+    elements = [
+        cl.Video(name="example.mp4", path="./example.mp4", display="inline"),
+    ]
+    await cl.Message(
+        content="Here is an video file",
+        elements=elements,
+    ).send()
+```
+
+### Usage without scope
+
+```python Code Example
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def main():
+    await cl.Video(name="example.mp4", path="./example.mp4", display="side").send()
+    await cl.Message(
+        content="Here is the example.mp4 video file",
+    ).send()
+```
