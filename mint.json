@@ -112,6 +112,7 @@
       "pages": [
         "api-reference/on-chat-start",
         "api-reference/on-message",
+        "api-reference/on-file-upload",
         "api-reference/message",
         {
           "group": "Ask Message",
