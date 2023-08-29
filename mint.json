@@ -122,6 +122,9 @@
         },
         "api-reference/prompt",
         "api-reference/action",
+        "api-reference/author-rename",
+        "api-reference/make-async",
+        "api-reference/cache",
         {
           "group": "Elements",
           "pages": [
@@ -136,7 +139,6 @@
             "api-reference/elements/tasklist"
           ]
         },
-        "api-reference/author-rename",
         "api-reference/chat-settings",
         {
           "group": "Input Widgets",
@@ -147,21 +149,16 @@
             "api-reference/input-widgets/tags",
             "api-reference/input-widgets/textinput"
           ]
-        },
-        {
-          "group": "LangChain",
-          "pages": ["api-reference/langchain/callbacks"]
-        },
-        {
-          "group": "Langflow",
-          "pages": ["api-reference/langflow/load-flow"]
-        },
-        {
-          "group": "Llama Index",
-          "pages": ["api-reference/llama-index/callback"]
-        },
-        "api-reference/make-async",
-        "api-reference/cache"
+        }
+      ]
+    },
+    {
+      "group": "Integrations",
+      "pages": [
+        "api-reference/integrations/langchain",
+        "api-reference/integrations/llamaindex",
+        "api-reference/integrations/langflow",
+        "api-reference/integrations/haystack"
       ]
     },
     {
