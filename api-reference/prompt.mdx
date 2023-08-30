@@ -41,55 +41,16 @@ It is designed to be passed to a [Message](/api-reference/message) to enable the
 
 ### Usage in non chat mode
 
+LLMs such as GPT3 or Llama2, which do not operate in chat mode, can generate completions based on a simple string prompt. In this context, you should use the `template` and `formatted` attributes of the `Prompt` class, as demonstrated below.
+
 ```python
 import chainlit as cl
 from chainlit.prompt import Prompt
 from chainlit.playground.providers import ChatOpenAI
 
-
-
-template = """Hello, this is a template.
-This is a variable1 {variable1}
-And this is variable2 {variable2}
-"""
-
-inputs = {
-    "variable1": "variable1 value",
-    "variable2": "variable2 value",
-}
-
-settings = {
-    "model": "gpt-3.5-turbo",
-    "temperature": 0,
-    #... more settings
-}
-
-# Let's pretend we made the call to openai and this is the response
-completion = "The openai completion"
-
-prompt = Prompt(
-        provider=ChatOpenAI.id,
-        completion=completion,
-        template=template,
-        inputs=inputs,
-        settings=settings,
-    )
-
-@cl.on_chat_start
-async def start():
-    await cl.Message(
-        content="This is a message with a prompt",
-        prompt=prompt,
-    ).send()
-```
-
-### Usage in chat mode
-
-```python
-import chainlit as cl
-from chainlit.prompt import Prompt, PromptMessage
-from chainlit.playground.providers import ChatOpenAI
-
+import os
+# If no OPENAI_API_KEY is available, the OpenAI provider won't be available in the prompt playground
+os.environ["OPENAI_API_KEY"] = "sk-..."
 
 template = """Hello, this is a template.
 This is a variable1 {variable1}
@@ -111,14 +72,74 @@ settings = {
 completion = "The openai completion"
 
 prompt = Prompt(
+    # provider, settings, inputs and completion are common attributes
+    # shared both in chat and non chat mode
     provider=ChatOpenAI.id,
     completion=completion,
-    template=template,
+    settings=settings,
     inputs=inputs,
+    # In non chat mode, we use template and formatted instead of messages
+    template=template,
+)
+
+
+@cl.on_chat_start
+async def start():
+    await cl.Message(
+        content="This is a message with a prompt",
+        prompt=prompt,
+    ).send()
+```
+
+<Frame caption="A non chat mode Prompt displayed in the Prompt Playground">
+  <img src="/images/non-chat-mode-pp.png" />
+</Frame>
+
+### Usage in chat mode
+
+LLMs such as GPT3.5 or GPT4, which do operate in chat mode, generate completions based of a list of messages (often representing the conversation history). In this context, you should use the `messsages` attribute of the `Prompt` class, as demonstrated below.
+
+```python
+import chainlit as cl
+from chainlit.prompt import Prompt, PromptMessage
+from chainlit.playground.providers import ChatOpenAI
+
+import os
+# If no OPENAI_API_KEY is available, the ChatOpenAI provider won't be available in the prompt playground
+os.environ["OPENAI_API_KEY"] = "sk-..."
+
+template = """Hello, this is a template.
+This is a variable1 {variable1}
+And this is variable2 {variable2}
+"""
+
+inputs = {
+    "variable1": "variable1 value",
+    "variable2": "variable2 value",
+}
+
+settings = {
+    "model": "gpt-3.5-turbo",
+    "temperature": 0,
+    # ... more settings
+}
+
+# Let's pretend we made the call to openai and this is the response
+completion = "The openai completion"
+
+prompt = Prompt(
+    # provider, settings, inputs and completion are common attributes
+    # shared both in chat and non chat mode
+    provider=ChatOpenAI.id,
+    completion=completion,
+    inputs=inputs,
+    settings=settings,
+    # In chat mode, we use messages instead of template & formatted
     messages=[
         PromptMessage(template=template, role="system"),
     ],
 )
+
 
 @cl.on_chat_start
 async def start():
@@ -127,3 +148,7 @@ async def start():
         prompt=prompt,
     ).send()
 ```
+
+<Frame caption="A chat mode Prompt displayed in the Prompt Playground">
+  <img src="/images/chat-mode-pp.png" />
+</Frame>
