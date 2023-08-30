@@ -2,7 +2,12 @@
 title: "cache"
 ---
 
-The `cache` function is a tool for caching results of resource-intensive calculations or loading processes. It can be conveniently combined with the [file watcher](/concepts/watcher) to prevent resource reloading each time the application restarts. This not only saves time, but also enhances overall efficiency.
+There are two cacheing mechanism:
+1. Cacheing questions and answers. To disable this cacheing, run chainlit with this command line `chainlit run app.py --no-cache`
+2. Cacheing resource-intensive calculations in your code.
+
+The below text explains the second cacheing mechanism.
+The `cache` decorator is a tool for caching results of resource-intensive calculations or loading processes. It can be conveniently combined with the [file watcher](/concepts/command-line) to prevent resource reloading each time the application restarts. This not only saves time, but also enhances overall efficiency.
 
 ### Parameters
 
