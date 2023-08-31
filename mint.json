@@ -62,6 +62,7 @@
       "group": "Concepts",
       "pages": [
         "concepts/chain-of-thought",
+        "concepts/feedback",
         {
           "group": "Prompt Playground",
           "pages": [
