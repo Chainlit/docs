@@ -6,15 +6,15 @@ LLM Providers allow you to configure the prompt playground so that it can work w
 
 ## Provider library
 
-We currently offer the implementation for OpenAI, Anthropic and HuggingFace. This enables you to get started quickly without having to re-implement the connection to these LLM providers.
+We currently offer the implementation for `OpenAI`, `Anthropic` and `HuggingFace`. This enables you to get started quickly without having to re-implement the connection to these LLM providers.
 
-There are three providers for OpenAI:
+There are three providers for `OpenAI`:
 
 - `OpenAI`: supports the gpt-3 models
 - `ChatOpenAI`: supports the gpt-3.5 and gpt-4 models
 - `AzureChatOpenAI`: supports the Azure-hosted gpt-3.5 and gpt-4 models
 
-Note that the HugginFace provider example is available to help you customize it to the HugginFace-hosted model of your choice.
+Note that the `HuggingFace` provider example is available to help you customize it to the HugginFace-hosted model of your choice.
 
 ## Custom provider
 
@@ -99,4 +99,44 @@ Once you have defined the provider, you need to tell Chainlit that it exists.
 
 ```py
 add_llm_provider(ExampleProvider)
+```
+
+## Langchain Provider
+
+Adding an LLM Provider from a Langchain LLM class is straightforward.
+
+<Warning>
+  Langchain Providers won't have settings editable in the Prompt Playground. If
+  you need the settings, you should extend the `BaseProvider` class and create
+  your own provider.
+</Warning>
+
+Here is an example with HuggingFaceHub (works the same for other LLMs).
+
+```py
+import os
+from chainlit.playground.config import add_llm_provider
+from chainlit.playground.providers import LangchainGenericProvider
+from langchain.llms import HuggingFaceHub
+
+# Instantiate the LLM
+llm = HuggingFaceHub(
+    model_kwargs={"max_length": 500},
+    repo_id="declare-lab/flan-alpaca-large",
+    huggingfacehub_api_token=os.environ["HUGGINGFACEHUB_API_TOKEN"],
+)
+
+# Add the LLM provider
+add_llm_provider(
+    LangchainGenericProvider(
+        # It is important that the id of the provider matches the _llm_type
+        id=llm._llm_type,
+        # The name is not important. It will be displayed in the UI.
+        name="HuggingFaceHub",
+        # This should always be a Langchain llm instance (correctly configured)
+        llm=llm,
+        # If the LLM works with messages, set this to True
+        is_chat=False
+    )
+)
 ```
