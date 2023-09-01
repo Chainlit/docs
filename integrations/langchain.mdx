@@ -122,9 +122,8 @@ chainlit run app.py -w
 The `-w` flag tells Chainlit to enable auto-reloading, so you don't need to restart the server every time you make changes to your application. Your chatbot UI should now be accessible at http://localhost:8000.
 
 <Warning>
-  When using LangChain, prompts and completions are cached locally! The cache
-  lives in the .chainlit folder. You can start the app with the `--no-cache`
-  flag to disable it.
+  When using LangChain, prompts and completions are not cached by default. To
+  enable the cache, set the `cache=true` in your chainlit config file.
 </Warning>
 
 ## Next Steps
