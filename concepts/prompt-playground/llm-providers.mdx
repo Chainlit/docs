@@ -116,7 +116,7 @@ Here is an example with HuggingFaceHub (works the same for other LLMs).
 ```py
 import os
 from chainlit.playground.config import add_llm_provider
-from chainlit.playground.providers import LangchainGenericProvider
+from chainlit.playground.providers.langchain import LangchainGenericProvider
 from langchain.llms import HuggingFaceHub
 
 # Instantiate the LLM
