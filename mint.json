@@ -83,11 +83,19 @@
         },
         {
           "group": "Customization",
-          "pages": ["concepts/custom-endpoint", "concepts/custom-theme"]
+          "pages": ["concepts/custom-endpoint"]
         },
         "concepts/user-session",
         "concepts/env-variables",
-        "concepts/command-line"
+        "concepts/command-line",
+        {
+          "group": "Configuration",
+          "pages": [
+            "concepts/configuration/features",
+            "concepts/configuration/UI",
+            "concepts/configuration/theme"
+          ]
+        }
       ]
     },
     {
