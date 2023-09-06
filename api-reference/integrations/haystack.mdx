@@ -15,7 +15,7 @@ Check out their repo: https://github.com/deepset-ai/haystack.
 
 <CodeGroup>
 
-```python Code Example
+```python app.py
 import chainlit as cl
 
 ## Some code
@@ -26,12 +26,24 @@ agent = ConversationalAgent(
   prompt_template=agent_prompt,
   tools=[search_tool],
 )
+
+# Adds the Chainlit Callback Handler to
+# the Haystack Agent callback manager
 cl.HaystackAgentCallbackHandler(agent)
+
+
+@cl.on_message
+async def main(message: str):
+    response = await cl.make_async(agent.run)(message)
+    await cl.Message(author="Agent", content=response["answers"][0].answer).send()
+
 ```
 </CodeGroup>
 
 This code adds the Chainlit callback handler to the Haystack callback manager.
 The callback handler is responsible for listening to the chain's intermediate steps and sending them to the UI.
 
+Then, you can run `chainlit run app.py` in your terminal to run the app and interact with your agent.
+
 ## Example
-Check out this full example from the cookbook: https://github.com/Chainlit/cookbook/tree/main/haystack
+Check out this **full example** from the cookbook: https://github.com/Chainlit/cookbook/tree/main/haystack
