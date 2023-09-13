@@ -81,14 +81,15 @@
           "group": "Streaming",
           "pages": ["concepts/streaming/python", "concepts/streaming/langchain"]
         },
-        "concepts/custom-endpoint",
         "concepts/user-session",
         {
           "group": "Customization",
           "pages": [
             "concepts/customization/overview",
-            "concepts/customization/custom-logo",
-            "concepts/customization/custom-css"
+            "concepts/customization/custom-logo-and-favicon",
+            "concepts/customization/custom-css",
+            "concepts/customization/theme",
+            "concepts/customization/custom-endpoint"
           ]
         },
         "concepts/env-variables",

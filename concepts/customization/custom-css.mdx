@@ -7,7 +7,8 @@ Chainlit Application allows for design customization through the use of a custom
 ```toml config.toml
 [UI]
 # ...
-custom_css = 'assets/your_own_stylesheet.css'
+# This can either be a css file in your `public` dir or a URL
+custom_css = 'public/stylesheet.css'
 ```
 
 Once the configuration is updated, restart the application. Your custom styling will now be applied.
