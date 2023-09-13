@@ -83,6 +83,14 @@
         },
         "concepts/custom-endpoint",
         "concepts/user-session",
+        {
+          "group": "Customization",
+          "pages": [
+            "concepts/customization/overview",
+            "concepts/customization/custom-logo",
+            "concepts/customization/custom-css"
+          ]
+        },
         "concepts/env-variables",
         "concepts/command-line",
         {
