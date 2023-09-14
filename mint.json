@@ -59,6 +59,15 @@
       ]
     },
     {
+      "group": "Authentication",
+      "pages": [
+        "authentication/overview",
+        "authentication/password",
+        "authentication/header",
+        "authentication/oauth"
+      ]
+    },
+    {
       "group": "Concepts",
       "pages": [
         "concepts/chain-of-thought",
