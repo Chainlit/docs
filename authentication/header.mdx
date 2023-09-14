@@ -1,0 +1,27 @@
+---
+title: Header
+---
+
+This authentication allows you to plug your existing user database to the Chainlit app. You receive the headers from the first request, and you need to return an `AppUser` object if the authentication is successful.
+
+You can use the callback to make sure the header contains the right token. Either by verifying the signature, or by checking in your database.
+
+## Example
+
+```python
+from typing import Optional
+
+from chainlit.types import AppUser
+
+import chainlit as cl
+
+
+@cl.header_auth_callback
+def header_auth_callback(headers) -> Optional[AppUser]:
+  # Verify the signature of a token in the header (ex: jwt token)
+  # or check that the value is matching a row from your database
+  if headers.get("test-header") == "test-value":
+    return AppUser(username="admin", role="ADMIN", provider="header")
+  else:
+    return None
+```

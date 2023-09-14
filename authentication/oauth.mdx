@@ -1,0 +1,115 @@
+---
+title: OAuth
+---
+
+This authentication allows you to plug a third-party OAuth provider to the Chainlit app. You receive the id, the token and the raw user data from the OAuth provider. You also get a pre-defined `AppUser` as a helper. You need to return an `AppUser` object if the authentication is successful.
+
+This callback enables you for example to restrict the OAuth login to specific email domains, or to specific users.
+
+<Note>
+  To active an OAuth provider, you need to define both the OAuth callback in your code and the provider(s) environment variables.
+</Note>
+
+## Providers
+
+Three providers are supported: GitHub, Google and Azure Active Directory. Follow these guides to create an OAuth app for your chosen provider(s). Then copy the information into the right environment variable to active the provider.
+
+### GitHub
+
+Go to this page to [create a new GitHub OAuth app](https://github.com/settings/apps).
+
+The callback URL should be: `BASE_URL/auth/oauth/github/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/github/callback`.
+
+You need to set the following environment variables:
+
+- `OAUTH_GITHUB_CLIENT_ID`: Client ID
+- `OAUTH_GITHUB_CLIENT_SECRET`: Client secret
+
+### Google
+
+Go to this page to [create a new Google OAuth app](https://console.developers.google.com/apis/credentials).
+
+The callback URL should be: `BASE_URL/auth/oauth/google/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/google/callback`.
+
+You need to set the following environment variables:
+
+- `OAUTH_GOOGLE_CLIENT_ID`: Client ID
+- `OAUTH_GOOGLE_CLIENT_SECRET`: Client secret
+
+### Azure Active Directory
+
+Follow this guide to [create a new Azure Active Directory OAuth app](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app).
+
+The callback URL should be: `BASE_URL/auth/oauth/azure-ad/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/azure-ad/callback`.
+
+You need to set the following environment variables:
+
+- `OAUTH_AZURE_AD_CLIENT_ID`: Client ID
+- `OAUTH_AZURE_AD_CLIENT_SECRET`: Client secret
+- `OAUTH_AZURE_AD_TENANT_ID`: Azure tenant ID
+
+
+## Examples
+
+Allow all users who passed the oauth authentication.
+
+```python
+from typing import Dict, Optional
+from chainlit.types import AppUser
+import chainlit as cl
+
+
+@cl.oauth_callback
+def oauth_callback(
+  provider_id: str,
+  token: str,
+  raw_user_data: Dict[str, str],
+  default_app_user: AppUser,
+) -> Optional[AppUser]:
+  return default_app_user
+```
+
+Only allow users from a specific google domain.
+
+```python
+from typing import Dict, Optional
+from chainlit.types import AppUser
+import chainlit as cl
+
+
+@cl.oauth_callback
+def oauth_callback(
+  provider_id: str,
+  token: str,
+  raw_user_data: Dict[str, str],
+  default_app_user: AppUser,
+) -> Optional[AppUser]:
+  if provider_id == "google":
+    if raw_user_data["hd"] == "example.org":
+      return default_app_user
+  return None
+```
+
+Change the username to the email.
+
+```python
+from typing import Dict, Optional
+from chainlit.types import AppUser
+import chainlit as cl
+
+
+@cl.oauth_callback
+def oauth_callback(
+  provider_id: str,
+  token: str,
+  raw_user_data: Dict[str, str],
+  default_app_user: AppUser,
+) -> Optional[AppUser]:
+  if provider_id == "github":
+    return AppUser(
+      username=raw_user_data["email"],
+      role=default_app_user.role,
+      provider=default_app_user.provider,
+    )
+  return None
+```
