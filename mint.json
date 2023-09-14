@@ -167,16 +167,11 @@
       "group": "Cloud",
       "pages": [
         {
-          "group": "Authentication",
-          "pages": ["cloud/authentication/cloud", "cloud/authentication/custom"]
-        },
-        {
           "group": "Data Persistence",
           "pages": [
-            "cloud/persistence/introduction",
-            "cloud/persistence/cloud",
-            "cloud/persistence/local",
-            "cloud/persistence/custom"
+            "cloud/persistence/overview",
+            "cloud/persistence/getting-started",
+            "cloud/persistence/enterprise"
           ]
         },
         "cloud/deploy"

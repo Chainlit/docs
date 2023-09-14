@@ -1,0 +1,36 @@
+---
+title: Getting Started
+---
+
+Chainlit Cloud offers a swift and efficient solution for setting up data storage.
+
+## Create a Chainlit Project
+
+1. Navigate to [Chainlit Cloud](https://cloud.chainlit.io) and sign in.
+2. Click on the '+' icon to create a new project. You will see a screen similar to the one below:
+    ![Project Creation Screen](/images/project.png)
+3. Click on the 'Create API Key' button to create a new API key. 
+4. We will need this key later on.
+    ![Project API Key](/images/apikey.png)
+
+## Activating Chainlit Cloud Mode
+
+After creating a Chainlit Project and an API key for said project. You will need to pass the key via a `CHAINLIT_API_KEY` environment variable.
+
+Next to your Chainlit application, create a `.env` file and modify it like so:
+
+```shell .env
+CHAINLIT_API_KEY="your key"
+```
+
+Or inlined:
+
+```shell 
+CHAINLIT_API_KEY="your key" chainlit run main.py
+```
+
+Once activated, your chats and elements will be persisted in Chainlit Cloud.
+
+## Deactivation
+
+If you wish to deactivate Chainlit Cloud, simply comment out or remove the `CHAINLIT_API_KEY` environment variable.
