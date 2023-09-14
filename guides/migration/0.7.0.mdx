@@ -1,0 +1,51 @@
+---
+title: Migration Guide to Chainlit v0.7.0
+---
+
+## Updating Chainlit
+
+Begin the migration by updating Chainlit to the latest version:
+
+```bash
+pip install --upgrade chainlit
+```
+
+Then remove your `.chainlit/config.toml` file and regenerate it:
+
+```bash
+chainlit init
+```
+
+Several fields disappeared from the config, such as `project_id`, `public` and `database`.
+
+## Authentication
+
+Previously, authentication was completely tied to Chainlit Cloud and not customizable by the developers.
+The new system enables developer to quickly implement:
+
+- login/password authentication
+- OAuth authentication
+- Header based authentication for apps running with a reverse proxy.
+
+Check the [documentation](/authentication) to learn more about it.
+
+## Data Persistence
+
+Previously Chainlit was allowing for different database mode (`cloud`, `local` and `custom`). We found that it was confusing for developers and that some modes were heavily misused (like `local` db in production).
+
+The new system is much simpler. You can create an API key on [Chainlit Cloud](https://cloud.chainlit.io/). Then set it in your `.env` and you are good to go.
+
+We understand that data privacy is a concern for companies, that's why we made Chainlit Cloud self hostable.
+
+Check the [documentation](/cloud/persistence) to learn more about it.
+
+## Removed APIs
+
+The following APIs have been **removed**:
+
+- `@cl.auth_client` (see new authentication)
+- `@cl.db_client` (see new data persistence)
+
+## Resources
+
+The documentation, [examples](/examples), and [cookbook](https://github.com/Chainlit/cookbook) have been updated to reflect the new APIs. If you have any questions, don't hesitate to reach out on our [Discord](https://discord.gg/ZThrUxbAYw) server.

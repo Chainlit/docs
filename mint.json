@@ -118,7 +118,8 @@
       "pages": [
         "guides/sync-async",
         "guides/migration/0.3.0",
-        "guides/migration/0.6.0"
+        "guides/migration/0.6.0",
+        "guides/migration/0.7.0"
       ]
     },
     {
