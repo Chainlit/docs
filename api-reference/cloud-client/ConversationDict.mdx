@@ -1,0 +1,29 @@
+---
+title: ConversationDict
+---
+
+The `ConversationDict` represents a Chainlit App conversation.
+
+### Attributes
+
+<ParamField path="id" type="str">
+  The conversation ID.
+</ParamField>
+<ParamField path="createdAt" type="int">
+  The date of the conversation creation.
+</ParamField>
+<ParamField path="elementCount" type="int">
+  The total number of conversation elements.
+</ParamField>
+<ParamField path="messageCount" type="int">
+  The total number of conversation messages.
+</ParamField>
+<ParamField path="appUser" type="Optional[AppUser]">
+  The conversation author, if available.
+</ParamField>
+<ParamField path="messages" type="List[MessageDict]">
+  The messages exchanged in the conversation.
+</ParamField>
+<ParamField path="elements" type="Optional[List[ElementDict]]">
+  The elements exchanged in the conversation, if available.
+</ParamField>

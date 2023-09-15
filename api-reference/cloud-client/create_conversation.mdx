@@ -1,0 +1,32 @@
+---
+title: create_conversation
+---
+
+Create a new conversation.
+
+### Parameters
+
+<ParamField path="app_user_id" type="Optional[str]" optional>
+  The ID of the app user associated with the conversation. If not specified, the conversation will not be associated with any app user.
+</ParamField>
+
+### Returns
+
+<ResponseField name="conversation_id" type="Optional[str]" required>
+  The ID of the created conversation if successful, None otherwise.
+</ResponseField>
+
+### Example
+
+```python Code Example
+from chainlit.client.cloud import chainlit_client
+
+app_user_id = "12345"
+
+conversation_id = await chainlit_client.create_conversation(app_user_id)
+
+if conversation_id:
+    print(f"Conversation created: {conversation_id}")
+else:
+    print("Failed to create conversation.")
+```

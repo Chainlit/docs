@@ -1,0 +1,38 @@
+---
+title: update_element
+---
+
+Update an existing element.
+
+### Parameters
+
+<ParamField path="variables" type="ElementDict">
+  The updated information of the element.
+</ParamField>
+
+### Returns
+
+<ResponseField name="element" type="Optional[ElementDict]" required>
+  The updated element information if successful, None otherwise.
+</ResponseField>
+
+### Example
+
+```python Code Example
+from chainlit.client.cloud import chainlit_client
+from chainlit.base.types import ElementDict
+
+chainlit_client = ChainlitCloudClient(api_key="your_api_key_here")
+
+element = ElementDict(
+    conversationId="12345",
+    id="54321",
+    forIds=["id1", "id2"]
+)
+
+updated_element = await chainlit_client.update_element(element)
+if updated_element:
+    print(f"Element updated: {update_element['id']}")
+else:
+    print("Failed to update element.")
+```

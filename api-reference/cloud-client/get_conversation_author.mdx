@@ -1,0 +1,32 @@
+---
+title: get_conversation_author
+---
+
+Get the author of a conversation.
+
+### Parameters
+
+<ParamField path="conversation_id" type="str">
+  The ID of the conversation to retrieve the author from.
+</ParamField>
+
+### Returns
+
+<ResponseField name="author" type="Optional[str]" required>
+  The username of the author of the conversation if found, None otherwise.
+</ResponseField>
+
+### Example
+
+```python Code Example
+from chainlit.client.cloud import chainlit_client
+
+conversation_id = "12345"
+
+author = await chainlit_client.get_conversation_author(conversation_id)
+
+if author:
+    print(f"The author of the conversation is: {author}")
+else:
+    print("Failed to retrieve the author of the conversation.")
+```

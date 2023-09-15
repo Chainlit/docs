@@ -179,6 +179,53 @@
       ]
     },
     {
+      "group": "Cloud Client",
+      "pages": [
+        "api-reference/cloud-client/getting-started",
+        {
+          "group": "App User",
+          "pages": [
+            "api-reference/cloud-client/create_app_user",
+            "api-reference/cloud-client/update_app_user",
+            "api-reference/cloud-client/get_app_user",
+            "api-reference/cloud-client/delete_app_user",
+            "api-reference/cloud-client/AppUser"
+          ]
+        },
+        {
+          "group": "Conversations",
+          "pages": [
+            "api-reference/cloud-client/create_conversation",
+            "api-reference/cloud-client/delete_conversation",
+            "api-reference/cloud-client/get_conversation_author",
+            "api-reference/cloud-client/get_conversation",
+            "api-reference/cloud-client/get_conversations",
+            "api-reference/cloud-client/ConversationDict"
+          ]
+        },
+        {
+          "group": "Messages",
+          "pages": [
+            "api-reference/cloud-client/create_message",
+            "api-reference/cloud-client/update_message",
+            "api-reference/cloud-client/delete_message",
+            "api-reference/cloud-client/set_human_feedback",
+            "api-reference/cloud-client/MessageDict"
+          ]
+        },
+        {
+          "group": "Elements",
+          "pages": [
+            "api-reference/cloud-client/create_element",
+            "api-reference/cloud-client/update_element",
+            "api-reference/cloud-client/upload_element",
+            "api-reference/cloud-client/get_element",
+            "api-reference/cloud-client/ElementDict"
+          ]
+        }
+      ]
+    },
+    {
       "group": "Integrations",
       "pages": [
         "api-reference/integrations/langchain",

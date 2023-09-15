@@ -1,0 +1,41 @@
+---
+title: update_message
+---
+
+Update an existing message.
+
+### Parameters
+
+<ParamField path="message_id" type="str">
+  The ID of the message to be updated.
+</ParamField>
+<ParamField path="variables" type="MessageDict">
+  The updated information of the message.
+</ParamField>
+
+### Returns
+
+<ResponseField name="success" type="bool" required>
+  True if the message was successfully updated, False otherwise.
+</ResponseField>
+
+### Example
+
+```python Code Example
+from chainlit.client.cloud import chainlit_client
+from chainlit.client.base import MessageDict
+
+message_id = "12345"
+
+variables = MessageDict(
+    author="john_doe",
+    content="Updated message content",
+)
+
+success = await chainlit_client.update_message(message_id, variables)
+
+if success:
+    print("Message updated successfully.")
+else:
+    print("Failed to update message.")
+```

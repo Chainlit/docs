@@ -1,0 +1,39 @@
+---
+title: create_message
+---
+
+Create a new message.
+
+### Parameters
+
+<ParamField path="variables" type="MessageDict">
+   The information of the message to be created.
+</ParamField>
+
+### Returns
+
+<ResponseField name="message_id" type="Optional[str]" required>
+  The ID of the created message if successful, None otherwise.
+</ResponseField>
+
+### Example
+
+```python Code Example
+from chainlit.client.cloud import chainlit_client
+from chainlit.client.base import MessageDict
+
+message = MessageDict(
+    id="12345",
+    conversationId="54321",
+    author="john_doe",
+    content="Hello, world!",
+    isError=False
+)
+
+message_id = await chainlit_client.create_message(message)
+
+if message_id:
+    print(f"Message created: {message_id}")
+else:
+    print("Failed to create message.")
+```
