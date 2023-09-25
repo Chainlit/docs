@@ -11,17 +11,15 @@ You can use the callback to make sure the header contains the right token. Eithe
 ```python
 from typing import Optional
 
-from chainlit.types import AppUser
-
 import chainlit as cl
 
 
 @cl.header_auth_callback
-def header_auth_callback(headers) -> Optional[AppUser]:
+def header_auth_callback(headers) -> Optional[cl.AppUser]:
   # Verify the signature of a token in the header (ex: jwt token)
   # or check that the value is matching a row from your database
   if headers.get("test-header") == "test-value":
-    return AppUser(username="admin", role="ADMIN", provider="header")
+    return cl.AppUser(username="admin", role="ADMIN", provider="header")
   else:
     return None
 ```

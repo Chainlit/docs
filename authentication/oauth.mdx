@@ -55,7 +55,6 @@ You need to set the following environment variables:
 
 ```python
 from typing import Dict, Optional
-from chainlit.types import AppUser
 import chainlit as cl
 
 
@@ -64,8 +63,8 @@ def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
-  default_app_user: AppUser,
-) -> Optional[AppUser]:
+  default_app_user: cl.AppUser,
+) -> Optional[cl.AppUser]:
   return default_app_user
 ```
 
@@ -73,7 +72,6 @@ def oauth_callback(
 
 ```python
 from typing import Dict, Optional
-from chainlit.types import AppUser
 import chainlit as cl
 
 
@@ -82,8 +80,8 @@ def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
-  default_app_user: AppUser,
-) -> Optional[AppUser]:
+  default_app_user: cl.AppUser,
+) -> Optional[cl.AppUser]:
   if provider_id == "google":
     if raw_user_data["hd"] == "example.org":
       return default_app_user
@@ -94,7 +92,6 @@ def oauth_callback(
 
 ```python
 from typing import Dict, Optional
-from chainlit.types import AppUser
 import chainlit as cl
 
 
@@ -103,10 +100,10 @@ def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
-  default_app_user: AppUser,
-) -> Optional[AppUser]:
+  default_app_user: cl.AppUser,
+) -> Optional[cl.AppUser]:
   if provider_id == "github":
-    return AppUser(
+    return cl.AppUser(
       username=raw_user_data["email"],
       role=default_app_user.role,
       provider=default_app_user.provider,
