@@ -17,6 +17,7 @@
     "url": "https://discord.gg/k73SQ3FyUh"
   },
   "feedback": {
+    "thumbsRating": true,
     "suggestEdit": true,
     "raiseIssue": true
   },
