@@ -1,0 +1,126 @@
+---
+title: Getting Started
+---
+
+## Get the image
+
+1. After getting an issued Docker PAT
+
+2. Authenticate with your token:
+```shell
+docker login --username chainlit 
+# When prompted for a password, use the token
+```
+
+3. Pull the image
+```shell
+docker pull chainlit/chainlit-cloud.<version>
+```
+
+## Host the image
+
+### Artifactory
+
+1. Tag the image:
+```shell
+docker tag chainlit/chainlit-cloud:<version> <region>-docker.pkg.dev/<project_id>/<artifactory_name>/chainlit-cloud:<version>
+```
+
+2. Push the image
+```shell
+docker push <region>-docker.pkg.dev/<project_id>/<artifactory_name>/chainlit-cloud:<version>
+```
+
+### Google Container Registry
+
+1. Tag the image:
+```shell
+docker tag chainlit/chainlit-cloud:<version> gcr.io/<project_id>/chainlit-cloud:<version>
+```
+
+2. Push the image:
+```shell
+docker push gcr.io/<project_id>/chainlit-cloud:<version>
+```
+
+### Amazon ECR
+
+1. Tag the image:
+```shell
+docker tag chainlit/chainlit-cloud:<version> <aws_account_id>.dkr.ecr.<region>.amazonaws.com/chainlit/chainlit-cloud:<version>
+```
+
+2. Push the image
+```shell
+docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/chainlit/chainlit-cloud:<version>
+```
+
+## Run the application
+
+1. Once your image is accessible you can then host the application using the service of your choice.
+
+Here is a non exhaustive list:
+- [Fly.io](https://dev.to/willydouhard/how-to-deploy-your-chainlit-app-to-flyio-38ja)
+- [Google Cloud Run](https://pseudohvr.medium.com/deploying-chainlit-on-gcp-72231ba6b77f)
+- [Google App Engine](https://github.com/amjadraza/langchain-chainlit-docker-deployment-template)
+- [Replit](https://replit.com/@DanConstantini/Build-a-Chatbot-with-OpenAI-LangChain-and-Chainlit?v=1)
+
+2. To configure the application you will be required to pass your own environment variables.
+Let's go over the required values:
+```shell
+# The url used to communicate with your database.
+# Note: we currently only support postgresql
+DATABASE_URL=postgresql://<username>:<password>@<host>:<port>
+
+# Used to encrypt the NextAuth.js JWT, and to hash email verification tokens.
+NEXTAUTH_SECRET="your secret"
+NEXTAUTH_URL="yourdomain.com"
+
+# Currently we support AWS S3 and Google Cloud Storage for storing elements
+BUCKET_NAME=""
+# For AWS S3 
+# https://docs.aws.amazon.com/AmazonS3/latest/userguide/AuthUsingAcctOrUserCredentials.html
+APP_AWS_ACCESS_KEY="access key"
+APP_AWS_SECRET_KEY="secret key"
+APP_AWS_REGION="region"
+# Or for GCS https://developers.google.com/workspace/guides/create-credentials
+APP_GCS_PROJECT_ID="project id"
+APP_GCS_CLIENT_EMAIL="client email"
+# note: the private key needs to be encoded in base64
+APP_GCS_PRIVATE_KEY="private key"
+```
+
+3. Optionally you can customize other values:
+```shell
+# To support credentials authentication
+ENABLE_CREDENTIALS_AUTH=true
+# On top of it you will need to provide the mailer credentials
+EMAIL_SERVER_HOST="servicehost"
+EMAIL_SERVER_PORT="4000"
+EMAIL_SERVICE="gmail"
+EMAIL_USER="username"
+EMAIL_PASS="password"
+EMAIL_FROM="noreply@service.com"
+
+# We support the following OAuth providers
+## Google 
+## https://support.google.com/cloud/answer/6158849
+GOOGLE_CLIENT_ID="your id"
+GOOGLE_CLIENT_SECRET="your secret"
+## Github 
+## https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app
+GITHUB_ID="your id"
+GITHUB_SECRET="your secret"
+## Azure Active Directory 
+## https://support.smartbear.com/readyapi/docs/requests/auth/types/oauth2/tutorial-azure.html
+AZURE_AD_CLIENT_ID="your id"
+AZURE_AD_CLIENT_SECRET="your secret"
+## Okta 
+## https://developer.okta.com/docs/guides/implement-oauth-for-okta/main/
+OKTA_CLIENT_ID="your id"
+OKTA_CLIENT_SECRET="your secret"
+OKTA_ISSUER="the issuer"
+
+# If you want to use Vercel Analytics (only for hosting with Vercel)
+ENABLE_VERCEL_ANALYTICS=true
+```

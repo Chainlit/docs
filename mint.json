@@ -199,7 +199,13 @@
             "cloud/persistence/enterprise"
           ]
         },
-        "cloud/deploy"
+        {
+          "group": "Deployment",
+          "pages": [
+            "cloud/deployment/overview",
+            "cloud/deployment/getting-started"
+          ]
+        }
       ]
     }
   ],
