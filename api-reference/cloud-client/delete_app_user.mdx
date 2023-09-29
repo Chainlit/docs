@@ -1,0 +1,32 @@
+---
+title: delete_app_user
+---
+
+Delete a Chainlit App user.
+
+### Parameters
+
+<ParamField path="username" type="str">
+  The username of the app user to delete.
+</ParamField>
+
+### Returns
+
+<ResponseField name="success" type="bool" required>
+  True if the app user was successfully deleted, False otherwise.
+</ResponseField>
+
+### Example
+
+```python Code Example
+from chainlit.client.cloud import chainlit_client
+
+username = "john_doe"
+
+success = await chainlit_client.delete_app_user(username)
+
+if success:
+    print("App user deleted.")
+else:
+    print("Failed to delete app user.")
+```

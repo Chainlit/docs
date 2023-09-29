@@ -1,0 +1,46 @@
+---
+title: MessageDict
+---
+
+The `MessageDict` represents a Chainlit App conversation message.
+
+### Attributes
+
+<ParamField path="id" type="str">
+  The message ID.
+</ParamField>
+<ParamField path="createdAt" type="int">
+  The date of the message creation.
+</ParamField>
+<ParamField path="conversationId" type="Optional[str]">
+  The conversation ID from which the message comes from.
+</ParamField>
+<ParamField path="content" type="str">
+  The text content of the message.
+</ParamField>
+<ParamField path="author" type="str">
+  The message author.
+</ParamField>
+<ParamField path="prompt" type="Optional[Prompt]">
+  The [prompt](/api-reference/prompt) value passed to a message.
+</ParamField>
+<ParamField path="language" type="Optional[str]">
+  Language of the code if the content is code. See https://react-code-blocks-rajinwonderland.vercel.app/?path=/story/codeblock—supported-languages for a list of supported languages.</ParamField>
+<ParamField path="parentId" type="Optional[str]">
+  The parent message ID, if available.
+</ParamField>
+<ParamField path="authorIsUser" type="Optional[bool]">
+  True if the author of the message is a Chainlit App user.
+</ParamField>
+<ParamField path="waitForAnswer" type="Optional[bool]">
+  True if the message is waiting for the user's answer.
+</ParamField>
+<ParamField path="isError" type="Optional[bool]">
+  True if the message is an `ErrorMessage`.
+</ParamField>
+<ParamField path="humanFeedback" type="Optional[int]">
+  The value of the user's feedback.
+</ParamField>
+<ParamField path="disableHumanFeedback" type="Optional[bool]">
+  True if the message doesn't expect feedback.
+</ParamField>

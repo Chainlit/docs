@@ -1,0 +1,39 @@
+---
+title: create_element
+---
+
+Create a new element.
+
+### Parameters
+
+<ParamField path="variables" type="ElementDict">
+  The information of the element to be created.
+</ParamField>
+
+### Returns
+
+<ResponseField name="element" type="Optional[ElementDict]" required>
+  The created element information if successful, None otherwise.
+</ResponseField>
+
+### Example
+
+```python Code Example
+from chainlit.client.cloud import chainlit_client
+from chainlit.client.base import ElementDict
+
+element = ElementDict(
+    conversationId="12345",
+    type="image",
+    name="image1",
+    display="side",
+    url="https://example.com/image1.jpg"
+)
+
+persisted_element = await chainlit_client.create_element(element)
+
+if persisted_element
+    print(f"Element created: {persisted_element['id']}")
+else:
+    print("Failed to create element.")
+```

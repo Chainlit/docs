@@ -1,0 +1,23 @@
+---
+title: AppUser
+---
+
+The `AppUser` class represents a Chainlit App logged-in user.
+
+### Attributes
+
+<ParamField path="username" type="str">
+  The username of the user.
+</ParamField>
+<ParamField path="role" type="Role">
+  The role of the user.
+</ParamField>
+<ParamField path="tags" type="List[str]">
+  A list of tags for tracking the user.
+</ParamField>
+<ParamField path="image" type="Optional[str]">
+  A URL pointing to the user's profile picture, if available.
+</ParamField>
+<ParamField path="provider" type="Optional[Provider]">
+  The authentication provider for the user.
+</ParamField>
