@@ -138,6 +138,7 @@
       "group": "API Reference",
       "pages": [
         "api-reference/on-chat-start",
+        "api-reference/on-chat-end",
         "api-reference/on-message",
         "api-reference/on-file-upload",
         "api-reference/message",
