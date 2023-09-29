@@ -1,6 +1,8 @@
 ---
-title: Getting Started
+title: Deployment
 ---
+
+<Note>Contact us here for enterprise support https://forms.gle/uyKyZmmpVET95Wbx8 </Note>
 
 ## Get the image
 
@@ -14,7 +16,7 @@ docker login --username chainlit
 
 3. Pull the image
 ```shell
-docker pull chainlit/chainlit-cloud.<version>
+docker pull chainlit/chainlit-cloud:latest
 ```
 
 ## Host the image
@@ -23,36 +25,36 @@ docker pull chainlit/chainlit-cloud.<version>
 
 1. Tag the image:
 ```shell
-docker tag chainlit/chainlit-cloud:<version> <region>-docker.pkg.dev/<project_id>/<artifactory_name>/chainlit-cloud:<version>
+docker tag chainlit/chainlit-cloud:latest <region>-docker.pkg.dev/<project_id>/<artifactory_name>/chainlit-cloud:latest
 ```
 
 2. Push the image
 ```shell
-docker push <region>-docker.pkg.dev/<project_id>/<artifactory_name>/chainlit-cloud:<version>
+docker push <region>-docker.pkg.dev/<project_id>/<artifactory_name>/chainlit-cloud:latest
 ```
 
 ### Google Container Registry
 
 1. Tag the image:
 ```shell
-docker tag chainlit/chainlit-cloud:<version> gcr.io/<project_id>/chainlit-cloud:<version>
+docker tag chainlit/chainlit-cloud:latest gcr.io/<project_id>/chainlit-cloud:latest
 ```
 
 2. Push the image:
 ```shell
-docker push gcr.io/<project_id>/chainlit-cloud:<version>
+docker push gcr.io/<project_id>/chainlit-cloud:latest
 ```
 
 ### Amazon ECR
 
 1. Tag the image:
 ```shell
-docker tag chainlit/chainlit-cloud:<version> <aws_account_id>.dkr.ecr.<region>.amazonaws.com/chainlit/chainlit-cloud:<version>
+docker tag chainlit/chainlit-cloud:latest <aws_account_id>.dkr.ecr.<region>.amazonaws.com/chainlit/chainlit-cloud:latest
 ```
 
 2. Push the image
 ```shell
-docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/chainlit/chainlit-cloud:<version>
+docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/chainlit/chainlit-cloud:latest
 ```
 
 ## Run the application
@@ -60,10 +62,8 @@ docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/chainlit/chainlit-cl
 1. Once your image is accessible you can then host the application using the service of your choice.
 
 Here is a non exhaustive list:
-- [Fly.io](https://dev.to/willydouhard/how-to-deploy-your-chainlit-app-to-flyio-38ja)
-- [Google Cloud Run](https://pseudohvr.medium.com/deploying-chainlit-on-gcp-72231ba6b77f)
-- [Google App Engine](https://github.com/amjadraza/langchain-chainlit-docker-deployment-template)
-- [Replit](https://replit.com/@DanConstantini/Build-a-Chatbot-with-OpenAI-LangChain-and-Chainlit?v=1)
+- [Google Cloud Run](https://cloud.google.com/run/docs/quickstarts/deploy-container)
+- [AWS](https://aws.amazon.com/getting-started/hands-on/deploy-docker-containers/)
 
 2. To configure the application you will be required to pass your own environment variables.
 Let's go over the required values:
