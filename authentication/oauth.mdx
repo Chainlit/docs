@@ -49,6 +49,18 @@ You need to set the following environment variables:
 - `OAUTH_AZURE_AD_CLIENT_SECRET`: Client secret
 - `OAUTH_AZURE_AD_TENANT_ID`: Azure tenant ID
 
+### Okta
+
+Follow this guide to [create OIDC app integrations](https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm).
+
+The callback URL should be: `BASE_URL/auth/oauth/okta/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/okta/callback`.
+
+You need to set the following environment variables:
+
+- `OAUTH_OKTA_CLIENT_ID`: Client ID
+- `OAUTH_OKTA_CLIENT_SECRET`: Client secret
+- `OAUTH_OKTA_DOMAIN`: Domain name for your okta setup - e.g. https://company.okta.com
+
 ### Auth0
 
 Follow this guide to [create an Auth0 application](https://auth0.com/docs/get-started/auth0-overview/create-applications).
