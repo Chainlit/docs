@@ -61,13 +61,24 @@ You need to set the following environment variables:
 - `OAUTH_OKTA_CLIENT_SECRET`: Client secret
 - `OAUTH_OKTA_DOMAIN`: Domain name for your okta setup - e.g. https://company.okta.com
 
+### Auth0
+
+Follow this guide to [create an Auth0 application](https://auth0.com/docs/get-started/auth0-overview/create-applications).
+
+The callback URL should be: `BASE_URL/auth/oauth/auth0/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/auth0/callback`.
+
+You need to set the following environment variables:
+
+- `OAUTH_AUTH0_CLIENT_ID`: Client ID
+- `OAUTH_AUTH0_CLIENT_SECRET`: Client secret
+- `OAUTH_AUTH0_DOMAIN`: Domain name for your auth0 setup
+
 ## Examples
 
 ### Allow all users who passed the oauth authentication.
 
 ```python
 from typing import Dict, Optional
-from chainlit.types import AppUser
 import chainlit as cl
 
 
@@ -76,8 +87,8 @@ def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
-  default_app_user: AppUser,
-) -> Optional[AppUser]:
+  default_app_user: cl.AppUser,
+) -> Optional[cl.AppUser]:
   return default_app_user
 ```
 
@@ -85,7 +96,6 @@ def oauth_callback(
 
 ```python
 from typing import Dict, Optional
-from chainlit.types import AppUser
 import chainlit as cl
 
 
@@ -94,8 +104,8 @@ def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
-  default_app_user: AppUser,
-) -> Optional[AppUser]:
+  default_app_user: cl.AppUser,
+) -> Optional[cl.AppUser]:
   if provider_id == "google":
     if raw_user_data["hd"] == "example.org":
       return default_app_user
@@ -106,7 +116,6 @@ def oauth_callback(
 
 ```python
 from typing import Dict, Optional
-from chainlit.types import AppUser
 import chainlit as cl
 
 
@@ -115,10 +124,10 @@ def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
-  default_app_user: AppUser,
-) -> Optional[AppUser]:
+  default_app_user: cl.AppUser,
+) -> Optional[cl.AppUser]:
   if provider_id == "github":
-    return AppUser(
+    return cl.AppUser(
       username=raw_user_data["email"],
       role=default_app_user.role,
       provider=default_app_user.provider,

@@ -17,6 +17,7 @@
     "url": "https://discord.gg/k73SQ3FyUh"
   },
   "feedback": {
+    "thumbsRating": true,
     "suggestEdit": true,
     "raiseIssue": true
   },
@@ -55,7 +56,8 @@
             "integrations/haystack",
             "integrations/langflow"
           ]
-        }
+        },
+        "concepts/get-started/deployment"
       ]
     },
     {
@@ -136,6 +138,7 @@
       "group": "API Reference",
       "pages": [
         "api-reference/on-chat-start",
+        "api-reference/on-chat-end",
         "api-reference/on-message",
         "api-reference/on-file-upload",
         "api-reference/message",
@@ -198,7 +201,7 @@
             "cloud/persistence/enterprise"
           ]
         },
-        "cloud/deploy"
+        "cloud/deployment"
       ]
     }
   ],
