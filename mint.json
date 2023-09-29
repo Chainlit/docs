@@ -56,7 +56,8 @@
             "integrations/haystack",
             "integrations/langflow"
           ]
-        }
+        },
+        "concepts/get-started/deployment"
       ]
     },
     {
@@ -199,7 +200,7 @@
             "cloud/persistence/enterprise"
           ]
         },
-        "cloud/deploy"
+        "cloud/deployment"
       ]
     }
   ],
