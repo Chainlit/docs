@@ -82,8 +82,11 @@ Here is a non exhaustive list:
 
 ```shell
 # The url used to communicate with your database.
-# Note: we currently only support postgresql
-DATABASE_URL=postgresql://<username>:<password>@<host>:<port>
+# Note: we currently only support postgresql.
+DATABASE_URL=postgresql://<username>:<password>@<host>:<port><?pgbouncer=true if using pg-bouncer>
+# The url used to handle migrations to your database.
+# Note: We can not perform migration through pg-bouncer, we need a direct url to your database.
+DATABASE_DIRECT_URL=postgresql://<username>:<password>@<host>:<port>
 
 # Used to encrypt the NextAuth.js JWT, and to hash email verification tokens.
 NEXTAUTH_SECRET="your secret"
