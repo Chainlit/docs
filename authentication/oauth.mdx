@@ -13,7 +13,15 @@ This callback enables you for example to restrict the OAuth login to specific em
 
 ## Providers
 
-Three providers are supported: GitHub, Google and Azure Active Directory. Follow these guides to create an OAuth app for your chosen provider(s). Then copy the information into the right environment variable to active the provider.
+Follow these guides to create an OAuth app for your chosen provider(s). Then copy the information into the right environment variable to active the provider.
+
+<Warning>
+  If your app is served behind a reverse proxy (like cloud run) you will have to
+  set the `base_url` field in your `.chainlit/config.toml` file under the `UI`
+  category. For instance, if you host your application at
+  `https://mydomain.com`, the `base_url` should be set to
+  `https://mydomain.com`.
+</Warning>
 
 ### GitHub
 
