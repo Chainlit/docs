@@ -57,6 +57,8 @@ You need to set the following environment variables:
 - `OAUTH_AZURE_AD_CLIENT_SECRET`: Client secret
 - `OAUTH_AZURE_AD_TENANT_ID`: Azure tenant ID
 
+Additionally, if your application supports "Accounts in this organizational directory only" (Single tenant), you will need to explicitly set: `OAUTH_AZURE_AD_ENABLE_SINGLE_TENANT=true`.
+
 ### Okta
 
 Follow this guide to [create OIDC app integrations](https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm).
