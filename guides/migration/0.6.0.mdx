@@ -19,7 +19,7 @@ Begin the migration by updating Chainlit to the latest version:
 pip install --upgrade chainlit
 ```
 
-If you are using the [Local Persistence](/cloud/persistence/local) mode, you will need to run the following command to update the database schema:
+If you are using the [Local Persistence](/cloud/persistence/getting-started) mode, you will need to run the following command to update the database schema:
 
 ```bash
 chainlit migrate
@@ -98,7 +98,7 @@ async def main(message: str):
 
 </CodeGroup>
 
-This example can be applied to any framework. Simply create a per-user instance in [on_chat_start](/api-reference/on-chat-start), store it in the [user_session](/backed/user-session), and retrieve it in [on_message](/api-reference/on-message) to process the message.
+This example can be applied to any framework. Simply create a per-user instance in [on_chat_start](/api-reference/on-chat-start), store it in the [user_session](/backend/user-session), and retrieve it in [on_message](/api-reference/on-message) to process the message.
 
 <Note>
   You'll need to manually pass the correct callback when executing your chain or

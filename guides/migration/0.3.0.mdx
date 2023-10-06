@@ -62,7 +62,7 @@ Now there's an `async` keyword before the function definition and an `await` key
 
 ### langchain_factory
 
-The [langchain_factory](/api-reference/langchain/langchain-factory) decorator requires a `use_async` argument to determine whether to use the async (`agent.acall()`) or sync (`agent()`) agent implementation. If synchronous implementation is used, the agent runs in a separate thread, preventing the event loop from blocking.
+The `langchain_factory` decorator requires a `use_async` argument to determine whether to use the async (`agent.acall()`) or sync (`agent()`) agent implementation. If synchronous implementation is used, the agent runs in a separate thread, preventing the event loop from blocking.
 
 <CodeGroup>
 
@@ -92,11 +92,11 @@ def factory():
 
 ### LangChain Callback Handler
 
-Since Chainlit's launch, LangChain has improved its callback handling, eliminating the need to patch the LangChain package. This update means you'll need to pass the appropriate callback handler to your LangChain agent, as described [here](/api-reference/integrations/langchain). If you're using the [langchain_factory](/api-reference/langchain/langchain-factory) decorator, this is done for you.
+Since Chainlit's launch, LangChain has improved its callback handling, eliminating the need to patch the LangChain package. This update means you'll need to pass the appropriate callback handler to your LangChain agent, as described [here](/api-reference/integrations/langchain). If you're using the `langchain_factory` decorator, this is done for you.
 
 ### langchain_run
 
-When using [langchain_run](/api-reference/langchain/langchain-run) to run the agent yourself, opt for the async version, `agent.acall()`, if possible.
+When using `langchain_run` to run the agent yourself, opt for the async version, `agent.acall()`, if possible.
 
 ```python
 @cl.langchain_run
