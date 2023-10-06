@@ -1,0 +1,20 @@
+---
+title: Custom CSS
+---
+
+Chainlit Application allows for design customization through the use of a custom CSS stylesheet. To enable this, modify your configuration settings in .chainlit/config.toml.
+
+```toml config.toml
+[UI]
+# ...
+# This can either be a css file in your `public` dir or a URL
+custom_css = 'public/stylesheet.css'
+```
+
+<Note>
+  At the moment, we do not provide a detailed guide of all the available css
+  classes. It is up to you to dig in the Web Inspector and find the css class
+  you wish to override.
+</Note>
+
+Once the configuration is updated, restart the application. Your custom styling will now be applied.

@@ -20,6 +20,9 @@ pip install chainlit openai
 
 ```python app.py
 import chainlit as cl
+from chainlit.prompt import Prompt, PromptMessage
+from chainlit.playground.providers.openai import ChatOpenAI
+
 import openai
 import os
 

@@ -1,0 +1,29 @@
+---
+title: User Session
+---
+
+`user_session` is a dictionary that stores the user's session data. The `id` and `env` keys are reserved for the session ID and environment variables, respectively. Other keys can be used to store arbitrary data in the user's session.
+
+`user_session` has two methods: `get` and `set`. The `get` method retrieves a value from the user's session. The `set` method sets a value in the user's session.
+
+To use the `user_session`, first import it:
+
+```python Code Example
+from chainlit import user_session
+```
+
+To get a value from the user's session, call the `get` method:
+
+```python Code Example
+value = user_session.get(key)
+```
+
+The `key` parameter is a string that identifies the value to retrieve. If the key is not found in the user's session, `None` is returned.
+
+To set a value in the user's session, call the `set` method:
+
+```python Code Example
+user_session.set(key, value)
+```
+
+The `key` parameter is a string that identifies the value to set. The `value` parameter is the value to set in the user's session.

@@ -1,0 +1,90 @@
+---
+title: UI
+---
+
+### Options
+
+<ParamField path="name" type="str" default="My Chatbot">
+  The name of both the application and the chatbot.
+</ParamField>
+
+<ParamField path="description" type="str" optional>
+  The content of the `<meta name="description">` of the application.
+</ParamField>
+
+<ParamField path="hide_cot" type="bool" default={false}>
+  You can hide the [Chain of Thought](/observability-iteration/chain-of-thought)
+  UI.
+</ParamField>
+
+<ParamField path="default_collapse_content" type="bool" default={true}>
+  When handling large text content we collapse it for keeping the threads
+  concise. You can disable manually disable this behavior.
+</ParamField>
+
+<ParamField path="default_expand_message" type="bool" default={false}>
+  Sub-messages are hiden by default, you can "expand" the parent message to show
+  those messages. Toggling this setting will display the sub-messages by
+  default.
+</ParamField>
+
+<ParamField path="github" type="str" optional>
+  Passing this option will display a Github-shaped link. If not passed we will
+  display the link to Chainlit repo.
+</ParamField>
+
+<ParamField path="base_url" type="str" optional>
+  If the app is served behind a reverse proxy (like cloud run) we need to know
+  the base url of the application for oauth. Example value:
+  `https://mydomain.com`.
+</ParamField>
+
+### Default configuration
+
+```toml
+[UI]
+# Name of the app and chatbot.
+name = "Chatbot"
+
+# Description of the app and chatbot. This is used for HTML tags.
+# description = ""
+
+# Large size content are by default collapsed for a cleaner ui
+default_collapse_content = true
+
+# The default value for the expand messages settings.
+default_expand_messages = false
+
+# Hide the chain of thought details from the user in the UI.
+hide_cot = false
+
+# Link to your github repo. This will add a github button in the UI's header.
+# github = ""
+
+# Specify a CSS file that can be used to customize the user interface.
+# The CSS file can be served from the public directory or via an external link.
+# custom_css = "/public/test.css"
+
+# If the app is served behind a reverse proxy (like cloud run) we need to know the base url for oauth
+# base_url = "https://mydomain.com"
+
+# Override default MUI light theme. (Check theme.ts)
+[UI.theme.light]
+    #background = "#FAFAFA"
+    #paper = "#FFFFFF"
+
+    [UI.theme.light.primary]
+        #main = "#F80061"
+        #dark = "#980039"
+        #light = "#FFE7EB"
+
+# Override default MUI dark theme. (Check theme.ts)
+[UI.theme.dark]
+    #background = "#FAFAFA"
+    #paper = "#FFFFFF"
+
+    [UI.theme.dark.primary]
+        #main = "#F80061"
+        #dark = "#980039"
+        #light = "#FFE7EB"
+```

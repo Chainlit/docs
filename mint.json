@@ -45,9 +45,9 @@
     {
       "group": "Get Started",
       "pages": [
-        "overview",
-        "installation",
-        "pure-python",
+        "get-started/overview",
+        "get-started/installation",
+        "get-started/pure-python",
         {
           "group": "Integrations",
           "pages": [
@@ -57,7 +57,43 @@
             "integrations/langflow"
           ]
         },
-        "concepts/get-started/deployment"
+        "get-started/deployment"
+      ]
+    },
+    {
+      "group": "Chat Experience",
+      "pages": [
+        {
+          "group": "Streaming",
+          "pages": [
+            "chat-experience/streaming/python",
+            "chat-experience/streaming/langchain"
+          ]
+        },
+        "chat-experience/elements",
+        "chat-experience/actions",
+        "chat-experience/ask-user",
+        "chat-experience/chat-settings"
+      ]
+    },
+    {
+      "group": "Chat Data",
+      "pages": ["chat-data/overview", "chat-data/history", "chat-data/feedback"]
+    },
+    {
+      "group": "Observability & Iteration",
+      "pages": [
+        "observability-iteration/chain-of-thought",
+        {
+          "group": "Prompt Playground",
+          "pages": [
+            "observability-iteration/prompt-playground/overview",
+            "observability-iteration/prompt-playground/setup",
+            "observability-iteration/prompt-playground/template-and-variables",
+            "observability-iteration/prompt-playground/formatted-prompts",
+            "observability-iteration/prompt-playground/llm-providers"
+          ]
+        }
       ]
     },
     {
@@ -70,49 +106,29 @@
       ]
     },
     {
-      "group": "Concepts",
+      "group": "UI customisation",
       "pages": [
-        "concepts/chain-of-thought",
-        "concepts/feedback",
+        "ui-customisation/overview",
+        "ui-customisation/custom-logo-and-favicon",
+        "ui-customisation/theme",
+        "ui-customisation/custom-css"
+      ]
+    },
+    {
+      "group": "Backend",
+      "pages": [
         {
-          "group": "Prompt Playground",
+          "group": "config.toml",
           "pages": [
-            "concepts/prompt-playground/overview",
-            "concepts/prompt-playground/setup",
-            "concepts/prompt-playground/template-and-variables",
-            "concepts/prompt-playground/formatted-prompts",
-            "concepts/prompt-playground/llm-providers"
+            "backend/config/overview",
+            "backend/config/features",
+            "backend/config/ui"
           ]
         },
-        "concepts/chat-settings",
-        "concepts/elements",
-        "concepts/actions",
-        "concepts/ask-user",
-        {
-          "group": "Streaming",
-          "pages": ["concepts/streaming/python", "concepts/streaming/langchain"]
-        },
-        "concepts/user-session",
-        {
-          "group": "Customization",
-          "pages": [
-            "concepts/customization/overview",
-            "concepts/customization/custom-logo-and-favicon",
-            "concepts/customization/custom-css",
-            "concepts/customization/theme",
-            "concepts/customization/custom-endpoint"
-          ]
-        },
-        "concepts/env-variables",
-        "concepts/command-line",
-        {
-          "group": "Configuration",
-          "pages": [
-            "concepts/configuration/features",
-            "concepts/configuration/UI",
-            "concepts/configuration/theme"
-          ]
-        }
+        "backend/user-session",
+        "backend/env-variables",
+        "backend/custom-endpoint",
+        "backend/command-line"
       ]
     },
     {
@@ -243,7 +259,6 @@
         {
           "group": "Data Persistence",
           "pages": [
-            "cloud/persistence/overview",
             "cloud/persistence/getting-started",
             "cloud/persistence/enterprise"
           ]

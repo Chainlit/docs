@@ -1,0 +1,172 @@
+---
+title: Custom API Endpoints
+---
+
+Custom API endpoints allow you to extend Chainlit's Fast API backend with your own endpoints.
+One good use case for this is to serve an agent to external services.
+
+<Note>
+  If you create or update a custom endpoint, you will have to restart your
+  Chainlit process. The file watcher will not pick up changes.
+</Note>
+
+## How it works
+
+To add a custom endpoint, import the FastAPI `app` instance from `chainlit.server` and declare your endpoint as you would in FastAPI.
+
+```python
+from chainlit.server import app
+from fastapi import Request
+from fastapi.responses import (
+    HTMLResponse,
+)
+
+
+@app.get("/hello")
+def hello(request: Request):
+    print(request.headers)
+    return HTMLResponse("Hello World")
+```
+
+## Use Chainlit APIs
+
+To use Chainlit APIs, you have to init a Chainlit context.
+
+### HTTP context
+
+In HTTP context, the Chainlit APIs **only logs data** (if [data persistence](/cloud/persistence/getting-started) is enabled) and will not send any data to the client.
+The data sent back to the client is defined by the HTTP response.
+
+```python
+from chainlit.server import app
+from fastapi import Request
+from fastapi.responses import (
+    HTMLResponse,
+)
+
+from chainlit.context import init_http_context
+import chainlit as cl
+
+@app.get("/hello")
+async def hello(
+    request: Request,
+):
+    init_http_context()
+    await cl.Message(content="Hello World").send()
+    return HTMLResponse("Hello World")
+```
+
+### Websocket context
+
+Websocket context is the same context used by your regular Chainlit app.
+The only use case that requires to use the Websocket context within an HTTP request is to send data to a websocket client (which you know the session ID for) based on some arbitrary HTTP request.
+
+```py
+from fastapi import Request
+from fastapi.responses import HTMLResponse
+
+
+from chainlit.server import app
+from chainlit.context import init_ws_context
+from chainlit.session import WebsocketSession
+
+import chainlit as cl
+
+
+@cl.on_chat_start
+def main():
+    print("Session id:", cl.user_session.get("id"))
+
+
+@app.get("/hello/{session_id}")
+async def hello(
+    request: Request,
+    session_id: str,
+):
+    ws_session = WebsocketSession.get_by_id(session_id=session_id)
+    init_ws_context(ws_session)
+    await cl.Message(content="Hello World").send()
+    return HTMLResponse("Data sent to the websocket client")
+```
+
+## Authentication
+
+You can use any authentication system since the request is accessible.
+However Chainlit authentication is fully compatible with custom endpoints.
+
+```py
+from typing_extensions import Annotated
+from fastapi import Request, Depends
+from fastapi.responses import (
+    HTMLResponse,
+)
+
+from chainlit.server import app
+from chainlit.context import init_http_context
+from chainlit.auth import authenticate_user
+import chainlit as cl
+
+@app.get("/hello")
+async def hello(
+    request: Request,
+    current_user: Annotated[
+        Union[cl.AppUser, cl.PersistedAppUser], Depends(authenticate_user)
+    ],
+):
+    init_http_context(user=current_user)
+    await cl.Message(content="Hello World").send()
+    return HTMLResponse("Hello World")
+```
+
+Once an endpoint is protected, it will require to have a valid token in the `Authorization` header.
+
+```json headers
+{
+  "Authorization": "Bearer TOKEN"
+}
+```
+
+## Generate a token
+
+The token is the same token generated when you login in the Chainlit app.
+You can generate a token manually for a given user with this python script (not a Chainlit app).
+
+<Note>
+  This will require to have a CHAINLIT_AUTH_SECRET. You can run `chainlit
+  create-secret` to create one.
+</Note>
+
+```py
+from chainlit.auth import create_jwt
+from chainlit.client.base import AppUser
+
+print(create_jwt(AppUser(username="USERNAME")))
+```
+
+If [data persistence](/cloud/persistence/getting-started) is enabled, authentication will fail if the user your signed a token for does not exist.
+Here is a python script (not a Chainlit app) to create an app user and then sign a token for it.
+
+```py
+import os
+import asyncio
+
+from chainlit.client.cloud import ChainlitCloudClient, AppUser
+from chainlit.auth import create_jwt
+
+CHAINLIT_API_KEY = os.environ.get("CHAINLIT_API_KEY")
+
+client = ChainlitCloudClient(CHAINLIT_API_KEY)
+
+
+async def main():
+    # Create the user
+    app_user = AppUser(username="foobar")
+    persisted_app_user = await client.create_app_user(app_user)
+
+    # Sign the token
+    print(create_jwt(persisted_app_user))
+
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
+```

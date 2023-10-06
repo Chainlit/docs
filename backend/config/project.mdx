@@ -1,0 +1,47 @@
+---
+title: Project
+---
+
+### Options
+
+<ParamField path="enable_telemetry" type="bool" default={true}>
+  Whether to enable telemetry (default: true). No personal data is collected.
+</ParamField>
+
+<ParamField path="user_env" type="List[str]" default={[]}>
+  List of environment variables to be provided by each user to use the app.
+</ParamField>
+
+<ParamField path="session_timeout" type="int" default={3600}>
+  Duration (in seconds) during which the session is saved when the connection is
+  lost
+</ParamField>
+
+<ParamField path="cache" type="bool" default={false}>
+  Enable third parties caching (e.g LangChain cache)
+</ParamField>
+
+<ParamField path="follow_symlink" type="bool" default={false}>
+  Follow symlink for asset mount (see
+  https://github.com/Chainlit/chainlit/issues/317)
+</ParamField>
+
+### Default configuration
+
+```toml
+[project]
+# Whether to enable telemetry (default: true). No personal data is collected.
+enable_telemetry = true
+
+# List of environment variables to be provided by each user to use the app.
+user_env = []
+
+# Duration (in seconds) during which the session is saved when the connection is lost
+session_timeout = 3600
+
+# Enable third parties caching (e.g LangChain cache)
+cache = false
+
+# Follow symlink for asset mount (see https://github.com/Chainlit/chainlit/issues/317)
+# follow_symlink = false
+```

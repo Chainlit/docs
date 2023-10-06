@@ -1,0 +1,25 @@
+---
+title: Chat Settings
+---
+
+Chat settings are useful to let each user configure their chat experience given a set of options.
+
+## How it works
+
+Check the chat settings [API reference](/api-reference/chat-settings) to learn how to configure it.
+
+## Preview
+
+If chat settings are set, a new button will appear in the chat bar.
+
+![OpenChatSettings](/images/open-chat-settings.png)
+
+Clicking on this button will open the settings panel. All settings are editable by the user. Once settings are updated, an event is sent to the Chainlit server so the application can react to the update.
+
+<Frame caption="Chat Settings in Chainlit">
+  <img src="/images/chat-settings.png" />
+</Frame>
+
+## Example
+
+Check out this example from the cookbook that uses this feature: https://github.com/Chainlit/cookbook/tree/main/image-gen

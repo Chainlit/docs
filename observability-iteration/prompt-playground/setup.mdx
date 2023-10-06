@@ -1,0 +1,85 @@
+---
+title: Setup
+---
+
+The Prompt Playground will automatically be available through a message if a [Prompt](/api-reference/prompt) instance is passed to that message.
+
+<Note>
+  Chainlit [integrations](/integrations) will take care of this for you if the
+  framework you are using supports it.
+</Note>
+
+## Step 1: Create a Prompt Instance
+
+For this example we are going to create a completion with OpenAI chat API and create a `Prompt` reflecting the API call made to OpenAI.
+
+<Note>
+  Chainlit supports other LLM providers and let's you implement custom ones.
+  Learn more [here](/observability-iteration/prompt-playground/llm-providers).
+</Note>
+
+```python
+import openai
+import chainlit as cl
+from chainlit.prompt import Prompt, PromptMessage
+from chainlit.playground.providers import ChatOpenAI
+
+template = "Hello, {name}!"
+inputs = {"name": "John"}
+
+settings = {
+    "model": "gpt-3.5-turbo",
+    "temperature": 0,
+    # ... more settings
+}
+
+@cl.on_chat_start
+async def start():
+    # Create the Chainlit Prompt instance
+    prompt = Prompt(
+        provider=ChatOpenAI.id,
+        inputs=inputs,
+        settings=settings,
+        messages=[
+          PromptMessage(
+            template=template,
+            formatted=template.format(**inputs),
+            role="assistant")
+          ]
+    )
+
+    # Make the call to OpenAI
+    response = await openai.ChatCompletion.acreate(
+        messages=[m.to_openai() for m in prompt.messages], **settings
+    )
+
+    prompt.completion = response.choices[0]["message"]["content"]
+```
+
+Check the [Prompt API reference](/api-reference/prompt) to learn about all the attributes and the difference between chat and non chat modes.
+
+<Note>
+  Every attribute of the `Prompt` class is optional. The Prompt Playground
+  adapts to the available data.
+</Note>
+
+## Step 2: Pass the Prompt to a Message
+
+Once you have created the `Prompt` instance, you can pass it to a `Message` instance and send it.
+
+Here is an example of sending a `Message` instance with a `Prompt`:
+
+```python
+await cl.Message(
+    content="The content of the message is not important.",
+    prompt=prompt,
+).send()
+```
+
+## Step 3: Open the Prompt Playground
+
+Once the message is sent, a new button will be available beneath it. Clicking on that button will open the Prompt Playground in the context of that message.
+
+<Frame caption="Open the Prompt Playground">
+  <img src="/images/open-pp.gif" />
+</Frame>

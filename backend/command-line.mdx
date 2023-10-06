@@ -1,0 +1,33 @@
+---
+title: Command Line Options
+---
+
+The Chainlit CLI (Command Line Interface) is a tool that allows you to interact with the Chainlit system via command line. It provides several commands to manage your Chainlit applications.
+
+## Commands
+
+### `init`
+
+The `init` command initializes a Chainlit project by creating a configuration file located at `.chainlit/config.toml`
+
+```bash
+chainlit init
+```
+
+### `run`
+
+The `run` command starts a Chainlit application.
+
+```bash
+chainlit run [OPTIONS] TARGET
+```
+
+Options:
+
+- `-w, --watch`: Reload the app when the module changes. When this option is specified, the file watcher will be started and any changes to files will cause the server to reload the app, allowing faster iterations.
+- `-h, --headless`: Prevents the app from opening in the browser.
+- `-d, --debug`: Sets the log level to debug. Default log level is error.
+- `-c, --ci`: Runs in CI mode.
+- `--no-cache`: Disables third parties cache, such as langchain.
+- `--host`: Specifies a different host to run the server on.
+- `--port`: Specifies a different port to run the server on.
