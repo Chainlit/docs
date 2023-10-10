@@ -37,6 +37,8 @@ The `Message` class is designed to send, stream, edit or remove messages in the 
 
 ### Send a message
 
+Send a new message to the UI.
+
 ```python Code Example
 import chainlit as cl
 
@@ -50,6 +52,8 @@ async def main(message: str):
 
 ### Nest a message
 
+Send a nested message to the UI. Ideal for chain of thoughts.
+
 ```python Code Example
 import chainlit as cl
 
@@ -60,6 +64,8 @@ async def start():
 ```
 
 ### Stream a message
+
+Send a message token by token to the UI.
 
 ```python Code Example
 import chainlit as cl
@@ -76,7 +82,30 @@ async def main():
     await msg.send()
 ```
 
+### Display a loader
+
+Send an empty message to temporarily display a loader in the UI (at the message level).
+
+```python Code Example
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def main():
+    msg = cl.Message(content="")
+    await msg.send()
+
+    # do some work
+    await cl.sleep(4)
+
+    msg.content = "work finished"
+
+    await msg.update()
+```
+
 ### Update a message
+
+Update a message that already has been sent.
 
 ```python Code Example
 import chainlit as cl
@@ -94,6 +123,8 @@ async def main():
 ```
 
 ### Remove a message
+
+Remove a message from the UI.
 
 ```python Code Example
 import chainlit as cl
