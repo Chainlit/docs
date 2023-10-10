@@ -17,9 +17,8 @@ Follow these guides to create an OAuth app for your chosen provider(s). Then cop
 
 <Warning>
   If your app is served behind a reverse proxy (like cloud run) you will have to
-  set the `base_url` field in your `.chainlit/config.toml` file under the `UI`
-  category. For instance, if you host your application at
-  `https://mydomain.com`, the `base_url` should be set to
+  set the `CHAINLIT_URL` environment variable. For instance, if you host your
+  application at `https://mydomain.com`, `CHAINLIT_URL` should be set to
   `https://mydomain.com`.
 </Warning>
 

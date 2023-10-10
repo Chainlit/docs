@@ -7,13 +7,13 @@ The `TaskList` class allows you to display a task list next to the chatbot UI.
 ### Attributes
 
 <ParamField path="status" type="str">
-  The status of the TaskList. We suggest using something short like "Ready", "Running...", "Failed", "Done".
+  The status of the TaskList. We suggest using something short like "Ready",
+  "Running...", "Failed", "Done".
 </ParamField>
 
 <ParamField path="tasks" type="Task">
   The list of tasks to be displayed in the UI.
 </ParamField>
-
 
 ### Usage
 
@@ -49,13 +49,13 @@ async def main():
     task2.status = cl.TaskStatus.FAILED
     task_list.status = "Failed"
     await task_list.send()
-    
+
 ```
 
 <Frame caption="Task List in action">
   <video
     controls
-    autoplay
+    autoPlay
     loop
     src="https://user-images.githubusercontent.com/13104895/251525854-57d1d9af-62a0-4f67-a530-1f0a3fc93488.mp4"
   />
