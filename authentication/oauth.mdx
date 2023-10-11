@@ -56,7 +56,12 @@ You need to set the following environment variables:
 - `OAUTH_AZURE_AD_CLIENT_SECRET`: Client secret
 - `OAUTH_AZURE_AD_TENANT_ID`: Azure tenant ID
 
-Additionally, if your application supports "Accounts in this organizational directory only" (Single tenant), you will need to explicitly set: `OAUTH_AZURE_AD_ENABLE_SINGLE_TENANT=true`.
+<Note>
+  If your application supports "Accounts in this organizational directory only"
+  (Single tenant), you will need to explicitly set:
+  `OAUTH_AZURE_AD_ENABLE_SINGLE_TENANT=true`. If not, do not set this
+  environment variable at all.
+</Note>
 
 ### Okta
 
