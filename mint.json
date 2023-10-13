@@ -78,7 +78,12 @@
     },
     {
       "group": "Chat Data",
-      "pages": ["chat-data/overview", "chat-data/history", "chat-data/feedback"]
+      "pages": [
+        "chat-data/overview",
+        "chat-data/history",
+        "chat-data/feedback",
+        "chat-data/security"
+      ]
     },
     {
       "group": "Observability & Iteration",
