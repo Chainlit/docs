@@ -3,9 +3,10 @@ title: Haystack
 ---
 
 <Note>
-  The current Haystack integration allows you to run chainlit apps and visualise intermediary steps. Playground capabilities will be added with the release of Haystack 2.0.
+  The current Haystack integration allows you to run chainlit apps and visualise
+  intermediary steps. Playground capabilities will be added with the release of
+  Haystack 2.0.
 </Note>
-
 
 Haystack is an end-to-end NLP framework that enables you to build NLP applications powered by LLMs, Transformer models, vector search and more. Whether you want to perform question answering, answer generation, semantic document search, or build tools that are capable of complex decision making and query resolution, you can use the state-of-the-art NLP models with Haystack to build end-to-end NLP applications solving your use case.
 Check out their repo: https://github.com/deepset-ai/haystack.
@@ -21,7 +22,7 @@ pip install farm-haystack chainlit
 
 ## Integration
 
-Create a new Python file named app.py with the code below. 
+Create a new Python file named app.py with the code below.
 
 <CodeGroup>
 
@@ -41,11 +42,12 @@ agent = ConversationalAgent(
 cl.HaystackAgentCallbackHandler(agent)
 
 @cl.on_message
-async def main(message: str):
-    response = await cl.make_async(agent.run)(message)
+async def main(message: cl.Message):
+    response = await cl.make_async(agent.run)(message.content)
     await cl.Message(author="Agent", content=response["answers"][0].answer).send()
 
 ```
+
 </CodeGroup>
 
 This code adds the Chainlit callback handler to the Haystack callback manager.
@@ -54,4 +56,5 @@ The callback handler is responsible for listening to the chain's intermediate st
 Then, you can run `chainlit run app.py` in your terminal to run the app and interact with your agent.
 
 ## Example
+
 Check out this full example from the cookbook: https://github.com/Chainlit/cookbook/tree/main/haystack

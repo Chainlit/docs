@@ -29,7 +29,7 @@ def sync_func():
     return "Hello!"
 
 @cl.on_message
-async def main(message: str):
+async def main(message: cl.Message):
     answer = await cl.make_async(sync_func)()
     await cl.Message(
         content=answer,
