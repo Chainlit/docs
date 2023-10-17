@@ -73,7 +73,8 @@
         "chat-experience/elements",
         "chat-experience/actions",
         "chat-experience/ask-user",
-        "chat-experience/chat-settings"
+        "chat-experience/chat-settings",
+        "chat-experience/chat-profiles"
       ]
     },
     {
@@ -200,7 +201,8 @@
             "api-reference/input-widgets/tags",
             "api-reference/input-widgets/textinput"
           ]
-        }
+        },
+        "api-reference/set-chat-profiles"
       ]
     },
     {
