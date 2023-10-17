@@ -73,8 +73,8 @@
         "chat-experience/elements",
         "chat-experience/actions",
         "chat-experience/ask-user",
-        "chat-experience/chat-settings",
-        "chat-experience/chat-profiles"
+        "chat-experience/chat-profiles",
+        "chat-experience/chat-settings"
       ]
     },
     {
