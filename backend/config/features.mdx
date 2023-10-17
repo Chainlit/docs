@@ -9,9 +9,15 @@ title: Features
   when passing a prompt to a message.
 </ParamField>
 
+<ParamField path="multi_modal" type="bool" default={true}>
+  Authorize users to upload files with messages. The files are then accessible
+  in [cl.on_message](/api-reference/on-message).
+</ParamField>
+
 ### Default configuration
 
 ```toml
 [features]
 prompt_playground = true
+multi_modal = true
 ```

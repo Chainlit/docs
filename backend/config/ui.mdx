@@ -12,6 +12,10 @@ title: UI
   The content of the `<meta name="description">` of the application.
 </ParamField>
 
+<ParamField path="show_readme_as_default" type="bool" default={true}>
+  Show the readme while the conversation is empty.
+</ParamField>
+
 <ParamField path="hide_cot" type="bool" default={false}>
   You can hide the [Chain of Thought](/observability-iteration/chain-of-thought)
   UI.
@@ -42,6 +46,9 @@ name = "Chatbot"
 
 # Description of the app and chatbot. This is used for HTML tags.
 # description = ""
+
+# Show the readme while the conversation is empty.
+show_readme_as_default = true
 
 # Large size content are by default collapsed for a cleaner ui
 default_collapse_content = true
