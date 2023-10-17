@@ -30,7 +30,7 @@ def to_cache():
 value = to_cache()
 
 @cl.on_message
-async def main(message: str):
+async def main(message: cl.Message):
     await cl.Message(
         content=value,
     ).send()

@@ -29,8 +29,8 @@ prompt = """Answer the following question:
 
 
 @cl.on_message
-async def main(message: str):
-    fromatted_prompt = prompt.format(question=message)
+async def main(message: cl.Message):
+    fromatted_prompt = prompt.format(question=message.content)
     msg = cl.Message(
         content="",
     )
@@ -71,9 +71,9 @@ def start_chat():
 
 
 @cl.on_message
-async def main(message: str):
+async def main(message: cl.Message):
     message_history = cl.user_session.get("message_history")
-    message_history.append({"role": "user", "content": message})
+    message_history.append({"role": "user", "content": message.content})
 
     msg = cl.Message(content="")
 
