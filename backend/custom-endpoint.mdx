@@ -34,8 +34,8 @@ To use Chainlit APIs, you have to init a Chainlit context.
 
 ### HTTP context
 
-In HTTP context, the Chainlit APIs **only logs data** (if [data persistence](/cloud/persistence/getting-started) is enabled) and will not send any data to the client.
-The data sent back to the client is defined by the HTTP response.
+In HTTP context, the Chainlit APIs **only logs data** (if [data persistence](/cloud/persistence/getting-started) is enabled) to the platform. These intermediary Chainlit APIs (Message, Image, etc.) will not send any data to the client. 
+The data sent back to the client is defined by the HTTP response. 
 
 ```python
 from chainlit.server import app
