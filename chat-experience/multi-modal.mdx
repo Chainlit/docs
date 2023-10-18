@@ -25,6 +25,10 @@ async def on_message(msg: cl.Message):
     await cl.Message(content=f"Received {len(images)} image(s)").send()
 ```
 
+## Image Processing with Transformers
+
+Multi-modal capabilities are being added to Large Language Model (effectively making them Large Multi Modal Models). For more information on this, refer to the [LLaVa](https://github.com/Chainlit/cookbook/tree/main/llava) cookbook example.
+
 ## Disabling Multi-Modal Functionality
 
 If you wish to disable this feature (which would prevent users from attaching files to their messages), you can do so by setting `features.multi_modal=false` in your Chainlit [config](/backend/config/features) file.
