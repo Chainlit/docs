@@ -1,0 +1,30 @@
+---
+title: "Multi-Modal Functionality"
+---
+
+The term 'Multi-Modal' refers to the ability to support more than just text, encompassing images, videos, and files. Within the Chainlit application, users have the flexibility to attach any file to their messages. This can be achieved either by utilizing the drag and drop feature or by clicking on the `+` button located in the chat bar.
+
+As a developer, you have the capability to access these attached files through the [cl.on_message](/api-reference/on-message) decorated function.
+
+```py
+import chainlit as cl
+
+
+@cl.on_message
+async def on_message(msg: cl.Message):
+    if not msg.elements:
+        await cl.Message(content="No file attached").send()
+        return
+
+    # Processing images exclusively
+    images = [file for file in msg.elements if "image" in file.mime]
+
+    # Accessing the bytes of a specific image
+    image_bytes = images[0].content
+
+    await cl.Message(content=f"Received {len(images)} image(s)").send()
+```
+
+## Disabling Multi-Modal Functionality
+
+If you wish to disable this feature (which would prevent users from attaching files to their messages), you can do so by setting `features.multi_modal=false` in your Chainlit [config](/backend/config/features) file.

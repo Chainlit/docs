@@ -70,11 +70,17 @@
             "chat-experience/streaming/langchain"
           ]
         },
+        "chat-experience/multi-modal",
         "chat-experience/elements",
         "chat-experience/actions",
         "chat-experience/ask-user",
-        "chat-experience/chat-profiles",
-        "chat-experience/chat-settings"
+        {
+          "group": "Configuration",
+          "pages": [
+            "chat-experience/chat-profiles",
+            "chat-experience/chat-settings"
+          ]
+        }
       ]
     },
     {
@@ -162,7 +168,6 @@
         "api-reference/on-chat-start",
         "api-reference/on-chat-end",
         "api-reference/on-message",
-        "api-reference/on-file-upload",
         "api-reference/message",
         {
           "group": "Ask Message",
