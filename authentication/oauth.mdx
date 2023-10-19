@@ -79,6 +79,17 @@ You need to set the following environment variables:
 - `OAUTH_OKTA_CLIENT_SECRET`: Client secret
 - `OAUTH_OKTA_DOMAIN`: Domain name for your okta setup - e.g. https://company.okta.com
 
+### Descope
+
+Head to the [Descope sign-up page](https://www.descope.com/sign-up), to get started with your account and set up your authentication.
+
+The callback URL should be: `BASE_URL/auth/oauth/descope/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/descope/callback`.
+
+You need to set the following environment variables:
+
+- `OAUTH_DESCOPE_CLIENT_ID`: Descope Project ID, which can be found under [Project Settings](https://app.descope.com/settings/project) in the console.
+- `OAUTH_DESCOPE_CLIENT_SECRET`: Descope Access Key, which can be created under [Access Keys](https://app.descope.com/accesskeys) in the console.
+
 ### Auth0
 
 Follow this guide to [create an Auth0 application](https://auth0.com/docs/get-started/auth0-overview/create-applications).
