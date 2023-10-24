@@ -145,7 +145,7 @@
     },
     {
       "group": "Guides",
-      "pages": ["guides/sync-async", "guides/migration/0.7.0"]
+      "pages": ["guides/sync-async", "guides/iframe", "guides/migration/0.7.0"]
     },
     {
       "group": "Examples",
