@@ -88,8 +88,7 @@
       "pages": [
         "chat-data/overview",
         "chat-data/history",
-        "chat-data/feedback",
-        "chat-data/security"
+        "chat-data/feedback"
       ]
     },
     {
@@ -153,6 +152,7 @@
         "examples/openai-sql",
         "examples/mrkl",
         "examples/qa",
+        "examples/security",
         "examples/community",
         "examples/cookbook"
       ]
