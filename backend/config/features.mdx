@@ -14,10 +14,15 @@ title: Features
   in [cl.on_message](/api-reference/on-message).
 </ParamField>
 
+<ParamField path="speech_to_text" type="bool" default={true}>
+  Allows user to write messages with speech.
+</ParamField>
+
 ### Default configuration
 
 ```toml
 [features]
 prompt_playground = true
 multi_modal = true
+speech_to_text = true
 ```
