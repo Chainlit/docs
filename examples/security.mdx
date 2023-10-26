@@ -68,7 +68,7 @@ async def check_text(text: str):
 
 @cl.on_message
 async def main(message: cl.Message):
-  with check_text(message.content):
+  async with check_text(message.content):
     # This block is only executed when the user press "Continue"
     response = await cl.Message(
         content=f"Received: {message.content}",
@@ -109,7 +109,7 @@ async def check_text(text: str):
 
 @cl.on_message
 async def main(message: cl.Message):
-  with check_text(message.content) as anonymized_message:
+  async with check_text(message.content) as anonymized_message:
     response = await llm_chain.arun(
       anonymized_message
       callbacks=[cl.AsyncLangchainCallbackHandler()]
