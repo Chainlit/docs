@@ -14,10 +14,24 @@ title: Features
   in [cl.on_message](/api-reference/on-message).
 </ParamField>
 
+<ParamField path="speech_to_text.enabled" type="bool" default={false}>
+  Allows user to write messages with speech.
+</ParamField>
+
+<ParamField path="speech_to_text.language" type="string">
+  The language spoken by the user. Greatly improve the quality of the
+  transcription. See available languages here
+  https://github.com/JamesBrill/react-speech-recognition/blob/HEAD/docs/API.md#language-string
+</ParamField>
+
 ### Default configuration
 
 ```toml
 [features]
 prompt_playground = true
 multi_modal = true
+# Allows user to use speech to text
+[features.speech_to_text]
+    enabled = false
+    # language = en-US
 ```
