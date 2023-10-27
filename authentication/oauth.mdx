@@ -79,6 +79,13 @@ You need to set the following environment variables:
 - `OAUTH_OKTA_CLIENT_SECRET`: Client secret
 - `OAUTH_OKTA_DOMAIN`: Domain name for your okta setup - e.g. https://company.okta.com
 
+There are several ways to configure the Okta OAuth routes:
+
+- When using the [Single Sign-On to Okta](https://developer.okta.com/docs/reference/api/oidc/#composing-your-base-url) setup, you need to set the `OAUTH_OKTA_AUTHORIZATION_SERVER_ID` environment variable to `false`.
+- When using Okta [as the identity platform for your app or API](https://developer.okta.com/docs/reference/api/oidc/#_2-okta-as-the-identity-platform-for-your-app-or-api) either:
+  - set the `OAUTH_OKTA_AUTHORIZATION_SERVER_ID` environment variable to `default` if you have a developer account,
+  - or set it to the authorization server id from your Custom Authorization Server.
+
 ### Descope
 
 Head to the [Descope sign-up page](https://www.descope.com/sign-up), to get started with your account and set up your authentication.
