@@ -2,7 +2,8 @@
 title: get_conversations
 ---
 
-Get a list of conversations.
+Get a list of conversations. The conversations are shallow and only contain the first user message.
+To get the full conversation, call [get_conversation](/api-reference/cloud-client/get_conversation) with the conversation ID.
 
 ### Parameters
 
@@ -15,7 +16,11 @@ Get a list of conversations.
 
 ### Returns
 
-<ResponseField name="paginated_response" type="PaginatedResponse[data: List[ConversationDict], pageInfo: PageInfo]" required>
+<ResponseField
+  name="paginated_response"
+  type="PaginatedResponse[data: List[ConversationDict], pageInfo: PageInfo]"
+  required
+>
   The list of conversations along with pagination information.
 </ResponseField>
 

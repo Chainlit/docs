@@ -70,15 +70,26 @@
             "chat-experience/streaming/langchain"
           ]
         },
+        "chat-experience/multi-modal",
         "chat-experience/elements",
         "chat-experience/actions",
         "chat-experience/ask-user",
-        "chat-experience/chat-settings"
+        {
+          "group": "Configuration",
+          "pages": [
+            "chat-experience/chat-profiles",
+            "chat-experience/chat-settings"
+          ]
+        }
       ]
     },
     {
       "group": "Chat Data",
-      "pages": ["chat-data/overview", "chat-data/history", "chat-data/feedback"]
+      "pages": [
+        "chat-data/overview",
+        "chat-data/history",
+        "chat-data/feedback"
+      ]
     },
     {
       "group": "Observability & Iteration",
@@ -133,12 +144,7 @@
     },
     {
       "group": "Guides",
-      "pages": [
-        "guides/sync-async",
-        "guides/migration/0.3.0",
-        "guides/migration/0.6.0",
-        "guides/migration/0.7.0"
-      ]
+      "pages": ["guides/sync-async", "guides/iframe", "guides/migration/0.7.0"]
     },
     {
       "group": "Examples",
@@ -146,6 +152,7 @@
         "examples/openai-sql",
         "examples/mrkl",
         "examples/qa",
+        "examples/security",
         "examples/community",
         "examples/cookbook"
       ]
@@ -156,13 +163,13 @@
         "api-reference/on-chat-start",
         "api-reference/on-chat-end",
         "api-reference/on-message",
-        "api-reference/on-file-upload",
         "api-reference/message",
         {
           "group": "Ask Message",
           "pages": [
             "api-reference/ask/ask-for-input",
-            "api-reference/ask/ask-for-file"
+            "api-reference/ask/ask-for-file",
+            "api-reference/ask/ask-for-action"
           ]
         },
         "api-reference/prompt",
@@ -194,7 +201,8 @@
             "api-reference/input-widgets/tags",
             "api-reference/input-widgets/textinput"
           ]
-        }
+        },
+        "api-reference/set-chat-profiles"
       ]
     },
     {

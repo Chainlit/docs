@@ -1,5 +1,5 @@
 ---
-title: On-Premise Deployment
+title: Self-Hosted Deployment
 ---
 
 <Note>
@@ -20,7 +20,7 @@ docker login --username chainlit
 3. Pull the image
 
 ```shell
-docker pull chainlit/chainlit-cloud:latest
+docker pull chainlit/chainlit-cloud:0.2.7
 ```
 
 ## Host the image
@@ -131,6 +131,7 @@ GITHUB_SECRET="your secret"
 ## https://support.smartbear.com/readyapi/docs/requests/auth/types/oauth2/tutorial-azure.html
 AZURE_AD_CLIENT_ID="your id"
 AZURE_AD_CLIENT_SECRET="your secret"
+AZURE_AD_TENANT_ID="your tenant id"
 ## Okta
 ## https://developer.okta.com/docs/guides/implement-oauth-for-okta/main/
 OKTA_CLIENT_ID="your id"
@@ -139,6 +140,14 @@ OKTA_ISSUER="the issuer"
 
 # If you want to use Vercel Analytics (only for hosting with Vercel)
 ENABLE_VERCEL_ANALYTICS=true
+
+# If you want to monitor your application using Sentry
+SENTRY_ORG="org"
+SENTRY_PROJECT="project"
+# https://docs.sentry.io/product/sentry-basics/concepts/dsn-explainer/
+NEXT_PUBLIC_SENTRY_DSN="sentry-dsn"
+# https://docs.sentry.io/product/accounts/auth-tokens/
+SENTRY_AUTH_TOKEN="sentry-auth-token"
 ```
 
 ## Configuring storage
@@ -156,6 +165,11 @@ If you enabled OAuth authentication in the environment variables, don't forget t
 <protocol>://<domain>/api/auth/callback/<provider>
 # Example https://cloud.chainlit.io/api/auth/callback/google
 ```
+
+## Configure the port and start the container
+
+The server within the docker image will run on port `3000`. Don't forget to expose it.
+You should now be ready to start the container.
 
 ## Configure your Chainlit app
 

@@ -1,0 +1,117 @@
+---
+title: "Security - PII"
+---
+
+When building chat applications, it's crucial to ensure the secure handling of sensitive data, especially Personal Identifiable Information (PII). PII can be directly or indirectly linked to an individual, making it essential to protect user privacy by preventing the transmission of such data to language models.
+
+### Example of PII
+
+Consider the text below, where PII has been highlighted:
+
+> Hello, my name is **John** and I live in **New York**.
+> My credit card number is **3782-8224-6310-005** and my phone number is **(212) 688-5500**.
+
+And here is the anonymized version:
+
+> Hello, my name is \<PERSON\> and I live in \<LOCATION\>. My credit card number is \<CREDIT_CARD\> and my phone number is \<PHONE_NUMBER\>.
+
+## Analyze and anonymize data
+
+Integrate [Microsoft Presidio](https://microsoft.github.io/presidio/) for robust data sanitization in your Chainlit application.
+
+```python Code Example
+import chainlit as cl
+
+@cl.on_message
+async def main(message: cl.Message):
+    # Notice that the message is passed as is
+    response = await cl.Message(
+        content=f"Received: {message.content}",
+    ).send()
+```
+
+Before proceeding, ensure that the Python packages required for PII analysis and anonymization are installed. Run the following commands in your terminal to install them:
+
+```shell
+pip install presidio-analyzer presidio-anonymizer spacy
+python -m spacy download en_core_web_lg
+```
+
+Create an async context manager that utilizes the Presidio Analyzer to inspect the incoming text for any PII. This context manager can be included in your main function to scrutinize messages before they are processed.
+When PII is detected, you should present the user with the option to either continue or cancel the operation. Use Chainlit's messaging system to accomplish this.
+
+```python Code Example
+from presidio_analyzer import AnalyzerEngine
+from contextlib import asynccontextmanager
+
+analyzer = AnalyzerEngine()
+
+@asynccontextmanager
+async def check_text(text: str):
+  pii_results = analyzer.analyze(text=text, language="en")
+
+  if pii_results:
+    response = await cl.AskActionMessage(
+      content="PII detected",
+      actions=[
+        cl.Action(name="continue", value="continue", label="✅ Continue"),
+        cl.Action(name="cancel", value="cancel", label="❌ Cancel"),
+      ],
+    ).send()
+
+    if response is None or response.get("value") == "cancel":
+      raise InterruptedError
+
+  yield
+
+# ...
+
+@cl.on_message
+async def main(message: cl.Message):
+  async with check_text(message.content):
+    # This block is only executed when the user press "Continue"
+    response = await cl.Message(
+        content=f"Received: {message.content}",
+    ).send()
+```
+
+If your application has a requirement to anonymize PII, Presidio can also do that. Modify the check_text context manager to return anonymized text when PII is detected.
+
+```python Code Example
+from presidio_anonymizer import AnonymizerEngine
+
+anonymizer = AnonymizerEngine()
+
+@asynccontextmanager
+async def check_text(text: str):
+  pii_results = analyzer.analyze(text=text, language="en")
+
+  if pii_results:
+    response = await cl.AskActionMessage(
+      content="PII detected",
+      actions=[
+        cl.Action(name="continue", value="continue", label="✅ Continue"),
+        cl.Action(name="cancel", value="cancel", label="❌ Cancel"),
+      ],
+    ).send()
+
+    if response is None or response.get("value") == "cancel":
+      raise InterruptedError
+
+    yield anonymizer.anonymize(
+      text=text,
+      analyzer_results=pii_results,
+    ).text
+  else:
+    yield text
+
+# ...
+
+@cl.on_message
+async def main(message: cl.Message):
+  async with check_text(message.content) as anonymized_message:
+    response = await llm_chain.arun(
+      anonymized_message
+      callbacks=[cl.AsyncLangchainCallbackHandler()]
+    )
+```

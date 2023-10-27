@@ -7,20 +7,17 @@ The decorated function is called every time a new message is received.
 
 ### Parameters
 
-<ParamField path="message" type="str">
+<ParamField path="message" type="cl.Message">
   The message coming from the UI.
-</ParamField>
-
-<ParamField path="message_id" type="str">
-  The id of the message
 </ParamField>
 
 ### Usage
 
 ```python Code Example
-from chainlit import on_message
+import chainlit as cl
 
-@on_message
-def main(message: str, message_id: str):
+@cl.on_message
+def main(message: cl.Message):
+  content = message.content
   # do something
 ```

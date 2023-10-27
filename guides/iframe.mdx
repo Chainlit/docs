@@ -1,0 +1,66 @@
+---
+title: Embed in Iframe
+---
+
+# Embedding Chatbot Interface Using `<iframe>`
+
+This document outlines the steps and specifications for embedding the external Chatbot UI, provided by Chainlit, into our existing frontend service. This integration is achieved using an HTML `<iframe>`. Below we detail the properties and considerations that need attention.
+
+## Overview
+
+The `<iframe>` tag specifies an inline frame. It is used to embed another document within the current HTML document. In this scenario, we're embedding the Chainlit Chatbot interface that resides at a different URL.
+
+## Code Snippet
+
+Here is the basic setup of the `<iframe>` used to embed the Chatbot UI:
+
+```html
+<iframe
+    src="https://your-chainlit-instance.com"  /* URL of the chatbot interface */
+    width="100%"  /* The iframe takes the full width of the parent element */
+    height="600px"  /* Fixed height of the iframe */
+    frameBorder="0"  /* No border around the iframe */
+    title="Embedded Webpage"  /* Descriptive title for accessibility purposes */
+    style={{ border: 'none' }}  /* Additional styling options */
+></iframe>
+```
+
+## Attributes and Style
+
+- `src`: The URL of the page to embed. This should be the URL of the Chainlit chatbot interface.
+- `width` & `height`: These attributes define the size of the iframe. The width is set to 100% of the parent container, and the height is a fixed 600px. Adjust according to your layout requirements.
+- `frameBorder`: This attribute specifies whether or not to display a border around the iframe. It's set to "0" to avoid any border, making the embedded page blend seamlessly with your content.
+- `title`: A text description of the frame's contents, providing essential information for assistive technologies, such as screen readers.
+- `style`: Inline CSS for the iframe. Here, it's used to ensure there's no border around the iframe, but it can include other styles as necessary.
+
+## Security Considerations
+
+When embedding iframes, consider the following security implications:
+
+- **Mixed Content**: Ensure that the embedded content is served over HTTPS to prevent mixed content issues, where secure pages (served over HTTPS) also contain elements using the insecure HTTP protocol.
+- **Sandboxing**: If additional security is required, especially when embedding content from untrusted sources, consider using the `sandbox` attribute to impose restrictions on the content.
+- **Content Security Policy (CSP)**: If your website uses CSP, ensure that the policy allows for the embedding of external content from the specified URL.
+
+## Accessibility
+
+Ensure the embedded interface adheres to accessibility guidelines:
+
+- The `title` attribute should accurately describe the embedded content for screen readers.
+- Ensure that the chatbot interface within the iframe itself is built according to accessibility standards, with features such as keyboard navigation and ARIA roles and properties.
+
+## Responsive Design
+
+To maintain a responsive design:
+
+- Test the iframe in multiple viewports to see how it responds to different screen sizes. The width is set to 100%, so it should adjust to the parent container's width, but other aspects might not adjust as cleanly.
+- Consider using CSS and JavaScript to adjust the iframe's dimensions dynamically based on the viewport size.
+
+## Troubleshooting
+
+- **Blocked Content**: If the iframe content doesn't load, ensure it’s not being blocked by browser policies or extensions.
+- **Cross-Origin Issues**: Check for console errors related to CORS. The server where the chatbot UI is hosted must set appropriate headers allowing the content to be embedded on your domain.
+- **Layout Shifts**: If the layout shifts unexpectedly, verify the fixed height of the iframe isn't causing visual issues, especially on smaller screens.
+
+## Conclusion
+
+Embedding the Chainlit chatbot interface within an iframe allows users to interact with the chatbot directly on our platform. However, it requires careful attention to security, accessibility, and responsive design. Regular testing and updates are necessary to maintain the integrity and user-friendliness of the integration.

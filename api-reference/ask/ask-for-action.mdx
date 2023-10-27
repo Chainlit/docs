@@ -1,0 +1,56 @@
+---
+title: "AskUserAction"
+---
+
+Ask for the user to take an action before continuing.
+If the user does not answer in time (see timeout), a `TimeoutError` will be raised or `None` will be returned depending on `raise_on_timeout` parameter.
+If a project ID is configured, the messages will be uploaded to the cloud storage.
+
+### Attributes
+
+<ParamField path="content" type="str">
+  The content of the message.
+</ParamField>
+<ParamField path="actions" type="List[Action]">
+  The list of [Action](/api-reference/action) to prompt the user.
+</ParamField>
+<ParamField path="author" type="str" optional>
+  The author of the message, defaults to the chatbot name defined in your
+  config.
+</ParamField>
+<ParamField path="disable_human_feedback" type="bool" optional default="False">
+  The number of seconds to wait for an answer before raising a TimeoutError.
+</ParamField>
+<ParamField path="timeout" type="int" optional default={90}>
+  The number of seconds to wait for an answer before raising a TimeoutError.
+</ParamField>
+<ParamField path="raise_on_timeout" type="bool" optional default="False">
+  Whether to raise a socketio TimeoutError if the user does not answer in time.
+</ParamField>
+
+### Returns
+
+<ResponseField name="response" type="AskActionResponse | None" required>
+  The response of the user.
+</ResponseField>
+
+### Usage
+
+```python Code Example
+import chainlit as cl
+
+@cl.on_chat_start
+async def main():
+  res = await cl.AskActionMessage(
+    content="Pick an action!",
+    actions=[
+      cl.Action(name="continue", value="continue", label="✅ Continue"),
+      cl.Action(name="cancel", value="cancel", label="❌ Cancel")
+    ]
+  ).send()
+
+  if res and res.get("value") == "continue":
+    await cl.Message(
+      content="Continue!",
+    ).send()
+```

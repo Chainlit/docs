@@ -15,6 +15,10 @@ This callback enables you for example to restrict the OAuth login to specific em
 
 Follow these guides to create an OAuth app for your chosen provider(s). Then copy the information into the right environment variable to active the provider.
 
+<Note>
+  The below environment variables can set using .env file that should exist in the root of your project which Chainlit will automatically load.[Add Environment file for Chainlit](https://docs.chainlit.io/backend/env-variables).
+</Note>
+
 <Warning>
   If your app is served behind a reverse proxy (like cloud run) you will have to
   set the `CHAINLIT_URL` environment variable. For instance, if you host your
@@ -56,7 +60,12 @@ You need to set the following environment variables:
 - `OAUTH_AZURE_AD_CLIENT_SECRET`: Client secret
 - `OAUTH_AZURE_AD_TENANT_ID`: Azure tenant ID
 
-Additionally, if your application supports "Accounts in this organizational directory only" (Single tenant), you will need to explicitly set: `OAUTH_AZURE_AD_ENABLE_SINGLE_TENANT=true`.
+<Note>
+  If your application supports "Accounts in this organizational directory only"
+  (Single tenant), you will need to explicitly set:
+  `OAUTH_AZURE_AD_ENABLE_SINGLE_TENANT=true`. If not, do not set this
+  environment variable at all.
+</Note>
 
 ### Okta
 
@@ -77,6 +86,16 @@ There are several ways to configure the Okta OAuth routes:
   - set the `OAUTH_OKTA_AUTHORIZATION_SERVER_ID` environment variable to `default` if you have a developer account,
   - or set it to the authorization server id from your Custom Authorization Server.
 
+### Descope
+
+Head to the [Descope sign-up page](https://www.descope.com/sign-up), to get started with your account and set up your authentication.
+
+The callback URL should be: `BASE_URL/auth/oauth/descope/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/descope/callback`.
+
+You need to set the following environment variables:
+
+- `OAUTH_DESCOPE_CLIENT_ID`: Descope Project ID, which can be found under [Project Settings](https://app.descope.com/settings/project) in the console.
+- `OAUTH_DESCOPE_CLIENT_SECRET`: Descope Access Key, which can be created under [Access Keys](https://app.descope.com/accesskeys) in the console.
 
 ### Auth0
 
