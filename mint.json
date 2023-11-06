@@ -180,6 +180,7 @@
             "api-reference/elements/audio",
             "api-reference/elements/video",
             "api-reference/elements/avatar",
+            "api-reference/elements/plotly",
             "api-reference/elements/pyplot",
             "api-reference/elements/tasklist"
           ]
