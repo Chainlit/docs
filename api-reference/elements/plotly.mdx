@@ -1,0 +1,63 @@
+---
+title: "Plotly"
+---
+
+The `Plotly` class allows you to display a Plotly chart in the chatbot UI. This class takes a Plotly figure.
+
+The advantage of the `Plotly` element over the `Pyplot` element is that it's interactive (the user can zoom on the chart for example).
+
+### Attributes
+
+<ParamField path="name" type="str">
+  The name of the chart to be displayed in the UI.
+</ParamField>
+
+<ParamField path="display" type="ElementDisplay" optional>
+  Determines how the chart element should be displayed in the UI. Choices are
+  "side" (default), "inline", or "page".
+</ParamField>
+
+<ParamField path="size" type="ElementSize" optional>
+  Determines the size of the chart. Only works with display="inline". Choices
+  are "small", "medium" (default), or "large".
+</ParamField>
+
+<ParamField path="figure" type="str">
+  The `plotly.graph_objects.Figure` instance that you want to display.
+</ParamField>
+
+### Usage with message scope
+
+```python
+import plotly.graph_objects as go
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def start():
+    fig = go.Figure(
+        data=[go.Bar(y=[2, 1, 3])],
+        layout_title_text="An example figure",
+    )
+    elements = [cl.Plotly(name="chart", figure=fig, display="inline")]
+
+    await cl.Message(content="This message has a chart", elements=elements).send()
+```
+
+### Usage without scope
+
+```python
+import plotly.graph_objects as go
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def start():
+    fig = go.Figure(
+        data=[go.Bar(y=[2, 1, 3])],
+        layout_title_text="An example figure",
+    )
+    cl.Plotly(name="chart", figure=fig, display="side").send()
+
+    await cl.Message(content="This message has a chart").send()
+```
