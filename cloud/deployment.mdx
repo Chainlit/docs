@@ -105,7 +105,18 @@ APP_GCS_CLIENT_EMAIL="client email"
 APP_GCS_PRIVATE_KEY="private key"
 ```
 
-3. Optionally you can customize other values:
+3. [OPTIONAL] Setup Redis to reduce latency:
+
+```shell
+# Either set the full redis URL
+REDIS_URL="redis://127.0.0.1:6379/0"
+
+# Or pass the host and port (typically useful with google cloud run)
+REDISHOST=
+REDISPORT=
+```
+
+4. [OPTIONAL] Configure authentication methods:
 
 ```shell
 # To support credentials authentication
@@ -137,7 +148,11 @@ AZURE_AD_TENANT_ID="your tenant id"
 OKTA_CLIENT_ID="your id"
 OKTA_CLIENT_SECRET="your secret"
 OKTA_ISSUER="the issuer"
+```
 
+5. [OPTIONAL] Add monitoring
+
+```shell
 # If you want to use Vercel Analytics (only for hosting with Vercel)
 ENABLE_VERCEL_ANALYTICS=true
 
