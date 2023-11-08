@@ -23,10 +23,10 @@ import chainlit as cl
 from chainlit.prompt import Prompt, PromptMessage
 from chainlit.playground.providers.openai import ChatOpenAI
 
-import openai
+from openai import AsyncOpenAI
 import os
 
-openai.api_key = "YOUR_OPEN_AI_API_KEY"
+client = AsyncOpenAI(api_key="YOUR_OPENAI_API_KEY")
 ```
 
 ## Define a prompt and LLM settings
@@ -80,11 +80,14 @@ async def main(message: cl.Message):
     )
 
     # Call OpenAI
-    async for stream_resp in await openai.ChatCompletion.acreate(
+
+    stream = await client.chat.completions.create(
         messages=[m.to_openai() for m in prompt.messages], stream=True, **settings
-    ):
-        token = stream_resp.choices[0]["delta"].get("content", "")
-        await msg.stream_token(token)
+    )
+
+    async for part in stream:
+        if token := part.choices[0].delta.content or "":
+            await msg.stream_token(token)
 
     # Update the prompt object with the completion
     prompt.completion = msg.content

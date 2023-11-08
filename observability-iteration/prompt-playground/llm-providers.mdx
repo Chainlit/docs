@@ -6,15 +6,49 @@ LLM Providers allow you to configure the prompt playground so that it can work w
 
 ## Provider library
 
-We currently offer the implementation for `OpenAI`, `Anthropic` and `HuggingFace`. This enables you to get started quickly without having to re-implement the connection to these LLM providers.
+We currently offer the implementation for `OpenAI`, `AzureOpenAI` and `Anthropic`. This enables you to get started quickly without having to re-implement the connection to these LLM providers.
 
-There are three providers for `OpenAI`:
+<Note>
+  The `HuggingFace` [provider
+  example](https://github.com/Chainlit/chainlit/blob/main/backend/chainlit/playground/providers/huggingface.py#L51)
+  is available to help you customize it to the HugginFace-hosted model of your
+  choice.
+</Note>
 
-- `OpenAI`: supports the gpt-3 models
-- `ChatOpenAI`: supports the gpt-3.5 and gpt-4 models
-- `AzureChatOpenAI`: supports the Azure-hosted gpt-3.5 and gpt-4 models
+### OpenAI
 
-Note that the `HuggingFace` provider example is available to help you customize it to the HugginFace-hosted model of your choice.
+Required environment variables:
+
+```shell
+OPENAI_API_KEY=
+```
+
+### AzureOpenAI
+
+Required environment variables:
+
+```shell
+AZURE_OPENAI_API_KEY=
+AZURE_OPENAI_API_VERSION=
+AZURE_OPENAI_ENDPOINT= # something like https://mydomain.openai.azure.com
+AZURE_OPENAI_DEPLOYMENT_NAME= # something like gpt-35-turbo
+```
+
+Optional environment variables:
+
+```shell
+AZURE_AD_TOKEN=
+AZURE_AD_TOKEN_PROVIDER=
+AZURE_DEPLOYMENT=
+```
+
+### Anthropic
+
+Required environment variables:
+
+```shell
+ANTHROPIC_API_KEY=
+```
 
 ## Custom provider
 

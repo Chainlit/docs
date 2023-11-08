@@ -19,10 +19,12 @@ For this example we are going to create a completion with OpenAI chat API and cr
 </Note>
 
 ```python
-import openai
+from openai import AsyncOpenAI
 import chainlit as cl
 from chainlit.prompt import Prompt, PromptMessage
 from chainlit.playground.providers import ChatOpenAI
+
+client = AsyncOpenAI(api_key="YOUR_OPENAI_API_KEY")
 
 template = "Hello, {name}!"
 inputs = {"name": "John"}
@@ -49,11 +51,11 @@ async def start():
     )
 
     # Make the call to OpenAI
-    response = await openai.ChatCompletion.acreate(
+    response = await client.chat.completions.create(
         messages=[m.to_openai() for m in prompt.messages], **settings
     )
 
-    prompt.completion = response.choices[0]["message"]["content"]
+    prompt.completion = response.choices[0].message.content
 ```
 
 Check the [Prompt API reference](/api-reference/prompt) to learn about all the attributes and the difference between chat and non chat modes.
