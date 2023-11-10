@@ -43,7 +43,6 @@ Text messages are the building blocks of a chatbot, but we often want to send mo
 
 Once an element is sent to the user interface, the user interface will render the element based on the following:
 
-- Whether the element is [scoped](#scoped-elements) or [global](#global-elements)
 - Whether the element's name is explicitly mentioned in a message
 - The [display option](#display-options) of the element
 
@@ -61,43 +60,9 @@ This will display the element on a separate page. The user will be redirected to
 
 ### Inline
 
-This will display the element below the message. If the element is global, the element will only be displayed if the element is explicitly mentioned in the message. If the element is scoped, the element will be displayed regardless of whether it is explicitly mentioned in the message.
+This will always display the element below the message regardless of whether it is explicitly mentioned in the message.
 
-## Global Elements
-
-To better understand global elements, let's look an example.
-
-```python Code Example
-import chainlit as cl
-
-
-@cl.on_chat_start
-async def start():
-    # Send the elements globally
-    await cl.Image(path="./cat.jpeg", name="image1", display="inline").send()
-    await cl.Text(content="Here is a side text document", name="text1", display="side").send()
-    await cl.Text(content="Here is a page text document", name="text2", display="page").send()
-
-    # Send the same message twice
-    content = "Here is image1, a nice image of a cat! As well as text1 and text2!"
-
-    await cl.Message(
-        content=content,
-    ).send()
-
-    await cl.Message(
-        content=content,
-    ).send()
-```
-
-If we look at the rendering of the above code, we can see that the elements are displayed in BOTH of the messages.
-Global elements means that the elements are not scoped to a specific message. They are available to all messages.
-
-![GlobalElements](/images/global-elements.png)
-
-## Scoped Elements
-
-Scoped elements are elements that are scoped to a specific message. To better understand scoped elements, let's look at an example.
+## Add an element to a message
 
 ```python Code Example
 import chainlit as cl
@@ -126,6 +91,5 @@ async def start():
 ```
 
 If we look at the rendering of the above code, we can see that the elements are only displayed in the second message.
-Scoped elements means that the elements can only be displayed in a specific message.
 
 ![ScopedElements](/images/scoped-elements.png)

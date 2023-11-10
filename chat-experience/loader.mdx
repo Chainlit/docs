@@ -1,0 +1,29 @@
+---
+title: Display a loader
+---
+
+Displaying a loader is a common pattern in chatbots. It is used to indicate that the bot is working on something and that the user should wait.
+
+<Frame caption="Display a loader">
+  <img src="/images/loader.gif" />
+</Frame>
+
+Chainlit will display a loader at the message level if the message content is empty and a task is running.
+The idea is to send a empty message, keep the message reference in a variable and then update/stream the message content as the task progresses.
+
+```python Code Example
+import chainlit as cl
+
+
+@cl.on_message
+async def on_message(message: cl.Message):
+    msg = cl.Message(content="")
+    await msg.send()
+
+    # do some work
+    await cl.sleep(2)
+
+    msg.content = f"Processed message {message.content}"
+
+    await msg.update()
+```

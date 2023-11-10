@@ -4,6 +4,10 @@ title: Python Streaming
 
 Chainlit supports streaming with any Python code. Here is an example with `openai`.
 
+<Frame caption="Streaming OpenAI response">
+  <img src="/images/streaming.gif" />
+</Frame>
+
 ## OpenAI Chat Completion
 
 ```python Code Example
@@ -37,6 +41,7 @@ async def main(message: cl.Message):
     message_history.append({"role": "user", "content": message.content})
 
     msg = cl.Message(content="")
+    await msg.send()
 
     stream = await client.chat.completions.create(
         messages=message_history, stream=True, **settings
@@ -47,7 +52,7 @@ async def main(message: cl.Message):
             await msg.stream_token(token)
 
     message_history.append({"role": "assistant", "content": msg.content})
-    await msg.send()
+    await msg.update()
 ```
 
 ## OpenAI Completion

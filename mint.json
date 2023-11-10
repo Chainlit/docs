@@ -71,6 +71,7 @@
           ]
         },
         "chat-experience/multi-modal",
+        "chat-experience/loader",
         "chat-experience/elements",
         "chat-experience/actions",
         "chat-experience/ask-user",

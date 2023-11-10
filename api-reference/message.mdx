@@ -79,27 +79,6 @@ async def main():
     await msg.send()
 ```
 
-### Display a loader
-
-Send an empty message to temporarily display a loader in the UI (at the message level).
-
-```python Code Example
-import chainlit as cl
-
-
-@cl.on_chat_start
-async def main():
-    msg = cl.Message(content="")
-    await msg.send()
-
-    # do some work
-    await cl.sleep(4)
-
-    msg.content = "work finished"
-
-    await msg.update()
-```
-
 ### Update a message
 
 Update a message that already has been sent.
