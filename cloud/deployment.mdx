@@ -86,6 +86,8 @@ DATABASE_URL=postgresql://<username>:<password>@<host>:<port>/<db_name><?pgbounc
 # The url used to handle migrations to your database.
 # Note: We can not perform migration through pg-bouncer, we need a direct url to your database.
 DATABASE_DIRECT_URL=postgresql://<username>:<password>@<host>:<port>/<db_name>
+# Optionally, set DATABASE_SSL to 'true' if you need to communicate with the database over a secure network. 
+# DATABASE_SSL=true
 
 # Used to encrypt the NextAuth.js JWT, and to hash email verification tokens.
 NEXTAUTH_SECRET="your secret"
