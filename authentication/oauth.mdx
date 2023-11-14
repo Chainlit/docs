@@ -16,7 +16,10 @@ This callback enables you for example to restrict the OAuth login to specific em
 Follow these guides to create an OAuth app for your chosen provider(s). Then copy the information into the right environment variable to active the provider.
 
 <Note>
-  The below environment variables can set using .env file that should exist in the root of your project which Chainlit will automatically load.[Add Environment file for Chainlit](https://docs.chainlit.io/backend/env-variables).
+  The below environment variables can set using .env file that should exist in
+  the root of your project which Chainlit will automatically load.[Add
+  Environment file for
+  Chainlit](https://docs.chainlit.io/backend/env-variables).
 </Note>
 
 <Warning>
@@ -108,6 +111,10 @@ You need to set the following environment variables:
 - `OAUTH_AUTH0_CLIENT_ID`: Client ID
 - `OAUTH_AUTH0_CLIENT_SECRET`: Client secret
 - `OAUTH_AUTH0_DOMAIN`: Domain name for your auth0 setup
+
+Optional environment variables:
+
+- `OAUTH_AUTH0_ORIGINAL_DOMAIN`: Original domain name for your auth0 setup, if you are using a custom domain
 
 ## Examples
 
