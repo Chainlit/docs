@@ -146,12 +146,12 @@
     {
       "group": "Examples",
       "pages": [
+        "examples/cookbook",
         "examples/openai-sql",
         "examples/mrkl",
         "examples/qa",
         "examples/security",
-        "examples/community",
-        "examples/cookbook"
+        "examples/community"
       ]
     },
     {
