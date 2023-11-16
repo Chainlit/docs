@@ -6,6 +6,12 @@ After you've successfully set up and tested your Chainlit application locally, t
 
 ## Self-host
 
+<Note>
+  When running a Chainlit app in production, you should always add `-h` to the
+  `chainlit run` command. Otherwise a browser window will be opened server side
+  and might break your deployment.
+</Note>
+
 <Warning>
   Currently, you have to serve your Chainlit app from the root of your
   domain/subdomain. This means that you can't serve it from a subdirectory like
