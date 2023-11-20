@@ -1,0 +1,30 @@
+---
+title: Custom React Frontend
+---
+
+Chainlit allows you to create a custom frontend for your application, offering you the flexibility to design a unique user experience. By integrating your frontend with Chainlit's backend, you can harness the full power of Chainlit's features, including:
+
+- Abstractions for easier development
+- Monitoring and observability
+- Seamless integrations with various tools
+- Robust authentication mechanisms
+- Support for multi-user environments
+- Efficient data streaming capabilities
+
+To build and connect your own frontend, check out our Custom Frontend Cookbook: https://github.com/Chainlit/cookbook/tree/main/custom-frontend
+
+The `@chainlit/react-client` package is designed for integrating Chainlit applications with React. It offers several hooks and an API client for seamless connection and interaction.
+
+### Installation
+- Install with `npm install @chainlit/react-client`.
+- The package requires Recoil for state management. Wrap your application in a Recoil provider.
+
+### Usage
+1. **useChatSession**: Manages the chat session's connection to the WebSocket server. Includes methods to connect/disconnect, and set chat profiles.
+2. **useChatMessages**: Provides access to chat messages and the first user message.
+3. **useChatData**: Accesses various chat-related data and states, including actions, user states, avatars, chat settings, connection status, and error/loading indicators.
+4. **useChatInteract**: Offers methods to interact with the chat, like sending and replying to messages, updating settings, and managing tasks.
+
+Each hook is provided with examples to illustrate their use in a React application, showing how to integrate and utilize these functionalities effectively in a chat interface.
+
+More information here: https://www.npmjs.com/package/@chainlit/react-client

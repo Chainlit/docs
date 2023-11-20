@@ -57,7 +57,8 @@
             "integrations/langflow"
           ]
         },
-        "get-started/deployment"
+        "get-started/deployment",
+        "get-started/react-frontend"
       ]
     },
     {
