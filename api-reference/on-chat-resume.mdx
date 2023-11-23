@@ -16,24 +16,19 @@ This decorator will automatically:
   reinstantiate and set it in the user session yourself.
 </Warning>
 
+### Usage
+
+<Card
+  title="Resume Chat Example"
+  color="#F80061"
+  icon="message"
+  href="https://github.com/Chainlit/cookbook/tree/main/resume-chat"
+>
+  Practical example of how to resume a chat with context.
+</Card>
+
 ### Parameters
 
 <ParamField path="conversation" type="ConversationDict">
   The persisted conversation to resume.
 </ParamField>
-
-### Usage
-
-```python Code Example
-import chainlit as cl
-from chainlit.client.base import ConversationDict
-
-@cl.on_chat_resume
-async def on_chat_resume(conversation: ConversationDict):
-    # Access the root messages
-    root_messages = [m for m in conversation["messages"] if m["parentId"] == None]
-    # Access the user_session
-    cl.user_session.get("chat_profile")
-    # Or just pass if you do not need to run any custom logic
-    pass
-```
