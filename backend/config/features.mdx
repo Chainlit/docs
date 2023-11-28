@@ -9,6 +9,16 @@ title: Features
   when passing a prompt to a message.
 </ParamField>
 
+<ParamField path="unsafe_allow_html" type="bool" default={false}>
+  Process and display HTML in messages. This can be a security risk (see
+  https://stackoverflow.com/questions/19603097/why-is-it-dangerous-to-render-user-generated-html-or-javascript).
+</ParamField>
+
+<ParamField path="latex" type="bool" default={false}>
+  Process and display mathematical expressions. This can clash with "$"
+  characters in messages.
+</ParamField>
+
 <ParamField path="multi_modal" type="bool" default={true}>
   Authorize users to upload files with messages. The files are then accessible
   in [cl.on_message](/api-reference/on-message).
@@ -30,6 +40,8 @@ title: Features
 [features]
 prompt_playground = true
 multi_modal = true
+unsafe_allow_html = false
+latex = false
 # Allows user to use speech to text
 [features.speech_to_text]
     enabled = false
