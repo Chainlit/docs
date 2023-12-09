@@ -1,0 +1,121 @@
+---
+title: "Element"
+---
+
+Text messages are the building blocks of a chatbot, but we often want to send more than just text to the user such as images, videos, and more.
+
+That is where elements come in. Each element is a piece of content that can be attached to a [Message](/concepts/message) or a [Step](/concepts/step) and displayed on the user interface.
+
+<CardGroup cols={2}>
+  <Card
+    title="Text Element"
+    icon="text"
+    color="#ea5a0c"
+    href="/api-reference/elements/text"
+  >
+    Ideal to display RAG sources.
+  </Card>
+  <Card
+    title="Image Element"
+    icon="image"
+    color="#0285c7"
+    href="/api-reference/elements/image"
+  >
+    Ideal to display generated images.
+  </Card>
+  <Card
+    title="PDF Element"
+    icon="file-pdf"
+    color="#16a34a"
+    href="/api-reference/elements/pdf"
+  >
+    Ideal to display RAG sources.
+  </Card>
+  <Card
+    title="More Elements"
+    icon="wind"
+    color="#dc2626"
+    href="/api-reference/elements"
+  >
+    The complete list of elements you can display on the user interface.
+  </Card>
+</CardGroup>
+
+## Example
+
+To attach an element to a message or step, we need to:
+
+1. Instantiate the element
+2. Attach the element to a message or step
+
+```python
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def start():
+    image = cl.Image(path="./cat.jpeg", name="image1", display="inline")
+
+    # Attach the image to the message
+    await cl.Message(
+        content="This message has an image!",
+        elements=[image],
+    ).send()
+```
+
+## Display Options
+
+There are 3 display options that determine how an element is rendered:
+
+### Side
+
+```python
+@cl.on_chat_start
+async def start():
+    # Notice the display option
+    image = cl.Image(path="./cat.jpeg", name="cat image", display="side")
+
+    await cl.Message(
+        # Notice that the name of the image is referenced in the message content
+        content="Here is the cat image!",
+        elements=[image],
+    ).send()
+```
+
+The image will not be displayed in the message. Instead, the name of the image will be displayed as clickable link.
+When the user clicks on the link, the image will be displayed on the side of the message.
+
+### Page
+
+```python
+@cl.on_chat_start
+async def start():
+    # Notice the display option
+    image = cl.Image(path="./cat.jpeg", name="cat image", display="page")
+
+    await cl.Message(
+        # Notice that the name of the image is referenced in the message content
+        content="Here is the cat image!",
+        elements=[image],
+    ).send()
+```
+
+The image will not be displayed in the message. Instead, the name of the image will be displayed as clickable link.
+Clicking on the link will redirect to a dedicated page where the image will be displayed.
+
+### Inline
+
+```python
+@cl.on_chat_start
+async def start():
+    # Notice the display option
+    image = cl.Image(path="./cat.jpeg", name="cat image", display="inline")
+
+    await cl.Message(
+        # Notice that the name of the image is NOT referenced in the message content
+        content="Hello!",
+        elements=[image],
+    ).send()
+```
+
+The image will be displayed below with the message regardless of whether the image name is referenced in the message content.

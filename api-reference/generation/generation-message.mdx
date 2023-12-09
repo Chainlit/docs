@@ -1,0 +1,27 @@
+---
+title: "GenerationMessage"
+---
+
+`GenerationMessage` is used in the [ChatGeneration](/api-reference/generation/chat-generation) class to represent a message.
+
+## Attributes
+
+<ParamField path="template" type="str" optional>
+  The template of the message prompt.
+</ParamField>
+
+<ParamField path="formatted" type="str" optional>
+  The formatted version of the template.
+</ParamField>
+
+<ParamField path="role" type="str" optional>
+  The role of the message, such as "system", "assistant" or "user".
+</ParamField>
+
+<ParamField path="name" type="str" optional>
+  Only used for OpenAI's function message.
+</ParamField>
+
+<ParamField path="template_format" type="str" optional>
+  The format of the template, defaults to "f-string".
+</ParamField>

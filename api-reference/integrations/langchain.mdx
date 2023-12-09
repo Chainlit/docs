@@ -9,26 +9,9 @@ There are two ways to pass the callback handler:
 1. Pass the callback handler during runtime. This will apply the handler to all calls made by your agent.
 2. Pass the callback handler to individual components, such as an `llm`, allowing you to control what information is returned to the UI.
 
-### Asynchronous Callback Handler
+### Callback Handler
 
-The following code example demonstrates how to pass an asynchronous callback handler.
-
-```python
-llm = OpenAI(temperature=0)
-llm_math = LLMMathChain.from_llm(llm=llm)
-
-@cl.on_message
-async def main(message: cl.Message):
-    res = await llm_math.acall(message.content, callbacks=[cl.AsyncLangchainCallbackHandler()])
-
-    await cl.Message(content="Hello").send()
-```
-
-Notice the `acall` here, that could also be `arun` or any other async function. Since we are calling the asynchronous implementation of the agent, we need to use the asynchronous callback handler.
-
-### Synchronous Callback Handler
-
-Alternatively, you can pass a synchronous callback handler, as shown in the example below:
+The following code example demonstrates how to pass a callback handler:
 
 ```python
 llm = OpenAI(temperature=0)
@@ -37,13 +20,10 @@ llm_math = LLMMathChain.from_llm(llm=llm)
 @cl.on_message
 async def main(message: cl.Message):
 
-    res = await cl.make_async(llm_math)(message.content, callbacks=[cl.LangchainCallbackHandler()])
+    res = await llm_math.acall(message.content, callbacks=[cl.LangchainCallbackHandler()])
 
     await cl.Message(content="Hello").send()
 ```
-
-Since we are calling a long running synchronous function, we need to wrap it in `cl.make_async` to make it asynchronous and not block the event loop.
-The function will still run synchronously in its own thread, hence we use the synchronous callback handler.
 
 ### Final Answer streaming
 
@@ -53,7 +33,7 @@ If streaming is enabled at the LLM level, Langchain will only stream the interme
 # Optionally, you can also pass the prefix tokens that will be used to identify the final answer
 answer_prefix_tokens=["FINAL", "ANSWER"]
 
-cl.AsyncLangchainCallbackHandler(
+cl.LangchainCallbackHandler(
         stream_final_answer=True,
         answer_prefix_tokens=answer_prefix_tokens,
     )

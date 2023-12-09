@@ -1,0 +1,58 @@
+---
+title: Message
+---
+
+A Message is a piece of information that is sent from the user to an assistant and vice versa.
+Coupled with life cycle hooks, they are the building blocks of a chat.
+
+A message has a content, a timestamp and cannot be nested.
+
+## Example: Reply to a user message
+
+```py
+import chainlit as cl
+
+@cl.on_message
+async def on_message(message: cl.Message):
+    response = f"Hello, you just sent: {message.content}!"
+    await cl.Message(response).send()
+```
+
+<Card
+  title="Message API"
+  icon="message"
+  color="#F80061"
+  href="/api-reference/message"
+>
+  Learn more about the Message API.
+</Card>
+
+## Trick: Display a loader while waiting for a response
+
+If a task is running and the latest message content is empty, Chainlit will display a loader while the content remains empty.
+
+<Note>
+  [Steps](/concepts/step) support loading out of the box. If you need to display
+  a loader in a Message, chances are you should be using a Step instead!
+</Note>
+
+```python
+import chainlit as cl
+
+
+@cl.on_message
+async def on_message(message: cl.Message):
+    msg = cl.Message(content="")
+    await msg.send()
+
+    # do some work
+    await cl.sleep(2)
+
+    msg.content = f"Processed message {message.content}"
+
+    await msg.update()
+```
+
+<Frame caption="Loading Message">
+  <img src="/images/loader.gif" />
+</Frame>

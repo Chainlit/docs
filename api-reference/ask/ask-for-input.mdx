@@ -24,13 +24,13 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 
 ### Returns
 
-<ResponseField name="response" type="AskResponse" required>
+<ResponseField name="response" type="Step" required>
   The response of the user.
 </ResponseField>
 
 ### Usage
 
-```python Code Example
+```python
 import chainlit as cl
 
 
@@ -39,6 +39,6 @@ async def main():
     res = await cl.AskUserMessage(content="What is your name?", timeout=10).send()
     if res:
         await cl.Message(
-            content=f"Your name is: {res['content']}",
+            content=f"Your name is: {res['output']}",
         ).send()
 ```

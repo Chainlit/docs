@@ -6,7 +6,7 @@ The `Pyplot` class allows you to display a Matplotlib pyplot chart in the chatbo
 
 The difference of between this element and the `Plotly` element is that the user is shown a static image of the chart when using `Pyplot`.
 
-### Attributes
+## Attributes
 
 <ParamField path="name" type="str">
   The name of the chart to be displayed in the UI.
@@ -26,9 +26,9 @@ The difference of between this element and the `Plotly` element is that the user
   The `matplotlib.figure.Figure` instance that you want to display.
 </ParamField>
 
-### Usage with message scope
+## Example
 
-```python Code Example
+```python
 import matplotlib.pyplot as plt
 import chainlit as cl
 
@@ -44,23 +44,5 @@ async def main():
     await cl.Message(
         content="Here is a simple plot",
         elements=elements,
-    ).send()
-```
-
-### Usage without scope
-
-```python Code Example
-import matplotlib.pyplot as plt
-import chainlit as cl
-
-
-@cl.on_chat_start
-async def main():
-    fig, ax = plt.subplots()
-    ax.plot([1, 2, 3, 4], [1, 4, 2, 3])
-
-    await cl.Pyplot(name="simple plot", figure=fig, display="side").send()
-    await cl.Message(
-        content="Here is a simple plot",
     ).send()
 ```

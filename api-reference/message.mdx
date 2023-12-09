@@ -2,9 +2,9 @@
 title: "Message"
 ---
 
-The `Message` class is designed to send, stream, edit or remove messages in the chatbot user interface.
+The `Message` class is designed to send, stream, update or remove messages.
 
-### Attributes
+## Parameters
 
 <ParamField path="content" type="str">
   The content of the message.
@@ -14,16 +14,13 @@ The `Message` class is designed to send, stream, edit or remove messages in the 
   file.
 </ParamField>
 <ParamField path="elements" type="Element[]" optional>
-  The list of elements scoped to this message.
+  Elements to attach to the message.
 </ParamField>
 <ParamField path="actions" type="Action[]" optional>
-  The list of actions scoped to this message.
+  Actions to attach to the message.
 </ParamField>
-<ParamField path="prompt" type="Prompt" optional>
-  The prompt used to generate the message. If provided, enables the prompt
-  playground for this message.
-</ParamField>
-<ParamField path="disable_human_feedback" type="bool" optional>
+
+<ParamField path="disable_feedback" type="bool" optional>
   Hide the feedback buttons for this specific message.
 </ParamField>
 <ParamField path="language" type="str" optional>
@@ -32,11 +29,11 @@ The `Message` class is designed to send, stream, edit or remove messages in the 
   for a list of supported languages.
 </ParamField>
 
-### Send a message
+## Send a message
 
 Send a new message to the UI.
 
-```python Code Example
+```python
 import chainlit as cl
 
 
@@ -47,24 +44,11 @@ async def main(message: cl.Message):
     ).send()
 ```
 
-### Nest a message
-
-Send a nested message to the UI. Ideal for chain of thoughts.
-
-```python Code Example
-import chainlit as cl
-
-@cl.on_chat_start
-async def start():
-    id = await cl.Message(content="Hello!").send()
-    await cl.Message(content="Hello nested!", parent_id=id).send()
-```
-
-### Stream a message
+## Stream a message
 
 Send a message token by token to the UI.
 
-```python Code Example
+```python
 import chainlit as cl
 
 token_list = ["the", "quick", "brown", "fox"]
@@ -79,11 +63,11 @@ async def main():
     await msg.send()
 ```
 
-### Update a message
+## Update a message
 
 Update a message that already has been sent.
 
-```python Code Example
+```python
 import chainlit as cl
 
 
@@ -98,11 +82,11 @@ async def main():
     await msg.update()
 ```
 
-### Remove a message
+## Remove a message
 
 Remove a message from the UI.
 
-```python Code Example
+```python
 import chainlit as cl
 
 

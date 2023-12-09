@@ -6,6 +6,11 @@
     "light": "/logo/light.svg",
     "href": "https://github.com/Chainlit/chainlit"
   },
+  "modeToggle": {
+    "default": "dark",
+    "isHidden": true
+  },
+  "backgroundImage": "/bg_dark.svg",
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#F80061",
@@ -57,53 +62,43 @@
             "integrations/langflow"
           ]
         },
-        "get-started/deployment",
-        "get-started/react-frontend"
+        "get-started/deployment"
       ]
     },
     {
-      "group": "Chat Experience",
+      "group": "Basic Concepts",
       "pages": [
-        {
-          "group": "Streaming",
-          "pages": [
-            "chat-experience/streaming/python",
-            "chat-experience/streaming/langchain"
-          ]
-        },
-        "chat-experience/multi-modal",
-        "chat-experience/loader",
-        "chat-experience/elements",
-        "chat-experience/actions",
-        "chat-experience/ask-user",
-        {
-          "group": "Configuration",
-          "pages": [
-            "chat-experience/chat-profiles",
-            "chat-experience/chat-settings"
-          ]
-        }
+        "concepts/chat-lifecycle",
+        "concepts/message",
+        "concepts/step",
+        "concepts/user-session",
+        "concepts/element",
+        "concepts/action"
       ]
     },
     {
-      "group": "Chat Data",
-      "pages": ["chat-data/overview", "chat-data/history", "chat-data/feedback"]
-    },
-    {
-      "group": "Observability & Iteration",
+      "group": "Advanced Features",
       "pages": [
-        "observability-iteration/chain-of-thought",
+        "advanced-features/streaming",
+        "advanced-features/ask-user",
+        "advanced-features/multi-modal",
+        "advanced-features/chat-profiles",
+        "advanced-features/chat-settings",
         {
           "group": "Prompt Playground",
           "pages": [
-            "observability-iteration/prompt-playground/overview",
-            "observability-iteration/prompt-playground/setup",
-            "observability-iteration/prompt-playground/template-and-variables",
-            "observability-iteration/prompt-playground/formatted-prompts",
-            "observability-iteration/prompt-playground/llm-providers"
+            "advanced-features/prompt-playground/overview",
+            "advanced-features/prompt-playground/setup",
+            "advanced-features/prompt-playground/template-and-variables",
+            "advanced-features/prompt-playground/formatted-prompts",
+            "advanced-features/prompt-playground/llm-providers"
           ]
         }
       ]
+    },
+    {
+      "group": "Data Persistence",
+      "pages": ["data/overview", "data/history", "data/feedback", "data/custom"]
     },
     {
       "group": "Authentication",
@@ -115,12 +110,13 @@
       ]
     },
     {
-      "group": "UI customisation",
+      "group": "Customisation",
       "pages": [
-        "ui-customisation/overview",
-        "ui-customisation/custom-logo-and-favicon",
-        "ui-customisation/theme",
-        "ui-customisation/custom-css"
+        "customisation/overview",
+        "customisation/custom-logo-and-favicon",
+        "customisation/theme",
+        "customisation/custom-css",
+        "customisation/react-frontend"
       ]
     },
     {
@@ -134,7 +130,6 @@
             "backend/config/ui"
           ]
         },
-        "backend/user-session",
         "backend/env-variables",
         "backend/custom-endpoint",
         "backend/command-line"
@@ -257,7 +252,6 @@
       "pages": [
         "api-reference/integrations/langchain",
         "api-reference/integrations/llamaindex",
-        "api-reference/integrations/langflow",
         "api-reference/integrations/haystack"
       ]
     },
