@@ -2,9 +2,7 @@
 title: OAuth
 ---
 
-This authentication allows you to plug a third-party OAuth provider to the Chainlit app. You receive the id, the token and the raw user data from the OAuth provider. You also get a pre-defined `AppUser` as a helper. You need to return an `AppUser` object if the authentication is successful.
-
-This callback enables you for example to restrict the OAuth login to specific email domains, or to specific users.
+OAuth lets you use third-party services to authenticate your users.
 
 <Note>
   To active an OAuth provider, you need to define both the OAuth callback in
@@ -14,13 +12,6 @@ This callback enables you for example to restrict the OAuth login to specific em
 ## Providers
 
 Follow these guides to create an OAuth app for your chosen provider(s). Then copy the information into the right environment variable to active the provider.
-
-<Note>
-  The below environment variables can set using .env file that should exist in
-  the root of your project which Chainlit will automatically load.[Add
-  Environment file for
-  Chainlit](https://docs.chainlit.io/backend/env-variables).
-</Note>
 
 <Warning>
   If your app is served behind a reverse proxy (like cloud run) you will have to
@@ -130,9 +121,9 @@ def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
-  default_app_user: cl.AppUser,
-) -> Optional[cl.AppUser]:
-  return default_app_user
+  default_user: cl.User,
+) -> Optional[cl.User]:
+  return default_user
 ```
 
 ### Only allow users from a specific google domain.
@@ -147,33 +138,10 @@ def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
-  default_app_user: cl.AppUser,
-) -> Optional[cl.AppUser]:
+  default_user: cl.User,
+) -> Optional[cl.User]:
   if provider_id == "google":
     if raw_user_data["hd"] == "example.org":
-      return default_app_user
-  return None
-```
-
-### Change the username to the email.
-
-```python
-from typing import Dict, Optional
-import chainlit as cl
-
-
-@cl.oauth_callback
-def oauth_callback(
-  provider_id: str,
-  token: str,
-  raw_user_data: Dict[str, str],
-  default_app_user: cl.AppUser,
-) -> Optional[cl.AppUser]:
-  if provider_id == "github":
-    return cl.AppUser(
-      username=raw_user_data["email"],
-      role=default_app_user.role,
-      provider=default_app_user.provider,
-    )
+      return default_user
   return None
 ```
