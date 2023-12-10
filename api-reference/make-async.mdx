@@ -5,22 +5,22 @@ title: "make_async"
 The `make_async` function takes a synchronous function (for instance a LangChain agent) and returns an asynchronous function that will run the original function in a separate thread.
 This is useful to run long running synchronous tasks without blocking the event loop.
 
-### Parameters
+## Parameters
 
 <ParamField path="func" type="Callable">
   The synchronous function to run in a separate thread.
 </ParamField>
 
-### Returns
+## Returns
 
 <ResponseField name="async_function" type="Coroutine" required>
   The asynchronous function that will run the synchronous function in a separate
   thread.
 </ResponseField>
 
-### Usage
+## Usage
 
-```python Pure Python
+```python
 import time
 import chainlit as cl
 

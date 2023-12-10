@@ -23,6 +23,11 @@ The `Step` class is a Python Context Manager that can be used to create steps in
   By default the step will be nested under the previous step/message. Set this
   to `True` to make it a root step.
 </ParamField>
+<ParamField path="language" type="str" optional>
+  Language of the output. See
+  https://react-code-blocks-rajinwonderland.vercel.app/?path=/story/codeblock--supported-languages
+  for a list of supported languages.
+</ParamField>
 <ParamField path="show_input" type="Union[bool, str]" default="False" optional>
   By default only the output of the step is shown. Set this to `True` to also
   show the input. You can also set this to a language like `json` or `python` to

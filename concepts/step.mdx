@@ -2,12 +2,14 @@
 title: Step
 ---
 
-LLM powered Assistants take a series of Step to process a user's request.
+LLM powered Assistants take a series of step to process a user's request.
 Unlike a [Message](concepts/message), a Step has an input/output, a start/end and can be nested.
 
 Together, Steps form a Chain of Thought. Displaying the steps of a Chain of Thought is useful both for the end user (to understand what the Assistant is doing) and for the developer (to debug the Assistant).
 
 ## A Simple Chain of Thought
+
+Lets take a simple example of a Chain of Thought that takes a user's message, process it and sends a response.
 
 ```py
 import chainlit as cl

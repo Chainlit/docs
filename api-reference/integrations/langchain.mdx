@@ -1,15 +1,6 @@
 ---
-title: "LangChain Callback Handler"
+title: "Langchain Callback Handler"
 ---
-
-When running your LangChain agent, it is essential to provide the appropriate callback handler. This ensures seamless communication between the Chainlit UI and your agent.
-
-There are two ways to pass the callback handler:
-
-1. Pass the callback handler during runtime. This will apply the handler to all calls made by your agent.
-2. Pass the callback handler to individual components, such as an `llm`, allowing you to control what information is returned to the UI.
-
-### Callback Handler
 
 The following code example demonstrates how to pass a callback handler:
 
@@ -25,7 +16,7 @@ async def main(message: cl.Message):
     await cl.Message(content="Hello").send()
 ```
 
-### Final Answer streaming
+## Final Answer streaming
 
 If streaming is enabled at the LLM level, Langchain will only stream the intermediate steps. You can enable final answer streaming by passing `stream_final_answer=True` to the callback handler.
 
@@ -44,7 +35,3 @@ cl.LangchainCallbackHandler(
   final answer pattern. It will also not work with
   `AgentType.STRUCTURED_CHAT_ZERO_SHOT_REACT_DESCRIPTION`
 </Warning>
-
-### Conclusion
-
-Choose the appropriate callback handler based on your specific requirements, ensuring seamless interaction between your LangChain agent and the Chainlit UI.

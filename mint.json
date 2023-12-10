@@ -54,8 +54,7 @@
           "pages": [
             "integrations/langchain",
             "integrations/llama-index",
-            "integrations/haystack",
-            "integrations/langflow"
+            "integrations/haystack"
           ]
         },
         "get-started/deployment"
@@ -153,53 +152,46 @@
       ]
     },
     {
-      "group": "API Reference",
+      "group": "Lyfe Cycle Hooks",
       "pages": [
-        "api-reference/on-chat-start",
-        "api-reference/on-chat-end",
-        "api-reference/on-chat-resume",
-        "api-reference/on-message",
+        "api-reference/lifecycle-hooks/on-chat-start",
+        "api-reference/lifecycle-hooks/on-chat-end",
+        "api-reference/lifecycle-hooks/on-chat-resume",
+        "api-reference/lifecycle-hooks/on-message"
+      ]
+    },
+    {
+      "group": "Chat",
+      "pages": [
         "api-reference/message",
-        {
-          "group": "Ask Message",
-          "pages": [
-            "api-reference/ask/ask-for-input",
-            "api-reference/ask/ask-for-file",
-            "api-reference/ask/ask-for-action"
-          ]
-        },
-        "api-reference/prompt",
+        "api-reference/step-decorator",
+        "api-reference/step-class",
         "api-reference/action",
-        "api-reference/author-rename",
-        "api-reference/make-async",
-        "api-reference/cache",
-        {
-          "group": "Elements",
-          "pages": [
-            "api-reference/elements/text",
-            "api-reference/elements/image",
-            "api-reference/elements/file",
-            "api-reference/elements/pdf",
-            "api-reference/elements/audio",
-            "api-reference/elements/video",
-            "api-reference/elements/avatar",
-            "api-reference/elements/plotly",
-            "api-reference/elements/pyplot",
-            "api-reference/elements/tasklist"
-          ]
-        },
-        "api-reference/chat-settings",
-        {
-          "group": "Input Widgets",
-          "pages": [
-            "api-reference/input-widgets/select",
-            "api-reference/input-widgets/slider",
-            "api-reference/input-widgets/switch",
-            "api-reference/input-widgets/tags",
-            "api-reference/input-widgets/textinput"
-          ]
-        },
-        "api-reference/set-chat-profiles"
+        "api-reference/chat-profiles",
+        "api-reference/chat-settings"
+      ]
+    },
+    {
+      "group": "Elements",
+      "pages": [
+        "api-reference/elements/text",
+        "api-reference/elements/image",
+        "api-reference/elements/file",
+        "api-reference/elements/pdf",
+        "api-reference/elements/audio",
+        "api-reference/elements/video",
+        "api-reference/elements/avatar",
+        "api-reference/elements/plotly",
+        "api-reference/elements/pyplot",
+        "api-reference/elements/tasklist"
+      ]
+    },
+    {
+      "group": "Ask User",
+      "pages": [
+        "api-reference/ask/ask-for-input",
+        "api-reference/ask/ask-for-file",
+        "api-reference/ask/ask-for-action"
       ]
     },
     {
@@ -208,6 +200,34 @@
         "api-reference/integrations/langchain",
         "api-reference/integrations/llamaindex",
         "api-reference/integrations/haystack"
+      ]
+    },
+    {
+      "group": "Generation",
+      "pages": [
+        "api-reference/generation/chat-generation",
+        "api-reference/generation/generation-message",
+        "api-reference/generation/completion-generation"
+      ]
+    },
+
+    {
+      "group": "Misceallaneous",
+      "pages": [
+        "api-reference/author-rename",
+        "api-reference/make-async",
+        "api-reference/cache"
+      ]
+    },
+
+    {
+      "group": "Input Widgets",
+      "pages": [
+        "api-reference/input-widgets/select",
+        "api-reference/input-widgets/slider",
+        "api-reference/input-widgets/switch",
+        "api-reference/input-widgets/tags",
+        "api-reference/input-widgets/textinput"
       ]
     }
   ],

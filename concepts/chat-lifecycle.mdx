@@ -6,7 +6,7 @@ Whenever a user connects to your Chainlit app, a new chat session is created. A 
 
 ## On Chat Start
 
-The `@cl.on_chat_start` decorator is used to define a hook that is called when a new chat session is created.
+The [on_chat_start](/api-reference/lifecycle-hooks/on-chat-start) decorator is used to define a hook that is called when a new chat session is created.
 
 ```python
 @cl.on_chat_start
@@ -16,7 +16,7 @@ def on_chat_start():
 
 ## On Message
 
-The `@cl.on_message` decorator is used to define a hook that is called when a new message is received from the user.
+The [on_message](/api-reference/lifecycle-hooks/on-message) decorator is used to define a hook that is called when a new message is received from the user.
 
 ```python
 @cl.on_message
@@ -26,7 +26,7 @@ def on_message(msg: cl.Message):
 
 ## On Stop
 
-The `@cl.on_stop` decorator is used to define a hook that is called when the user clicks the stop button while a task was running.
+The `on_stop` decorator is used to define a hook that is called when the user clicks the stop button while a task was running.
 
 ```python
 @cl.on_stop
@@ -34,19 +34,9 @@ def on_stop():
     print("The user wants to stop the task!")
 ```
 
-## On Settings Update
-
-the `cl.on_settings_update` decorator is used to define a hook that is called when the user updates the chat settings of the app. This can only happen if the [chat settings](/chat-settings) are enabled.
-
-```python
-@cl.on_settings_update
-async def setup_agent(new_settings):
-    print("The user updated the chat settings!")
-```
-
 ## On Chat End
 
-The `@cl.on_chat_end` decorator is used to define a hook that is called when the chat session ends either because the user disconnected or started a new chat session.
+The [on_chat_end](/api-reference/lifecycle-hooks/on-chat-end) decorator is used to define a hook that is called when the chat session ends either because the user disconnected or started a new chat session.
 
 ```python
 @cl.on_chat_end
@@ -56,7 +46,7 @@ def on_chat_end():
 
 ## On Chat Resume
 
-The `@cl.on_chat_resume` decorator is used to define a hook that is called when a user resumes a chat session that was previously disconnected. This can only happen if [authentication](/authentication) and [data persistence](/data-persistence) are enabled.
+The [on_chat_resume](/api-reference/lifecycle-hooks/on-chat-resume) decorator is used to define a hook that is called when a user resumes a chat session that was previously disconnected. This can only happen if [authentication](/authentication) and [data persistence](/data-persistence) are enabled.
 
 ```python
 from chainlit.types import ThreadDict

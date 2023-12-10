@@ -4,21 +4,21 @@ title: "author_rename"
 
 Useful to rename the author of a message to display more friendly author names in the UI.
 
-### Parameters
+## Parameters
 
 <ParamField path="orig_author" type="str" required>
   The original author name.
 </ParamField>
 
-### Returns
+## Returns
 
 <ResponseField name="author" type="str" required>
   The renamed author
 </ResponseField>
 
-### Usage
+## Usage
 
-```python Code Example
+```python
 from langchain import OpenAI, LLMMathChain
 import chainlit as cl
 
