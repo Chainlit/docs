@@ -15,7 +15,10 @@
   "colors": {
     "primary": "#F80061",
     "light": "#FFE7EB",
-    "dark": "#980039"
+    "dark": "#980039",
+    "background": {
+      "dark": "#111010"
+    }
   },
   "topbarCtaButton": {
     "name": "Join Discord",
