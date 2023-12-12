@@ -155,7 +155,7 @@
       ]
     },
     {
-      "group": "Lyfe Cycle Hooks",
+      "group": "Life Cycle Hooks",
       "pages": [
         "api-reference/lifecycle-hooks/on-chat-start",
         "api-reference/lifecycle-hooks/on-chat-end",
