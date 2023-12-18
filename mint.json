@@ -54,7 +54,8 @@
             "integrations/langchain",
             "integrations/llama-index",
             "integrations/haystack",
-            "integrations/langflow"
+            "integrations/langflow",
+            "integrations/embedchain"
           ]
         },
         "get-started/deployment",

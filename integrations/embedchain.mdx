@@ -1,0 +1,64 @@
+---
+title: Embedchain
+---
+
+In this tutorial, we'll walk through the steps to create a Chainlit application integrated with [Embedchain](https://github.com/embedchain/embedchain).
+
+<img src="/images/embedchain-example.gif" alt="Preview of what you'll be building" />
+
+## Step 1: Create a Chainlit Application
+
+In `app.py`, import the necessary packages and define one function to handle a new chat session and another function to handle messages incoming from the UI.
+
+### With Embedchain
+
+```python app.py
+import chainlit as cl
+from embedchain import Pipeline as App
+
+import os
+
+os.environ["OPENAI_API_KEY"] = "sk-xxx"
+
+@cl.on_chat_start
+async def on_chat_start():
+    app = App.from_config(config={
+        'app': {
+            'config': {
+                'name': 'chainlit-app'
+            }
+        },
+        'llm': {
+            'config': {
+                'stream': True,
+            }
+        }
+    })
+    # import your data here
+    app.add("https://www.forbes.com/profile/elon-musk/")
+    app.collect_metrics = False
+    cl.user_session.set("app", app)
+
+
+@cl.on_message
+async def on_message(message: cl.Message):
+    app = cl.user_session.get("app")
+    msg = cl.Message(content="")
+    for chunk in await cl.make_async(app.chat)(message.content):
+        await msg.stream_token(chunk)
+    
+    await msg.send()
+```
+## Step 2: Run the Application
+
+To start your app, open a terminal and navigate to the directory containing `app.py`. Then run the following command:
+
+```bash
+chainlit run app.py -w
+```
+
+## Next Steps
+
+Congratulations! You've just created your first LLM app with Chainlit and Embedchain.
+
+Happy coding! 🎉
