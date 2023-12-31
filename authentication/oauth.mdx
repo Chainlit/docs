@@ -24,8 +24,8 @@ Follow these guides to create an OAuth app for your chosen provider(s). Then cop
 
 <Warning>
   If your app is served behind a reverse proxy (like cloud run) you will have to
-  set the `CHAINLIT_URL` environment variable. For instance, if you host your
-  application at `https://mydomain.com`, `CHAINLIT_URL` should be set to
+  set the `BASE_URL` environment variable. For instance, if you host your
+  application at `https://mydomain.com`, `BASE_URL` should be set to
   `https://mydomain.com`.
 </Warning>
 
@@ -115,6 +115,18 @@ You need to set the following environment variables:
 Optional environment variables:
 
 - `OAUTH_AUTH0_ORIGINAL_DOMAIN`: Original domain name for your auth0 setup, if you are using a custom domain
+
+### Amazon Cognito
+
+Follow this guide to [create a new Amazon Cognito User Pool](https://docs.aws.amazon.com/cognito/latest/developerguide/tutorial-create-user-pool.html).
+
+The callback URL should be: `BASE_URL/auth/oauth/aws-cognito/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/aws-cognito/callback`.
+
+You need to set the following environment variables:
+
+- `OAUTH_COGNITO_CLIENT_ID`: Client ID
+- `OAUTH_COGNITO_CLIENT_SECRET`: Client secret
+- `OAUTH_COGNITO_DOMAIN`: Cognito Domain
 
 ## Examples
 
