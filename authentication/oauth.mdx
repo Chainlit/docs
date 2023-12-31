@@ -24,8 +24,8 @@ Follow these guides to create an OAuth app for your chosen provider(s). Then cop
 
 <Warning>
   If your app is served behind a reverse proxy (like cloud run) you will have to
-  set the `BASE_URL` environment variable. For instance, if you host your
-  application at `https://mydomain.com`, `BASE_URL` should be set to
+  set the `CHAINLIT_URL` environment variable. For instance, if you host your
+  application at `https://mydomain.com`, `CHAINLIT_URL` should be set to
   `https://mydomain.com`.
 </Warning>
 
@@ -33,7 +33,7 @@ Follow these guides to create an OAuth app for your chosen provider(s). Then cop
 
 Go to this page to [create a new GitHub OAuth app](https://github.com/settings/apps).
 
-The callback URL should be: `BASE_URL/auth/oauth/github/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/github/callback`.
+The callback URL should be: `CHAINLIT_URL/auth/oauth/github/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/github/callback`.
 
 You need to set the following environment variables:
 
@@ -44,7 +44,7 @@ You need to set the following environment variables:
 
 Go to this page to [create a new Google OAuth app](https://console.developers.google.com/apis/credentials).
 
-The callback URL should be: `BASE_URL/auth/oauth/google/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/google/callback`.
+The callback URL should be: `CHAINLIT_URL/auth/oauth/google/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/google/callback`.
 
 You need to set the following environment variables:
 
@@ -55,7 +55,7 @@ You need to set the following environment variables:
 
 Follow this guide to [create a new Azure Active Directory OAuth app](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app).
 
-The callback URL should be: `BASE_URL/auth/oauth/azure-ad/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/azure-ad/callback`.
+The callback URL should be: `CHAINLIT_URL/auth/oauth/azure-ad/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/azure-ad/callback`.
 
 You need to set the following environment variables:
 
@@ -74,7 +74,7 @@ You need to set the following environment variables:
 
 Follow this guide to [create OIDC app integrations](https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm).
 
-The callback URL should be: `BASE_URL/auth/oauth/okta/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/okta/callback`.
+The callback URL should be: `CHAINLIT_URL/auth/oauth/okta/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/okta/callback`.
 
 You need to set the following environment variables:
 
@@ -93,7 +93,7 @@ There are several ways to configure the Okta OAuth routes:
 
 Head to the [Descope sign-up page](https://www.descope.com/sign-up), to get started with your account and set up your authentication.
 
-The callback URL should be: `BASE_URL/auth/oauth/descope/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/descope/callback`.
+The callback URL should be: `CHAINLIT_URL/auth/oauth/descope/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/descope/callback`.
 
 You need to set the following environment variables:
 
@@ -104,7 +104,7 @@ You need to set the following environment variables:
 
 Follow this guide to [create an Auth0 application](https://auth0.com/docs/get-started/auth0-overview/create-applications).
 
-The callback URL should be: `BASE_URL/auth/oauth/auth0/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/auth0/callback`.
+The callback URL should be: `CHAINLIT_URL/auth/oauth/auth0/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/auth0/callback`.
 
 You need to set the following environment variables:
 
@@ -120,7 +120,7 @@ Optional environment variables:
 
 Follow this guide to [create a new Amazon Cognito User Pool](https://docs.aws.amazon.com/cognito/latest/developerguide/tutorial-create-user-pool.html).
 
-The callback URL should be: `BASE_URL/auth/oauth/aws-cognito/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/aws-cognito/callback`.
+The callback URL should be: `CHAINLIT_URL/auth/oauth/aws-cognito/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/aws-cognito/callback`.
 
 You need to set the following environment variables:
 
