@@ -57,7 +57,8 @@
           "pages": [
             "integrations/langchain",
             "integrations/llama-index",
-            "integrations/haystack"
+            "integrations/haystack",
+            "integrations/embedchain"
           ]
         },
         "get-started/deployment"
