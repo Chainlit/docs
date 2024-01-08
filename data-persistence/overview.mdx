@@ -6,6 +6,8 @@ By default, your Chainlit app does not persist the chats and elements it generat
 
 Once enabled, data persistence will introduce new features to your application.
 
+## Features
+
 <CardGroup cols={2}>
   <Card
     title="Chat History"
@@ -25,36 +27,39 @@ Once enabled, data persistence will introduce new features to your application.
   </Card>
 </CardGroup>
 
-## Create a Chainlit Project
+## Enable Data Persistence in 1 minute
 
-1. Navigate to [Chainlit Cloud](https://cloud.chainlit.io) and sign in.
-2. Click on the '+' icon to create a new project. You will see a screen similar to the one below:
-   ![Project Creation Screen](/images/project.png)
-3. Click on the 'Create API Key' button to create a new API key.
-4. We will need this key later on.
-   ![Project API Key](/images/apikey.png)
+1. Navigate to [Literal AI](https://cloud.getliteral.ai) and sign in.
+2. You will be prompted to create a new project:
+   <Frame caption="Project Creation Screen">
+     <img src="/images/create-project.png" />
+   </Frame>
+3. Navigate to the `Settings` page. A default API key will be generated for you
+   <Frame caption="Project API Key">
+     <img src="/images/api-key.png" />
+   </Frame>
 
-## Activating Data Persistence
+## Activation
 
-After creating a Chainlit Project and an API key for said project. You will need to pass the key via a `CHAINLIT_API_KEY` environment variable.
+Once you have an API key, you will need to pass it via a `LITERAL_API_KEY` environment variable.
 
 Next to your Chainlit application, create a `.env` file and modify it like so:
 
 ```shell .env
-CHAINLIT_API_KEY="your key"
+LITERAL_API_KEY="your key"
 ```
 
 Or inlined:
 
 ```shell
-CHAINLIT_API_KEY="your key" chainlit run main.py
+LITERAL_API_KEY="your key" chainlit run main.py
 ```
 
-Once activated, your chats and elements will be persisted in Chainlit Cloud.
+Once activated, your chats and elements will be persisted on Literal.
 
 ## Deactivation
 
-If you wish to deactivate data persistence, simply comment out or remove the `CHAINLIT_API_KEY` environment variable.
+If you wish to deactivate data persistence, simply comment out or remove the `LITERAL_API_KEY` environment variable.
 
 ## Data privacy & security
 

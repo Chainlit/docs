@@ -2,32 +2,32 @@
 title: Enterprise
 ---
 
-If your organization can't use third party cloud services for data hosting, we can provide your company with a self-hostable Chainlit Cloud docker image (under commercial license).
+If your organization can't use third party cloud services for data hosting, we can provide your company with a self-hostable Literal docker image (under commercial license).
 
 <Note>
   To request access you can contact us here ->
   https://forms.gle/BX3UNBLmTF75KgZVA.
 </Note>
 
-## Define your Chainlit Server
+## Define your Literal Server
 
-Once you are hosting your own Chainlit Cloud instance, you can point to the server for data persistence.
-You will need to use the `CHAINLIT_SERVER` environment variable.
+Once you are hosting your own Literal instance, you can point to the server for data persistence.
+You will need to use the `LITERAL_SERVER` environment variable.
 
 Modify the `.env` file next to your Chainlit application.
 
 ```shell .env
-CHAINLIT_SERVER="https://cloud.your_chainlit.io"
+LITERAL_SERVER="https://cloud.your_literal.com"
 ```
 
 Alternatively, inlined:
 
 ```shell
-CHAINLIT_SERVER="https://cloud.your_chainlit.io" chainlit run main.py
+LITERAL_SERVER="https://cloud.your_literal.com" chainlit run main.py
 ```
 
-## Activating Cloud Mode
+## Activating Data Persistence
 
-Using your own Chainlit Cloud instance, you will need to provide a valid API key to persist the data as described in [Data Persistence Getting Started](/data-persistence/overview).
+Using your own Literal instance, you will still need to provide a valid API key to persist the data as described [here](/data-persistence/overview).
 
-Once activated, your chats and elements will be stored in your own Cloud.
+Once activated, your chats and elements will be stored on your own server.
