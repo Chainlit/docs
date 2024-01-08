@@ -1,0 +1,22 @@
+---
+title: "on_chat_end"
+---
+
+Hook to react to the user websocket disconnection event.
+
+## Usage
+
+```python
+import chainlit as cl
+
+
+@cl.on_chat_start
+def start():
+    print("hello", cl.user_session.get("id"))
+
+
+@cl.on_chat_end
+def end():
+    print("goodbye", cl.user_session.get("id"))
+
+```

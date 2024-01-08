@@ -6,7 +6,7 @@ The `Image` class is designed to create and handle image elements to be sent and
 
 You must provide either an url or a path or content bytes.
 
-### Attributes
+## Attributes
 
 <ParamField path="name" type="str">
   The name of the image to be displayed in the UI.
@@ -34,32 +34,19 @@ You must provide either an url or a path or content bytes.
   The file content of the image in bytes format.
 </ParamField>
 
-### Usage with message scope
+## Example
 
-```python Code Example
+```python
 import chainlit as cl
 
-# Sending an image with the local file path
-elements = [
-  cl.Image(name="image1", display="inline", path="./image1.jpg")
-]
 
-await cl.Message(content="Look at this local image!", elements=elements).send()
-```
+@cl.on_chat_start
+async def start():
+    image = cl.Image(path="./cat.jpeg", name="image1", display="inline")
 
-### Usage without scope
-
-```python Code Example
-import chainlit as cl
-import aiofiles
-
-# Sending an image with the local file path
-image1 = cl.Image(name="image1", display="inline", path="./image1.jpg")
-await image1.send()
-
-# Sending an image with file content as bytes
-async with aiofiles.open("./image2.jpg", "rb") as f:
-    image_content = await f.read()
-    image2 = cl.Image(name="image2", display="inline", content=image_content)
-    await image2.send()
+    # Attach the image to the message
+    await cl.Message(
+        content="This message has an image!",
+        elements=[image],
+    ).send()
 ```

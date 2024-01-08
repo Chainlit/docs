@@ -1,0 +1,103 @@
+---
+title: "Step Decorator"
+---
+
+The step decorator will create and send a step to the UI based on the decorated function. By default, the arguments of the function will be used as the input of the step and the return value will be used as the output.
+
+Under the hood, the step decorator is using the [cl.Step](/api-reference/step-class) class.
+
+## Parameters
+
+<ParamField path="name" type="str" optional>
+  The name of the step. Default to the name of the decorated function.
+</ParamField>
+<ParamField path="type" type="str" default="undefined" optional>
+  The type of the step, useful for monitoring and debugging.
+</ParamField>
+<ParamField path="disable_feedback" type="bool" default="True" optional>
+  By default the feedback buttons are disabled for steps. Set this to `False` to
+  enable them.
+</ParamField>
+<ParamField path="root" type="bool" default="False" optional>
+  By default the step will be nested under the previous step/message. Set this
+  to `True` to make it a root step.
+</ParamField>
+<ParamField path="language" type="str" optional>
+  Language of the output. See
+  https://react-code-blocks-rajinwonderland.vercel.app/?path=/story/codeblock--supported-languages
+  for a list of supported languages.
+</ParamField>
+<ParamField path="show_input" type="Union[bool, str]" default="False" optional>
+  By default only the output of the step is shown. Set this to `True` to also
+  show the input. You can also set this to a language like `json` or `python` to
+  syntax highlight the input.
+</ParamField>
+
+## Access the Current step
+
+You can access the current step object using `cl.context.current_step` and override values.
+
+```python
+import chainlit as cl
+
+@cl.step
+async def my_step():
+    current_step = cl.context.current_step
+
+    # Override the input of the step
+    current.step.input = "My custom input"
+
+    # Override the output of the step
+    current.step.output = "My custom output"
+```
+
+## Stream the Output
+
+```python
+from openai import AsyncOpenAI
+
+import chainlit as cl
+
+client = AsyncOpenAI(api_key="YOUR_API_KEY")
+
+@cl.step(type="llm")
+async def gpt4():
+    settings = {
+        "model": "gpt-4",
+        "temperature": 0,
+    }
+
+    stream = await client.chat.completions.create(
+        messages=message_history, stream=True, **settings
+    )
+
+    current_step = cl.context.current_step
+
+    async for part in stream:
+        delta = part.choices[0].delta
+
+        if delta.content:
+            # Stream the output of the step
+            await current_step.stream_token(delta.content)
+```
+
+## Nest Steps
+
+If another step decorated function is called inside the decorated function, the child step will be nested under the parent step.
+
+```python
+import chainlit as cl
+
+@cl.step
+async def parent_step():
+    await child_step()
+    return "Parent step output"
+
+@cl.step
+async def child_step():
+    return "Child step output"
+
+@cl.on_chat_start
+async def main():
+    await parent_step()
+```

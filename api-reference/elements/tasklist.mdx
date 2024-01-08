@@ -4,7 +4,7 @@ title: "TaskList"
 
 The `TaskList` class allows you to display a task list next to the chatbot UI.
 
-### Attributes
+## Attributes
 
 <ParamField path="status" type="str">
   The status of the TaskList. We suggest using something short like "Ready",
@@ -15,9 +15,11 @@ The `TaskList` class allows you to display a task list next to the chatbot UI.
   The list of tasks to be displayed in the UI.
 </ParamField>
 
-### Usage
+## Usage
 
-```python Code Example
+The TaskList element is slightly different from other elements in that it is not attached to a Message or Step but can be sent directly to the chat interface.
+
+```python
 import chainlit as cl
 
 

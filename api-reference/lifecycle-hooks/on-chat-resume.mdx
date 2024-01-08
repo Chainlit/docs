@@ -1,0 +1,34 @@
+---
+title: "on_chat_resume"
+---
+
+Decorator to enable users to continue a conversation.
+Requires both [data persistence](/data-persistence/overview) and [authentication](/authentication) to be enabled.
+
+This decorator will automatically:
+
+- Send the persisted messages and elements to the UI.
+- Restore the user session.
+
+<Warning>
+  Only JSON serializable fields of the user session will be saved and restored.
+  If you are using a Langchain agent for instance, you will need to
+  reinstantiate and set it in the user session yourself.
+</Warning>
+
+## Usage
+
+<Card
+  title="Resume Chat Example"
+  color="#F80061"
+  icon="message"
+  href="https://github.com/Chainlit/cookbook/tree/main/resume-chat"
+>
+  Practical example of how to resume a chat with context.
+</Card>
+
+## Parameters
+
+<ParamField path="thread" type="ThreadDict">
+  The persisted chat to resume.
+</ParamField>

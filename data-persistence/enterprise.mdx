@@ -1,0 +1,33 @@
+---
+title: Enterprise
+---
+
+If your organization can't use third party cloud services for data hosting, we can provide your company with a self-hostable Literal docker image (under commercial license).
+
+<Note>
+  To request access you can contact us here ->
+  https://forms.gle/BX3UNBLmTF75KgZVA.
+</Note>
+
+## Define your Literal Server
+
+Once you are hosting your own Literal instance, you can point to the server for data persistence.
+You will need to use the `LITERAL_SERVER` environment variable.
+
+Modify the `.env` file next to your Chainlit application.
+
+```shell .env
+LITERAL_SERVER="https://cloud.your_literal.com"
+```
+
+Alternatively, inlined:
+
+```shell
+LITERAL_SERVER="https://cloud.your_literal.com" chainlit run main.py
+```
+
+## Activating Data Persistence
+
+Using your own Literal instance, you will still need to provide a valid API key to persist the data as described [here](/data-persistence/overview).
+
+Once activated, your chats and elements will be stored on your own server.

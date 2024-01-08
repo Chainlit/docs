@@ -1,0 +1,53 @@
+---
+title: "Action"
+---
+
+Actions are a way to send clickable buttons to the user interface. Each action is attached to a [Message](/api-reference/message) and can be used to trigger a python function when the user clicks on it.
+
+## Create an action
+
+Actions are sent to the UI through messages:
+
+```python
+import chainlit as cl
+
+@cl.on_chat_start
+async def start():
+    # Sending an action button within a chatbot message
+    actions = [
+        cl.Action(name="action_button", value="example_value", description="Click me!")
+    ]
+
+    await cl.Message(content="Interact with this action button:", actions=actions).send()
+```
+
+## Define a Python Callback
+
+To handle the user's click on the action button, you need to define a callback function with the `@cl.action_callback` decorator:
+
+```python
+@cl.action_callback("action_button")
+async def on_action(action: cl.Action):
+    print("The user clicked on the action button!")
+
+    return "Thank you for clicking on the action button!"
+```
+
+<Card
+  title="Action API"
+  color="#FFCF30"
+  icon="bolt"
+  href="/api-reference/action"
+>
+  Learn how more about Actions.
+</Card>
+
+## Toaster
+
+While an action is being processed, a toaster is displayed to the user. The toaster is a small notification that appears at the top right of the screen and indicates that the action is being processed.
+
+If the action callback returns a string, the toaster will display it to the user once the action is processed.
+
+<Frame caption="Output of the code above">
+  <img src="/images/action.gif" />
+</Frame>

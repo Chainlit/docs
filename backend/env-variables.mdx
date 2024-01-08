@@ -19,18 +19,7 @@ Instead, you should use `user_env` in the Chainlit config to ask each user to pr
 You can then access the user's keys in your code using:
 
 ```python
-from chainlit import user_session
-
-user_env = user_session.get("env")
-```
-
-## LangChain Example
-
-Let's say you added `OPENAI_API_KEY` in `user_env`.
-
-```python
 import chainlit as cl
-from langchain.chat_models import ChatOpenAI
 
-llm = ChatOpenAI(temperature=0, openai_api_key=user_env.get("OPENAI_API_KEY"))
+user_env = cl.user_session.get("env")
 ```

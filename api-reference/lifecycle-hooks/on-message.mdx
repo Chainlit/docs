@@ -1,0 +1,23 @@
+---
+title: "on_message"
+---
+
+Decorator to react to messages coming from the UI.
+The decorated function is called every time a new message is received.
+
+## Parameters
+
+<ParamField path="message" type="cl.Message">
+  The message coming from the UI.
+</ParamField>
+
+## Usage
+
+```python
+import chainlit as cl
+
+@cl.on_message
+def main(message: cl.Message):
+  content = message.content
+  # do something
+```

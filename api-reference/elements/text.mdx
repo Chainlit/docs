@@ -7,7 +7,7 @@ It supports the markdown syntax for formatting text.
 
 You must provide either an url or a path or content bytes.
 
-### Attributes
+## Attributes
 
 <ParamField path="name" type="str">
   The name of the text element to be displayed in the UI.
@@ -37,24 +37,21 @@ You must provide either an url or a path or content bytes.
   for a list of supported languages.
 </ParamField>
 
-### Usage with message scope
+## Example
 
 ```python
 import chainlit as cl
 
-text_content = "Hello, this is a text element."
-elements = [
-    cl.Text(name="simple_text", content=text_content, display="inline")
-]
 
-await cl.Message(content="Check out this text element!", elements=elements).send()
-```
+@cl.on_chat_start
+async def start():
+    text_content = "Hello, this is a text element."
+    elements = [
+        cl.Text(name="simple_text", content=text_content, display="inline")
+    ]
 
-### Usage without scope
-
-```python
-import chainlit as cl
-
-text_content = "Hello, this is a text element."
-await cl.Text(name="simple_text", content=text_content, display="inline").send()
+    await cl.Message(
+        content="Check out this text element!",
+        elements=elements,
+    ).send()
 ```

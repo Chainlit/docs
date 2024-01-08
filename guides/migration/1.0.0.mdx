@@ -1,0 +1,75 @@
+---
+title: Migration Guide to Chainlit v1.0.0
+---
+
+## Updating Chainlit
+
+Begin the migration by updating Chainlit to the latest version:
+
+```bash
+pip install --upgrade chainlit
+```
+
+<Note>
+  The documentation has been entirely updated, click on the links below to see
+  the new APIs!
+</Note>
+
+## Message
+
+Previously, messages were both used for chat interactions and display intermediate steps.
+
+Intermediary steps are more than just messages, they have an input and an output, a start and an end.
+
+For this reason, we decided to remove the `parent_id`, `prompt` and `indent` fields from the `cl.Message` class and introduce a new concept: [cl.Step](/concepts/step).
+
+Finally, the `disable_human_feedback` field has been renamed to `disable_feedback`.
+
+## Prompt
+
+The Chainlit `Prompt` class was mixing fields for both chat and completion LLMs.
+
+To make it clearer, it has been split into two classes: [ChatGeneration](/api-reference/generation/chat-generation) and [CompletionGeneration](/api-reference/generation/completion-generation).
+
+Generations are intended to be used with [Step](/api-reference/generation/chat-generation#example).
+
+## AppUser
+
+The `AppUser` class has been renamed to `User`. The `username` field has been renamed to `identifier` to emphasize that it has to be a unique identifier.
+
+The other fields such as `provider` have been removed. A new `metadata` field has been added instead. It is a dictionary that can be used to store any information about the user.
+
+## AskUserMessage
+
+The response of [AskUserMessage](/api-reference/ask/ask-for-input) has been slightly modified. The `content` field has been renamed to `output`.
+
+## File Upload
+
+File upload has been reworked to remove the size limit and vastly improve performance. The APIs stay the same with one exception.
+
+The file objects returned by [AskFileMessage](/api-reference/ask/ask-for-file) and [multi modal messages](/advanced-features/multi-modal) no longer have the `content` of the file. Instead they have a `path` field that can be used to manipulate the file.
+
+## Chainlit Cloud
+
+Chainlit Cloud has been replaced by our entirely new platform called [Literal AI](https://docs.getliteral.ai).
+
+Literal AI not only works out of the box with Chainlit apps but also with any other LLM app. Your historical data has been migrated automatically.
+
+In your Chainlit app, replace your API key definition with:
+
+```python
+# BEFORE
+LITERAL_API_KEY="YOUR_API_KEY"
+
+# AFTER
+LITERAL_API_KEY="YOUR_API_KEY"
+```
+
+Literal AI brings a lot of new features such as:
+
+- User analytics
+- Chat analytics
+- Detailed traces
+- Python & TypeScript SDKs to interact with your data
+
+and more!

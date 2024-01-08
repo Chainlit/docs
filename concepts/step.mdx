@@ -1,0 +1,60 @@
+---
+title: Step
+---
+
+LLM powered Assistants take a series of step to process a user's request.
+Unlike a [Message](concepts/message), a Step has an input/output, a start/end and can be nested.
+
+Together, Steps form a Chain of Thought. Displaying the steps of a Chain of Thought is useful both for the end user (to understand what the Assistant is doing) and for the developer (to debug the Assistant).
+
+## A Simple Chain of Thought
+
+Lets take a simple example of a Chain of Thought that takes a user's message, process it and sends a response.
+
+```py
+import chainlit as cl
+
+
+@cl.step
+async def tool():
+    # Simulate a running task
+    await cl.sleep(2)
+
+    return "Response from the tool!"
+
+
+@cl.on_message
+async def main(message: cl.Message):
+    # Call the tool
+    tool_res = await tool()
+
+    # Send the final answer.
+    await cl.Message(content="This is the final answer").send()
+```
+
+<Frame caption="Output of the code above">
+  <img src="/images/step.png" />
+</Frame>
+
+## Step API
+
+There are two ways to create steps, either by using the the `@cl.step` decorator or by using the `cl.Step` class.
+
+<CardGroup cols={2}>
+  <Card
+    title="@cl.step"
+    icon="at"
+    color="#F80061"
+    href="/api-reference/step-decorator"
+  >
+    Easier to use but requires to split your step logic in a function.
+  </Card>
+  <Card
+    title="with cl.Step():"
+    icon="code"
+    color="#F80061"
+    href="/api-reference/step-class"
+  >
+    More verbose but usable in any context as a Python Context Manager.
+  </Card>
+</CardGroup>

@@ -4,21 +4,21 @@ title: "cache"
 
 The `cache` decorator is a tool for caching results of resource-intensive calculations or loading processes. It can be conveniently combined with the [file watcher](/backend/command-line) to prevent resource reloading each time the application restarts. This not only saves time, but also enhances overall efficiency.
 
-### Parameters
+## Parameters
 
 <ParamField path="func" type="Callable">
   The target function whose results need to be cached.
 </ParamField>
 
-### Returns
+## Returns
 
 <ResponseField name="cached_value" type="Any" required>
   The computed value that is stored in the cache after its initial calculation.
 </ResponseField>
 
-### Usage
+## Usage
 
-```python Pure Python
+```python
 import time
 import chainlit as cl
 

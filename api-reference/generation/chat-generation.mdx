@@ -1,0 +1,91 @@
+---
+title: "ChatGeneration"
+---
+
+A `ChatGeneration` contains all of the data that has been sent to a message-based LLM (like GPT-4) as well as the response from the LLM.
+It is designed to be passed to a [Step](/concepts/step) to enable the [Prompt Playground](/advanced-features/prompt-playground).
+
+## Attributes
+
+<ParamField path="completion" type="str" optional>
+  The completion of the prompt.
+</ParamField>
+
+<ParamField path="inputs" type="Dict[str, str]" optional>
+  The inputs (variables) to the prompt, represented as a dictionary.
+</ParamField>
+
+<ParamField path="messages" type="List[GenerationMessage]" optional>
+  The list of messages that form the prompt if in chat mode.
+</ParamField>
+
+<ParamField path="provider" type="str" optional>
+  The provider of the LLM, such as "openai-chat".
+</ParamField>
+
+<ParamField path="settings" type="Dict[str, Any]" optional>
+  The settings the LLM provider was called with. Can include OpenAI tools and
+  functions.
+</ParamField>
+
+## Example
+
+```python
+import os
+
+from chainlit.playground.providers import ChatOpenAI
+import chainlit as cl
+
+# If no OPENAI_API_KEY is available, the ChatOpenAI provider won't be available in the prompt playground
+os.environ["OPENAI_API_KEY"] = "sk-..."
+
+template = """Hello, this is a template.
+This is a variable1 {variable1}
+And this is variable2 {variable2}
+"""
+
+inputs = {
+    "variable1": "variable1 value",
+    "variable2": "variable2 value",
+}
+
+settings = {
+    "model": "gpt-3.5-turbo",
+    "temperature": 0,
+    # ... more settings
+}
+
+
+@cl.step(type="llm")
+async def fake_llm():
+    # Pretend we're calling the LLM
+    await cl.sleep(2)
+
+    fake_completion = "The openai completion"
+
+    formatted_template = template.format(**inputs)
+
+    # Add the generation to the current step
+    cl.context.current_step.generation = cl.ChatGeneration(
+        provider=ChatOpenAI.id,
+        completion=fake_completion,
+        inputs=inputs,
+        settings=settings,
+        messages=[
+            cl.GenerationMessage(
+                template=template, formatted=formatted_template, role="system"
+            ),
+        ],
+    )
+
+    return fake_completion
+
+
+@cl.on_chat_start
+async def start():
+    await fake_llm()
+```
+
+<Frame caption="A chat completion displayed in the Prompt Playground">
+  <img src="/images/chat-mode-pp.png" />
+</Frame>
