@@ -128,7 +128,7 @@
       "group": "Backend",
       "pages": [
         {
-          "group": "config.toml",
+          "group": "Config",
           "pages": [
             "backend/config/overview",
             "backend/config/features",
