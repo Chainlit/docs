@@ -161,7 +161,8 @@
         "api-reference/lifecycle-hooks/on-chat-start",
         "api-reference/lifecycle-hooks/on-chat-end",
         "api-reference/lifecycle-hooks/on-chat-resume",
-        "api-reference/lifecycle-hooks/on-message"
+        "api-reference/lifecycle-hooks/on-message",
+        "api-reference/lifecycle-hooks/on-logout"
       ]
     },
     {

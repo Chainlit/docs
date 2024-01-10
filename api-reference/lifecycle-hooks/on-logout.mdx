@@ -1,0 +1,27 @@
+---
+title: "on_logout"
+---
+
+Decorator to react to a user logging out. Useful to clear cookies or other user data through the HTTP response.
+
+## Parameters
+
+<ParamField path="request" type="fastapi.Request">
+  The request object.
+</ParamField>
+
+<ParamField path="response" type="fastapi.Response">
+  The response object.
+</ParamField>
+## Usage
+
+```python
+from fastapi import Request, Response
+
+import chainlit as cl
+
+
+@cl.on_logout
+def main(request: Request, response: Response):
+    response.delete_cookie("my_cookie")
+```
