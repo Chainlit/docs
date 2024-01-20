@@ -1,0 +1,179 @@
+---
+title: Copilot
+---
+
+Software Copilot are a new kind of assistant embedded in your app/product. They are designed to help users get the most out of your app by providing contextual guidance and take actions on their behalf.
+
+## Embedding the Copilot
+
+First, make sure your Chainlit server is running. Then, add the following script at the end of your website's `<body>` tag:
+
+<Note>
+  This example assumes your Chainlit server is running on
+  `http://localhost:8000`
+</Note>
+
+```html
+<body>
+  <!-- ... -->
+  <script src="http://localhost:8000/copilot/index.js"></script>
+  <script>
+    window.mountChainlitWidget({
+      chainlitServer: "http://localhost:8000",
+    });
+  </script>
+</body>
+```
+
+That's it! You should now see a floating button on the bottom right corner of your website. Clicking on it will open the Copilot.
+
+<Note>
+If you plan to use [on_chat_start](/api-reference/lifecycle-hooks/on-chat-start) to welcome users, you should set [show_readme_as_default](/backend/config/ui) to `false` in your Chainlit config to avoid flickering.
+</Note>
+
+<Frame caption="Copilot in action">
+  <img src="/images/copilot.gif" />
+</Frame>
+
+## Widget Configuration
+
+The `mountChainlitWidget` function accepts the following options:
+
+```ts
+export interface IWidgetConfig {
+  // URL of the Chainlit server
+  chainlitServer: string;
+  // Whether to show the Chain of Thought. Only applicable if hide_cot is false on the server
+  show_cot?: boolean;
+  // Required if authentication is enabled on the server
+  accessToken?: string;
+  // Theme of the copilot
+  theme?: "light" | "dark";
+  // Font family to use. It is up to the website to load the font
+  fontFamily?: string;
+  // Custom styling to apply to the widget button
+  button?: {
+    // ID of the container element to mount the button to
+    containerId?: string;
+    // URL of the image to use as the button icon
+    imageUrl?: string;
+    style?: {
+      size?: string;
+      bgcolor?: string;
+      color?: string;
+      bgcolorHover?: string;
+      borderColor?: string;
+      borderWidth?: string;
+      borderStyle?: string;
+      borderRadius?: string;
+      boxShadow?: string;
+    };
+  };
+}
+```
+
+## Function Calling
+
+The Copilot can call functions on your website. This is useful for taking actions on behalf of the user. For example, you can call a function to create a new document, or to open a modal.
+
+First, create a `CopilotFunction` in your Chainlit server:
+
+```py
+import chainlit as cl
+
+
+@cl.on_message
+async def on_message(msg: cl.Message):
+    if cl.context.session.client_type == "copilot":
+        fn = cl.CopilotFunction(name="test", args={"msg": msg.content})
+        res = await fn.acall()
+        await cl.Message(content=res).send()
+```
+
+Then, in your app/website, add the following event listener:
+
+```js
+window.addEventListener("chainlit-call-fn", (e) => {
+  const { name, args, callback } = e.detail;
+  if (name === "test") {
+    console.log(name, args);
+    callback("You sent: " + args.msg);
+  }
+});
+```
+
+As you can see, the event listener receives the function name, arguments, and a callback function. The callback function should be called with the result of the function call.
+
+## Security
+
+### Cross Origin Resource Sharing (CORS)
+
+By default, the Chainlit server accepts requests from any origin. This is useful for development, but not recommended for production.
+
+To restrict the origins that can access the server (hence embed the copilot), set the [allow_origins](/backend/config/project) config field to a list of allowed origins.
+
+### Authentication
+
+If you want to restrict access to the Copilot per user, you can enable [authentication](/authentication) on the Chainlit server.
+
+While the standalone Chainlit application handles the authentication process, the Copilot needs to be configured with an access token. This token is used to authenticate the user with the Chainlit server.
+
+The host app/website is responsible for generating the token and passing it to the Copilot. Here are examples of how to generate the token in different languages:
+
+<Note>
+  You will need the `CHAINLIT_AUTH_SECRET` you generated when [configuring
+  authentication](/authentication).
+</Note>
+
+<CodeGroup>
+
+```py jwt.py
+import jwt
+from datetime import datetime, timedelta
+
+CHAINLIT_AUTH_SECRET = "your-secret"
+
+def create_jwt(identifier: str, metadata: dict) -> str:
+    to_encode = {
+      "identifier": identifier,
+      "metadata": metadata,
+      "exp": datetime.utcnow() + timedelta(minutes=60 * 24 * 15),  # 15 days
+      }
+
+    encoded_jwt = jwt.encode(to_encode, CHAINLIT_AUTH_SECRET, algorithm="HS256")
+    return encoded_jwt
+
+access_token = create_jwt("user-1", {"name": "John Doe"})
+```
+
+```ts jwt.ts
+import jwt from "jsonwebtoken";
+
+const CHAINLIT_AUTH_SECRET = "your-secret";
+
+interface Metadata {
+  [key: string]: any;
+}
+
+function createJwt(identifier: string, metadata: Metadata): string {
+  const toEncode = {
+    identifier: identifier,
+    metadata: metadata,
+    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 15, // 15 days
+  };
+  const encodedJwt = jwt.sign(toEncode, CHAINLIT_AUTH_SECRET, {
+    algorithm: "HS256",
+  });
+  return encodedJwt;
+}
+
+const accessToken = createJwt("user-1", { name: "John Doe" });
+```
+
+</CodeGroup>
+
+## Limitations
+
+Currently, Chainlit Copilot does not support:
+
+- User env
