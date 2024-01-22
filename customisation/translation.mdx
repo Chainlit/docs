@@ -1,0 +1,19 @@
+---
+title: Translation
+---
+
+Translation files are located in the `.chainlit/translations` directory. The files are named after the language code, e.g. `en-US.json` for English (United States).
+
+<Note>The language is dynamically set for each user based on the language of the browser. The default language is `en-US`.</Note>
+
+## Adding a new language
+
+To add a new language, create a new file in the `.chainlit/translations` directory with the language code as the filename. The language code should be in the format of `languageCode-COUNTRYCODE`, e.g. `en-US` for English (United States) or `en-GB` for English (United Kingdom).
+
+## Resetting
+
+To reset the the translations, remove the `.chainlit/translations` directory and restart your Chainlit application:
+
+```bash
+chainlit run my-app.py
+```

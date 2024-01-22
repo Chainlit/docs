@@ -10,7 +10,6 @@
     "default": "dark",
     "isHidden": true
   },
-  "backgroundImage": "/bg_dark.svg",
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#F80061",
@@ -60,8 +59,7 @@
             "integrations/haystack",
             "integrations/embedchain"
           ]
-        },
-        "get-started/deployment"
+        }
       ]
     },
     {
@@ -96,6 +94,10 @@
       ]
     },
     {
+      "group": "Deployment",
+      "pages": ["deployment/tutorials", "deployment/copilot"]
+    },
+    {
       "group": "Data Persistence",
       "pages": [
         "data-persistence/overview",
@@ -118,9 +120,11 @@
       "group": "Customisation",
       "pages": [
         "customisation/overview",
+        "customisation/translation",
         "customisation/custom-logo-and-favicon",
         "customisation/theme",
         "customisation/custom-css",
+        "customisation/custom-font",
         "customisation/react-frontend"
       ]
     },

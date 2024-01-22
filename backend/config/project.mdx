@@ -8,6 +8,10 @@ title: Project
   Whether to enable telemetry (default: true). No personal data is collected.
 </ParamField>
 
+<ParamField path="allow_origins" type="List[str]" default={["*"]}>
+  Authorized origins to access the app/copilot.
+</ParamField>
+
 <ParamField path="user_env" type="List[str]" default={[]}>
   List of environment variables to be provided by each user to use the app.
 </ParamField>

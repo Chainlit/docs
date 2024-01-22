@@ -1,0 +1,20 @@
+---
+title: Custom Font
+---
+
+To use a custom font, modify your configuration settings in .chainlit/config.toml.
+
+```toml config.toml
+[UI]
+# This should be a google font url
+custom_font = "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+```
+
+Then, update your theme's font family to use the custom font.
+
+```toml config.toml
+[UI.theme]
+    font_family = "Inter, sans-serif"
+```
+
+Once the configuration is updated, restart the application. Your custom font will now be used.
