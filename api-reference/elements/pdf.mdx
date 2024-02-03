@@ -32,6 +32,7 @@ The `Pdf` class allows you to display a PDF hosted remotely or locally in the ch
 
 ## Example
 
+### Inline
 ```python
 import chainlit as cl
 
@@ -44,4 +45,21 @@ async def main():
     ]
 
     cl.Message(content="Look at this local pdf!", elements=elements).send()
+```
+
+### Side and Page
+You must have the name of the pdf in the content of the message for the link to be created.
+
+```python
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def main():
+    # Sending a pdf with the local file path
+    elements = [
+      cl.Pdf(name="pdf1", display="side", path="./pdf1.pdf")
+    ]
+    # Reminder: The name of the pdf must be in the content of the message
+    cl.Message(content="Look at this local pdf1!", elements=elements).send()
 ```
