@@ -4,25 +4,12 @@ title: Formatted Prompts
 
 The formatted prompts view allows you to preview the full text that is sent to the LLM for completion.
 
-There are two ways formatted prompts can be displayed:
-
-1. Read-only: when you configure your prompt with a template and variables
-2. Read-write: when you configure your prompt directly with the formatted prompt
-
-## Read-only
-
-When you configure your prompt with a template and variables, the "formatted prompts" view enables you to preview the rendered template. It makes it easy to see the exact text sent to the LLM.
-
-Like in the "Template" view, you can click on the variables to edit them.
-
-This view doesn't let you edit the formatted prompt, as it is only the combination of the template and variables.
-
-When you need to edit the prompt template, go back to the "Template" view.
-
-## Read-write
-
-When you configure your prompt with only a formatted string, the "Template" view is hidden, only the "Formatted prompt" view is available.
-
-Skipping the definition of a template and its variables makes it easier to integrate, although the debugging interface will offer less features (no variable management or template view).
+This screen enables you to edit the current LLM inputs and get a completion, enabling you to debug your app and to test and iterate on your prompts.
 
 ![Formatted Prompt](/images/pp-formatted-prompt.png)
+
+## Setup
+
+If you did not already setup the generation object, go [here](/advanced-features/prompt-playground/setup).
+Once this is done, open the Prompt Playground.
+

@@ -86,7 +86,6 @@
           "pages": [
             "advanced-features/prompt-playground/overview",
             "advanced-features/prompt-playground/setup",
-            "advanced-features/prompt-playground/template-and-variables",
             "advanced-features/prompt-playground/formatted-prompts",
             "advanced-features/prompt-playground/llm-providers"
           ]
@@ -146,7 +145,12 @@
     },
     {
       "group": "Guides",
-      "pages": ["guides/sync-async", "guides/iframe", "guides/migration/1.0.0"]
+      "pages": [
+        "guides/sync-async",
+        "guides/iframe",
+        "guides/migration/1.0.0",
+        "guides/migration/X.X.X"
+      ]
     },
     {
       "group": "Examples",
