@@ -43,9 +43,10 @@ async def call_llm():
         variables=variables,
         settings=settings,
         messages=[
-            cl.GenerationMessage(
-                content=template.format(**variables), role="user"
-            ),
+            {
+                "content": template.format(**variables),
+                "role":"user"
+            },
         ],
     )
 
@@ -54,10 +55,10 @@ async def call_llm():
         messages=generation.messages, **settings
     )
 
-    generation.message_completion = cl.GenerationMessage(
-        content=response.choices[0].message.content,
-        role="assistant"
-    )
+    generation.message_completion = {
+        "content": response.choices[0].message.content,
+        "role": "assistant"
+    }
 
     # Add the generation to the current step
     cl.context.current_step.generation = generation

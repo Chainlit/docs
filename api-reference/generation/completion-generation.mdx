@@ -43,16 +43,16 @@ It is designed to be passed to a [Step](/concepts/step) to enable the [Prompt Pl
   The tags you want to assign to this generation.
 </ParamField>
 
-<ParamField path="tags" type="str" optional>
-  The tags you want to assign to this generation.
-</ParamField>
-
 <ParamField path="input_token_count" type="int" optional>
   Total tokens sent to the LLM.
 </ParamField>
 
 <ParamField path="output_token_count" type="int" optional>
   Total tokens returned by the LLM
+</ParamField>
+
+<ParamField path="token_count" type="int" optional>
+  Total tokens used by the LLM.
 </ParamField>
 
 <ParamField path="tt_first_token" type="float" optional>
