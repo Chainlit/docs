@@ -122,6 +122,7 @@
         "customisation/translation",
         "customisation/custom-logo-and-favicon",
         "customisation/theme",
+        "customisation/custom-js",
         "customisation/custom-css",
         "customisation/custom-font",
         "customisation/react-frontend"

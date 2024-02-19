@@ -1,0 +1,14 @@
+---
+title: JS
+---
+
+You can inject a custom JavaScript script into the application by adding the following to your `config.toml`:
+
+```toml config.toml
+[UI]
+# ...
+# This can either be a css file in your `public` dir or a URL
+custom_js = '/public/my_js_script.js'
+```
+
+Once the configuration is updated, restart the application. Your custom script will now be loaded.
