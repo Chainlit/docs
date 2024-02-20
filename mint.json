@@ -148,9 +148,8 @@
       "group": "Guides",
       "pages": [
         "guides/sync-async",
-        "guides/iframe",
         "guides/migration/1.0.0",
-        "guides/migration/X.X.X"
+        "guides/migration/1.0.300"
       ]
     },
     {
