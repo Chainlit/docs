@@ -82,7 +82,7 @@ class ExampleProvider(BaseProvider):
         return message
 
     def message_to_string(self, message: cl.GenerationMessage):
-        return message.formatted
+        return message.content
 
     async def create_completion(self, request):
         await super().create_completion(request)

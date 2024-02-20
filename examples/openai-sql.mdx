@@ -65,14 +65,13 @@ async def text_to_sql(text: str):
     generation = cl.ChatGeneration(
         provider=ChatOpenAI.id,
         messages=[
-            cl.GenerationMessage(
-                role="user",
-                template=template,
-                formatted=template.format(input=text),
-            )
+            {
+                "role": "user",
+                "content": template.format(input=text),
+            }
         ],
         settings=settings,
-        inputs={"input": text},
+        variables={"input": text},
     )
 
     # Call OpenAI

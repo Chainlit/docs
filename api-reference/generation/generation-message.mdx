@@ -6,12 +6,8 @@ title: "GenerationMessage"
 
 ## Attributes
 
-<ParamField path="template" type="str" optional>
-  The template of the message prompt.
-</ParamField>
-
-<ParamField path="formatted" type="str" optional>
-  The formatted version of the template.
+<ParamField path="content" type="str" optional>
+  The content of the message.
 </ParamField>
 
 <ParamField path="role" type="str" optional>
@@ -20,8 +16,4 @@ title: "GenerationMessage"
 
 <ParamField path="name" type="str" optional>
   Only used for OpenAI's function message.
-</ParamField>
-
-<ParamField path="template_format" type="str" optional>
-  The format of the template, defaults to "f-string".
 </ParamField>
