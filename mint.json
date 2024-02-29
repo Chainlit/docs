@@ -54,6 +54,7 @@
         {
           "group": "Integrations",
           "pages": [
+            "integrations/openai",
             "integrations/langchain",
             "integrations/llama-index",
             "integrations/haystack",
