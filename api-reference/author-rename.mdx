@@ -1,8 +1,12 @@
 ---
-title: "author_rename"
+title: "author_rename and Direct Author Specification"
 ---
 
-Useful to rename the author of a message to display more friendly author names in the UI.
+This documentation covers two methods for setting or renaming the author of a message to display more friendly author names in the UI: the `author_rename` decorator and the direct author specification at message creation.
+
+## Method 1: author_rename
+
+Useful for renaming the author of a message dynamically during the message handling process.
 
 ## Parameters
 
@@ -37,3 +41,30 @@ async def main(message: cl.Message):
 
     await cl.Message(content="Hello").send()
 ```
+
+
+## Method 2: Direct Author Specification
+
+Allows for the immediate renaming of the author of a message at the moment of its creation, providing a more direct and potentially efficient way to set friendly author names without waiting for the message handling process to complete.
+
+### Usage
+
+Instead of waiting to rename the author with a decorator, you can specify the author directly when creating a new message object:
+
+```python
+from langchain import OpenAI, LLMMathChain
+import chainlit as cl
+
+@cl.on_message
+async def main(message: cl.Message):
+    llm = OpenAI(temperature=0)
+    llm_math = LLMMathChain.from_llm(llm=llm)
+    res = await llm_math.acall(message.content, callbacks=[cl.AsyncLangchainCallbackHandler()])
+
+    # Direct author specification at message creation
+    response_message = cl.Message(content="Hello", author="NewChatBotName")
+    await response_message.send()
+```
+
+
+
