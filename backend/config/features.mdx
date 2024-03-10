@@ -19,8 +19,23 @@ title: Features
   characters in messages.
 </ParamField>
 
-<ParamField path="multi_modal" type="bool" default={true}>
+<ParamField path="multi_modal.enabled" type="bool" default={true}>
   Authorize users to upload files with messages. The files are then accessible
+  in [cl.on_message](/api-reference/lifecycle-hooks/on-message).
+</ParamField>
+
+<ParamField path="multi_modal.accept" type="Union[List[str], Dict[str, List[str]]]" default={["*/*"]}>
+  Restrict User to only upload accepted file types.
+  in [cl.on_message](/api-reference/lifecycle-hooks/on-message).
+</ParamField>
+
+<ParamField path="multi_modal.max_files" type="int" default={20}>
+  Restrict User to upload maximum number of files at a time. 
+  in [cl.on_message](/api-reference/lifecycle-hooks/on-message).
+</ParamField>
+
+<ParamField path="multi_modal.max_size_mb" type="int" default={500}>
+  Restrict the file size (MB) for uploading files. 
   in [cl.on_message](/api-reference/lifecycle-hooks/on-message).
 </ParamField>
 
