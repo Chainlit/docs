@@ -26,17 +26,14 @@ title: Features
 
 <ParamField path="multi_modal.accept" type="Union[List[str], Dict[str, List[str]]]" default={["*/*"]}>
   Restrict User to only upload accepted file types.
-  in [cl.on_message](/api-reference/lifecycle-hooks/on-message).
 </ParamField>
 
 <ParamField path="multi_modal.max_files" type="int" default={20}>
   Restrict User to upload maximum number of files at a time. 
-  in [cl.on_message](/api-reference/lifecycle-hooks/on-message).
 </ParamField>
 
 <ParamField path="multi_modal.max_size_mb" type="int" default={500}>
-  Restrict the file size (MB) for uploading files. 
-  in [cl.on_message](/api-reference/lifecycle-hooks/on-message).
+  Restrict uploading file size (MB). 
 </ParamField>
 
 <ParamField path="speech_to_text.enabled" type="bool" default={false}>
@@ -54,9 +51,13 @@ title: Features
 ```toml
 [features]
 prompt_playground = true
-multi_modal = true
 unsafe_allow_html = false
 latex = false
+[features.multi_modal]
+    enabled = true
+    accept = ["*/*"]
+    max_files = 20
+    max_size_mb = 500
 # Allows user to use speech to text
 [features.speech_to_text]
     enabled = false
