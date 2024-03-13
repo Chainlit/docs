@@ -230,7 +230,11 @@
       "pages": [
         "api-reference/author-rename",
         "api-reference/make-async",
-        "api-reference/cache"
+        "api-reference/cache",
+        {
+          "group": "Data persistence",
+          "pages": ["api-reference/data-persistence/custom-data-layer"]
+        }
       ]
     },
 

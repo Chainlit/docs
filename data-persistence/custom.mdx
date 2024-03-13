@@ -7,3 +7,31 @@ Literal provides the simplest way to persist, analyze and monitor your data.
 If you're considering implementing a custom data layer, check out this example [here](https://github.com/Chainlit/chainlit/blob/main/cypress/e2e/data_layer/main.py) for some inspiration.
 
 Also, we would absolutely love to see a community-led open source data layer implementation and list it here. If you're interested in contributing, please reach out to us on Discord.
+
+## How to use a custom data layer?
+
+You need to import you custom data layer in your chainlit app, and assign it to the data layer variable, like so:
+
+```python
+import chainlit.data as cl_data
+
+class CustomDataLayer(cl_data.BaseDataLayer):
+  # TODO: implement all methods from cl_data.BaseDataLayer
+
+cl_data._data_layer = CustomDataLayer()
+```
+
+# How to implement a custom data layer?
+
+Follow the reference for an exhaustive list of the methods your custom data layer needs to implement.
+
+<CardGroup cols={2}>
+  <Card
+    title="Custom data layer API"
+    icon="text"
+    color="#ea5a0c"
+    href="/api-reference/data-persistence/custom-data-layer"
+  >
+    The custom data layer implementation reference
+  </Card>
+</CardGroup>
