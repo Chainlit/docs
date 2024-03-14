@@ -6,6 +6,16 @@ Translation files are located in the `.chainlit/translations` directory. The fil
 
 <Note>The language is dynamically set for each user based on the language of the browser. The default language is `en-US`.</Note>
 
+## Customizing UI Text
+
+In addition to standard translations, you can customize the names of front-end components, molecules, and organisms used within the UI. Each UI element is associated with a unique translation key in the translation files. By modifying these keys, you can personalize or localize the UI text according to your needs.
+
+For example, to change the label of a navigation tab from "Readme" to "Documentation", locate the corresponding key in your translation file (e.g., `components.organisms.header.readme`) and update the value:
+
+```json
+"components.organisms.header.readme": "Documentation"
+```
+
 ## Adding a new language
 
 To add a new language, create a new file in the `.chainlit/translations` directory with the language code as the filename. The language code should be in the format of `languageCode-COUNTRYCODE`, e.g. `en-US` for English (United States) or `en-GB` for English (United Kingdom).
@@ -17,3 +27,6 @@ To reset the the translations, remove the `.chainlit/translations` directory and
 ```bash
 chainlit run my-app.py
 ```
+
+
+
