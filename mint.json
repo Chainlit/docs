@@ -82,6 +82,7 @@
         "advanced-features/multi-modal",
         "advanced-features/chat-profiles",
         "advanced-features/chat-settings",
+        "advanced-features/test-debug",
         {
           "group": "Prompt Playground",
           "pages": [
