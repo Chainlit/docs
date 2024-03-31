@@ -148,11 +148,7 @@
     },
     {
       "group": "Guides",
-      "pages": [
-        "guides/sync-async",
-        "guides/migration/1.0.0",
-        "guides/migration/1.0.300"
-      ]
+      "pages": ["guides/sync-async", "guides/migration/1.0.500"]
     },
     {
       "group": "Examples",
