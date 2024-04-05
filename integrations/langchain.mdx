@@ -30,7 +30,28 @@ In `app.py`, import the necessary packages and define one function to handle a n
   sync implementation.
 </Note>
 
+<Warning>
+  Most LangChain methods now use **RunnableConfig**! So, you need to pass the Chainlit callback this way:
+  <CodeGroup>
+  ```py Async
+  from langchain.schema.runnable.config import RunnableConfig
+  cb = cl.AsyncLangchainCallbackHandler(stream_final_answer=True)
+  config = RunnableConfig(callbacks=[cb])
+  result = await agent.ainvoke(input, config=config)
+  ```
+  ```py Sync
+  from langchain.schema.runnable.config import RunnableConfig
+  cb = cl.LangchainCallbackHandler(stream_final_answer=True)
+  config = RunnableConfig(callbacks=[cb])
+  result = agent.invoke(input, config=config)
+  # cl.make_async() depending on your code
+  ```
+  </CodeGroup>
+</Warning>
+
 ### With Langchain Expression language (LCEL)
+
+Let's go through a small example.
 
 <CodeGroup>
 
