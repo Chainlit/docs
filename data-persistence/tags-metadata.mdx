@@ -1,0 +1,17 @@
+---
+title: Tags & Metadata
+---
+
+Tags and metadata provide valuable context for your threads, steps and generations.
+
+More information [here](https://docs.getliteral.ai/blog/guide-tag-scores-metadata).
+
+```py
+@cl.step(type="run")
+async def func(input):
+    # some code
+    cl.context.current_step.metadata = {"experiment":"1"}
+    cl.context.current_step.tags = ["to review"]
+    # some code
+    return output
+```

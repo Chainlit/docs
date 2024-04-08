@@ -58,7 +58,8 @@
             "integrations/langchain",
             "integrations/llama-index",
             "integrations/haystack",
-            "integrations/embedchain"
+            "integrations/embedchain",
+            "integrations/message-based"
           ]
         }
       ]
@@ -104,6 +105,7 @@
         "data-persistence/overview",
         "data-persistence/history",
         "data-persistence/feedback",
+        "data-persistence/tags-metadata",
         "data-persistence/enterprise",
         "data-persistence/custom"
       ]
