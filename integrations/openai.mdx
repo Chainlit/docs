@@ -56,7 +56,7 @@ async def on_message(message: cl.Message):
                 "role": "system"
             },
             {
-                "content": input,
+                "content": message.content,
                 "role": "user"
             }
         ],
