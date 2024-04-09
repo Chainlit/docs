@@ -12,18 +12,18 @@ If your organization can't use third party cloud services for data hosting, we c
 ## Define your Literal Server
 
 Once you are hosting your own Literal instance, you can point to the server for data persistence.
-You will need to use the `LITERAL_SERVER` environment variable.
+You will need to use the `LITERAL_API_URL` environment variable.
 
 Modify the `.env` file next to your Chainlit application.
 
 ```shell .env
-LITERAL_SERVER="https://cloud.your_literal.com"
+LITERAL_API_URL="https://cloud.your_literal.com"
 ```
 
 Alternatively, inlined:
 
 ```shell
-LITERAL_SERVER="https://cloud.your_literal.com" chainlit run main.py
+LITERAL_API_URL="https://cloud.your_literal.com" chainlit run main.py
 ```
 
 ## Activating Data Persistence
