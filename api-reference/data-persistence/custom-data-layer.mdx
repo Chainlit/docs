@@ -18,6 +18,10 @@ The `BaseDataLayer` class serves as an abstract foundation for data persistence 
   Inserts or updates feedback. Accepts a `Feedback` instance and returns a string as an identifier of the persisted feedback.
 </ParamField>
 
+<ParamField path="async delete_feedback(self, feedback_id: str)" type="Coroutine">
+  Deletes a feedback by `feedback_id`. Return `True` if it was successful.
+</ParamField>
+
 <ParamField path="async create_element(self, element_dict: ElementDict)" type="Coroutine" optional>
   Adds a new element to the data layer. Accepts `ElementDict` as an argument.
 </ParamField>
