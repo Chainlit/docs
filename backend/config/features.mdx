@@ -24,16 +24,21 @@ title: Features
   in [cl.on_message](/api-reference/lifecycle-hooks/on-message).
 </ParamField>
 
-<ParamField path="multi_modal.accept" type="Union[List[str], Dict[str, List[str]]]" default={["*/*"]}>
-  Restrict user to only upload accepted mime file types. Example: ["text/plain", "application/pdf", "image/x-png"]
+<ParamField
+  path="multi_modal.accept"
+  type="Union[List[str], Dict[str, List[str]]]"
+  default={["*/*"]}
+>
+  Restrict user to only upload accepted mime file types. Example: ["text/plain",
+  "application/pdf", "image/x-png"]
 </ParamField>
 
 <ParamField path="multi_modal.max_files" type="int" default={20}>
-  Restrict user to upload maximum number of files at a time. 
+  Restrict user to upload maximum number of files at a time.
 </ParamField>
 
 <ParamField path="multi_modal.max_size_mb" type="int" default={500}>
-  Restrict uploading file size (MB). 
+  Restrict uploading file size (MB).
 </ParamField>
 
 <ParamField path="speech_to_text.enabled" type="bool" default={false}>
@@ -44,6 +49,11 @@ title: Features
   The language spoken by the user. Greatly improve the quality of the
   transcription. See available languages here
   https://github.com/JamesBrill/react-speech-recognition/blob/HEAD/docs/API.md#language-string
+</ParamField>
+
+<ParamField path="auto_tag_thread" type="bool">
+  Automatically tag threads with the current chat profile (if a chat profile is
+  used)
 </ParamField>
 
 ### Default configuration
@@ -62,4 +72,5 @@ latex = false
 [features.speech_to_text]
     enabled = false
     # language = "en-US"
+auto_tag_thread = true
 ```
