@@ -61,5 +61,5 @@ async def main():
       cl.Pdf(name="pdf1", display="side", path="./pdf1.pdf")
     ]
     # Reminder: The name of the pdf must be in the content of the message
-    cl.Message(content="Look at this local pdf1!", elements=elements).send()
+    await cl.Message(content="Look at this local pdf1!", elements=elements).send()
 ```
