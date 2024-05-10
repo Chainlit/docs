@@ -67,6 +67,9 @@ settings:
       - app_home_opened
       - app_mention
       - message.im
+  interactivity:
+    is_enabled: true
+    request_url: https://{ CHAINLIT_APP_HOST }/slack/events
   org_deploy_enabled: false
   socket_mode_enabled: false
   token_rotation_enabled: false
@@ -173,4 +176,4 @@ You should now be able to mention the app in a channel or send a direct message 
 
 | Message | Streaming | Elements | Audio | Ask User | Chat History | Chat Profiles | Feedback |
 | ------- | --------- | -------- | ----- | -------- | ------------ | ------------- | -------- |
-| ✅      | ❌        | ✅       | ❌    | ❌       | ❌           | ❌            | ❌       |
+| ✅      | ❌        | ✅       | ❌    | ❌       | ❌           | ❌            | ✅       |
