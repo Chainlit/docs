@@ -1,0 +1,28 @@
+---
+title: Migrate to Chainlit v1.0.600
+---
+
+<Note>Join the discord for live updates: https://discord.gg/AzyvDHWARx</Note>
+
+## Updating Chainlit
+
+Begin the migration by updating Chainlit to the latest version:
+
+```bash
+pip install --upgrade chainlit
+```
+
+## What changes?
+
+Full changelog available [here](https://github.com/Chainlit/chainlit/blob/main/CHANGELOG.md#10500---2023-04-02).
+
+## How to migrate?
+
+### Rename the multi_modal config setting
+
+The `multi_modal` config setting has been renamed `spontaneous_file_upload`. You can either remove the entire `./chainlit/config.toml` file and restart your app or rename the `multi_modal` setting manually (example [here](/backend/config/features#default-configuration)).
+
+<Warning>
+  The cl.Message.send() method no longer returns the id of the message but the
+  message itself. If you were using the id, you will need to update your code.
+</Warning>

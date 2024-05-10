@@ -1,0 +1,176 @@
+---
+title: Slack
+---
+
+To make your Chainlit app available on Slack, you will need to create a Slack app and set up the necessary environment variables.
+
+## Install the Slack Bolt Library
+
+The Slack Bolt library is not included in the Chainlit dependencies. You will have to install it manually.
+
+```bash
+pip install slack_bolt
+```
+
+## Create a Slack App
+
+To start, navigate to the [Slack apps dashboard for the Slack API](https://api.slack.com/apps). Here, you should find a green button that says Create New App. When you click this button, select the option to create your app from scratch.
+
+Create a name for your bot, such as "ChainlitDemo". Select the workspace you would like your bot to exist in.
+
+<Frame caption="Create a Slack App">
+  <img src="/images/slack/create-app.png" />
+</Frame>
+
+## Working Locally
+
+If you are working locally, you will have to expose your local Chainlit app to the internet. You can use [ngrok](https://ngrok.com/) for this.
+
+```bash
+ngrok http 8000
+```
+
+This will give you a public URL that you can use to set up the app manifest. Do not forget to replace it once you deploy Chainlit to a public host.
+
+## Set the App Manifest
+
+Go to App Manifest and paste the following Yaml.
+
+<Note>Replace the `{placeholders}` with your own values.</Note>
+
+```yaml
+display_information:
+  name: { APP_NAME }
+features:
+  bot_user:
+    display_name: { APP_NAME }
+    always_online: false
+oauth_config:
+  scopes:
+    user:
+      - im:history
+    bot:
+      - app_mentions:read
+      - channels:read
+      - chat:write
+      - files:read
+      - files:write
+      - im:history
+      - im:read
+      - im:write
+      - users:read
+      - users:read.email
+settings:
+  event_subscriptions:
+    request_url: https://{ CHAINLIT_APP_HOST }/slack/events
+    bot_events:
+      - app_home_opened
+      - app_mention
+      - message.im
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
+```
+
+Click on Save Changes.
+
+<Frame caption="Set the App Manifest">
+  <img src="/images/slack/app-manifest.png" />
+</Frame>
+
+You will see a warning stating that the URL is not verified. You can ignore this for now.
+
+## [Optional] Allow users to send DMs to Chainlit
+
+By default the app will only listen to mentions in channels.
+
+If you want to allow users to send direct messages to the app, go to App Home and enable "Allow users to send Slash commands and messages from the messages tab".
+
+<Frame caption="Allow DMs">
+  <img src="/images/slack/allow-dm.png" />
+</Frame>
+
+## Install the Slack App to Your Workspace
+
+Navigate to the Install App tab and click on Install to Workspace.
+
+## Set the Environment Variables
+
+### Bot Token
+
+Once the slack application is installed, you will see the Bot User OAuth Token. Set this as an environment variable in your Chainlit app.
+
+<Frame caption="Copy the Bot Token">
+  <img src="/images/slack/bot-token.png" />
+</Frame>
+
+```bash
+SLACK_BOT_TOKEN=your_bot_token
+```
+
+### Signing Secret
+
+Navigate to the Basic Information tab and copy the Signing Secret. Then set it as an environment variable in your Chainlit app.
+
+<Frame caption="Copy the Signing Secret">
+  <img src="/images/slack/signing-secret.png" />
+</Frame>
+
+```bash
+SLACK_SIGNING_SECRET=your_signing_secret
+```
+
+## Start the Chainlit App
+
+Since the Chainlit app is not running, the Slack app will not be able to communicate with it.
+
+For the example, we will use this simple app:
+
+```python
+import chainlit as cl
+
+@cl.on_message
+async def on_message(msg: cl.Message):
+    # Access the original slack event
+    print(cl.user_session.get("slack_event"))
+    # Access the slack user
+    print(cl.user_session.get("user"))
+
+    # Access potential attached files
+    attached_files = msg.elements
+
+    await cl.Message(f"Received: {msg.content}").send()
+```
+
+<Note>
+  Reminder: Make sure the environment variables are set and that your local
+  chainlit app is exposed to the internet via ngrok.
+</Note>
+
+Start the Chainlit app:
+
+```bash
+chainlit run my_app.py -h
+```
+
+<Note>
+  Using -h to not open the default Chainlit UI since we are using Slack.
+</Note>
+
+## Try it out
+
+You should now be able to mention the app in a channel or send a direct message to it.
+
+<Frame caption="Sending a DM">
+  <img src="/images/slack/dm.png" />
+</Frame>
+
+<Frame caption="Mention the Chainlit App">
+  <img src="/images/slack/mention.png" />
+</Frame>
+
+## Supported Features
+
+| Message | Streaming | Elements | Audio | Ask User | Chat History | Chat Profiles | Feedback |
+| ------- | --------- | -------- | ----- | -------- | ------------ | ------------- | -------- |
+| ✅      | ❌        | ✅       | ❌    | ❌       | ❌           | ❌            | ❌       |

@@ -65,6 +65,21 @@
       ]
     },
     {
+      "group": "Deploy",
+      "pages": [
+        "deploy/overview",
+        {
+          "group": "Platforms",
+          "pages": [
+            "deploy/api",
+            "deploy/copilot",
+            "deploy/react-frontend",
+            "deploy/slack"
+          ]
+        }
+      ]
+    },
+    {
       "group": "Basic Concepts",
       "pages": [
         "concepts/chat-lifecycle",
@@ -96,10 +111,6 @@
       ]
     },
     {
-      "group": "Deployment",
-      "pages": ["deployment/tutorials", "deployment/copilot"]
-    },
-    {
       "group": "Data Persistence",
       "pages": [
         "data-persistence/overview",
@@ -128,8 +139,7 @@
         "customisation/theme",
         "customisation/custom-js",
         "customisation/custom-css",
-        "customisation/custom-font",
-        "customisation/react-frontend"
+        "customisation/custom-font"
       ]
     },
     {
@@ -144,13 +154,12 @@
           ]
         },
         "backend/env-variables",
-        "backend/custom-endpoint",
         "backend/command-line"
       ]
     },
     {
       "group": "Guides",
-      "pages": ["guides/sync-async", "guides/migration/1.0.500"]
+      "pages": ["guides/sync-async", "guides/migration/1.0.600"]
     },
     {
       "group": "Examples",
@@ -170,7 +179,9 @@
         "api-reference/lifecycle-hooks/on-chat-end",
         "api-reference/lifecycle-hooks/on-chat-resume",
         "api-reference/lifecycle-hooks/on-message",
-        "api-reference/lifecycle-hooks/on-logout"
+        "api-reference/lifecycle-hooks/on-logout",
+        "api-reference/lifecycle-hooks/on-audio-chunk",
+        "api-reference/lifecycle-hooks/on-audio-end"
       ]
     },
     {

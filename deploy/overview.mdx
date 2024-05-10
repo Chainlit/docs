@@ -1,0 +1,189 @@
+---
+title: Overview
+---
+
+A Chainlit application can be consumed through multiple platforms. Write your assistant logic once, use everyhwere!
+
+## Available Platforms
+
+<CardGroup cols={2}>
+<Card
+  title="Web App"
+  icon="browser"
+  color="#F80061"
+  >
+    The native Chainlit UI. Available on port 8000.
+</Card>
+
+<Card title="API" icon="webhook" color="#F80061" href="/deploy/api">
+  Expose custom API endpoints.
+</Card>
+
+<Card title="Copilot" icon="sparkles" color="#facc15" href="/deploy/copilot">
+  Embed your Chainlit app on any website as a Copilot.
+</Card>
+
+<Card
+  title="Custom React App"
+  color="#61DBFB"
+  icon="react"
+  href="/deploy/react-frontend"
+>
+  Learn how to integrate your custom React frontend with the Chainlit backend.
+</Card>
+
+<Card
+  title="Slack"
+  icon={
+    <svg
+      enableBackground="new 0 0 2447.6 2452.5"
+      viewBox="0 0 2447.6 2452.5"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clipRule="evenodd" fillRule="evenodd">
+        <path
+          d="m897.4 0c-135.3.1-244.8 109.9-244.7 245.2-.1 135.3 109.5 245.1 244.8 245.2h244.8v-245.1c.1-135.3-109.5-245.1-244.9-245.3.1 0 .1 0 0 0m0 654h-652.6c-135.3.1-244.9 109.9-244.8 245.2-.2 135.3 109.4 245.1 244.7 245.3h652.7c135.3-.1 244.9-109.9 244.8-245.2.1-135.4-109.5-245.2-244.8-245.3z"
+          fill="#36c5f0"
+        />
+        <path
+          d="m2447.6 899.2c.1-135.3-109.5-245.1-244.8-245.2-135.3.1-244.9 109.9-244.8 245.2v245.3h244.8c135.3-.1 244.9-109.9 244.8-245.3zm-652.7 0v-654c.1-135.2-109.4-245-244.7-245.2-135.3.1-244.9 109.9-244.8 245.2v654c-.2 135.3 109.4 245.1 244.7 245.3 135.3-.1 244.9-109.9 244.8-245.3z"
+          fill="#2eb67d"
+        />
+        <path
+          d="m1550.1 2452.5c135.3-.1 244.9-109.9 244.8-245.2.1-135.3-109.5-245.1-244.8-245.2h-244.8v245.2c-.1 135.2 109.5 245 244.8 245.2zm0-654.1h652.7c135.3-.1 244.9-109.9 244.8-245.2.2-135.3-109.4-245.1-244.7-245.3h-652.7c-135.3.1-244.9 109.9-244.8 245.2-.1 135.4 109.4 245.2 244.7 245.3z"
+          fill="#ecb22e"
+        />
+        <path
+          d="m0 1553.2c-.1 135.3 109.5 245.1 244.8 245.2 135.3-.1 244.9-109.9 244.8-245.2v-245.2h-244.8c-135.3.1-244.9 109.9-244.8 245.2zm652.7 0v654c-.2 135.3 109.4 245.1 244.7 245.3 135.3-.1 244.9-109.9 244.8-245.2v-653.9c.2-135.3-109.4-245.1-244.7-245.3-135.4 0-244.9 109.8-244.8 245.1 0 0 0 .1 0 0"
+          fill="#e01e5a"
+        />
+      </g>
+    </svg>
+  }
+  href="/deploy/slack"
+>
+  Make your Chainlit app available on Slack.
+</Card>
+
+<Card
+  title="Teams"
+  icon={
+    <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+      <path
+        fill="#5059C9"
+        d="M10.765 6.875h3.616c.342 0 .619.276.619.617v3.288a2.272 2.272 0 01-2.274 2.27h-.01a2.272 2.272 0 01-2.274-2.27V7.199c0-.179.145-.323.323-.323zM13.21 6.225c.808 0 1.464-.655 1.464-1.462 0-.808-.656-1.463-1.465-1.463s-1.465.655-1.465 1.463c0 .807.656 1.462 1.465 1.462z"
+      />
+      <path
+        fill="#7B83EB"
+        d="M8.651 6.225a2.114 2.114 0 002.117-2.112A2.114 2.114 0 008.65 2a2.114 2.114 0 00-2.116 2.112c0 1.167.947 2.113 2.116 2.113zM11.473 6.875h-5.97a.611.611 0 00-.596.625v3.75A3.669 3.669 0 008.488 15a3.669 3.669 0 003.582-3.75V7.5a.611.611 0 00-.597-.625z"
+      />
+      <path
+        fill="#000000"
+        d="M8.814 6.875v5.255a.598.598 0 01-.596.595H5.193a3.951 3.951 0 01-.287-1.476V7.5a.61.61 0 01.597-.624h3.31z"
+        opacity=".1"
+      />
+      <path
+        fill="#000000"
+        d="M8.488 6.875v5.58a.6.6 0 01-.596.595H5.347a3.22 3.22 0 01-.267-.65 3.951 3.951 0 01-.172-1.15V7.498a.61.61 0 01.596-.624h2.985z"
+        opacity=".2"
+      />
+      <path
+        fill="#000000"
+        d="M8.488 6.875v4.93a.6.6 0 01-.596.595H5.08a3.951 3.951 0 01-.172-1.15V7.498a.61.61 0 01.596-.624h2.985z"
+        opacity=".2"
+      />
+      <path
+        fill="#000000"
+        d="M8.163 6.875v4.93a.6.6 0 01-.596.595H5.079a3.951 3.951 0 01-.172-1.15V7.498a.61.61 0 01.596-.624h2.66z"
+        opacity=".2"
+      />
+      <path
+        fill="#000000"
+        d="M8.814 5.195v1.024c-.055.003-.107.006-.163.006-.055 0-.107-.003-.163-.006A2.115 2.115 0 016.593 4.6h1.625a.598.598 0 01.596.594z"
+        opacity=".1"
+      />
+      <path
+        fill="#000000"
+        d="M8.488 5.52v.699a2.115 2.115 0 01-1.79-1.293h1.195a.598.598 0 01.595.594z"
+        opacity=".2"
+      />
+      <path
+        fill="#000000"
+        d="M8.488 5.52v.699a2.115 2.115 0 01-1.79-1.293h1.195a.598.598 0 01.595.594z"
+        opacity=".2"
+      />
+      <path
+        fill="#000000"
+        d="M8.163 5.52v.647a2.115 2.115 0 01-1.465-1.242h.87a.598.598 0 01.595.595z"
+        opacity=".2"
+      />
+      <path
+        fill="url(#microsoft-teams-color-16__paint0_linear_2372_494)"
+        d="M1.597 4.925h5.969c.33 0 .597.267.597.596v5.958a.596.596 0 01-.597.596h-5.97A.596.596 0 011 11.479V5.521c0-.33.267-.596.597-.596z"
+      />
+      <path
+        fill="#ffffff"
+        d="M6.152 7.193H4.959v3.243h-.76V7.193H3.01v-.63h3.141v.63z"
+      />
+      <defs>
+        <linearGradient
+          id="microsoft-teams-color-16__paint0_linear_2372_494"
+          x1="2.244"
+          x2="6.906"
+          y1="4.46"
+          y2="12.548"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stopColor="#5A62C3" />
+          <stop offset=".5" stopColor="#4D55BD" />
+          <stop offset="1" stopColor="#3940AB" />
+        </linearGradient>
+      </defs>
+    </svg>
+  }
+>
+  🚧 To be built! Opened to contributions.
+</Card>
+
+<Card
+  title="Discord"
+  icon={
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36"><path fill="#5865f2" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg>
+  }
+>
+  🚧 To be built! Opened to contributions.
+</Card>
+</CardGroup>
+
+## Deploy your Chainlit Application
+
+No matter the platform(s) you want to serve with your Chainlit application, you will need to deploy it first.
+
+After you've successfully set up and tested your Chainlit application locally, the next step is to make it accessible to a wider audience by deploying it to a hosting service. This guide provides various options for self-hosting your Chainlit app.
+
+<Note>
+  When running a Chainlit app in production, you should always add `-h` to the
+  `chainlit run` command. Otherwise a browser window will be opened server side
+  and might break your deployment.
+</Note>
+
+<Note>
+  Chainlit is built upon websockets, which means the service you deploy your app
+  to has to support them. For auto scaling, make sure to enable sticky sessions.
+</Note>
+
+<Warning>
+  Currently, you have to serve your Chainlit app from the root of your
+  domain/subdomain. This means that you can't serve it from a subdirectory like
+  `example.com/my-app`.
+</Warning>
+
+- on [Ploomber Cloud](https://docs.cloud.ploomber.io/en/latest/apps/chainlit.html)
+- on [AWS](https://ankushgarg.super.site/how-to-deploy-your-chatgpt-like-app-with-chainlit-and-aws-ecs)
+- on [Azure Container](https://techcommunity.microsoft.com/t5/fasttrack-for-azure/create-an-azure-openai-langchain-chromadb-and-chainlit-chat-app/ba-p/3885602)
+- on [Google Cloud Run](https://pseudohvr.medium.com/deploying-chainlit-on-gcp-72231ba6b77f)
+- on [Google App Engine](https://github.com/amjadraza/langchain-chainlit-docker-deployment-template)
+- on [Replit](https://replit.com/@DanConstantini/Build-a-Chatbot-with-OpenAI-LangChain-and-Chainlit?v=1)
+- on [Render](https://discord.com/channels/1088038867602526210/1126834266504966294/1126845898287230977)
+- on [Fly.io](https://dev.to/willydouhard/how-to-deploy-your-chainlit-app-to-flyio-38ja)
+- on [HuggingFace Spaces](https://github.com/Chainlit/cookbook/tree/main/chroma-qa-chat)
