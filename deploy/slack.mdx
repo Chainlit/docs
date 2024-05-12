@@ -4,6 +4,21 @@ title: Slack
 
 To make your Chainlit app available on Slack, you will need to create a Slack app and set up the necessary environment variables.
 
+## How it Works
+
+The Slack bot will listen to messages mentioning it in channels and direct messages.
+It will send replies to a dedicated thread or DM depending on the context.
+
+<Frame caption="Preview">
+  <img src="/images/slack/demo.gif" />
+</Frame>
+
+## Supported Features
+
+| Message | Streaming | Elements | Audio | Ask User | Chat History | Chat Profiles | Feedback |
+| ------- | --------- | -------- | ----- | -------- | ------------ | ------------- | -------- |
+| ✅      | ❌        | ✅       | ❌    | ❌       | ✅           | ❌            | ✅       |
+
 ## Install the Slack Bolt Library
 
 The Slack Bolt library is not included in the Chainlit dependencies. You will have to install it manually.
@@ -60,6 +75,7 @@ oauth_config:
       - im:write
       - users:read
       - users:read.email
+      - channels:history
 settings:
   event_subscriptions:
     request_url: https://{ CHAINLIT_APP_HOST }/slack/events
@@ -142,7 +158,7 @@ async def on_message(msg: cl.Message):
     # Access potential attached files
     attached_files = msg.elements
 
-    await cl.Message(f"Received: {msg.content}").send()
+    await cl.Message(content="Hello World").send()
 ```
 
 <Note>
@@ -160,20 +176,24 @@ chainlit run my_app.py -h
   Using -h to not open the default Chainlit UI since we are using Slack.
 </Note>
 
-## Try it out
+You should now be able to interact with your Chainlit app through Slack.
 
-You should now be able to mention the app in a channel or send a direct message to it.
+## Chat History
 
-<Frame caption="Sending a DM">
-  <img src="/images/slack/dm.png" />
-</Frame>
+Chat history is directly available through the `fetch_slack_message_history` method.
+It will fetch the last messages from the current thread or DM channel.
 
-<Frame caption="Mention the Chainlit App">
-  <img src="/images/slack/mention.png" />
-</Frame>
+```python
+import chainlit as cl
+import discord
 
-## Supported Features
 
-| Message | Streaming | Elements | Audio | Ask User | Chat History | Chat Profiles | Feedback |
-| ------- | --------- | -------- | ----- | -------- | ------------ | ------------- | -------- |
-| ✅      | ❌        | ✅       | ❌    | ❌       | ❌           | ❌            | ✅       |
+@cl.on_message
+async def on_message(msg: cl.Message):
+    fetch_slack_message_history = cl.user_session.get("fetch_slack_message_history")
+
+    if fetch_slack_message_history:
+        print(await fetch_slack_message_history(limit=10))
+
+    # Your code here
+```
