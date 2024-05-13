@@ -65,18 +65,18 @@ ngrok http 8000
 
 ## Start the Chainlit App
 
-Since the Chainlit app is not running, the Slack app will not be able to communicate with it.
+Since the Chainlit app is not running, the Discord bot will not be able to communicate with it.
 
 For the example, we will use this simple app:
 
-```python
+```python my_app.py
 import chainlit as cl
 
 @cl.on_message
 async def on_message(msg: cl.Message):
     # Access the original discord message
     print(cl.user_session.get("discord_message"))
-    # Access the slack user
+    # Access the discord user
     print(cl.user_session.get("user"))
 
     # Access potential attached files

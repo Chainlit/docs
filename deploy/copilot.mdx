@@ -4,6 +4,16 @@ title: Copilot
 
 Software Copilot are a new kind of assistant embedded in your app/product. They are designed to help users get the most out of your app by providing contextual guidance and take actions on their behalf.
 
+<Frame caption="Preview">
+  <img src="/images/copilot.gif" />
+</Frame>
+
+## Supported Features
+
+| Message | Streaming | Elements | Audio | Ask User | Chat History | Chat Profiles | Feedback |
+| ------- | --------- | -------- | ----- | -------- | ------------ | ------------- | -------- |
+| ✅      | ✅        | ✅       | ✅    | ✅       | ❌           | ✅            | ✅       |
+
 ## Embedding the Copilot
 
 First, make sure your Chainlit server is running. Then, add the following script at the end of your website's `<body>` tag:
@@ -41,10 +51,6 @@ That's it! You should now see a floating button on the bottom right corner of yo
   users, you should set [show_readme_as_default](/backend/config/ui) to `false`
   in your Chainlit config to avoid flickering.
 </Note>
-
-<Frame caption="Copilot in action">
-  <img src="/images/copilot.gif" />
-</Frame>
 
 ## Widget Configuration
 
@@ -182,9 +188,3 @@ const accessToken = createJwt("user-1", { name: "John Doe" });
 ```
 
 </CodeGroup>
-
-## Supported Features
-
-| Message | Streaming | Elements | Audio | Ask User | Chat History | Chat Profiles | Feedback |
-| ------- | --------- | -------- | ----- | -------- | ------------ | ------------- | -------- |
-| ✅      | ✅        | ✅       | ✅    | ✅       | ❌           | ✅            | ✅       |
