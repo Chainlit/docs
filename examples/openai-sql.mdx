@@ -79,10 +79,6 @@ async def text_to_sql(text: str):
         if token := part.choices[0].delta.content or "":
             await current_step.stream_token(token)
 
-    generation.completion = current_step.output
-
-    current_step.generation = generation
-
 
 @cl.on_message
 async def main(message: cl.Message):
