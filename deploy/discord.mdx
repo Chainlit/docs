@@ -1,0 +1,138 @@
+---
+title: Discord
+---
+
+To make your Chainlit app available on Discord, you will need to create a Discord app and set up the necessary environment variables.
+
+## How it Works
+
+The Discord bot will listen to messages mentioning it in channels and direct messages.
+It will send replies to a dedicated thread or DM depending on the context.
+
+<Frame caption="Preview">
+  <img src="/images/discord/demo.gif" />
+</Frame>
+
+## Supported Features
+
+| Message | Streaming | Elements | Audio | Ask User | Chat History | Chat Profiles | Feedback |
+| ------- | --------- | -------- | ----- | -------- | ------------ | ------------- | -------- |
+| ✅      | ❌        | ✅       | ❌    | ❌       | ✅           | ❌            | ✅       |
+
+## Install the Discord Library
+
+The Discord library is not included in the Chainlit dependencies. You will have to install it manually.
+
+```bash
+pip install discord
+```
+
+## Create a Discord App
+
+To start, navigate to the [Discord apps dashboard](https://discord.com/developers/applications). Here, you should find a button that says New Application. When you click this button, select the option to create your app from scratch.
+
+<Frame caption="Create a Discord App">
+  <img src="/images/discord/create-app.png" />
+</Frame>
+
+## Set the Environment Variables
+
+Navigate to the Bot tab and click on `Reset Token`. This will make the token visible. Copy it and set it as an environment variable in your Chainlit app.
+
+<Frame caption="Copy the Bot Token">
+  <img src="/images/discord/bot-token.png" />
+</Frame>
+
+```bash
+DISCORD_BOT_TOKEN=your_bot_token
+```
+
+## Set Intents
+
+Navigate to the Bot tab and enable the `MESSAGE CONTENT INTENT`, then click on Save Changes.
+
+<Frame caption="Set Intents">
+  <img src="/images/discord/intent.png" />
+</Frame>
+
+## Working Locally
+
+If you are working locally, you will have to expose your local Chainlit app to the internet. You can use [ngrok](https://ngrok.com/) for this.
+
+```bash
+ngrok http 8000
+```
+
+## Start the Chainlit App
+
+Since the Chainlit app is not running, the Discord bot will not be able to communicate with it.
+
+For the example, we will use this simple app:
+
+```python my_app.py
+import chainlit as cl
+
+@cl.on_message
+async def on_message(msg: cl.Message):
+    # Access the original discord message
+    print(cl.user_session.get("discord_message"))
+    # Access the discord user
+    print(cl.user_session.get("user"))
+
+    # Access potential attached files
+    attached_files = msg.elements
+
+    await cl.Message(content="Hello World").send()
+```
+
+Start the Chainlit app.
+
+<Note>
+  Using -h to not open the default Chainlit UI since we are using Discord.
+</Note>
+
+```bash
+chainlit run my_app.py -h
+```
+
+## Install the Discord Bot to Your Workspace
+
+Navigate to the OAuth2 tab. In the OAuth2 URL Generator, select the `bot` scope.
+
+<Frame caption="Configure Installation">
+  <img src="/images/discord/install-bot.png" />
+</Frame>
+
+Then, in the Bot Permissions section, select the following permissions.
+
+<Note>
+  You can check that you have selected the right permissions by looking at the
+  number of permissions parameter of the URL. It should be `377957238848`.
+</Note>
+
+<Frame caption="Bot Permissions">
+  <img src="/images/discord/bot-permissions.png" />
+</Frame>
+
+Copy the generated URL and paste it in your browser. You will be prompted to add the bot to a server. Select the server you want to add the bot to.
+
+That's it! You should now be able to interact with your Chainlit app through Discord.
+
+## Chat History
+
+Chat history is directly available through discord.
+
+```python
+import chainlit as cl
+import discord
+
+
+@cl.on_message
+async def on_message(msg: cl.Message):
+    channel: discord.abc.MessageableChannel = cl.user_session.get("discord_channel")
+    if channel:
+        async for x in channel.history(limit=10):
+            print(x)
+
+    # Your code here
+```
