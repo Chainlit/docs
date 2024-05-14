@@ -57,7 +57,7 @@ Navigate to the Bot tab and enable the `MESSAGE CONTENT INTENT`, then click on S
 
 ## Working Locally
 
-If you are working locally, you will have to expose your local Chainlit app to the internet. You can use [ngrok](https://ngrok.com/) for this.
+If you are working locally, you will have to expose your local Chainlit app to the internet to receive incoming messages to Discord. You can use [ngrok](https://ngrok.com/) for this.
 
 ```bash
 ngrok http 8000
@@ -123,16 +123,25 @@ That's it! You should now be able to interact with your Chainlit app through Dis
 Chat history is directly available through discord.
 
 ```python
+from chainlit.discord.app import client as discord_client
+
 import chainlit as cl
 import discord
 
-
 @cl.on_message
 async def on_message(msg: cl.Message):
+    # The user session resets on every Discord message. Add previous chat messages manually.
+    messages = cl.user_session.get("messages", [])
     channel: discord.abc.MessageableChannel = cl.user_session.get("discord_channel")
+
     if channel:
-        async for x in channel.history(limit=10):
-            print(x)
+        cl.user_session.get("messages")
+        discord_messages = [message async for message in channel.history(limit=limit, oldest_first=True)]
+        for x in discord_messages[:-1]:
+            messages.append({
+                "role": "assistant" if x.author == discord_client.user else "user",
+                "content": x.content
+            })
 
     # Your code here
 ```
