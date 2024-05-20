@@ -3,7 +3,8 @@ title: OpenAI
 ---
 
 <Note>
-  We support the OpenAI python library starting at version 1.0.0.
+  If you are using OpenAI assistants, check out the [OpenAI
+  Assistant](https://github.com/Chainlit/openai-assistant) example app.
 </Note>
 
 The benefits of this integration is that you can see the OpenAI API calls in a step in the UI, and you can explore them in the prompt playground.
@@ -13,7 +14,10 @@ You will also get the full generation details (prompt, completion, tokens per se
 You need to add `cl.instrument_openai()` after creating your OpenAI client.
 
 <Warning>
-  You shouldn't configure this integration if you're already using another integration like Embedchain, Haystack, Langchain or LlamaIndex. Both integrations would record the same generation and create duplicate steps in the UI.
+  You shouldn't configure this integration if you're already using another
+  integration like Embedchain, Haystack, Langchain or LlamaIndex. Both
+  integrations would record the same generation and create duplicate steps in
+  the UI.
 </Warning>
 
 ## Prerequisites
