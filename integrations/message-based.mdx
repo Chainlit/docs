@@ -1,0 +1,54 @@
+---
+title: vLLM, LMStudio, HuggingFace
+---
+
+We can leverage the OpenAI instrumentation to log calls from inference servers that use messages-based API, such as vLLM, LMStudio or HuggingFace's TGI. 
+
+<Warning>
+  You shouldn't configure this integration if you're already using another integration like Haystack, LangChain or LlamaIndex. Both integrations would record the same generation and create duplicate steps in the UI.
+</Warning>
+
+Create a new Python file named `app.py` in your project directory. This file will contain the main logic for your LLM application.
+
+In `app.py`, import the necessary packages and define one function to handle messages incoming from the UI.
+
+```python
+from openai import AsyncOpenAI
+import chainlit as cl
+client = AsyncOpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+# Instrument the OpenAI client
+cl.instrument_openai()
+
+settings = {
+    "model": "gpt-3.5-turbo",
+    "temperature": 0,
+    # ... more settings
+}
+
+@cl.on_message
+async def on_message(message: cl.Message):
+    response = await client.chat.completions.create(
+        messages=[
+            {
+                "content": "You are a helpful bot, you always reply in Spanish",
+                "role": "system"
+            },
+            {
+                "content": input,
+                "role": "user"
+            }
+        ],
+        **settings
+    )
+    await cl.Message(content=response.choices[0].message.content).send()
+```
+
+Create a file named `.env` in the same folder as your `app.py` file. Add your OpenAI API key in the `OPENAI_API_KEY` variable. You can optionally add your [Literal AI](https://cloud.getliteral.ai) API key in the `LITERAL_API_KEY`.
+
+To start your app, open a terminal and navigate to the directory containing `app.py`. Then run the following command:
+
+```bash
+chainlit run app.py -w
+```
+
+The `-w` flag tells Chainlit to enable auto-reloading, so you don't need to restart the server every time you make changes to your application. Your chatbot UI should now be accessible at http://localhost:8000.

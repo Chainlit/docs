@@ -58,7 +58,24 @@
             "integrations/langchain",
             "integrations/llama-index",
             "integrations/haystack",
-            "integrations/embedchain"
+            "integrations/embedchain",
+            "integrations/message-based"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Deploy",
+      "pages": [
+        "deploy/overview",
+        {
+          "group": "Platforms",
+          "pages": [
+            "deploy/api",
+            "deploy/copilot",
+            "deploy/react-frontend",
+            "deploy/slack",
+            "deploy/discord"
           ]
         }
       ]
@@ -82,6 +99,7 @@
         "advanced-features/multi-modal",
         "advanced-features/chat-profiles",
         "advanced-features/chat-settings",
+        "advanced-features/test-debug",
         {
           "group": "Prompt Playground",
           "pages": [
@@ -94,15 +112,12 @@
       ]
     },
     {
-      "group": "Deployment",
-      "pages": ["deployment/tutorials", "deployment/copilot"]
-    },
-    {
       "group": "Data Persistence",
       "pages": [
         "data-persistence/overview",
         "data-persistence/history",
         "data-persistence/feedback",
+        "data-persistence/tags-metadata",
         "data-persistence/enterprise",
         "data-persistence/custom"
       ]
@@ -125,8 +140,7 @@
         "customisation/theme",
         "customisation/custom-js",
         "customisation/custom-css",
-        "customisation/custom-font",
-        "customisation/react-frontend"
+        "customisation/custom-font"
       ]
     },
     {
@@ -141,17 +155,12 @@
           ]
         },
         "backend/env-variables",
-        "backend/custom-endpoint",
         "backend/command-line"
       ]
     },
     {
       "group": "Guides",
-      "pages": [
-        "guides/sync-async",
-        "guides/migration/1.0.0",
-        "guides/migration/1.0.300"
-      ]
+      "pages": ["guides/sync-async", "guides/migration/1.1.0"]
     },
     {
       "group": "Examples",
@@ -171,7 +180,9 @@
         "api-reference/lifecycle-hooks/on-chat-end",
         "api-reference/lifecycle-hooks/on-chat-resume",
         "api-reference/lifecycle-hooks/on-message",
-        "api-reference/lifecycle-hooks/on-logout"
+        "api-reference/lifecycle-hooks/on-logout",
+        "api-reference/lifecycle-hooks/on-audio-chunk",
+        "api-reference/lifecycle-hooks/on-audio-end"
       ]
     },
     {
@@ -230,7 +241,11 @@
       "pages": [
         "api-reference/author-rename",
         "api-reference/make-async",
-        "api-reference/cache"
+        "api-reference/cache",
+        {
+          "group": "Data persistence",
+          "pages": ["api-reference/data-persistence/custom-data-layer"]
+        }
       ]
     },
 

@@ -26,6 +26,8 @@ from openai import AsyncOpenAI
 from chainlit.playground.providers.openai import ChatOpenAI
 import chainlit as cl
 
+cl.instrument_openai()
+
 
 client = AsyncOpenAI(api_key="YOUR_OPENAI_API_KEY")
 ```
@@ -61,22 +63,14 @@ Then, we wrap our text to sql logic in a [Step](/concepts/step).
 ```python app.py
 @cl.step(type="llm", root=True, language="sql")
 async def text_to_sql(text: str):
-    # Create a ChatGeneration to enable the prompt playground
-    generation = cl.ChatGeneration(
-        provider=ChatOpenAI.id,
+    # Call OpenAI
+    stream = await client.chat.completions.create(
         messages=[
             {
                 "role": "user",
                 "content": template.format(input=text),
             }
-        ],
-        settings=settings,
-        variables={"input": text},
-    )
-
-    # Call OpenAI
-    stream = await client.chat.completions.create(
-        messages=[m.to_openai() for m in generation.messages], stream=True, **settings
+        ], stream=True, **settings
     )
 
     current_step = cl.context.current_step
@@ -84,10 +78,6 @@ async def text_to_sql(text: str):
     async for part in stream:
         if token := part.choices[0].delta.content or "":
             await current_step.stream_token(token)
-
-    generation.completion = current_step.output
-
-    current_step.generation = generation
 
 
 @cl.on_message

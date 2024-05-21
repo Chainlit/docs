@@ -2,7 +2,34 @@
 title: "Multi-Modality"
 ---
 
-The term 'Multi-Modal' refers to the ability to support more than just text, encompassing images, videos, and files. Within the Chainlit application, users have the flexibility to attach any file to their messages. This can be achieved either by utilizing the drag and drop feature or by clicking on the `attach` button located in the chat bar.
+The term 'Multi-Modal' refers to the ability to support more than just text, encompassing images, videos, audio and files.
+
+## Voice Assistant
+
+Chainlit let's you access the user's microphone audio stream and process it in real-time. This can be used to create voice assistants, transcribe audio, or even process audio in real-time.
+
+<Note>
+  The user will only be able to use the microphone if you implemented the
+  [@cl.on_audio_chunk](/api-reference/lifecycle-hooks/on-audio-chunk) decorator.
+</Note>
+
+<Frame caption="Voice Assistant Example">
+  <video
+    controls
+    loop
+    src="https://github.com/Chainlit/cookbook/assets/13104895/52d5ecc0-4b63-4971-98d6-59a0d4b1199a"
+  />
+</Frame>
+
+Check the [Audio Assistant](https://github.com/Chainlit/cookbook/tree/main/audio-assistant) cookbook example to see how to implement a voice assistant.
+
+### Audio capture settings
+
+You can configure audio capture the au through the Chainlit [config](/backend/config/features) file.
+
+## Spontaneous File Uploads
+
+Within the Chainlit application, users have the flexibility to attach any file to their messages. This can be achieved either by utilizing the drag and drop feature or by clicking on the `attach` button located in the chat bar.
 
 <Frame caption="Attach files to a message">
   <img src="/images/multi-modal.gif" />
@@ -31,10 +58,10 @@ async def on_message(msg: cl.Message):
 
 ```
 
-## Image Processing with Transformers
+### Image Processing with Transformers
 
-Multi-modal capabilities are being added to Large Language Model (effectively making them Large Multi Modal Models). For more information on this, refer to the [LLaVa](https://github.com/Chainlit/cookbook/tree/main/llava) cookbook example.
+Multi-modal capabilities are being added to Large Language Model (effectively making them Large Multi Modal Models). OpenAI's [vision API](https://platform.openai.com/docs/guides/vision) and the [LLaVa](https://github.com/Chainlit/cookbook/tree/main/llava) cookbook are good places to start for image processing with transformers.
 
-## Disabling Multi-Modal Functionality
+### Disabling Spontaneous File Uploads
 
-If you wish to disable this feature (which would prevent users from attaching files to their messages), you can do so by setting `features.multi_modal=false` in your Chainlit [config](/backend/config/features) file.
+If you wish to disable this feature (which would prevent users from attaching files to their messages), you can do so by setting `features.spontaneous_file_upload.enabled=false` in your Chainlit [config](/backend/config/features) file.

@@ -7,29 +7,14 @@ Callback Handler to enable Chainlit to display intermediate steps in the UI.
 ### Usage
 
 ```python Code Example
-from llama_index.callbacks.base import CallbackManager
-from llama_index import (
-    LLMPredictor,
-    ServiceContext,
-
-)
-from langchain.chat_models import ChatOpenAI
+from llama_index.core.callbacks import CallbackManager
+from llama_index.core.service_context import ServiceContext
 import chainlit as cl
 
 
 
 @cl.on_chat_start
-async def factory():
-    llm_predictor = LLMPredictor(
-        llm=ChatOpenAI(
-            temperature=0,
-            model_name="gpt-3.5-turbo",
-            streaming=True,
-        ),
-    )
-    service_context = ServiceContext.from_defaults(
-        llm_predictor=llm_predictor,
-        chunk_size=512,
-        callback_manager=CallbackManager([cl.LlamaIndexCallbackHandler()]),
-    )
+async def start():
+    service_context = ServiceContext.from_defaults(callback_manager=CallbackManager([cl.LlamaIndexCallbackHandler()]))
+    # use the service context to create the predictor
 ```

@@ -1,0 +1,23 @@
+---
+title: "on_audio_end"
+---
+
+Hook to react to the end of an audio recording coming from the user's microphone.
+
+## Usage
+
+```python
+from io import BytesIO
+import chainlit as cl
+
+
+@cl.on_audio_end
+async def on_audio_end(elements: list[ElementBased]):
+    # Get the audio buffer from the session
+    audio_buffer: BytesIO = cl.user_session.get("audio_buffer")
+    audio_buffer.seek(0)  # Move the file pointer to the beginning
+    audio_file = audio_buffer.read()
+    audio_mime_type: str = cl.user_session.get("audio_mime_type")
+
+   # Apply Speech to Text or any other processing
+```

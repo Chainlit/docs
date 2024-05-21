@@ -3,17 +3,21 @@ title: OpenAI
 ---
 
 <Note>
-  We support the OpenAI python library starting at version 1.0.0.
+  If you are using OpenAI assistants, check out the [OpenAI
+  Assistant](https://github.com/Chainlit/openai-assistant) example app.
 </Note>
 
 The benefits of this integration is that you can see the OpenAI API calls in a step in the UI, and you can explore them in the prompt playground.
 
-You will also get the full generation details (prompt, completion, tokens per second...) in your Literal dashboard if your project is using Literal.
+You will also get the full generation details (prompt, completion, tokens per second...) in your Literal AI dashboard, if your project is using [Literal AI](https://docs.getliteral.ai).
 
 You need to add `cl.instrument_openai()` after creating your OpenAI client.
 
 <Warning>
-  You shouldn't configure this integration if you're already using another integration like Embedchain, Haystack, Langchain or LlamaIndex. Both integrations would record the same generation and create duplicate steps in the UI.
+  You shouldn't configure this integration if you're already using another
+  integration like Embedchain, Haystack, Langchain or LlamaIndex. Both
+  integrations would record the same generation and create duplicate steps in
+  the UI.
 </Warning>
 
 ## Prerequisites
@@ -35,9 +39,7 @@ In `app.py`, import the necessary packages and define one function to handle mes
 
 ```python
 from openai import AsyncOpenAI
-
 import chainlit as cl
-
 client = AsyncOpenAI()
 
 # Instrument the OpenAI client
@@ -58,7 +60,7 @@ async def on_message(message: cl.Message):
                 "role": "system"
             },
             {
-                "content": input,
+                "content": message.content,
                 "role": "user"
             }
         ],
@@ -69,7 +71,7 @@ async def on_message(message: cl.Message):
 
 ## Step 3: Fill the environment variables
 
-Create a file named `.env` in the same folder as your `app.py` file. Add your OpenAI API key in the `OPENAI_API_KEY` variable. You can optionally add your Literal API key in the `LITERAL_API_KEY`.
+Create a file named `.env` in the same folder as your `app.py` file. Add your OpenAI API key in the `OPENAI_API_KEY` variable. You can optionally add your Literal AI API key in the `LITERAL_API_KEY`.
 
 ## Step 4: Run the Application
 

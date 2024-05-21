@@ -65,24 +65,26 @@ hide_cot = false
 # The CSS file can be served from the public directory or via an external link.
 # custom_css = "/public/test.css"
 
+[UI.theme]
+  #layout = "wide"
+  #font_family = "Inter, sans-serif"
+  # Override default MUI light theme. (Check theme.ts)
+  [UI.theme.light]
+      #background = "#FAFAFA"
+      #paper = "#FFFFFF"
 
-# Override default MUI light theme. (Check theme.ts)
-[UI.theme.light]
-    #background = "#FAFAFA"
-    #paper = "#FFFFFF"
+      [UI.theme.light.primary]
+          #main = "#F80061"
+          #dark = "#980039"
+          #light = "#FFE7EB"
 
-    [UI.theme.light.primary]
-        #main = "#F80061"
-        #dark = "#980039"
-        #light = "#FFE7EB"
+  # Override default MUI dark theme. (Check theme.ts)
+  [UI.theme.dark]
+      #background = "#FAFAFA"
+      #paper = "#FFFFFF"
 
-# Override default MUI dark theme. (Check theme.ts)
-[UI.theme.dark]
-    #background = "#FAFAFA"
-    #paper = "#FFFFFF"
-
-    [UI.theme.dark.primary]
-        #main = "#F80061"
-        #dark = "#980039"
-        #light = "#FFE7EB"
+      [UI.theme.dark.primary]
+          #main = "#F80061"
+          #dark = "#980039"
+          #light = "#FFE7EB"
 ```

@@ -1,0 +1,83 @@
+---
+title: Custom Data Layer
+---
+
+The `BaseDataLayer` class serves as an abstract foundation for data persistence operations within the Chainlit framework. This class outlines methods for managing users, feedback, elements, steps, and threads in a chatbot application.
+
+## Methods
+
+<ParamField path="async get_user(self, identifier: str)" type="Coroutine">
+  Fetches a user by their identifier. Return type is optionally a `PersistedUser`.
+</ParamField>
+
+<ParamField path="async create_user(self, user: User)" type="Coroutine">
+  Creates a new user based on the `User` instance provided. Return type is optionally a `PersistedUser`.
+</ParamField>
+
+<ParamField path="async upsert_feedback(self, feedback: Feedback)" type="Coroutine">
+  Inserts or updates feedback. Accepts a `Feedback` instance and returns a string as an identifier of the persisted feedback.
+</ParamField>
+
+<ParamField path="async delete_feedback(self, feedback_id: str)" type="Coroutine">
+  Deletes a feedback by `feedback_id`. Return `True` if it was successful.
+</ParamField>
+
+<ParamField path="async create_element(self, element_dict: ElementDict)" type="Coroutine" optional>
+  Adds a new element to the data layer. Accepts `ElementDict` as an argument.
+</ParamField>
+
+<ParamField path="async get_element(self, thread_id: str, element_id: str)" type="Coroutine">
+  Retrieves an element by `thread_id` and `element_id`. Return type is optionally an `ElementDict`.
+</ParamField>
+
+<ParamField path="async delete_element(self, element_id: str)" type="Coroutine" optional>
+  Deletes an element given its identifier `element_id`.
+</ParamField>
+
+<ParamField path="async create_step(self, step_dict: StepDict)" type="Coroutine" optional>
+  Creates a new step in the data layer. Accepts `StepDict` as an argument.
+</ParamField>
+
+<ParamField path="async update_step(self, step_dict: StepDict)" type="Coroutine" optional>
+  Updates an existing step. Accepts `StepDict` as an argument.
+</ParamField>
+
+<ParamField path="async delete_step(self, step_id: str)" type="Coroutine" optional>
+  Deletes a step given its identifier `step_id`.
+</ParamField>
+
+<ParamField path="async get_thread_author(self, thread_id: str)" type="Coroutine">
+  Fetches the author of a given thread by `thread_id`. Returns a string representing the author identifier.
+</ParamField>
+
+<ParamField path="async delete_thread(self, thread_id: str)" type="Coroutine">
+  Deletes a thread given its identifier `thread_id`.
+</ParamField>
+
+<ParamField path="async list_threads(self, pagination: Pagination, filters: ThreadFilter)" type="Coroutine">
+  Lists threads based on `pagination` and `filters` arguments. Returns a `PaginatedResponse[ThreadDict]`.
+</ParamField>
+
+<ParamField path="async get_thread(self, thread_id: str)" type="Coroutine">
+  Retrieves a thread by its identifier `thread_id`. Return type is optionally a `ThreadDict`.
+</ParamField>
+
+<ParamField path="async update_thread(self, thread_id: str, name: Optional[str] = None, user_id: Optional[str] = None, metadata: Optional[Dict] = None, tags: Optional[List[str]] = None)" type="Coroutine">
+  Updates a thread's details like name, user_id, metadata, and tags. Arguments are mostly optional.
+</ParamField>
+
+<ParamField path="async delete_user_session(self, id: str)" type="Coroutine">
+  Deletes a user session given its identifier `id`. Returns a boolean value indicating success.
+</ParamField>
+
+## Decorators
+
+<ParamField path="queue_until_user_message()" type="Decorator">
+  Queues certain methods to execute only after the first user message is received, especially useful for `WebsocketSessions`.
+</ParamField>
+
+## Example
+
+Due to the abstract nature of `BaseDataLayer`, direct instantiation and usage are not practical without subclassing and implementing the abstract methods.
+
+You can refer to the [guide for custom data layer implementation](/data-persistence/custom).
