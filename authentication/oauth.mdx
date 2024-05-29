@@ -31,6 +31,18 @@ You need to set the following environment variables:
 - `OAUTH_GITHUB_CLIENT_ID`: Client ID
 - `OAUTH_GITHUB_CLIENT_SECRET`: Client secret
 
+### Gitlab
+
+Go to this page to [create a new GitLab OAuth app](https://docs.gitlab.com/ee/integration/oauth_provider.html). When creating the app, you need to allow the `openid`, `profile` and `email` scopes.
+
+The callback URL should be: `CHAINLIT_URL/auth/oauth/gitlab/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/gitlab/callback`.
+
+You need to set the following environment variables:
+
+- `OAUTH_GITLAB_CLIENT_ID`: Client ID
+- `OAUTH_GITLAB_CLIENT_SECRET`: Client secret
+- `OAUTH_GITLAB_DOMAIN`: domain name (without the protocol)
+
 ### Google
 
 Go to this page to [create a new Google OAuth app](https://console.developers.google.com/apis/credentials).
