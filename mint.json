@@ -28,6 +28,13 @@
     "suggestEdit": true,
     "raiseIssue": true
   },
+  "anchors": [
+    {
+      "name": "Chainlit Help",
+      "icon": "comment",
+      "url": "https://help.chainlit.io"
+    }
+  ],
   "tabs": [
     {
       "name": "Examples",
