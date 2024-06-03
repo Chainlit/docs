@@ -2,12 +2,13 @@
 title: Step
 ---
 
-LLM powered Assistants take a series of steps to process a user's request.
-Unlike a [Message](concepts/message), a Step has an input/output, a start/end and can be nested.
+LLM powered Assistants take multiple steps to process a user's request, forming a chain of thought.
+Unlike a [Message](concepts/message), a Step has a type, an input/output and a start/end.
 
-Together, Steps form a Chain of Thought. Displaying the steps of a Chain of Thought is useful both for the end user (to understand what the Assistant is doing) and for the developer (to debug the Assistant).
+In the UI, the steps of type `tool` are displayed in real time to give the user a sense of the assistant's thought process.
+In [Literal AI](https://literalai.com), the full chain of thought is logged for debugging and replayability purposes.
 
-## A Simple Chain of Thought
+## A Simple Tool Calling Example
 
 Lets take a simple example of a Chain of Thought that takes a user's message, process it and sends a response.
 
@@ -15,7 +16,7 @@ Lets take a simple example of a Chain of Thought that takes a user's message, pr
 import chainlit as cl
 
 
-@cl.step
+@cl.step(type="tool")
 async def tool():
     # Simulate a running task
     await cl.sleep(2)
@@ -25,6 +26,8 @@ async def tool():
 
 @cl.on_message
 async def main(message: cl.Message):
+    final_answer = await cl.Message(content="").send()
+
     # Call the tool
     tool_res = await tool()
 

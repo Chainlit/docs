@@ -1,0 +1,168 @@
+---
+title: Teams
+---
+
+To make your Chainlit app available on Teams, you will need to create a Teams bot and set up the necessary environment variables.
+
+## How it Works
+
+The Teams bot will be available in direct messages.
+
+<Frame caption="Preview">
+  <img src="/images/teams/demo.gif" />
+</Frame>
+
+## Supported Features
+
+| Message | Streaming | Elements | Audio | Ask User | Chat History | Chat Profiles | Feedback |
+| ------- | --------- | -------- | ----- | -------- | ------------ | ------------- | -------- |
+| ✅      | ❌        | ✅       | ❌    | ❌       | ❌           | ❌            | ✅       |
+
+## Install the Botbuilder Library
+
+The Botbuilder library is not included in the Chainlit dependencies. You will have to install it manually.
+
+```bash
+pip install botbuilder-core
+```
+
+## Create a Teams App
+
+To start, navigate to the [App Management](https://dev.teams.microsoft.com/apps) page. Here, create a new app.
+
+<Frame caption="Create a Teams App">
+  <img src="/images/teams/create-app.png" />
+</Frame>
+
+## Fill the App Basic Information
+
+Navigate to Configure > Basic Information and fill in the basic information about your app.
+You won't be able to publish your app until you fill in all the required fields.
+
+<Frame caption="Basic infos">
+  <img src="/images/teams/basic-infos.png" />
+</Frame>
+
+## Create the Bot
+
+Navigate to Configure > App features and add the Bot feature.
+Create a new bot and give it the following permissions and save.
+
+<Frame caption="Bot permissions">
+  <img src="/images/teams/bot-permissions.png" />
+</Frame>
+
+## Go to the Bot Framework Portal
+
+Navigate to the [Bot Framework Portal](https://dev.botframework.com/bots/), click on the Bot you just created and go to the Settings page.
+
+## Get the App ID
+
+In the Bot Framework Portal, you will find the app ID. Copy it and set it as an environment variable in your Chainlit app.
+
+```
+TEAMS_APP_ID=your_app_id
+```
+
+<Frame caption="Get the App ID">
+  <img src="/images/teams/app-id.png" />
+</Frame>
+
+## Working Locally
+
+If you are working locally, you will have to expose your local Chainlit app to the internet to receive incoming messages to Teams. You can use [ngrok](https://ngrok.com/) for this.
+
+```bash
+ngrok http 8000
+```
+
+This will give you a public URL that you can use to set up the app manifest. Do not forget to replace it once you deploy Chainlit to a public host.
+
+## Set the Message Endpoint
+
+Under Configuration, set the messaging endpoint to your Chainlit app HTTPS URL and add the `/teams/events` suffix.
+
+<Frame caption="Messaging endpoint">
+  <img src="/images/teams/endpoint.png" />
+</Frame>
+
+## Get the App Secret
+
+On the same page, you will find a blue "Manage Microsoft App ID and password" button. Click on it.
+
+<Frame caption="Manage password">
+  <img src="/images/teams/manage-password.png" />
+</Frame>
+
+Navigate to Manage > Certificates & secrets and create a new client secret. Copy it and set it as an environment variable in your Chainlit app.
+
+```
+TEAMS_APP_PASSWORD=your_app_secret
+```
+
+## Support Multi Tenant Account Types
+
+Navigate to Manage > Authentication and toggle "Accounts in any organizational directory (Any Microsoft Entra ID tenant - Multitenant)" then save.
+
+<Frame caption="Multi tenant">
+  <img src="/images/teams/multitenant.png" />
+</Frame>
+
+## Start the Chainlit App
+
+Since the Chainlit app is not running, the Teams bot will not be able to communicate with it.
+
+For the example, we will use this simple app:
+
+```python my_app.py
+import chainlit as cl
+
+@cl.on_message
+async def on_message(msg: cl.Message):
+    # Access the teams user
+    print(cl.user_session.get("user"))
+
+    # Access potential attached files
+    attached_files = msg.elements
+
+    await cl.Message(content="Hello World").send()
+```
+
+<Note>
+  Reminder: Make sure the environment variables are set and that your local
+  chainlit app is exposed to the internet via ngrok.
+</Note>
+
+Start the Chainlit app:
+
+```bash
+chainlit run my_app.py -h
+```
+
+<Note>
+  Using -h to not open the default Chainlit UI since we are using Teams.
+</Note>
+
+## Publish the Bot
+
+Back to the [App Management](https://dev.teams.microsoft.com/apps) page, navigate to "Publish to org" and click on "Publish".
+
+<Frame caption="Publish">
+  <img src="/images/teams/publish.png" />
+</Frame>
+
+## Authorize the Bot
+
+The Bot will have to be authorized by the Teams admin before it can be used. To do so navigate to the [Teams admin center](https://admin.teams.microsoft.com/policies/manage-apps) and find the app.
+
+<Frame caption="Publish">
+  <img src="/images/teams/app-blocked.png" />
+</Frame>
+
+Then authorize it.
+
+<Frame caption="Publish">
+  <img src="/images/teams/authorize-app.png" />
+</Frame>
+
+You should now be able to interact with your Chainlit app through Teams.
