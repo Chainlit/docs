@@ -114,6 +114,31 @@ window.addEventListener("chainlit-call-fn", (e) => {
 
 As you can see, the event listener receives the function name, arguments, and a callback function. The callback function should be called with the result of the function call.
 
+## Copilot Events
+
+The Copilot can also emit events to the Chainlit server. This is useful for sending context information or user actions to the Chainlit server.
+
+First, add a `@cl.on_copilot_event` decorator to your Chainlit server:
+
+```py
+import chainlit as cl
+
+
+@cl.on_copilot_event
+async def on_copilot_event(data):
+    print("Received event from copilot!")
+```
+
+The `data` parameter will contain the event data sent by the Copilot.
+
+Then, in your app/website, you can emit an event like this:
+
+```js
+window.sendChainlitEvent({ type: "button_click" });
+```
+
+The event will be sent to the Chainlit server, and the `on_copilot_event` function will be called. You can pass any value in the event data.
+
 ## Security
 
 ### Cross Origin Resource Sharing (CORS)
