@@ -61,6 +61,7 @@
         {
           "group": "Integrations",
           "pages": [
+            "integrations/fastapi",
             "integrations/openai",
             "integrations/langchain",
             "integrations/llama-index",
