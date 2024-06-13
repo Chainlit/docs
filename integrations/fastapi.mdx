@@ -1,0 +1,35 @@
+---
+title: FastAPI
+---
+
+Chainlit can be mounted as a FastAPI sub application.
+
+```py my_cl_app
+import chainlit as cl
+
+@cl.on_chat_start
+async def main():
+    await cl.Message(content="Hello World").send()
+```
+
+```py main
+from fastapi import FastAPI
+from chainlit.utils import mount_chainlit
+
+app = FastAPI()
+
+
+@app.get("/app")
+def read_main():
+    return {"message": "Hello World from main app"}
+
+mount_chainlit(app=app, target="my_cl_app.py", path="/chainlit")
+```
+
+In the example above, we have a FastAPI application with a single endpoint `/app`. We mount the Chainlit application `my_cl_app.py` to the `/chainlit` path.
+
+Start the FastAPI server:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port 80
+```

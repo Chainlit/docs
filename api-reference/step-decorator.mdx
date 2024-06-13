@@ -2,9 +2,11 @@
 title: "Step Decorator"
 ---
 
-The step decorator will create and send a step to the UI based on the decorated function. By default, the arguments of the function will be used as the input of the step and the return value will be used as the output.
+The step decorator will log steps based on the decorated function. By default, the arguments of the function will be used as the input of the step and the return value will be used as the output.
 
 Under the hood, the step decorator is using the [cl.Step](/api-reference/step-class) class.
+
+<Note>Only the `tool` steps will be displayed in the UI.</Note>
 
 ## Parameters
 

@@ -45,13 +45,6 @@ First, make sure your Chainlit server is running. Then, add the following script
 
 That's it! You should now see a floating button on the bottom right corner of your website. Clicking on it will open the Copilot.
 
-<Note>
-  If you plan to use
-  [on_chat_start](/api-reference/lifecycle-hooks/on-chat-start) to welcome
-  users, you should set [show_readme_as_default](/backend/config/ui) to `false`
-  in your Chainlit config to avoid flickering.
-</Note>
-
 ## Widget Configuration
 
 The `mountChainlitWidget` function accepts the following options:
@@ -120,6 +113,38 @@ window.addEventListener("chainlit-call-fn", (e) => {
 ```
 
 As you can see, the event listener receives the function name, arguments, and a callback function. The callback function should be called with the result of the function call.
+
+## Send a Message
+
+The Copilot can also send messages directly to the Chainlit server. This is useful for sending context information or user actions to the Chainlit server (like the user selected from cell A1 to B1 on a table).
+
+First, update the `@cl.on_message` decorated function to your Chainlit server:
+
+```py
+import chainlit as cl
+
+
+@cl.on_message
+async def on_message(msg: cl.Message):
+    if cl.context.session.client_type == "copilot":
+
+        if msg.type == "system_message":
+          # do something with the message
+          return
+
+        fn = cl.CopilotFunction(name="test", args={"msg": msg.content})
+        res = await fn.acall()
+        await cl.Message(content=res).send()
+```
+
+Then, in your app/website, you can emit an event like this:
+
+```js
+window.sendChainlitMessage({
+  type: "system_message",
+  output: "Hello World!",
+});
+```
 
 ## Security
 

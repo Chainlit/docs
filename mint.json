@@ -61,6 +61,7 @@
         {
           "group": "Integrations",
           "pages": [
+            "integrations/fastapi",
             "integrations/openai",
             "integrations/langchain",
             "integrations/llama-index",
@@ -78,9 +79,11 @@
         {
           "group": "Platforms",
           "pages": [
-            "deploy/api",
+            "deploy/webapp",
             "deploy/copilot",
+            "deploy/api",
             "deploy/react-frontend",
+            "deploy/teams",
             "deploy/slack",
             "deploy/discord"
           ]
@@ -91,6 +94,7 @@
       "group": "Basic Concepts",
       "pages": [
         "concepts/chat-lifecycle",
+        "concepts/starters",
         "concepts/message",
         "concepts/step",
         "concepts/user-session",
@@ -106,16 +110,7 @@
         "advanced-features/multi-modal",
         "advanced-features/chat-profiles",
         "advanced-features/chat-settings",
-        "advanced-features/test-debug",
-        {
-          "group": "Prompt Playground",
-          "pages": [
-            "advanced-features/prompt-playground/overview",
-            "advanced-features/prompt-playground/setup",
-            "advanced-features/prompt-playground/formatted-prompts",
-            "advanced-features/prompt-playground/llm-providers"
-          ]
-        }
+        "advanced-features/test-debug"
       ]
     },
     {
@@ -143,6 +138,7 @@
       "pages": [
         "customisation/overview",
         "customisation/translation",
+        "customisation/avatars",
         "customisation/custom-logo-and-favicon",
         "customisation/theme",
         "customisation/custom-js",
@@ -174,7 +170,6 @@
       "pages": [
         "examples/cookbook",
         "examples/openai-sql",
-        "examples/mrkl",
         "examples/qa",
         "examples/security",
         "examples/community"
@@ -212,7 +207,6 @@
         "api-reference/elements/pdf",
         "api-reference/elements/audio",
         "api-reference/elements/video",
-        "api-reference/elements/avatar",
         "api-reference/elements/plotly",
         "api-reference/elements/pyplot",
         "api-reference/elements/tasklist"

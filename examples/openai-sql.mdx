@@ -19,15 +19,12 @@ pip install chainlit openai
 ## Imports
 
 ```python app.py
-import os
 from openai import AsyncOpenAI
 
 
-from chainlit.playground.providers.openai import ChatOpenAI
 import chainlit as cl
 
 cl.instrument_openai()
-
 
 client = AsyncOpenAI(api_key="YOUR_OPENAI_API_KEY")
 ```
@@ -61,29 +58,33 @@ Here, we decorate the `main` function with the [@on_message](/api-reference/life
 Then, we wrap our text to sql logic in a [Step](/concepts/step).
 
 ```python app.py
-@cl.step(type="llm", root=True, language="sql")
-async def text_to_sql(text: str):
-    # Call OpenAI
+@cl.set_starters
+async def starters():
+    return [
+       cl.Starter(
+           label=">50 minutes watched",
+           message="Compute the number of customers who watched more than 50 minutes of video this month."
+       )
+    ]
+
+@cl.on_message
+async def main(message: cl.Message):
     stream = await client.chat.completions.create(
         messages=[
             {
                 "role": "user",
-                "content": template.format(input=text),
+                "content": template.format(input=message.content),
             }
         ], stream=True, **settings
     )
 
-    current_step = cl.context.current_step
+    msg = await cl.Message(content="", language="sql").send()
 
     async for part in stream:
         if token := part.choices[0].delta.content or "":
-            await current_step.stream_token(token)
+            await msg.stream_token(token)
 
-
-@cl.on_message
-async def main(message: cl.Message):
-    await text_to_sql(message.content)
-
+    await msg.update()
 ```
 
 ## Try it out
