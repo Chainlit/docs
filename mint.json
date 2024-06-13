@@ -163,7 +163,7 @@
     },
     {
       "group": "Guides",
-      "pages": ["guides/sync-async", "guides/migration/1.1.300rc0"]
+      "pages": ["guides/sync-async", "guides/migration/1.1.300"]
     },
     {
       "group": "Examples",
