@@ -8,7 +8,7 @@
   },
   "modeToggle": {
     "default": "dark",
-    "isHidden": true
+    "isHidden": false
   },
   "favicon": "/favicon.svg",
   "colors": {
