@@ -62,6 +62,7 @@
           "group": "Integrations",
           "pages": [
             "integrations/fastapi",
+            "integrations/mistralai",
             "integrations/openai",
             "integrations/langchain",
             "integrations/llama-index",
@@ -228,15 +229,6 @@
         "api-reference/integrations/haystack"
       ]
     },
-    {
-      "group": "Generation",
-      "pages": [
-        "api-reference/generation/chat-generation",
-        "api-reference/generation/generation-message",
-        "api-reference/generation/completion-generation"
-      ]
-    },
-
     {
       "group": "Misceallaneous",
       "pages": [
