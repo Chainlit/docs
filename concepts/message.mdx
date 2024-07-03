@@ -28,3 +28,25 @@ async def on_message(message: cl.Message):
 >
   Learn more about the Message API.
 </Card>
+
+## Chat Context
+
+Since LLMs are stateless, you will often have to accumulate the messages of the current conversation in a list to provide the full context to LLM with each query.
+
+You could do that manually with the [user_session](/concepts/user-session). However, Chainlit provides a built-in way to do this:
+
+```py chat_context
+import chainlit as cl
+
+@cl.on_message
+async def on_message(message: cl.Message):
+    # Get all the messages in the conversation in the OpenAI format
+    print(cl.chat_context.to_openai())
+
+    # Send the response
+    response = f"Hello, you just sent: {message.content}!"
+    await cl.Message(response).send()
+```
+
+Every message sent or received will be automatically accumulated in `cl.chat_context`.
+You can then use `cl.chat_context.to_openai()` to get the conversation in the OpenAI format and feed it to the LLM.
