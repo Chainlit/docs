@@ -1,21 +1,16 @@
 ---
-title: Migrate to Chainlit v1.1.300rc0
+title: Migrate to Chainlit v1.1.300
 ---
 
 <Note>Join the discord for live updates: https://discord.gg/AzyvDHWARx</Note>
 
 ## Updating Chainlit
 
-Begin the migration by updating Chainlit to the latest release candidate version:
+Begin the migration by updating Chainlit to the latest version:
 
 ```bash
-pip install --upgrade chainlit --pre
+pip install --upgrade chainlit
 ```
-
-<Warning>
-  Keep in mind that it is a pre-release. The documentation and cookbook may not
-  be up-to-date with the latest changes.
-</Warning>
 
 ## New Feature: Starters
 
@@ -147,6 +142,12 @@ It was also not working with resumed conversations.
 Let's say your message author is `My Assistant`, then you should place the avatar in `/public/avatars/my-assistant.png`.
 
 If no avatar is found, it will default to the favicon.
+
+## Rework: Custom Endpoints
+
+Chainlit is now mountable as a FastAPI sub application. This allows you to use Chainlit on your existing FastAPI application.
+
+Check the [FastAPI integration](/integrations/fastapi) and [API documentation](/deploy/api) for more information.
 
 ## Minor Changes
 

@@ -8,8 +8,6 @@ If you're considering implementing a custom data layer, check out this example [
 
 Also, we would absolutely love to see a community-led open source data layer implementation and list it here. If you're interested in contributing, please reach out to us on Discord.
 
-## How to use a custom data layer?
-
 You need to import you custom data layer in your chainlit app, and assign it to the data layer variable, like so:
 
 ```python
@@ -43,7 +41,7 @@ CREATE TABLE IF NOT EXISTS threads (
     "name" TEXT,
     "userId" UUID,
     "userIdentifier" TEXT,
-    "tags" TEXT[], 
+    "tags" TEXT[],
     "metadata" JSONB,
     FOREIGN KEY ("userId") REFERENCES users("id") ON DELETE CASCADE
 );
@@ -59,7 +57,7 @@ CREATE TABLE IF NOT EXISTS steps (
     "waitForAnswer" BOOLEAN,
     "isError" BOOLEAN,
     "metadata" JSONB,
-    "tags" TEXT[], 
+    "tags" TEXT[],
     "input" TEXT,
     "output" TEXT,
     "createdAt" TEXT,
@@ -118,18 +116,158 @@ cl_data._data_layer = SQLAlchemyDataLayer(conninfo="<your conninfo>", storage_pr
 
 Note that you need to add `+asyncpg` to the protocol in the `conninfo` string so that it uses the asyncpg library.
 
+# DynamoDB data layer
+
+This data layer also supports the `BaseStorageClient` that enables you to store your elements into AWS S3 or Azure Blob Storage.
+
+## Example
+Here is an example of setting up this data layer. First install boto3:
+```bash
+pip install boto3
+```
+
+Import the custom data layer and storage client, and set the `cl_data._data_layer` variable at the beginning of your Chainlit app.
+
+```python
+import chainlit.data as cl_data
+from chainlit.data.dynamodb import DynamoDBDataLayer
+from chainlit.data.storage_clients import S3StorageClient
+
+storage_client = S3StorageClient(bucket="<Your Bucket>")
+
+cl_data._data_layer = DynamoDBDataLayer(table_name="<Your Table>", storage_provider=storage_client)
+```
+
+## Table structure
+
+Here is the Cloudformation used to create the dynamo table:
+```json
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "DynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "<YOUR-TABLE-NAME>",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "PK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "SK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "UserThreadPK",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "UserThreadSK",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "PK",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "SK",
+            "KeyType": "RANGE"
+          }
+        ],
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "UserThread",
+            "KeySchema": [
+              {
+                "AttributeName": "UserThreadPK",
+                "KeyType": "HASH"
+              },
+              {
+                "AttributeName": "UserThreadSK",
+                "KeyType": "RANGE"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "INCLUDE",
+              "NonKeyAttributes": ["id", "name"]
+            }
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST"
+      }
+    }
+  }
+}
+```
+
+## Logging
+
+DynamoDB data layer defines a child of chainlit logger.
+
+```python
+import logging
+from chainlit import logger
+
+logger.getChild("DynamoDB").setLevel(logging.DEBUG)
+```
+
+## Limitations
+Filtering by positive/negative feedback is not supported.
+
+The data layer methods are not async. Boto3 is not async and therefore the data layer uses non-async blocking io.
+
+## Design
+
+This implementation uses Single Table Design. There are 4 different entity types in one table identified by the prefixes in PK & SK.
+
+Here are the entity types:
+```ts
+type User = {
+    PK: "USER#{user.identifier}"
+    SK: "USER"
+    // ...PersistedUser
+}
+
+type Thread = {
+    PK: f"THREAD#{thread_id}"
+    SK: "THREAD"
+    // GSI: UserThread for querying in list_threads
+    UserThreadPK: f"USER#{user_id}"
+    UserThreadSK: f"TS#{ts}"
+    // ...ThreadDict
+}
+
+type Step = {
+    PK: f"THREAD#{threadId}"
+    SK: f"STEP#{stepId}"
+    // ...StepDict
+
+    // feedback is stored as part of step. 
+    // NOTE: feedback.value is stored as Decimal in dynamo which is not json serializable
+    feedback?: Feedback
+}
+
+type Element = {
+    "PK": f"THREAD#{threadId}"
+    "SK": f"ELEMENT#{element.id}"
+    // ...ElementDict
+}
+```
 
 # How to implement a custom data layer?
 
 Follow the reference for an exhaustive list of the methods your custom data layer needs to implement.
 
 <CardGroup cols={2}>
-  <Card
-    title="Custom data layer API"
-    icon="text"
-    color="#ea5a0c"
-    href="/api-reference/data-persistence/custom-data-layer"
-  >
-    The custom data layer implementation reference
-  </Card>
+    <Card
+        title="Custom data layer API"
+        icon="text"
+        color="#ea5a0c"
+        href="/api-reference/data-persistence/custom-data-layer"
+    >
+        The custom data layer implementation reference
+    </Card>
 </CardGroup>

@@ -8,7 +8,7 @@
   },
   "modeToggle": {
     "default": "dark",
-    "isHidden": true
+    "isHidden": false
   },
   "favicon": "/favicon.svg",
   "colors": {
@@ -61,6 +61,8 @@
         {
           "group": "Integrations",
           "pages": [
+            "integrations/fastapi",
+            "integrations/mistralai",
             "integrations/openai",
             "integrations/langchain",
             "integrations/llama-index",
@@ -78,9 +80,11 @@
         {
           "group": "Platforms",
           "pages": [
-            "deploy/api",
+            "deploy/webapp",
             "deploy/copilot",
+            "deploy/api",
             "deploy/react-frontend",
+            "deploy/teams",
             "deploy/slack",
             "deploy/discord"
           ]
@@ -91,6 +95,7 @@
       "group": "Basic Concepts",
       "pages": [
         "concepts/chat-lifecycle",
+        "concepts/starters",
         "concepts/message",
         "concepts/step",
         "concepts/user-session",
@@ -106,16 +111,7 @@
         "advanced-features/multi-modal",
         "advanced-features/chat-profiles",
         "advanced-features/chat-settings",
-        "advanced-features/test-debug",
-        {
-          "group": "Prompt Playground",
-          "pages": [
-            "advanced-features/prompt-playground/overview",
-            "advanced-features/prompt-playground/setup",
-            "advanced-features/prompt-playground/formatted-prompts",
-            "advanced-features/prompt-playground/llm-providers"
-          ]
-        }
+        "advanced-features/test-debug"
       ]
     },
     {
@@ -143,6 +139,7 @@
       "pages": [
         "customisation/overview",
         "customisation/translation",
+        "customisation/avatars",
         "customisation/custom-logo-and-favicon",
         "customisation/theme",
         "customisation/custom-js",
@@ -167,14 +164,13 @@
     },
     {
       "group": "Guides",
-      "pages": ["guides/sync-async", "guides/migration/1.1.300rc0"]
+      "pages": ["guides/sync-async", "guides/migration/1.1.300"]
     },
     {
       "group": "Examples",
       "pages": [
         "examples/cookbook",
         "examples/openai-sql",
-        "examples/mrkl",
         "examples/qa",
         "examples/security",
         "examples/community"
@@ -212,7 +208,6 @@
         "api-reference/elements/pdf",
         "api-reference/elements/audio",
         "api-reference/elements/video",
-        "api-reference/elements/avatar",
         "api-reference/elements/plotly",
         "api-reference/elements/pyplot",
         "api-reference/elements/tasklist"
@@ -234,15 +229,6 @@
         "api-reference/integrations/haystack"
       ]
     },
-    {
-      "group": "Generation",
-      "pages": [
-        "api-reference/generation/chat-generation",
-        "api-reference/generation/generation-message",
-        "api-reference/generation/completion-generation"
-      ]
-    },
-
     {
       "group": "Misceallaneous",
       "pages": [

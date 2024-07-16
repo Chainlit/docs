@@ -40,7 +40,7 @@ The `Step` class is a Python Context Manager that can be used to create steps in
 import chainlit as cl
 
 @cl.on_message
-async def main():e
+async def main():
     async with cl.Step(name="Test") as step:
         # Step is sent as soon as the context manager is entered
         step.input = "hello"

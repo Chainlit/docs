@@ -29,32 +29,24 @@ async def on_message(message: cl.Message):
   Learn more about the Message API.
 </Card>
 
-## Trick: Display a loader while waiting for a response
+## Chat Context
 
-If a task is running and the latest message content is empty, Chainlit will display a loader while the content remains empty.
+Since LLMs are stateless, you will often have to accumulate the messages of the current conversation in a list to provide the full context to LLM with each query.
 
-<Note>
-  [Steps](/concepts/step) support loading out of the box. If you need to display
-  a loader in a Message, chances are you should be using a Step instead!
-</Note>
+You could do that manually with the [user_session](/concepts/user-session). However, Chainlit provides a built-in way to do this:
 
-```python
+```py chat_context
 import chainlit as cl
-
 
 @cl.on_message
 async def on_message(message: cl.Message):
-    msg = cl.Message(content="")
-    await msg.send()
+    # Get all the messages in the conversation in the OpenAI format
+    print(cl.chat_context.to_openai())
 
-    # do some work
-    await cl.sleep(2)
-
-    msg.content = f"Processed message {message.content}"
-
-    await msg.update()
+    # Send the response
+    response = f"Hello, you just sent: {message.content}!"
+    await cl.Message(response).send()
 ```
 
-<Frame caption="Loading Message">
-  <img src="/images/loader.gif" />
-</Frame>
+Every message sent or received will be automatically accumulated in `cl.chat_context`.
+You can then use `cl.chat_context.to_openai()` to get the conversation in the OpenAI format and feed it to the LLM.

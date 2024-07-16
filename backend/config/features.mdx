@@ -4,14 +4,13 @@ title: Features
 
 ### Options
 
-<ParamField path="prompt_playground" type="bool" default={true}>
-  Display the [prompt playground](/advanced-features/prompt-playground) when
-  passing a prompt to a message.
-</ParamField>
-
 <ParamField path="unsafe_allow_html" type="bool" default={false}>
   Process and display HTML in messages. This can be a security risk (see
   https://stackoverflow.com/questions/19603097/why-is-it-dangerous-to-render-user-generated-html-or-javascript).
+</ParamField>
+
+<ParamField path="edit_message" type="bool" default={true}>
+  Allow the user to edit their messages.
 </ParamField>
 
 <ParamField path="latex" type="bool" default={false}>
@@ -76,7 +75,6 @@ title: Features
 
 ```toml
 [features]
-prompt_playground = true
 unsafe_allow_html = false
 latex = false
 [features.spontaneous_file_upload]

@@ -1,17 +1,12 @@
 ---
-title: OpenAI
+title: Mistral AI
 ---
 
-<Note>
-  If you are using OpenAI assistants, check out the [OpenAI
-  Assistant](https://github.com/Chainlit/openai-assistant) example app.
-</Note>
-
-The benefits of this integration is that you can see the OpenAI API calls in a step in the UI, and you can explore them in the prompt playground.
+The benefits of this integration is that you can see the Mistral AI API calls in a step in the UI, and you can explore them in the prompt playground.
 
 You will also get the full generation details (prompt, completion, tokens per second...) in your Literal AI dashboard, if your project is using [Literal AI](https://docs.getliteral.ai).
 
-You need to add `cl.instrument_openai()` after creating your OpenAI client.
+To benefit from tracing, you need to add `cl.instrument_mistralai()` after creating your Mistral AI client.
 
 <Warning>
   You shouldn't configure this integration if you're already using another
@@ -24,8 +19,8 @@ You need to add `cl.instrument_openai()` after creating your OpenAI client.
 Before getting started, make sure you have the following:
 
 - A working installation of Chainlit
-- The OpenAI package installed
-- An OpenAI API key
+- The Mistral AI python client package installed, `mistralai`
+- A [Mistral AI API key](https://console.mistral.ai/api-keys/)
 - Basic understanding of Python programming
 
 ## Step 1: Create a Python file
@@ -37,22 +32,25 @@ Create a new Python file named `app.py` in your project directory. This file wil
 In `app.py`, import the necessary packages and define one function to handle messages incoming from the UI.
 
 ```python
-from openai import AsyncOpenAI
+import os
 import chainlit as cl
-client = AsyncOpenAI()
 
-# Instrument the OpenAI client
-cl.instrument_openai()
+from mistralai.async_client import MistralAsyncClient
+
+mai_client = MistralAsyncClient()
+
+# Instrument the Mistral AI client
+cl.instrument_mistralai()
 
 settings = {
-    "model": "gpt-3.5-turbo",
+    "model": "mistral-large-latest",
     "temperature": 0,
     # ... more settings
 }
 
 @cl.on_message
 async def on_message(message: cl.Message):
-    response = await client.chat.completions.create(
+    response = await mai_client.chat(
         messages=[
             {
                 "content": "You are a helpful bot, you always reply in Spanish",
@@ -70,7 +68,8 @@ async def on_message(message: cl.Message):
 
 ## Step 3: Fill the environment variables
 
-Create a file named `.env` in the same folder as your `app.py` file. Add your OpenAI API key in the `OPENAI_API_KEY` variable. You can optionally add your Literal AI API key in the `LITERAL_API_KEY`.
+Create a file named `.env` in the same folder as your `app.py` file. Add your Mistral AI API key in the `MISTRAL_API_KEY` variable.
+You can optionally add your Literal AI API key in the `LITERAL_API_KEY`.
 
 ## Step 4: Run the Application
 
