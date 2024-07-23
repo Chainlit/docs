@@ -53,6 +53,7 @@ async def read_main():
     await cl.Message(content="Hello, I am a chatbot!").send()
     return {"message": "Hello World from main app"}
 
+# pass path="" to mount the Chainlit app on the root path
 mount_chainlit(app=app, target="my_cl_app.py", path="/chainlit")
 ```
 
