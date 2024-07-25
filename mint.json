@@ -66,6 +66,7 @@
             "integrations/openai",
             "integrations/langchain",
             "integrations/llama-index",
+            "integrations/litellm",
             "integrations/haystack",
             "integrations/embedchain",
             "integrations/message-based"

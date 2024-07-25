@@ -1,0 +1,80 @@
+---
+title: LiteLLM
+---
+
+In this tutorial, we will guide you through the steps to create a Chainlit application integrated with [LiteLLM Proxy](https://docs.litellm.ai/docs/simple_proxy)
+
+The benefits of using LiteLLM Proxy with Chainlit is:
+
+- You can [call 100+ LLMs in the OpenAI API format](https://docs.litellm.ai/docs/providers)
+- Use Virtual Keys to set budget limits and track usage
+- see LLM API calls in a step in the UI, and you can explore them in the prompt playground.
+
+<Warning>
+  You shouldn't configure this integration if you're already using another
+  integration like Haystack, Langchain or LlamaIndex. Both integrations would
+  record the same generation and create duplicate steps in the UI.
+</Warning>
+
+## Prerequisites
+
+Before getting started, make sure you have the following:
+
+- A working installation of Chainlit
+- The OpenAI package installed
+- [LiteLLM Proxy Running](https://docs.litellm.ai/docs/proxy/deploy)
+- [A LiteLLM Proxy API Key](https://docs.litellm.ai/docs/proxy/virtual_keys)
+- Basic understanding of Python programming
+
+## Step 1: Create a Python file
+
+Create a new Python file named `app.py` in your project directory. This file will contain the main logic for your LLM application.
+
+## Step 2: Write the Application Logic
+
+In `app.py`, import the necessary packages and define one function to handle messages incoming from the UI.
+
+```python
+from openai import AsyncOpenAI
+import chainlit as cl
+client = AsyncOpenAI(
+    api_key="anything",            # litellm proxy virtual key
+    base_url="http://0.0.0.0:4000" # litellm proxy base_url
+)
+
+# Instrument the OpenAI client
+cl.instrument_openai()
+
+settings = {
+    "model": "gpt-3.5-turbo", # model you want to send litellm proxy
+    "temperature": 0,
+    # ... more settings
+}
+
+@cl.on_message
+async def on_message(message: cl.Message):
+    response = await client.chat.completions.create(
+        messages=[
+            {
+                "content": "You are a helpful bot, you always reply in Spanish",
+                "role": "system"
+            },
+            {
+                "content": message.content,
+                "role": "user"
+            }
+        ],
+        **settings
+    )
+    await cl.Message(content=response.choices[0].message.content).send()
+```
+
+## Step 3: Run the Application
+
+To start your app, open a terminal and navigate to the directory containing `app.py`. Then run the following command:
+
+```bash
+chainlit run app.py -w
+```
+
+The `-w` flag tells Chainlit to enable auto-reloading, so you don't need to restart the server every time you make changes to your application. Your chatbot UI should now be accessible at http://localhost:8000.
