@@ -164,7 +164,7 @@
     },
     {
       "group": "Guides",
-      "pages": ["guides/sync-async", "guides/migration/1.1.300"]
+      "pages": ["guides/sync-async", "guides/migration/1.1.400"]
     },
     {
       "group": "Examples",
