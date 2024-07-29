@@ -1,0 +1,21 @@
+---
+title: Migrate to Chainlit v1.1.400
+---
+
+<Note>Join the discord for live updates: https://discord.gg/AzyvDHWARx</Note>
+
+## Updating Chainlit
+
+Begin the migration by updating Chainlit to the latest version:
+
+```bash
+pip install --upgrade chainlit
+```
+
+## More control over Chain of Thought
+
+The `hide_cot` config parameter has been replaced with `cot`. The `cot` parameter can be set to `hidden`, `tool_call`, or `full`. This parameter controls the display of the Chain of Thought (COT) in the UI.
+
+## `disable_feedback` is gone
+
+Chainlit 1.1.400 takes a different approach to feedback. Now, a user input will trigger a run. Once the run is complete, the user can provide feedback for the whole run instead of being able to score each message. This change simplifies the feedback process and makes it more intuitive.

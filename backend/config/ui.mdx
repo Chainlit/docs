@@ -12,8 +12,14 @@ title: UI
   The content of the `<meta name="description">` of the application.
 </ParamField>
 
-<ParamField path="hide_cot" type="bool" default={false}>
-  You can hide the Chain of Thought UI.
+<ParamField
+  path="cot"
+  type="Literal['hidden', 'tool_call', 'full']"
+  default="full"
+>
+  The chain of thought (COT) is a feature that shows the user the steps the
+  chatbot took to reach a conclusion. You can hide the COT, only show the tool
+  calls, or show it in full.
 </ParamField>
 
 <ParamField path="default_collapse_content" type="bool" default={true}>
@@ -48,8 +54,8 @@ default_collapse_content = true
 # The default value for the expand messages settings.
 default_expand_messages = false
 
-# Hide the chain of thought details from the user in the UI.
-hide_cot = false
+# Chain of Thought (CoT) display mode. Can be "hidden", "tool_call" or "full".
+cot = "full"
 
 # Link to your github repo. This will add a github button in the UI's header.
 # github = ""
