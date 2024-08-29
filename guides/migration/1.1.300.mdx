@@ -1,0 +1,176 @@
+---
+title: Migrate to Chainlit v1.1.300
+---
+
+<Note>Join the discord for live updates: https://discord.gg/AzyvDHWARx</Note>
+
+## Updating Chainlit
+
+Begin the migration by updating Chainlit to the latest version:
+
+```bash
+pip install --upgrade chainlit
+```
+
+## New Feature: Starters
+
+<Frame caption="Starters example">
+  <img src="/images/starters.gif" />
+</Frame>
+
+This release introduces a new feature called Starters. Starters are suggestions to help your users get started with your assistant.
+You can declare up to 4 starters and optionally define an icon for each one.
+
+```python starters.py
+import chainlit as cl
+
+@cl.set_starters
+async def set_starters():
+    return [
+        cl.Starter(
+            label="Morning routine ideation",
+            message="Can you help me create a personalized morning routine that would help increase my productivity throughout the day? Start by asking me about my current habits and what activities energize me in the morning.",
+            icon="/public/idea.svg",
+            ),
+
+        cl.Starter(
+            label="Explain superconductors",
+            message="Explain superconductors like I'm five years old.",
+            icon="/public/learn.svg",
+            ),
+        cl.Starter(
+            label="Python script for daily email reports",
+            message="Write a script to automate sending daily email reports in Python, and walk me through how I would set it up.",
+            icon="/public/terminal.svg",
+            ),
+        cl.Starter(
+            label="Text inviting friend to wedding",
+            message="Write a text asking a friend to be my plus-one at a wedding next month. I want to keep it super short and casual, and offer an out.",
+            icon="/public/write.svg",
+            )
+        ]
+# ...
+```
+
+Starters also work with Chat Profiles. You can define different starters for different chat profiles.
+
+```python starters_with_chat_profiles.py
+@cl.set_chat_profiles
+async def chat_profile(current_user: cl.User):
+    if current_user.metadata["role"] != "ADMIN":
+        return None
+
+    return [
+        cl.ChatProfile(
+            name="My Chat Profile",
+            icon="https://picsum.photos/250",
+            markdown_description="The underlying LLM model is **GPT-3.5**, a *175B parameter model* trained on 410GB of text data.",
+            starters=[
+                cl.Starter(
+                    label="Morning routine ideation",
+                    message="Can you help me create a personalized morning routine that would help increase my productivity throughout the day? Start by asking me about my current habits and what activities energize me in the morning.",
+                    icon="/public/idea.svg",
+                ),
+                cl.Starter(
+                    label="Explain superconductors",
+                    message="Explain superconductors like I'm five years old.",
+                    icon="/public/learn.svg",
+                ),
+            ],
+        )
+    ]
+```
+
+## Rework: Debugging
+
+We created Chainlit with a vision to make debugging as easy as possible. This is why Chainlit was supporting complex Chain of Thoughts and even had its own prompt playground.
+This was great but was mixing two different concepts in one place:
+
+1. Building conversational AI with best in class user experience.
+2. Debugging and iterating efficiently.
+
+Separating these two concepts was the right thing to do to:
+
+1. Provide an even better UX (see the new [Chain of Thought](#chain-of-thought-rework)).
+2. Provide an even better debugging experience.
+
+You can enable the new debug mode by adding `-d` to your `chainlit run` command. If your data layer supports it (like [Literal AI](https://literalai.com)), you will see a debug button below each message taking you to the trace/prompt playground.
+
+<Frame caption="Debug example">
+  <img src="/images/debug.gif" />
+</Frame>
+
+This also means we let go of the prompt playground in Chainlit and welcome a simplified Chain of Thought for your users!
+
+## Rework: Chain of Thought
+
+The Chain of Thought has been reworked to only be one level deep and only include tools; ultimately users are only interested in the tools used by the LLM to generate the response.
+
+```python new_cot.py
+import chainlit as cl
+
+@cl.step(type="tool")
+async def tool():
+    # Faking a tool
+    await cl.sleep(2)
+    return "Tool Response"
+
+@cl.on_message
+async def on_message():
+    msg = await cl.Message("").send()
+    msg.content = await tool()
+    await msg.update()
+```
+
+<Warning>
+  Notice that the `root` attribute of [cl.Step](/concepts/step) has been
+  removed. Use [cl.Message](/concepts/message) to send root level messages.
+</Warning>
+
+<Frame caption="New CoT">
+  <video controls autoPlay loop src="/images/cot.mp4" />
+</Frame>
+
+The data layer is still be able to provide the full Chain of Thought for debugging purposes.
+
+## Rework: Avatars
+
+The previous `cl.Avatar` element was adding overhead to developers forcing them to resend the avatars to each session.
+It was also not working with resumed conversations.
+
+`cl.Avatar` has been removed entirely. Now, you should place your avatar files in `/public/avatars`.
+Let's say your message author is `My Assistant`, then you should place the avatar in `/public/avatars/my-assistant.png`.
+
+If no avatar is found, it will default to the favicon.
+
+## Rework: Custom Endpoints
+
+Chainlit is now mountable as a FastAPI sub application. This allows you to use Chainlit on your existing FastAPI application.
+
+Check the [FastAPI integration](/integrations/fastapi) and [API documentation](/deploy/api) for more information.
+
+## Minor Changes
+
+1. You can now configure the default theme in the `config.toml` file.
+
+```toml config.toml
+[UI]
+  [UI.theme]
+      default = "dark"
+```
+
+2. The `running`, `took_one` and `took_other` translations have been replaced by `used`.
+   Either manually replace them in your translations or delete the translations file to regenerate it.
+
+3. The `show_readme_as_default` config has been removed in favor of starters.
+
+4. Root level messages will no longer collapse.
+
+## Conclusion
+
+<Note>
+  Full changelog available
+  [here](https://github.com/Chainlit/chainlit/blob/main/CHANGELOG.md#11300rc0---2024-05-27).
+</Note>
+
+This pre-release brings a lot of changes to Chainlit. It is not yet stable, but we are excited to hear your feedback on it and improve it further!
