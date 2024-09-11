@@ -47,6 +47,10 @@
   ],
   "topbarLinks": [
     {
+      "name": "Literal AI",
+      "url": "https://docs.literalai.com"
+    },
+    {
       "name": "Github",
       "url": "https://github.com/Chainlit/chainlit"
     }
@@ -122,8 +126,14 @@
         "data-persistence/history",
         "data-persistence/feedback",
         "data-persistence/tags-metadata",
-        "data-persistence/enterprise",
         "data-persistence/custom"
+      ]
+    },
+    {
+      "group": "Literal AI - LLMOps",
+      "pages": [
+        "llmops/literalai",
+        "llmops/enterprise"
       ]
     },
     {

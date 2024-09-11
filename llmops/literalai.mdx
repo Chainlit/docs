@@ -1,0 +1,71 @@
+---
+title: Literal AI
+description: Literal AI is a **collaborative platform** for building production-grade LLM apps.
+---
+<Frame caption="Literal AI Platform Overview">
+  <img src="/images/literal-ai-overview.png" alt="Literal AI Platform"/>
+</Frame>
+
+[Literal AI](https://docs.literalai.com) is a collaborative **observability, evaluation and analytics** platform for building production-grade LLM apps. Literal AI offers multimodal logging, including vision, audio, and video.
+
+Literal AI can be leveraged as a data persistence solution, allowing you to quickly enable data storage and analysis for your Chainlit app without setting up your own infrastructure.
+
+<Note>
+  Literal AI has a data retention policy available [here](https://literalai.com).
+</Note>
+
+## Log your conversations threads and agent runs to Literal AI
+
+<Steps>
+  <Step title="Sign in to Literal AI">
+    Navigate to [Literal AI](https://cloud.getliteral.ai) and sign in.
+  </Step>
+  <Step title="Create a New Project">
+    You will be prompted to create a new project:
+    <Frame caption="Project Creation Screen">
+      <img src="/images/create-project.png" />
+    </Frame>
+  </Step>
+  <Step title="Get Your API Key">
+    Navigate to the `Settings` page. A default API key will be generated for you
+    <Frame caption="Project API Key">
+      <img src="/images/api-key.png" />
+    </Frame>
+  </Step>
+  <Step title="Set the API Key in your Chainlit App">
+
+Once you have an API key, you will need to pass it via a `LITERAL_API_KEY` environment variable.
+
+Next to your Chainlit application, create a `.env` file and modify it like so:
+
+```shell .env
+LITERAL_API_KEY="your key"
+```
+
+Or inlined:
+
+```shell
+LITERAL_API_KEY="your key" chainlit run main.py
+```
+
+Or inlined for Windows powershell:
+
+```shell
+$ENV:LITERAL_API_KEY="your key"; chainlit run main.py
+```
+
+Once activated, your chats and elements will be persisted on Literal AI.
+
+</Step>
+</Steps>
+
+
+## Deactivation
+
+If you wish to deactivate data persistence, simply comment out or remove the `LITERAL_API_KEY` environment variable.
+
+## Data privacy & security
+
+We prioritize your data's privacy and security. We understand how crucial the data fed into Chainlit Cloud is for your business and handle it with utmost care.
+
+Contact us for detailed information: contact@chainlit.io

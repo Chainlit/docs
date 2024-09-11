@@ -27,48 +27,22 @@ Once enabled, data persistence will introduce new features to your application.
   </Card>
 </CardGroup>
 
-## Enable Data Persistence in 1 minute
+## Enable Data Persistence
+To enable data persistence in your Chainlit app, you have several options:
 
-1. Navigate to [Literal AI](https://cloud.getliteral.ai) and sign in.
-2. You will be prompted to create a new project:
-   <Frame caption="Project Creation Screen">
-     <img src="/images/create-project.png" />
-   </Frame>
-3. Navigate to the `Settings` page. A default API key will be generated for you
-   <Frame caption="Project API Key">
-     <img src="/images/api-key.png" />
-   </Frame>
-
-## Activation
-
-Once you have an API key, you will need to pass it via a `LITERAL_API_KEY` environment variable.
-
-Next to your Chainlit application, create a `.env` file and modify it like so:
-
-```shell .env
-LITERAL_API_KEY="your key"
-```
-
-Or inlined:
-
-```shell
-LITERAL_API_KEY="your key" chainlit run main.py
-```
-
-Or inlined for Windows powershell:
-
-```shell
-$ENV:LITERAL_API_KEY="your key"; chainlit run main.py
-```
-
-Once activated, your chats and elements will be persisted on Literal AI.
-
-## Deactivation
-
-If you wish to deactivate data persistence, simply comment out or remove the `LITERAL_API_KEY` environment variable.
-
-## Data privacy & security
-
-We prioritize your data's privacy and security. We understand how crucial the data fed into Chainlit Cloud is for your business and handle it with utmost care.
-
-Contact us for detailed information: contact@chainlit.io
+<CardGroup cols={2}>
+  <Card
+    title="Custom Data Layer"
+    icon="toolbox"
+    href="/data-persistence/custom"
+  >
+    Setup your own SQLAlchemy or DynamoDB instance. Build your own data layer.
+  </Card>
+  <Card
+    title="Literal AI"
+    icon="thumbs-up"
+    href="/llmops/literalai"
+  >
+    Literal AI is a hosted LLM observability and evaluation platform.
+  </Card>
+</CardGroup>
