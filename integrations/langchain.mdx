@@ -42,6 +42,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.schema import StrOutputParser
 from langchain.schema.runnable import Runnable
 from langchain.schema.runnable.config import RunnableConfig
+from typing import cast
 
 import chainlit as cl
 
@@ -64,7 +65,7 @@ async def on_chat_start():
 
 @cl.on_message
 async def on_message(message: cl.Message):
-    runnable = cl.user_session.get("runnable")  # type: Runnable
+    runnable = cast(Runnable, cl.user_session.get("runnable"))  # type: Runnable
 
     msg = cl.Message(content="")
 
