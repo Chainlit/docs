@@ -4,6 +4,9 @@ title: Header
 
 Header auth is a simple way to authenticate users using a header. It is typically used to delegate authentication to a reverse proxy.
 
+The `header_auth_callback` function is called with the headers of the request. It should return a `User` object if the user is authenticated, or `None` if the user is not authenticated.
+The callback function (defined by the user) is responsible for managing the authentication logic.
+
 ## Example
 
 ```python
@@ -21,3 +24,5 @@ def header_auth_callback(headers: Dict) -> Optional[cl.User]:
   else:
     return None
 ```
+
+Using this code, you will not be able to access the app unless the header `test-header` is set to `test-value` when sending any request to the app.
