@@ -165,7 +165,7 @@
           "group": "Config",
           "pages": [
             "backend/config/overview",
-            "/backend/config/project",
+            "backend/config/project",
             "backend/config/features",
             "backend/config/ui"
           ]
