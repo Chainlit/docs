@@ -27,8 +27,6 @@ async def tool():
 
 @cl.on_message
 async def main(message: cl.Message):
-    final_answer = await cl.Message(content="").send()
-
     # Call the tool
     tool_res = await tool()
 
