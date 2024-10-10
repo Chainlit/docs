@@ -1,0 +1,56 @@
+---
+title: Migrate to Chainlit v1.1.404
+---
+
+<Note>Join the discord for live updates: https://discord.gg/AzyvDHWARx</Note>
+
+## Updating Chainlit
+
+Begin the migration by updating Chainlit to the latest version:
+
+```bash
+pip install --upgrade chainlit
+```
+
+## Breaking Changes
+
+### Python Version Requirement
+
+Chainlit 1.1.404 requires Python 3.9 or higher. Ensure you're using a compatible Python version before upgrading.
+
+### Security Changes
+
+Chainlit now listens on 127.0.0.1 (localhost) instead of 0.0.0.0 (public) for improved security.
+
+#### For Containerized Deployments
+
+If you're using containerized deployments, you may need to specify `--host 0.0.0.0` for your container to work correctly with the new security changes.
+
+## New Features and Changes
+
+### Environment Variable for Custom Config Locations
+
+You can now use the `CHAINLIT_APP_ROOT` environment variable to specify custom config locations.
+
+### Improved Error Handling
+
+- HTTP errors in data layers are now handled more gracefully.
+- Fixed an AttributeError in the llama_index integration.
+
+### Configuration Update
+
+The `edit_message` placement in the default config has been corrected. Check your `config.toml` file and update if necessary.
+
+## Best Practices
+
+1. **Review Your Python Environment**: Ensure you're using Python 3.9 or higher.
+2. **Update Containerized Deployments**: If using containers, adjust your configurations to include `--host 0.0.0.0` if needed.
+3. **Check Custom Configurations**: If you've customized your Chainlit configuration, review it against the new defaults.
+4. **Test Your Integration**: If you're using the llama_index integration, test thoroughly after upgrading.
+
+## Additional Notes
+
+- The frontend connection resuming after connection loss has been fixed.
+- A new pytest-based testing infrastructure has been implemented for improved stability.
+
+Remember to thoroughly test your application after upgrading to ensure compatibility with these changes.
