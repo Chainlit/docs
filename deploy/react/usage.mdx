@@ -9,6 +9,8 @@ The `@chainlit/react-client` package provides several React hooks to manage vari
 - **`useAuth`**: Handles authentication processes.
 - **`useApi`**: Simplifies API interactions with built-in support for data fetching and error handling.
 
+---
+
 ### `useChatSession` Hook
 
 This hook is responsible for managing the chat session's connection to the WebSocket server.
@@ -43,6 +45,7 @@ const ChatComponent = () => {
 
   // Rest of your component logic
 };
+```
 
 ---
 
@@ -50,25 +53,18 @@ const ChatComponent = () => {
 
 The `useChatMessages` hook provides access to the current chat messages, the first user interaction, and the active thread ID within your React application. It leverages Recoil for state management, ensuring that your components reactively update in response to state changes.
 
-#### Overview
-
-Simplifies the retrieval and management of chat-related data without the need for prop drilling or complex state management logic.
-
 #### Returned Values
 
 - **`threadId`** (`string | undefined`):  
   The identifier of the current chat thread.
-
 - **`messages`** (`IStep[]`):  
   An array of chat messages.
-
 - **`firstInteraction`** (`string | undefined`):  
   The content of the first user-initiated interaction.
 
-#### Usage
+#### Example
 
 ```tsx
-import React from 'react';
 import { useChatMessages } from '@chainlit/react-client';
 
 const MessagesComponent = () => {
@@ -78,26 +74,13 @@ const MessagesComponent = () => {
     <div>
       <h2>Thread ID: {threadId}</h2>
       {firstInteraction && <p>First Interaction: {firstInteraction}</p>}
-      <div>
-        {messages.map((message) => (
-          <p key={message.id}>{message.content}</p>
-        ))}
-      </div>
+      {messages.map((message) => (
+        <p key={message.id}>{message.content}</p>
+      ))}
     </div>
   );
 };
-
-export default MessagesComponent;
 ```
-
-#### Integration Notes
-
-- **Providers**: Ensure your application is wrapped with `<RecoilRoot>` and `<ChainlitContext.Provider>`.
-- **Type Definitions**: Ensure messages conform to the `IStep` interface.
-
-#### Summary
-
-A powerful tool for accessing and displaying chat messages, enabling developers to build interactive chat interfaces effortlessly.
 
 ---
 
@@ -105,50 +88,31 @@ A powerful tool for accessing and displaying chat messages, enabling developers 
 
 The `useChatData` hook offers comprehensive access to various chat-related states and data within your React application.
 
-#### Overview
-
-Provides an easy-to-use interface for accessing and managing chat data, simplifying the handling of complex chat states.
-
 #### Returned Properties
 
 - **`actions`** (`IAction[]`)
 - **`askUser`** (`IAsk | undefined`)
-- **`callFn`** (`ICallFn | undefined`)
-- **`chatSettingsDefaultValue`** (`{ [key: string]: any }`)
-- **`chatSettingsInputs`** (`any`)
 - **`chatSettingsValue`** (`any`)
 - **`connected`** (`boolean`)
 - **`disabled`** (`boolean`)
-- **`elements`** (`IMessageElement[]`)
 - **`error`** (`boolean | undefined`)
 - **`loading`** (`boolean`)
 - **`tasklists`** (`ITasklistElement[]`)
 
-#### Usage
+#### Example
 
 ```tsx
-import React from 'react';
 import { useChatData } from '@chainlit/react-client';
 
 const ChatStatusComponent = () => {
-  const {
-    connected,
-    loading,
-    error,
-    actions,
-    askUser,
-    callFn,
-    chatSettingsValue
-  } = useChatData();
+  const { connected, loading, error, actions, askUser, chatSettingsValue } = useChatData();
 
   return (
     <div>
       <h2>Chat Status</h2>
       {loading && <p>Loading chat...</p>}
       {error && <p>There was an error with the chat session.</p>}
-      {!loading && !error && (
-        <p>{connected ? 'Connected to chat.' : 'Disconnected from chat.'}</p>
-      )}
+      <p>{connected ? 'Connected to chat.' : 'Disconnected from chat.'}</p>
 
       <h3>Available Actions</h3>
       <ul>
@@ -161,37 +125,15 @@ const ChatStatusComponent = () => {
         <div>
           <h3>User Prompt</h3>
           <p>{askUser.message}</p>
-          {/* Handle user input based on askUser state */}
-        </div>
-      )}
-
-      {callFn && (
-        <div>
-          <h3>Function Call</h3>
-          <p>Function Name: {callFn.name}</p>
-          <p>Arguments: {JSON.stringify(callFn.args)}</p>
-          {/* Implement function execution logic */}
         </div>
       )}
 
       <h3>Chat Settings</h3>
       <pre>{JSON.stringify(chatSettingsValue, null, 2)}</pre>
-      {/* Render and allow modification of chat settings as needed */}
     </div>
   );
 };
-
-export default ChatStatusComponent;
 ```
-
-#### Integration Notes
-
-- **Providers**: Ensure your application is wrapped with `<RecoilRoot>` and `<ChainlitContext.Provider>`.
-- **Type Definitions**: Adhere to TypeScript interfaces like `IAction`, `IAsk`, `ICallFn`.
-
-#### Summary
-
-Enables access to a wide range of chat-related data and states, facilitating the creation of dynamic and interactive chat interfaces.
 
 ---
 
@@ -199,231 +141,85 @@ Enables access to a wide range of chat-related data and states, facilitating the
 
 The `useChatInteract` hook provides a comprehensive set of methods to interact with the chat system within your React application.
 
-#### Overview
+#### Methods
 
-Empowers developers with tools to manage and interact with chat functionalities effortlessly, maintaining clean and manageable code.
-
-#### Returned Methods
-
+- **`sendMessage`**
+- **`replyMessage`**
+- **`clear`**
 - **`uploadFile`**
 - **`callAction`**
-- **`clear`**
-- **`replyMessage`**
-- **`sendMessage`**
-- **`editMessage`**
 - **`startAudioStream`**
 - **`sendAudioChunk`**
-- **`endAudioStream`**
 - **`stopTask`**
-- **`setIdToResume`**
-- **`updateChatSettings`**
 
-#### Usage
+#### Example
 
 ```tsx
-import React, { useState } from 'react';
 import { useChatInteract } from '@chainlit/react-client';
 
 const ChatInteraction = () => {
-  const {
-    sendMessage,
-    replyMessage,
-    clear,
-    uploadFile,
-    callAction,
-    startAudioStream,
-    sendAudioChunk,
-    endAudioStream,
-    stopTask,
-    setIdToResume,
-    updateChatSettings,
-  } = useChatInteract();
-
-  const [message, setMessage] = useState('');
-
-  const handleSend = () => {
-    sendMessage({ content: message, id: 'msg-1' });
-    setMessage('');
-  };
-
-  const handleReply = () => {
-    replyMessage({ content: 'This is a reply.', id: 'reply-1' });
-  };
-
-  const handleClear = () => {
-    clear();
-  };
-
-  // Additional handlers for other methods can be added similarly
+  const { sendMessage, replyMessage, clear } = useChatInteract();
 
   return (
     <div>
-      <h2>Chat Interaction</h2>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type your message..."
-      />
-      <button onClick={handleSend}>Send Message</button>
-      <button onClick={handleReply}>Reply Message</button>
-      <button onClick={handleClear}>Clear Chat</button>
-      {/* Add more buttons or controls for other interactions as needed */}
+      <button onClick={() => sendMessage({ content: 'Hello!' })}>Send</button>
+      <button onClick={() => replyMessage({ content: 'Reply!' })}>Reply</button>
+      <button onClick={clear}>Clear</button>
     </div>
   );
 };
-
-export default ChatInteraction;
 ```
-
-#### Integration Notes
-
-- **Providers**: Ensure your application is wrapped with `<RecoilRoot>` and `<ChainlitContext.Provider>`.
-- **Type Definitions**: Adhere to TypeScript interfaces like `IStep`, `IAction`.
-
-#### Summary
-
-Provides essential methods for interacting with the chat system, enabling functionalities like sending messages, uploading files, managing audio streams, and more.
 
 ---
 
 ### `useAuth` Hook
 
-The `useAuth` hook manages authentication within your React application, providing functionalities such as fetching authentication configurations, handling user sessions, managing access tokens, and facilitating user logout processes.
+The `useAuth` hook manages authentication within your React application, providing functionalities like user sessions and token management.
 
-#### Overview
+#### Properties & Methods
 
-Simplifies the authentication process by encapsulating authentication logic within a single hook, allowing efficient management of user authentication states.
+- **`authConfig`**
+- **`user`**
+- **`accessToken`**
+- **`isLoading`**
+- **`logout`**
 
-#### Returned Properties and Methods
-
-- **Properties:**
-  - **`authConfig`** (`IAuthConfig | undefined`)
-  - **`user`** (`IUser | null`)
-  - **`accessToken`** (`string`)
-  - **`isLoading`** (`boolean`)
-  - **`isReady`** (`boolean`)
-  
-- **Methods:**
-  - **`logout(reload?: boolean): Promise<void>`**
-  - **`saveAndSetToken(token?: string | null): void`**
-
-#### Usage
+#### Example
 
 ```tsx
-import React, { useEffect } from 'react';
 import { useAuth } from '@chainlit/react-client';
 
 const UserProfile = () => {
-  const { authConfig, user, isLoading, isReady, logout } = useAuth();
+  const { user, logout } = useAuth();
 
-  useEffect(() => {
-    if (isReady && !user) {
-      // Redirect to login page or perform other authentication actions
-      console.log('Authentication system is ready but no user is logged in.');
-    }
-  }, [isReady, user]);
-
-  const handleLogout = async () => {
-    try {
-      await logout(true); // Pass 'true' to reload the page after logout
-      console.log('User has been logged out successfully.');
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
-  };
-
-  if (isLoading) {
-    return <p>Loading authentication...</p>;
-  }
-
-  if (!user) {
-    return <p>No user is currently logged in.</p>;
-  }
+  if (!user) return <p>No user logged in.</p>;
 
   return (
     <div>
-      <h2>User Profile</h2>
       <p>Username: {user.username}</p>
-      <p>Role: {user.role}</p>
-      {/* Display other user information as needed */}
-      <button onClick={handleLogout}>Logout</button>
+      <button onClick={logout}>Logout</button>
     </div>
   );
 };
-
-export default UserProfile;
 ```
-
-#### Integration Notes
-
-- **Providers**: Ensure your application is wrapped with `<RecoilRoot>` and `<ChainlitContext.Provider>`.
-- **Authentication Configuration**: Ensure the `/auth/config` endpoint is correctly set up on your server.
-- **Token Management**: Tokens are securely managed and decoded to extract user information.
-
-#### Summary
-
-Facilitates robust and secure authentication flows, enabling developers to manage user sessions, handle token validations, and implement logout processes seamlessly.
 
 ---
 
 ### `useApi` Hook
 
-The `useApi` hook is a versatile utility designed to facilitate data fetching within your React application. It leverages [SWR](https://swr.vercel.app/) for data caching and revalidation, coupled with [Recoil](https://recoiljs.org/) for state management.
+The `useApi` hook simplifies data fetching and error handling using [SWR](https://swr.vercel.app/).
 
-#### Overview
-
-Serves as a bridge between your React components and external APIs, ensuring efficient data fetching, caching, and synchronization across your application.
-
-#### Returned Values
-
-Returns the result of the `useSWR` hook, including:
-
-- **`data`** (`T | undefined`)
-- **`error`** (`Error | undefined`)
-- **`isLoading`** (`boolean`)
-
-#### Usage
+#### Example
 
 ```tsx
-import React from 'react';
 import { useApi } from '@chainlit/react-client';
-import { IChainlitConfig } from 'src/types';
 
-const UserSettings = () => {
-  const { data, error, isLoading } = useApi<IChainlitConfig>('/project/settings?language=en-US');
+const Settings = () => {
+  const { data, error, isLoading } = useApi('/project/settings');
 
-  if (isLoading) {
-    return <p>Loading settings...</p>;
-  }
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
-  if (error) {
-    return <p>Error fetching settings: {error.message}</p>;
-  }
-
-  return (
-    <div>
-      <h2>User Settings</h2>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-      {/* Render settings details as needed */}
-    </div>
-  );
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
 };
-
-export default UserSettings;
 ```
-
-#### Parameters
-
-- **`path`** (`string | null | undefined`):  
-  The API endpoint from which to fetch data.
-
-- **`options`** (`SWRConfiguration & { token?: string }`, optional):  
-  Configuration options for the `useSWR` hook, including custom settings and an optional `token` to override the default access token.
-
-#### Integration Notes
-
-- **Providers**: Ensure your application is wrapped with `<RecoilRoot>` and `<ChainlitContext.Provider>`.
-- **Authentication Tokens**: Automatically retrieves the `accessToken` from Recoil state (`accessTokenState`).
-- **Conditional Fetching**: Supports conditional data fetching by allowing the `path` parameter to be `null` or `undefined`.
-- **Error Handling**: Implement appropriate error handling within your components.
