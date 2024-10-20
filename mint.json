@@ -85,6 +85,7 @@
         {
           "group": "Platforms",
           "pages": [
+            "deploy/webapp",
             {
               "group": "React",
               "pages": [
@@ -94,7 +95,6 @@
                 "deploy/react/additional-resources"
               ]
             },
-            "deploy/webapp",
             "deploy/copilot",
             "deploy/api",
             "deploy/teams",
