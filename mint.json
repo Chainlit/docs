@@ -85,10 +85,19 @@
         {
           "group": "Platforms",
           "pages": [
+            {
+              "group": "React",
+              "pages": [
+                "deploy/react/overview",
+                "deploy/react/installation-and-setup",
+                "deploy/react/core-features",
+                "deploy/react/hooks",
+                "deploy/react/additional-resources"
+              ]
+            },
             "deploy/webapp",
             "deploy/copilot",
             "deploy/api",
-            "deploy/react-frontend",
             "deploy/teams",
             "deploy/slack",
             "deploy/discord"
@@ -253,7 +262,6 @@
         }
       ]
     },
-
     {
       "group": "Input Widgets",
       "pages": [

@@ -1,0 +1,67 @@
+## Installation and Setup
+
+Install the `@chainlit/react-client` package:
+
+```sh
+pnpm install @chainlit/react-client
+```
+
+### Wrapping Providers
+
+Wrap your app with the required providers for state management and API client access:
+
+- **RecoilRoot** for state management.
+- **ChainlitContext.Provider** for the Chainlit API instance.
+
+### Example Setup
+
+```tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { RecoilRoot } from 'recoil';
+import { ChainlitAPI, ChainlitContext } from '@chainlit/react-client';
+import MyApp from './MyApp';
+
+const apiClient = new ChainlitAPI('http://localhost:8000', 'webapp');
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <ChainlitContext.Provider value={apiClient}>
+      <RecoilRoot>
+        <MyApp />
+      </RecoilRoot>
+    </ChainlitContext.Provider>
+  </React.StrictMode>
+);
+```
+
+---
+
+## Usage
+
+You can now integrate Chainlit features into your app. For instance, using the `useChatMessages` hook:
+
+### Example: Displaying Chat Messages
+
+```tsx
+import React from 'react';
+import { useChatMessages } from '@chainlit/react-client';
+
+const MessagesComponent = () => {
+  const { messages, firstInteraction, threadId } = useChatMessages();
+
+  return (
+    <div>
+      <h2>Thread ID: {threadId}</h2>
+      {firstInteraction && <p>First Interaction: {firstInteraction}</p>}
+      <div>
+        {messages.map((message) => (
+          <p key={message.id}>{message.content}</p>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default MessagesComponent;
+```
