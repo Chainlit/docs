@@ -2,11 +2,47 @@
 
 The `@chainlit/react-client` package provides several React hooks to manage various aspects of your chat application seamlessly:
 
+- **`useChatSession`**: Manages the chat session's connection to the WebSocket server.
 - **`useChatMessages`**: Manages retrieval and rendering of chat messages.
 - **`useChatData`**: Accesses chat-related data and states.
 - **`useChatInteract`**: Provides methods to interact with the chat system.
 - **`useAuth`**: Handles authentication processes.
 - **`useApi`**: Simplifies API interactions with built-in support for data fetching and error handling.
+
+### `useChatSession` Hook
+
+This hook is responsible for managing the chat session's connection to the WebSocket server.
+
+#### Methods
+
+- **`connect`**: Establishes a connection to the WebSocket server.
+- **`disconnect`**: Disconnects from the WebSocket server.
+- **`setChatProfile`**: Sets the chat profile state.
+
+#### Example
+
+```tsx
+import { useChatSession } from '@chainlit/react-client';
+
+const ChatComponent = () => {
+  const { connect, disconnect, chatProfile, setChatProfile } = useChatSession();
+
+  // Connect to the WebSocket server
+  useEffect(() => {
+    connect({
+      userEnv: {
+        /* user environment variables */
+      },
+      accessToken: 'Bearer YOUR ACCESS TOKEN', // Optional Chainlit auth token
+    });
+
+    return () => {
+      disconnect();
+    };
+  }, []);
+
+  // Rest of your component logic
+};
 
 ---
 

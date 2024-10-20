@@ -90,8 +90,7 @@
               "pages": [
                 "deploy/react/overview",
                 "deploy/react/installation-and-setup",
-                "deploy/react/core-features",
-                "deploy/react/hooks",
+                "deploy/react/usage",
                 "deploy/react/additional-resources"
               ]
             },

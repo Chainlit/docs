@@ -1,28 +1,27 @@
-## Installation and Setup
+## Overview
 
-Install the `@chainlit/react-client` package:
+The `@chainlit/react-client` package provides a set of React hooks as well as an API client to connect to your **Chainlit** application from any React application. The package includes hooks for managing chat sessions, messages, data, and interactions.
 
-```sh
-pnpm install @chainlit/react-client
+## Installation
+
+To install the package, run the following command in your project directory:
+
+```bash
+npm install @chainlit/react-client
 ```
 
-### Wrapping Providers
+This package uses **Recoil** to manage its state. This means you will have to wrap your application in a recoil provider:
 
-Wrap your app with the required providers for state management and API client access:
-
-- **RecoilRoot** for state management.
-- **ChainlitContext.Provider** for the Chainlit API instance.
-
-### Example Setup
-
-```tsx
+```typescript
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
-import { ChainlitAPI, ChainlitContext } from '@chainlit/react-client';
-import MyApp from './MyApp';
 
-const apiClient = new ChainlitAPI('http://localhost:8000', 'webapp');
+import { ChainlitAPI, ChainlitContext } from '@chainlit/react-client';
+
+const CHAINLIT_SERVER_URL = 'http://localhost:8000';
+
+const apiClient = new ChainlitAPI(CHAINLIT_SERVER_URL, 'webapp');
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -33,35 +32,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     </ChainlitContext.Provider>
   </React.StrictMode>
 );
-```
-
----
-
-## Usage
-
-You can now integrate Chainlit features into your app. For instance, using the `useChatMessages` hook:
-
-### Example: Displaying Chat Messages
-
-```tsx
-import React from 'react';
-import { useChatMessages } from '@chainlit/react-client';
-
-const MessagesComponent = () => {
-  const { messages, firstInteraction, threadId } = useChatMessages();
-
-  return (
-    <div>
-      <h2>Thread ID: {threadId}</h2>
-      {firstInteraction && <p>First Interaction: {firstInteraction}</p>}
-      <div>
-        {messages.map((message) => (
-          <p key={message.id}>{message.content}</p>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default MessagesComponent;
 ```
