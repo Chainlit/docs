@@ -1,0 +1,226 @@
+
+## React Hooks
+
+The `@chainlit/react-client` package provides several React hooks to manage various aspects of your chat application seamlessly:
+
+- **[`useChatSession`](#usechatsession-hook)**: Manages the chat session's connection to the WebSocket server.
+- **[`useChatMessages`](#usechatmessages-hook)**: Manages retrieval and rendering of chat messages.
+- **[`useChatData`](#usechatdata-hook)**: Accesses chat-related data and states.
+- **[`useChatInteract`](#usechatinteract-hook)**: Provides methods to interact with the chat system.
+- **[`useAuth`](#useauth-hook)**: Handles authentication processes.
+- **[`useApi`](#useapi-hook)**: Simplifies API interactions with built-in support for data fetching and error handling.
+
+---
+
+### `useChatSession` Hook
+
+This hook is responsible for managing the chat session's connection to the WebSocket server.
+
+#### Methods
+
+- **`connect`**: Establishes a connection to the WebSocket server.
+- **`disconnect`**: Disconnects from the WebSocket server.
+- **`setChatProfile`**: Sets the chat profile state.
+
+#### Example
+
+```tsx
+import { useChatSession } from '@chainlit/react-client';
+
+const ChatComponent = () => {
+  const { connect, disconnect, chatProfile, setChatProfile } = useChatSession();
+
+  // Connect to the WebSocket server
+  useEffect(() => {
+    connect({
+      userEnv: {
+        /* user environment variables */
+      },
+      accessToken: 'Bearer YOUR ACCESS TOKEN', // Optional Chainlit auth token
+    });
+
+    return () => {
+      disconnect();
+    };
+  }, []);
+
+  // Rest of your component logic
+};
+```
+
+---
+
+### `useChatMessages` Hook
+
+The `useChatMessages` hook provides access to the current chat messages, the first user interaction, and the active thread ID within your React application. It leverages Recoil for state management, ensuring that your components reactively update in response to state changes.
+
+#### Returned Values
+
+- **`threadId`** (`string | undefined`):  
+  The identifier of the current chat thread.
+- **`messages`** (`IStep[]`):  
+  An array of chat messages.
+- **`firstInteraction`** (`string | undefined`):  
+  The content of the first user-initiated interaction.
+
+#### Example
+
+```tsx
+import { useChatMessages } from '@chainlit/react-client';
+
+const MessagesComponent = () => {
+  const { messages, firstInteraction, threadId } = useChatMessages();
+
+  return (
+    <div>
+      <h2>Thread ID: {threadId}</h2>
+      {firstInteraction && <p>First Interaction: {firstInteraction}</p>}
+      {messages.map((message) => (
+        <p key={message.id}>{message.content}</p>
+      ))}
+    </div>
+  );
+};
+```
+
+---
+
+### `useChatData` Hook
+
+The `useChatData` hook offers comprehensive access to various chat-related states and data within your React application.
+
+#### Returned Properties
+
+- **`actions`** (`IAction[]`)
+- **`askUser`** (`IAsk | undefined`)
+- **`chatSettingsValue`** (`any`)
+- **`connected`** (`boolean`)
+- **`disabled`** (`boolean`)
+- **`error`** (`boolean | undefined`)
+- **`loading`** (`boolean`)
+- **`tasklists`** (`ITasklistElement[]`)
+
+#### Example
+
+```tsx
+import { useChatData } from '@chainlit/react-client';
+
+const ChatStatusComponent = () => {
+  const { connected, loading, error, actions, askUser, chatSettingsValue } = useChatData();
+
+  return (
+    <div>
+      <h2>Chat Status</h2>
+      {loading && <p>Loading chat...</p>}
+      {error && <p>There was an error with the chat session.</p>}
+      <p>{connected ? 'Connected to chat.' : 'Disconnected from chat.'}</p>
+
+      <h3>Available Actions</h3>
+      <ul>
+        {actions.map((action) => (
+          <li key={action.id}>{action.name}</li>
+        ))}
+      </ul>
+
+      {askUser && (
+        <div>
+          <h3>User Prompt</h3>
+          <p>{askUser.message}</p>
+        </div>
+      )}
+
+      <h3>Chat Settings</h3>
+      <pre>{JSON.stringify(chatSettingsValue, null, 2)}</pre>
+    </div>
+  );
+};
+```
+
+---
+
+### `useChatInteract` Hook
+
+The `useChatInteract` hook provides a comprehensive set of methods to interact with the chat system within your React application.
+
+#### Methods
+
+- **`sendMessage`**
+- **`replyMessage`**
+- **`clear`**
+- **`uploadFile`**
+- **`callAction`**
+- **`startAudioStream`**
+- **`sendAudioChunk`**
+- **`stopTask`**
+
+#### Example
+
+```tsx
+import { useChatInteract } from '@chainlit/react-client';
+
+const ChatInteraction = () => {
+  const { sendMessage, replyMessage, clear } = useChatInteract();
+
+  return (
+    <div>
+      <button onClick={() => sendMessage({ content: 'Hello!' })}>Send</button>
+      <button onClick={() => replyMessage({ content: 'Reply!' })}>Reply</button>
+      <button onClick={clear}>Clear</button>
+    </div>
+  );
+};
+```
+
+---
+
+### `useAuth` Hook
+
+The `useAuth` hook manages authentication within your React application, providing functionalities like user sessions and token management.
+
+#### Properties & Methods
+
+- **`authConfig`**
+- **`user`**
+- **`accessToken`**
+- **`isLoading`**
+- **`logout`**
+
+#### Example
+
+```tsx
+import { useAuth } from '@chainlit/react-client';
+
+const UserProfile = () => {
+  const { user, logout } = useAuth();
+
+  if (!user) return <p>No user logged in.</p>;
+
+  return (
+    <div>
+      <p>Username: {user.username}</p>
+      <button onClick={logout}>Logout</button>
+    </div>
+  );
+};
+```
+
+---
+
+### `useApi` Hook
+
+The `useApi` hook simplifies data fetching and error handling using [SWR](https://swr.vercel.app/).
+
+#### Example
+
+```tsx
+import { useApi } from '@chainlit/react-client';
+
+const Settings = () => {
+  const { data, error, isLoading } = useApi('/project/settings');
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+};
+```
