@@ -13,3 +13,45 @@ The native Chainlit UI that is available on port 8000. Should open in your defau
 <Frame caption="Preview">
   <img src="/images/starters.gif" />
 </Frame>
+
+## Window Messaging
+
+When running the Web App inside an iframe, the server and parent window can communicate using window messages. This is useful for sending context information to the Chainlit server and updating your parent window based on the server's response.
+
+Add a `@cl.on_window_message` decorated function to your Chainlit server to receive messages sent from the parent window.
+
+```py
+import chainlit as cl
+
+@cl.on_window_message
+async def window_message(message: str):
+  if message.startswith("Client: "):
+    await cl.Message(content=f"Window message received: {message}").send()
+```
+
+Then, in your app/website, you can emit a window message like this:
+
+```js
+const iframe = document.getElementById('the-iframe');
+iframe.contentWindow.postMessage('Client: Hello from parent window', '*');
+```
+
+To send a message from the server to the parent window, use `cl.send_window_message`:
+
+```py
+import chainlit as cl
+
+@cl.on_message
+async def message():
+  await cl.send_window_message("Server: Hello from Chainlit")
+```
+
+The parent window can listen for messages like this:
+
+```js
+window.addEventListener('message', (event) => {
+  if (event.data.startsWith("Server: ")) {
+    console.log('Parent window received:', event.data);
+  }
+});
+```
