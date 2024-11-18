@@ -11,12 +11,15 @@ Also, we would absolutely love to see a community-led open source data layer imp
 You need to import you custom data layer in your chainlit app, and assign it to the data layer variable, like so:
 
 ```python
+import chainlit as cl
 import chainlit.data as cl_data
 
 class CustomDataLayer(cl_data.BaseDataLayer):
   # TODO: implement all methods from cl_data.BaseDataLayer
 
-cl_data._data_layer = CustomDataLayer()
+@cl.data_layer
+def data_layer():
+    return CustomDataLayer()
 ```
 
 # SQL alchemy data layer
@@ -104,16 +107,19 @@ Here is an example of setting up this data layer on a PostgreSQL database with a
 pip install asyncpg SQLAlchemy azure-identity azure-storage-file-datalake
 ```
 
-Import the custom data layer and storage client, and set the `cl_data._data_layer` variable at the beginning of your Chainlit app.
+Import the custom data layer and storage client, and implement the `@data_layer` callback.
 
 ```python
+import chainlit as cl
 import chainlit.data as cl_data
 from chainlit.data.sql_alchemy import SQLAlchemyDataLayer
 from chainlit.data.storage_clients import AzureStorageClient
 
 storage_client = AzureStorageClient(account_url="<your_account_url>", container="<your_container>")
 
-cl_data._data_layer = SQLAlchemyDataLayer(conninfo="<your conninfo>", storage_provider=storage_client)
+@cl.data_layer
+def data_layer():
+    return SQLAlchemyDataLayer(conninfo="<your conninfo>", storage_provider=storage_client)
 ```
 
 Note that you need to add `+asyncpg` to the protocol in the `conninfo` string so that it uses the asyncpg library.
@@ -128,16 +134,19 @@ Here is an example of setting up this data layer. First install boto3:
 pip install boto3
 ```
 
-Import the custom data layer and storage client, and set the `cl_data._data_layer` variable at the beginning of your Chainlit app.
+Import the custom data layer and storage client, and implement the `@data_layer` callback in your Chainlit app.
 
 ```python
+import chainlit as cl
 import chainlit.data as cl_data
 from chainlit.data.dynamodb import DynamoDBDataLayer
 from chainlit.data.storage_clients import S3StorageClient
 
 storage_client = S3StorageClient(bucket="<Your Bucket>")
 
-cl_data._data_layer = DynamoDBDataLayer(table_name="<Your Table>", storage_provider=storage_client)
+@cl.data_layer
+def data_layer():
+  return DynamoDBDataLayer(table_name="<Your Table>", storage_provider=storage_client)
 ```
 
 ## Table structure
