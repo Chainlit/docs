@@ -258,7 +258,8 @@
         {
           "group": "Data persistence",
           "pages": ["api-reference/data-persistence/custom-data-layer"]
-        }
+        },
+        "api-reference/window-message"
       ]
     },
     {
