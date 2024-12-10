@@ -2,11 +2,7 @@
 title: Mistral AI
 ---
 
-The benefits of this integration is that you can see the Mistral AI API calls in a step in the UI, and you can explore them in the prompt playground.
-
-You will also get the full generation details (prompt, completion, tokens per second...) in your Literal AI dashboard, if your project is using [Literal AI](https://docs.literalai.com).
-
-To benefit from tracing, you need to add `cl.instrument_mistralai()` after creating your Mistral AI client.
+You will get the full generation details (prompt, completion, tokens per second...) in your Literal AI dashboard, if your project is using [Literal AI](https://docs.literalai.com).
 
 <Warning>
   You shouldn't configure this integration if you're already using another
@@ -34,34 +30,29 @@ In `app.py`, import the necessary packages and define one function to handle mes
 ```python
 import os
 import chainlit as cl
+from mistralai import Mistral
 
-from mistralai.async_client import MistralAsyncClient
-
-mai_client = MistralAsyncClient()
-
-# Instrument the Mistral AI client
-cl.instrument_mistralai()
-
-settings = {
-    "model": "mistral-large-latest",
-    "temperature": 0,
-    # ... more settings
-}
+# Initialize the Mistral client
+client = Mistral(api_key=os.getenv("MISTRAL_API_KEY"))
 
 @cl.on_message
 async def on_message(message: cl.Message):
-    response = await mai_client.chat(
+    response = await client.chat.complete_async(
+        model="mistral-small-latest",
+        max_tokens=100,
+        temperature=0.5,
+        stream=False,
+        # ... more setting
         messages=[
             {
-                "content": "You are a helpful bot, you always reply in Spanish",
-                "role": "system"
+                "role": "system",
+                "content": "You are a helpful bot, you always reply in French."
             },
             {
-                "content": message.content,
-                "role": "user"
+                "role": "user",
+                "content": message.content # Content of the user message
             }
-        ],
-        **settings
+        ]
     )
     await cl.Message(content=response.choices[0].message.content).send()
 ```
