@@ -2,11 +2,19 @@
 title: Custom Data Layer
 ---
 
-Literal AI provides the simplest way to persist, analyze and monitor your data.
+# Recommended data layer
 
-If you're considering implementing a custom data layer, check out this example [here](https://github.com/Chainlit/chainlit/blob/main/cypress/e2e/data_layer/main.py) for some inspiration.
+Chainlit offers an out-of-the-box data layer schema to store your threads, steps, feedback, etc. 
+To use it go to [Chainlit Data Layer](https://github.com/Chainlit/chainlit-datalayer) and run a PostgreSQL container with the specified schema. 
 
-Also, we would absolutely love to see a community-led open source data layer implementation and list it here. If you're interested in contributing, please reach out to us on Discord.
+Then, from your Chainlit application, add the `DATABASE_URL` pointing to your PostgreSQL instance and Chainlit will
+automatically store the chat history for your users, threads and feedback. 
+
+Details to store attachments are available from the [Chainlit Data Layer](https://github.com/Chainlit/chainlit-datalayer) README.
+
+We would love to see improvements on the data layer implementation. If you're interested in contributing, please reach out to us on Discord.
+
+# Custom data layer
 
 You need to import you custom data layer in your chainlit app, and assign it to the data layer variable, like so:
 
