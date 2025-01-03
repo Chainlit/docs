@@ -1,0 +1,24 @@
+---
+title: Official Data Layer
+---
+
+Follow the steps in this repository to persist your conversations in 2 minutes:
+<Card
+  title="Official Data Layer"
+  color="#F80061"
+  icon="message"
+  href="https://github.com/Chainlit/chainlit-datalayer"
+>
+  Out-of-the-box data layer schema to store your threads, steps, feedback, etc.
+</Card>
+
+<Warning>
+Do not forget to have your Chainlit application point to the database you set up by
+adding the `DATABASE_URL` environment variable in your `.env`.  
+
+If you wish to store elements, the same goes for your cloud configuration.
+</Warning>
+
+<Tip>
+Custom element `props` are stored directly in PostgreSQL, not on cloud storage.
+</Tip>
