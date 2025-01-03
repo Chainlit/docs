@@ -64,6 +64,7 @@ oauth_config:
   scopes:
     user:
       - im:history
+      - channels:history
     bot:
       - app_mentions:read
       - channels:read
@@ -76,6 +77,7 @@ oauth_config:
       - users:read
       - users:read.email
       - channels:history
+      - groups:history
 settings:
   event_subscriptions:
     request_url: https://{ CHAINLIT_APP_HOST }/slack/events

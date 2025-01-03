@@ -1,5 +1,5 @@
 ---
-title: LangChain
+title: LangChain/LangGraph
 ---
 
 In this tutorial, we'll walk through the steps to create a Chainlit application integrated with [LangChain](https://github.com/hwchase17/langchain).
@@ -25,33 +25,14 @@ Create a new Python file named `app.py` in your project directory. This file wil
 
 In `app.py`, import the necessary packages and define one function to handle a new chat session and another function to handle messages incoming from the UI.
 
+### With LangChain
+
+Let's go through a small example.
+
 <Note>
   If your agent/chain does not have an async implementation, fallback to the
   sync implementation.
 </Note>
-
-<Warning>
-  Most LangChain methods now use **RunnableConfig**! So, you need to pass the Chainlit callback this way:
-  <CodeGroup>
-  ```py Async
-  from langchain.schema.runnable.config import RunnableConfig
-  cb = cl.AsyncLangchainCallbackHandler(stream_final_answer=True)
-  config = RunnableConfig(callbacks=[cb])
-  result = await agent.ainvoke(input, config=config)
-  ```
-  ```py Sync
-  from langchain.schema.runnable.config import RunnableConfig
-  cb = cl.LangchainCallbackHandler(stream_final_answer=True)
-  config = RunnableConfig(callbacks=[cb])
-  result = agent.invoke(input, config=config)
-  # cl.make_async() depending on your code
-  ```
-  </CodeGroup>
-</Warning>
-
-### With Langchain Expression language (LCEL)
-
-Let's go through a small example.
 
 <CodeGroup>
 
@@ -61,6 +42,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.schema import StrOutputParser
 from langchain.schema.runnable import Runnable
 from langchain.schema.runnable.config import RunnableConfig
+from typing import cast
 
 import chainlit as cl
 
@@ -83,7 +65,7 @@ async def on_chat_start():
 
 @cl.on_message
 async def on_message(message: cl.Message):
-    runnable = cl.user_session.get("runnable")  # type: Runnable
+    runnable = cast(Runnable, cl.user_session.get("runnable"))  # type: Runnable
 
     msg = cl.Message(content="")
 
@@ -143,89 +125,113 @@ This code sets up an instance of `Runnable` with a custom `ChatPromptTemplate` f
 
 The callback handler is responsible for listening to the chain's intermediate steps and sending them to the UI.
 
-### [Deprecated] With Legacy Chain Interface
+### With LangGraph
 
-<CodeGroup>
-
-```python Async Chain
-from langchain.chat_models import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate
-from langchain.schema import StrOutputParser
-from langchain.chains import LLMChain
-
-import chainlit as cl
-
-
-@cl.on_chat_start
-async def on_chat_start():
-    model = ChatOpenAI(streaming=True)
-    prompt = ChatPromptTemplate.from_messages(
-        [
-            (
-                "system",
-                "You're a very knowledgeable historian who provides accurate and eloquent answers to historical questions.",
-            ),
-            ("human", "{question}"),
-        ]
-    )
-    chain = LLMChain(llm=model, prompt=prompt, output_parser=StrOutputParser())
-
-    cl.user_session.set("chain", chain)
-
-
-@cl.on_message
-async def on_message(message: cl.Message):
-    chain = cl.user_session.get("chain")  # type: LLMChain
-
-    res = await chain.arun(
-        question=message.content, callbacks=[cl.LangchainCallbackHandler()]
-    )
-
-    await cl.Message(content=res).send()
-```
-
-```python Sync Chain
-from langchain.chat_models import ChatOpenAI
-from langchain.prompts import ChatPromptTemplate
-from langchain.schema import StrOutputParser
-from langchain.chains import LLMChain
+```python
+from typing import Literal
+from langchain_core.tools import tool
+from langchain_openai import ChatOpenAI
+from langgraph.prebuilt import ToolNode
+from langchain.schema.runnable.config import RunnableConfig
+from langchain_core.messages import HumanMessage
 
 import chainlit as cl
 
+@tool
+def get_weather(city: Literal["nyc", "sf"]):
+    """Use this to get weather information."""
+    if city == "nyc":
+        return "It might be cloudy in nyc"
+    elif city == "sf":
+        return "It's always sunny in sf"
+    else:
+        raise AssertionError("Unknown city")
 
-@cl.on_chat_start
-async def on_chat_start():
-    model = ChatOpenAI(streaming=True)
-    prompt = ChatPromptTemplate.from_messages(
+
+tools = [get_weather]
+model = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+final_model = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+
+model = model.bind_tools(tools)
+# NOTE: this is where we're adding a tag that we'll can use later to filter the model stream events to only the model called in the final node.
+# This is not necessary if you call a single LLM but might be important in case you call multiple models within the node and want to filter events
+# from only one of them.
+final_model = final_model.with_config(tags=["final_node"])
+tool_node = ToolNode(tools=tools)
+
+from typing import Annotated
+from typing_extensions import TypedDict
+
+from langgraph.graph import END, StateGraph, START
+from langgraph.graph.message import MessagesState
+from langchain_core.messages import BaseMessage, SystemMessage, HumanMessage
+
+
+def should_continue(state: MessagesState) -> Literal["tools", "final"]:
+    messages = state["messages"]
+    last_message = messages[-1]
+    # If the LLM makes a tool call, then we route to the "tools" node
+    if last_message.tool_calls:
+        return "tools"
+    # Otherwise, we stop (reply to the user)
+    return "final"
+
+
+def call_model(state: MessagesState):
+    messages = state["messages"]
+    response = model.invoke(messages)
+    # We return a list, because this will get added to the existing list
+    return {"messages": [response]}
+
+
+def call_final_model(state: MessagesState):
+    messages = state["messages"]
+    last_ai_message = messages[-1]
+    response = final_model.invoke(
         [
-            (
-                "system",
-                "You're a very knowledgeable historian who provides accurate and eloquent answers to historical questions.",
-            ),
-            ("human", "{question}"),
+            SystemMessage("Rewrite this in the voice of Al Roker"),
+            HumanMessage(last_ai_message.content),
         ]
     )
-    chain = LLMChain(llm=model, prompt=prompt, output_parser=StrOutputParser())
+    # overwrite the last AI message from the agent
+    response.id = last_ai_message.id
+    return {"messages": [response]}
 
-    cl.user_session.set("chain", chain)
 
+builder = StateGraph(MessagesState)
+
+builder.add_node("agent", call_model)
+builder.add_node("tools", tool_node)
+# add a separate final node
+builder.add_node("final", call_final_model)
+
+builder.add_edge(START, "agent")
+builder.add_conditional_edges(
+    "agent",
+    should_continue,
+)
+
+builder.add_edge("tools", "agent")
+builder.add_edge("final", END)
+
+graph = builder.compile()
 
 @cl.on_message
-async def on_message(message: cl.Message):
-    chain = cl.user_session.get("chain")  # type: LLMChain
+async def on_message(msg: cl.Message):
+    config = {"configurable": {"thread_id": cl.context.session.id}}
+    cb = cl.LangchainCallbackHandler()
+    final_answer = cl.Message(content="")
+    
+    for msg, metadata in graph.stream({"messages": [HumanMessage(content=msg.content)]}, stream_mode="messages", config=RunnableConfig(callbacks=[cb], **config)):
+        if (
+            msg.content
+            and not isinstance(msg, HumanMessage)
+            and metadata["langgraph_node"] == "final"
+        ):
+            await final_answer.stream_token(msg.content)
 
-    res = await cl.make_async(chain.run)(
-        question=message.content, callbacks=[cl.LangchainCallbackHandler()]
-    )
-
-    await cl.Message(content=res).send()
+    await final_answer.send()
 ```
-
-</CodeGroup>
-
-This code sets up an instance of `LLMChain` with a custom `ChatPromptTemplate` for each chat session. The `LLMChain` is invoked everytime a user sends a message to generate the response.
-
-The callback handler is responsible for listening to the chain's intermediate steps and sending them to the UI.
 
 ## Step 3: Run the Application
 

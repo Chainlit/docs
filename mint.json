@@ -47,6 +47,10 @@
   ],
   "topbarLinks": [
     {
+      "name": "Literal AI",
+      "url": "https://docs.literalai.com"
+    },
+    {
       "name": "Github",
       "url": "https://github.com/Chainlit/chainlit"
     }
@@ -66,6 +70,7 @@
             "integrations/openai",
             "integrations/langchain",
             "integrations/llama-index",
+            "integrations/litellm",
             "integrations/haystack",
             "integrations/embedchain",
             "integrations/message-based"
@@ -81,9 +86,17 @@
           "group": "Platforms",
           "pages": [
             "deploy/webapp",
+            {
+              "group": "React",
+              "pages": [
+                "deploy/react/overview",
+                "deploy/react/installation-and-setup",
+                "deploy/react/usage",
+                "deploy/react/additional-resources"
+              ]
+            },
             "deploy/copilot",
             "deploy/api",
-            "deploy/react-frontend",
             "deploy/teams",
             "deploy/slack",
             "deploy/discord"
@@ -121,8 +134,14 @@
         "data-persistence/history",
         "data-persistence/feedback",
         "data-persistence/tags-metadata",
-        "data-persistence/enterprise",
         "data-persistence/custom"
+      ]
+    },
+    {
+      "group": "Literal AI - LLMOps",
+      "pages": [
+        "llmops/literalai",
+        "llmops/enterprise"
       ]
     },
     {
@@ -143,8 +162,7 @@
         "customisation/custom-logo-and-favicon",
         "customisation/theme",
         "customisation/custom-js",
-        "customisation/custom-css",
-        "customisation/custom-font"
+        "customisation/custom-css"
       ]
     },
     {
@@ -154,6 +172,7 @@
           "group": "Config",
           "pages": [
             "backend/config/overview",
+            "backend/config/project",
             "backend/config/features",
             "backend/config/ui"
           ]
@@ -164,7 +183,7 @@
     },
     {
       "group": "Guides",
-      "pages": ["guides/sync-async", "guides/migration/1.1.300"]
+      "pages": ["guides/sync-async", "guides/migration/2.0.0"]
     },
     {
       "group": "Examples",
@@ -202,6 +221,7 @@
     {
       "group": "Elements",
       "pages": [
+        "api-reference/elements/custom",
         "api-reference/elements/text",
         "api-reference/elements/image",
         "api-reference/elements/file",
@@ -238,10 +258,10 @@
         {
           "group": "Data persistence",
           "pages": ["api-reference/data-persistence/custom-data-layer"]
-        }
+        },
+        "api-reference/window-message"
       ]
     },
-
     {
       "group": "Input Widgets",
       "pages": [
@@ -256,7 +276,7 @@
   "footerSocials": {
     "github": "https://github.com/Chainlit/chainlit",
     "discord": "https://discord.gg/k73SQ3FyUh",
-    "twitter": "https://twitter.com/chainlit_io",
+    "x": "https://x.com/chainlit_io",
     "linkedin": "https://www.linkedin.com/company/chainlit"
   }
 }

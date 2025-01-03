@@ -12,7 +12,7 @@ The `Pdf` class allows you to display a PDF hosted remotely or locally in the ch
 
 <ParamField path="display" type="ElementDisplay" optional>
   Determines how the PDF element should be displayed in the UI. Choices are
-  "side" (default), "inline", or "page".
+  "side", "inline", or "page".
 </ParamField>
 
 <ParamField path="url" type="str">
@@ -30,6 +30,11 @@ The `Pdf` class allows you to display a PDF hosted remotely or locally in the ch
   content for a local PDF (or url for a remote PDF).
 </ParamField>
 
+<ParamField path="page" type="int" optional>
+  The default rendered page. Must be an integer greater than 0 and less than or
+  equal to the total number of pages in the PDF. The default value is 1.
+</ParamField>
+
 ## Example
 
 ### Inline
@@ -41,7 +46,7 @@ import chainlit as cl
 async def main():
     # Sending a pdf with the local file path
     elements = [
-      cl.Pdf(name="pdf1", display="inline", path="./pdf1.pdf")
+      cl.Pdf(name="pdf1", display="inline", path="./pdf1.pdf", page=1)
     ]
 
     cl.Message(content="Look at this local pdf!", elements=elements).send()
@@ -58,7 +63,7 @@ import chainlit as cl
 async def main():
     # Sending a pdf with the local file path
     elements = [
-      cl.Pdf(name="pdf1", display="side", path="./pdf1.pdf")
+      cl.Pdf(name="pdf1", display="side", path="./pdf1.pdf", page=1)
     ]
     # Reminder: The name of the pdf must be in the content of the message
     await cl.Message(content="Look at this local pdf1!", elements=elements).send()

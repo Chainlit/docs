@@ -8,6 +8,10 @@ Software Copilot are a new kind of assistant embedded in your app/product. They 
   <img src="/images/copilot.gif" />
 </Frame>
 
+<Note>
+  [Contact us](mailto:contact@literalai.com) to get advice on how to ship reliable and secure AI Copilots or Assistants in your product.
+</Note>
+
 ## Supported Features
 
 | Message | Streaming | Elements | Audio | Ask User | Chat History | Chat Profiles | Feedback |
@@ -30,6 +34,12 @@ First, make sure your Chainlit server is running. Then, add the following script
 <body>
   <!-- ... -->
   <script src="http://localhost:8000/copilot/index.js"></script>
+<script>
+        window.addEventListener("chainlit-call-fn", (e) => {
+            const { name, args, callback } = e.detail;
+            callback("You sent: " + args.msg);
+        });
+    </script>
   <script>
     window.mountChainlitWidget({
       chainlitServer: "http://localhost:8000",
@@ -53,31 +63,18 @@ The `mountChainlitWidget` function accepts the following options:
 export interface IWidgetConfig {
   // URL of the Chainlit server
   chainlitServer: string;
-  // Whether to show the Chain of Thought. Only applicable if hide_cot is false on the server
-  showCot?: boolean;
   // Required if authentication is enabled on the server
   accessToken?: string;
   // Theme of the copilot
   theme?: "light" | "dark";
-  // Font family to use. It is up to the website to load the font
-  fontFamily?: string;
   // Custom styling to apply to the widget button
   button?: {
     // ID of the container element to mount the button to
     containerId?: string;
     // URL of the image to use as the button icon
     imageUrl?: string;
-    style?: {
-      size?: string;
-      bgcolor?: string;
-      color?: string;
-      bgcolorHover?: string;
-      borderColor?: string;
-      borderWidth?: string;
-      borderStyle?: string;
-      borderRadius?: string;
-      boxShadow?: string;
-    };
+    // The tailwind classname to apply to the button
+    className?: string;
   };
 }
 ```
@@ -150,9 +147,7 @@ window.sendChainlitMessage({
 
 ### Cross Origin Resource Sharing (CORS)
 
-By default, the Chainlit server accepts requests from any origin. This is useful for development, but not recommended for production.
-
-To restrict the origins that can access the server (hence embed the copilot), set the [allow_origins](/backend/config/project) config field to a list of allowed origins.
+Don't forget to add the origin of the host website to the [allow_origins](/backend/config/project) config field to a list of allowed origins.
 
 ### Authentication
 

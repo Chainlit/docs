@@ -39,7 +39,6 @@ async def main(message: cl.Message):
     message_history.append({"role": "user", "content": message.content})
 
     msg = cl.Message(content="")
-    await msg.send()
 
     stream = await client.chat.completions.create(
         messages=message_history, stream=True, **settings

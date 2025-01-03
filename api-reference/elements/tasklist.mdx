@@ -37,8 +37,8 @@ async def main():
     await task_list.add_task(task2)
 
     # Optional: link a message to each task to allow task navigation in the chat history
-    message_id = await cl.Message(content="Started processing data").send()
-    task1.forId = message_id
+    message = await cl.Message(content="Started processing data").send()
+    task1.forId = message.id
 
     # Update the task list in the interface
     await task_list.send()

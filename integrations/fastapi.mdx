@@ -33,3 +33,10 @@ Start the FastAPI server:
 ```bash
 uvicorn main:app --host 0.0.0.0 --port 80
 ```
+
+<Note>
+When using FastAPI integration, header authentication is the preferred method
+for authenticating users. This approach allows Chainlit to delegate the
+authentication process to the parent FastAPI application, providing a more
+seamless and secure integration.
+</Note>

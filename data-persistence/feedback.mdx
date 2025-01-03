@@ -6,7 +6,7 @@ Human feedback is a crucial part of developing your LLM app or agent.
 
 It allows your users to provide direct feedback on the interaction, which can be used to improve the performance and accuracy of your system.
 
-By enabling data persistence, each message sent by your application will be accompanied by thumbs up and thumbs down icons. Users can also add a text comment to their feedback for more detailed input.
+By enabling data persistence, each run triggered by a user input will be accompanied by thumbs up and thumbs down icons. Users can also add a text comment to their feedback for more detailed input.
 
 <Frame caption="Feedback with comment">
   <img src="/images/feedback.jpeg" />
@@ -25,13 +25,6 @@ By enabling data persistence, each message sent by your application will be acco
 ## How-to
 
 To use human feedback, you first need to enable [data persistence](/data-persistence/overview).
-
-Once data persistence is enabled, each message sent by your application will be accompanied by thumbs up and thumbs down icons. Users can click these icons to provide feedback on the interaction.
-
-<Note>
-  You can disable human feedback for a specific [Message](/concepts/message) by
-  passing `disable_feedback=True`.
-</Note>
 
 <Frame caption="Human feedback">
   <img src="/images/human-feedback.gif" />

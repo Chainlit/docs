@@ -1,0 +1,35 @@
+## Overview
+
+The `@chainlit/react-client` package provides a set of React hooks as well as an API client to connect to your **Chainlit** application from any React application. The package includes hooks for managing chat sessions, messages, data, and interactions.
+
+## Installation
+
+To install the package, run the following command in your project directory:
+
+```bash
+npm install @chainlit/react-client
+```
+
+This package uses **Recoil** to manage its state. This means you will have to wrap your application in a recoil provider:
+
+```typescript
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { RecoilRoot } from 'recoil';
+
+import { ChainlitAPI, ChainlitContext } from '@chainlit/react-client';
+
+const CHAINLIT_SERVER_URL = 'http://localhost:8000';
+
+const apiClient = new ChainlitAPI(CHAINLIT_SERVER_URL, 'webapp');
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <ChainlitContext.Provider value={apiClient}>
+      <RecoilRoot>
+        <MyApp />
+      </RecoilRoot>
+    </ChainlitContext.Provider>
+  </React.StrictMode>
+);
+```

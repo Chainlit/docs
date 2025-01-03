@@ -5,7 +5,8 @@ title: Step
 LLM powered Assistants take multiple steps to process a user's request, forming a chain of thought.
 Unlike a [Message](concepts/message), a Step has a type, an input/output and a start/end.
 
-In the UI, the steps of type `tool` are displayed in real time to give the user a sense of the assistant's thought process.
+Depending on the `config.ui.cot` setting, the full chain of thought can be displayed in full, hidden or only the tool calls.
+
 In [Literal AI](https://literalai.com), the full chain of thought is logged for debugging and replayability purposes.
 
 ## A Simple Tool Calling Example
@@ -26,8 +27,6 @@ async def tool():
 
 @cl.on_message
 async def main(message: cl.Message):
-    final_answer = await cl.Message(content="").send()
-
     # Call the tool
     tool_res = await tool()
 
