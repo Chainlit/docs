@@ -162,8 +162,7 @@
         "customisation/custom-logo-and-favicon",
         "customisation/theme",
         "customisation/custom-js",
-        "customisation/custom-css",
-        "customisation/custom-font"
+        "customisation/custom-css"
       ]
     },
     {
@@ -222,6 +221,7 @@
     {
       "group": "Elements",
       "pages": [
+        "api-reference/elements/custom",
         "api-reference/elements/text",
         "api-reference/elements/image",
         "api-reference/elements/file",
