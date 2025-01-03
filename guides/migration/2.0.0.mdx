@@ -1,0 +1,54 @@
+---
+title: Migrate to Chainlit v2.0.0
+---
+
+<Note>Join the discord for live updates: https://discord.gg/AzyvDHWARx</Note>
+
+## Updating Chainlit
+
+Begin the migration by updating Chainlit to the latest version:
+
+```bash
+pip install --upgrade chainlit
+```
+
+## What changes?
+
+The Chainlit UI (including the copilot) has been completely re-written with Shadcn/Tailwind. This brings several advantages:
+1. The codebase is simpler and more contribution friendly.
+2. It enabled the new custom element feature.
+3. The theme customisation is more powerful.
+
+Full changelog available [here](https://github.com/Chainlit/chainlit/blob/main/CHANGELOG.md#200---2025-01-06).
+
+## How to migrate?
+
+### 1. Regenerate the config file
+
+The following fields have been removed from the `config.toml` file:
+
+1. **follow_symlink**: Chainlit no longer uses `StaticFiles` to serve files.
+2. **font_family**, **custom_font**, **[UI.theme]**: Theme customisation now uses a [separate file](/customisation/theme).
+2. **audio**: Chainlit audio streaming has been rework to match the [realtime APIs](/advanced-features/multi-modal).
+
+You can either manually remove those field or remove the `.chainlit/config.toml` file and restart your application.
+
+### 2. Cookie Auth & Cross Origins
+
+All of the authentication mechanisms now use cookie auth instead of directly using a JWT. This change makes Chainlit more secure.
+
+This does not require any change in your app code. However, this implies that Chainlit is now more picky about cross origins (for instance when using a copilot on a website).
+
+If you need to consume a Chainlit app on a different origin, make sure you allow it in the `config.toml` under `allow_origins`.
+
+### 3. Actions
+
+1. The **value** field has replaced with `payload` which accepts a Python dict. This makes actions more useful.
+2. The **description** field has been renamed `tooltip`.
+3. The field `icon` has been added. You can use any lucide icon name.
+3. The **collapsed** field has been removed.
+
+### 4. Copilot Widget Config
+
+1. The **fontFamily** field has been removed. Check the [new custom theme documentation](/customisation/theme).
+2. the `button.style` field has been replaced with `button.className`. You can use any tailwind class to style the widget button.

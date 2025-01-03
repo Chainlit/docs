@@ -28,7 +28,7 @@ A Chainlit application can be consumed through multiple platforms. Write your as
   title="Custom React App"
   color="#61DBFB"
   icon="react"
-  href="/deploy/react-frontend"
+  href="/deploy/react"
 >
   Learn how to integrate your custom React frontend with the Chainlit backend.
 </Card>
@@ -155,29 +155,36 @@ A Chainlit application can be consumed through multiple platforms. Write your as
 </Card>
 </CardGroup>
 
-## Deploy your Chainlit Application
+## Tips & Tricks
 
-No matter the platform(s) you want to serve with your Chainlit application, you will need to deploy it first.
+### Start Chainlit with -h
+
+When running a Chainlit app in production, you should always add `-h` to the
+`chainlit run` command. Otherwise a browser window will be opened server side
+and might break your deployment.
+
+### Account for websockets
+Chainlit is built upon websockets, which means the service you deploy your app
+to has to support them. When auto scaling, make sure to enable sticky sessions (or session affinity).
+
+Even with sticky sessions, load balancers sometime struggle to consistently route a client to the same container.
+In that case you can set `transports = ["websocket"]` in your `.chainlit/config.toml` file.
+
+### Deploying Chainlit on a subpath
+If you need to deploy your Chainlit app to a subpath like
+`https://my-app.com/chainlit`, you will need to set the `--root-path
+/chainlit` flag when running the `chainlit run` command. This will ensure that
+the app is served from the correct path.
+
+### Cross origins
+If your end users consumes the Chainlit UI from the same origin as the server, everything will work out of the box.
+However, if you embed Chainlit on a website, the connection will fail because of CORS.
+
+In that case, you will have to update the `allow_origins` field of your `.chainlit/config.toml`.
+
+## Community ressource
 
 After you've successfully set up and tested your Chainlit application locally, the next step is to make it accessible to a wider audience by deploying it to a hosting service. This guide provides various options for self-hosting your Chainlit app.
-
-<Note>
-  When running a Chainlit app in production, you should always add `-h` to the
-  `chainlit run` command. Otherwise a browser window will be opened server side
-  and might break your deployment.
-</Note>
-
-<Note>
-  Chainlit is built upon websockets, which means the service you deploy your app
-  to has to support them. For auto scaling, make sure to enable sticky sessions.
-</Note>
-
-<Warning>
-  If you need to deploy your Chainlit app to a subpath like
-  `https://my-app.com/chainlit`, you will need to set the `--root-path
-  /chainlit` flag when running the `chainlit run` command. This will ensure that
-  the app is served from the correct path.
-</Warning>
 
 - on [Ploomber Cloud](https://docs.cloud.ploomber.io/en/latest/apps/chainlit.html)
 - on [AWS](https://ankushgarg.super.site/how-to-deploy-your-chatgpt-like-app-with-chainlit-and-aws-ecs)

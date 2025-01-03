@@ -162,8 +162,7 @@
         "customisation/custom-logo-and-favicon",
         "customisation/theme",
         "customisation/custom-js",
-        "customisation/custom-css",
-        "customisation/custom-font"
+        "customisation/custom-css"
       ]
     },
     {
@@ -184,7 +183,7 @@
     },
     {
       "group": "Guides",
-      "pages": ["guides/sync-async", "guides/migration/1.1.400", "guides/migration/1.1.300", "guides/migration/1.1.0", "guides/migration/1.0.500"]
+      "pages": ["guides/sync-async", "guides/migration/2.0.0"]
     },
     {
       "group": "Examples",
@@ -222,6 +221,7 @@
     {
       "group": "Elements",
       "pages": [
+        "api-reference/elements/custom",
         "api-reference/elements/text",
         "api-reference/elements/image",
         "api-reference/elements/file",
