@@ -1,0 +1,42 @@
+---
+title: "Window Messaging"
+---
+
+# on_window_message
+
+Decorator to react to messages coming from the Web App's parent window.
+The decorated function is called every time a new window message is received.
+
+## Parameters
+
+<ParamField path="message" type="str">
+  The message coming from the Web App's parent window.
+</ParamField>
+
+## Usage
+
+```python
+import chainlit as cl
+
+@cl.on_window_message
+def main(message: str):
+  # do something
+```
+
+# send_window_message
+
+Function to send messages to the Web App's parent window.
+
+## Parameters
+
+<ParamField path="message" type="str">
+  The message to send to the Web App's parent window.
+</ParamField>
+
+## Usage
+
+```python
+@cl.on_message
+async def message():
+  await cl.send_window_message("Server: Hello from Chainlit")
+```

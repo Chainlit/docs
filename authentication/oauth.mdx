@@ -131,6 +131,41 @@ You need to set the following environment variables:
 - `OAUTH_COGNITO_CLIENT_SECRET`: Client secret
 - `OAUTH_COGNITO_DOMAIN`: Cognito Domain
 
+## Prompt Configuration
+
+Starting from version 1.3.0, Chainlit allows you to configure how OAuth providers handle re-authentication through the `prompt` parameter. This is particularly useful for controlling the login behavior when users log out.
+
+You can configure this behavior using two environment variables:
+- `OAUTH_PROMPT`: Sets the default prompt behavior for all OAuth providers
+- `OAUTH_<PROVIDER>_PROMPT`: Sets the prompt behavior for a specific provider (e.g., `OAUTH_GITHUB_PROMPT`)
+
+The supported values for these variables are:
+- `none`: No interaction required (default if not set)
+- `login`: Forces re-authentication
+- `consent`: Asks for approval of the requested scopes
+- `select_account`: Allows users to select a different account
+
+For example:
+```bash
+# Force consent prompt for all providers
+OAUTH_PROMPT=consent
+
+# Override specific provider to force login
+OAUTH_GITHUB_PROMPT=login
+```
+
+Note: The behavior and support for different prompt values may vary between OAuth providers. For instance:
+- GitHub responds well to `prompt=consent`
+- Some providers like Descope only respect `prompt=login`
+
+This feature is particularly useful when you want to:
+- Allow users to properly log out and switch accounts
+- Force re-authentication for security purposes
+- Give users the option to change which scopes they approve
+- Prevent automatic re-authentication after logout
+
+The prompt parameter is defined in the OpenID Connect Core 1.0 specification. For more technical details, refer to the [OpenID Connect documentation](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest).
+
 ## Examples
 
 ### Allow all users who passed the oauth authentication.
