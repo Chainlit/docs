@@ -232,6 +232,7 @@
         "api-reference/elements/custom",
         "api-reference/elements/text",
         "api-reference/elements/image",
+        "api-reference/elements/dataframe",
         "api-reference/elements/file",
         "api-reference/elements/pdf",
         "api-reference/elements/audio",
