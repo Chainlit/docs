@@ -163,6 +163,11 @@ When running a Chainlit app in production, you should always add `-h` to the
 `chainlit run` command. Otherwise a browser window will be opened server side
 and might break your deployment.
 
+### Double check the host
+
+By default, the Chainlit server host is `127.0.0.1`.
+Typically, if you are running Chainlit on docker, you want to add `--host 0.0.0.0` to your chainlit command.
+
 ### Account for websockets
 Chainlit is built upon websockets, which means the service you deploy your app
 to has to support them. When auto scaling, make sure to enable sticky sessions (or session affinity).
