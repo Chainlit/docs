@@ -133,7 +133,6 @@
         "data-persistence/overview",
         "data-persistence/history",
         "data-persistence/feedback",
-        "data-persistence/tags-metadata",
         {
           "group": "Open Source Data Layers",
           "pages": [
@@ -142,7 +141,8 @@
             "data-layers/sqlalchemy",
             "data-layers/dynamodb"
           ]
-        }
+        },
+        "data-persistence/tags-metadata"
       ]
     },
     {

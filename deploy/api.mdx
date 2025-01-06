@@ -106,7 +106,7 @@ from fastapi.responses import (
 )
 
 from chainlit.context import init_http_context
-from chainlit.auth import authenticate_user
+from chainlit.auth import get_current_user
 import chainlit as cl
 
 app = FastAPI()
@@ -115,7 +115,7 @@ app = FastAPI()
 async def hello(
     request: Request,
     current_user: Annotated[
-        cl.User, Depends(authenticate_user)
+        cl.User, Depends(get_current_user)
     ],
 ):
     print(current_user)
@@ -130,21 +130,4 @@ Once an endpoint is protected, it will require to have a valid token in the `Aut
 {
   "Authorization": "Bearer TOKEN"
 }
-```
-
-## Generate a token
-
-The token is the same token generated when you login in the Chainlit app.
-You can generate a token manually for a given user with this python script.
-
-<Note>
-  This will require to have a CHAINLIT_AUTH_SECRET. You can run `chainlit
-  create-secret` to create one.
-</Note>
-
-```py
-from chainlit.auth import create_jwt
-import chainlit as cl
-
-print(create_jwt(cl.User(identifier="USERNAME")))
 ```
