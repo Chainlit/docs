@@ -123,11 +123,3 @@ async def hello(
     await cl.Message(content="Hello World").send()
     return HTMLResponse("Hello World")
 ```
-
-Once an endpoint is protected, it will require to have a valid token in the `Authorization` header.
-
-```json headers
-{
-  "Authorization": "Bearer TOKEN"
-}
-```
