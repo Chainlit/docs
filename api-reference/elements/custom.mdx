@@ -91,7 +91,7 @@ Only use available packages for imports. Here is the full list:
 
 ### Available APIs
 
-Chainlit exposes the following APIs to make the custom element interactive.
+Chainlit exposes the following APIs globally to make the custom element interactive.
 
 ```ts
 interface APIs {
@@ -99,7 +99,7 @@ interface APIs {
     updateElement: (nextProps: Record<string, any>) => Promise<{success: boolean}>;
     // Delete the element entirely.
     deleteElement: () => Promise<{success: boolean}>;
-    // Call an action defined in the Chainlit
+    // Call an action defined in the Chainlit app
     callAction: (action: {name: string, payload: Record<string, unknown>}) =>Promise<{success: boolean}>;
 }
 ```
