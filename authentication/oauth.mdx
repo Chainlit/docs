@@ -131,6 +131,22 @@ You need to set the following environment variables:
 - `OAUTH_COGNITO_CLIENT_SECRET`: Client secret
 - `OAUTH_COGNITO_DOMAIN`: Cognito Domain
 
+### Keycloak
+
+Follow this documentation to [create a new client](https://www.keycloak.org/docs/latest/server_admin/index.html#assembly-managing-clients_server_administration_guide) in your realm.
+
+You have the option of changing the `id` of your Keycloak provider, which by default is `keycloak`. This is useful if you want to display a more appropriate name on your login page. Use the `OAUTH_KEYCLOAK_NAME` environment variable to set the name. Don't choose an `id` that conflicts with any of the other Oauth providers.
+
+The callback URL for your client should be: `CHAINLIT_URL/auth/oauth/${OAUTH_KEYCLOAK_NAME}/callback`. If your Chainlit app is hosted at localhost:8000, you should use `http://localhost:8000/auth/oauth/${OAUTH_KEYCLOAK_NAME}/callback`.
+
+You need to set the following environment variables:
+
+- `OAUTH_KEYCLOAK_CLIENT_ID`: Client ID
+- `OAUTH_KEYCLOAK_CLIENT_SECRET`: Client secret
+- `OAUTH_KEYCLOAK_REALM`: The realm which contains your client.
+- `OAUTH_KEYCLOAK_BASE_URL`: Your Keycloak URL. 
+- `OAUTH_KEYCLOAK_NAME`: Optional, see above.
+
 ## Prompt Configuration
 
 Starting from version 1.3.0, Chainlit allows you to configure how OAuth providers handle re-authentication through the `prompt` parameter. This is particularly useful for controlling the login behavior when users log out.
