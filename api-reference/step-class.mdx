@@ -15,10 +15,6 @@ The `Step` class is a Python Context Manager that can be used to create steps in
 <ParamField path="elements" type="List[Element]" optional>
   Elements to attach to the step.
 </ParamField>
-<ParamField path="root" type="bool" default="False" optional>
-  By default the step will be nested under the previous step/message. Set this
-  to `True` to make it a root step.
-</ParamField>
 <ParamField path="language" type="str" optional>
   Language of the output. See
   https://react-code-blocks-rajinwonderland.vercel.app/?path=/story/codeblock--supported-languages
@@ -57,10 +53,7 @@ client = AsyncOpenAI()
 @cl.on_message
 async def main(msg: cl.Message):
 
-    # Whether to nest the step under the user message
-    root = True
-
-    async with cl.Step(name="gpt4", type="llm", root=root) as step:
+    async with cl.Step(name="gpt4", type="llm") as step:
         step.input = msg.content
 
         stream = await client.chat.completions.create(

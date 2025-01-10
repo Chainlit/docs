@@ -55,6 +55,8 @@ First, make sure your Chainlit server is running. Then, add the following script
 
 That's it! You should now see a floating button on the bottom right corner of your website. Clicking on it will open the Copilot.
 
+You can programmatically toggle the copilot with `window.toggleChainlitCopilot()`.
+
 ## Widget Configuration
 
 The `mountChainlitWidget` function accepts the following options:
@@ -67,25 +69,14 @@ export interface IWidgetConfig {
   accessToken?: string;
   // Theme of the copilot
   theme?: "light" | "dark";
-  // Font family to use. It is up to the website to load the font
-  fontFamily?: string;
   // Custom styling to apply to the widget button
   button?: {
     // ID of the container element to mount the button to
     containerId?: string;
     // URL of the image to use as the button icon
     imageUrl?: string;
-    style?: {
-      size?: string;
-      bgcolor?: string;
-      color?: string;
-      bgcolorHover?: string;
-      borderColor?: string;
-      borderWidth?: string;
-      borderStyle?: string;
-      borderRadius?: string;
-      boxShadow?: string;
-    };
+    // The tailwind classname to apply to the button
+    className?: string;
   };
 }
 ```
@@ -158,9 +149,7 @@ window.sendChainlitMessage({
 
 ### Cross Origin Resource Sharing (CORS)
 
-By default, the Chainlit server accepts requests from any origin. This is useful for development, but not recommended for production.
-
-To restrict the origins that can access the server (hence embed the copilot), set the [allow_origins](/backend/config/project) config field to a list of allowed origins.
+Don't forget to add the origin of the host website to the [allow_origins](/backend/config/project) config field to a list of allowed origins.
 
 ### Authentication
 

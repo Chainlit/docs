@@ -7,26 +7,24 @@ The `Action` class is designed to create and manage actions to be sent and displ
 ## Attributes
 
 <ParamField path="name" type="str">
-  Name of the action, this should be used in the action_callback
+  Name of the action, this should match the action callback.
 </ParamField>
 
-<ParamField path="value" type="str">
-  The value associated with the action. This is useful to differentiate between
-  multiple actions with the same name.
+<ParamField path="payload" type="Dict">
+  The payload associated with the action.
+</ParamField>
+
+<ParamField path="icon" type="str" optional>
+  The lucide icon name for the action button. See https://lucide.dev/icons/.
 </ParamField>
 
 <ParamField path="label" type="str" optional>
-  The label of the action. This is what the user will see. If not provided the
-  name will be used.
+  The label of the action. This is what the user will see. If no label and no icon is provided, the name is display as a fallback.
 </ParamField>
 
-<ParamField path="description" type="str" optional>
+<ParamField path="tooltip" type="str" optional>
   The description of the action. This is what the user will see when they hover
   the action.
-</ParamField>
-
-<ParamField path="collapsed" type="bool" optional>
-  Show the action in a drawer menu
 </ParamField>
 
 ## Usage

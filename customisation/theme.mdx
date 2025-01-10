@@ -2,54 +2,91 @@
 title: Theme
 ---
 
-Looking to refresh your app's appearance? You can easily alter the default theme colors in your `config.toml` file.
+Chainlit's theme is based on CSS variables.
 
-Currently, you have the freedom to modify:
+To modify the CSS variables, create a `theme.json` file under `/public` with the following content.
 
-- **Background color**: This option allows you to change the color of the app's background.
-- **Paper color**: This alters the color of the 'paper' elements within the app, such as the navbar, widgets, etc.
-- **Primary color**: This encompasses three shades - main, dark, and light. These colors are primarily used for interactive interface elements.
+You can check [Shadcn's documentation](https://ui.shadcn.com/docs/theming#list-of-variables) to learn about the role of each variable.
 
-<Note>
-  If you started your Chainlit app with -w (file watcher), it will refresh every
-  time you update the theme!
-</Note>
+<Note>If the UI is not updated, try to empty your browser cache.</Note>
 
-## Default Theme
-
-To set the default theme, navigate to the `[UI.theme]` section in your `config.toml` file and update the `default` value.
-
-```bash config.toml
-[UI.theme]
-    default = "dark"
+```json theme.json
+{
+    "custom_fonts": [],
+    "variables": {
+        "light": {
+            "--font-sans": "'Inter', sans-serif",
+            "--font-mono": "source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace",
+            "--background": "0 0% 100%",
+            "--foreground": "0 0% 5%",
+            "--card": "0 0% 100%",
+            "--card-foreground": "0 0% 5%",
+            "--popover": "0 0% 100%",
+            "--popover-foreground": "0 0% 5%",
+            "--primary": "340 92% 52%",
+            "--primary-foreground": "0 0% 100%",
+            "--secondary": "210 40% 96.1%",
+            "--secondary-foreground": "222.2 47.4% 11.2%",
+            "--muted": "0 0% 90%",
+            "--muted-foreground": "0 0% 36%",
+            "--accent": "0 0% 95%",
+            "--accent-foreground": "222.2 47.4% 11.2%",
+            "--destructive": "0 84.2% 60.2%",
+            "--destructive-foreground": "210 40% 98%",
+            "--border": "0 0% 90%",
+            "--input": "0 0% 90%",
+            "--ring": "340 92% 52%",
+            "--radius": "0.75rem",
+            "--sidebar-background": "0 0% 98%",
+            "--sidebar-foreground": "240 5.3% 26.1%",
+            "--sidebar-primary": "240 5.9% 10%",
+            "--sidebar-primary-foreground": "0 0% 98%",
+            "--sidebar-accent": "240 4.8% 95.9%",
+            "--sidebar-accent-foreground": "240 5.9% 10%",
+            "--sidebar-border": "220 13% 91%",
+            "--sidebar-ring": "217.2 91.2% 59.8%"
+        },
+        "dark": {
+            "--font-sans": "'Inter', sans-serif",
+            "--font-mono": "source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace",
+            "--background": "0 0% 13%",
+            "--foreground": "0 0% 93%",
+            "--card": "0 0% 18%",
+            "--card-foreground": "210 40% 98%",
+            "--popover": "0 0% 18%",
+            "--popover-foreground": "210 40% 98%",
+            "--primary": "340 92% 52%",
+            "--primary-foreground": "0 0% 100%",
+            "--secondary": "0 0% 19%",
+            "--secondary-foreground": "210 40% 98%",
+            "--muted": "0 1% 26%",
+            "--muted-foreground": "0 0% 71%",
+            "--accent": "0 0% 26%",
+            "--accent-foreground": "210 40% 98%",
+            "--destructive": "0 62.8% 30.6%",
+            "--destructive-foreground": "210 40% 98%",
+            "--border": "0 1% 26%",
+            "--input": "0 1% 26%",
+            "--ring": "340 92% 52%",
+            "--sidebar-background": "0 0% 9%",
+            "--sidebar-foreground": "240 4.8% 95.9%",
+            "--sidebar-primary": "224.3 76.3% 48%",
+            "--sidebar-primary-foreground": "0 0% 100%",
+            "--sidebar-accent": "0 0% 13%",
+            "--sidebar-accent-foreground": "240 4.8% 95.9%",
+            "--sidebar-border": "240 3.7% 15.9%",
+            "--sidebar-ring": "217.2 91.2% 59.8%"
+        }
+    }
+}
 ```
 
-## Light Theme Modification
+As you may have noticed, the colors are not expressed in Hexadecimal but rather in HSL. This is mandatory.
+You can easily [convert any color to HSL](https://www.google.com/search?q=hex+to+hsl).
 
-To modify the light theme, find or create the `[UI.theme.light]` section and update the colors as per your preference.
+The `custom_fonts` array can receive URLs (typically from google fonts) like:
 
-```bash config.toml
-[UI.theme.light]
-    background = "#110061"
-    paper = "#FFFFFF"
-
-    [UI.theme.light.primary]
-        main = "#110061"
-        dark = "#180039"
-        light = "#FFE7EB"
+```json
+custom_fonts: ["https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"]
 ```
 
-## Dark Theme Modification
-
-To alter the dark theme, the section begins with `[UI.theme.dark]`.
-
-```bash config.toml
-[UI.theme.dark]
-    background = "#FAFAFA"
-    paper = "#FFFFFF"
-
-    [UI.theme.dark.primary]
-        main = "#A80061"
-        dark = "#380039"
-        light = "#FFE7EB"
-```

@@ -12,14 +12,22 @@ This decorator will automatically:
 
 <Warning>
   Only JSON serializable fields of the user session will be saved and restored.
-  If you are using a Langchain agent for instance, you will need to
-  reinstantiate and set it in the user session yourself.
 </Warning>
 
 ## Usage
 
+At minimum, you will need to use the `@cl.on_chat_resume` decorator to resume conversations.
+
+```python
+@cl.on_chat_resume
+async def on_chat_resume(thread):
+    pass
+```
+
+However, if you are using a Langchain agent for instance, you will need to reinstantiate and set it in the user session yourself.
+
 <Card
-  title="Resume Chat Example"
+  title="Resume Langchain Chat Example"
   color="#F80061"
   icon="message"
   href="https://github.com/Chainlit/cookbook/tree/main/resume-chat"

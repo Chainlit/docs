@@ -13,19 +13,15 @@ Chainlit let's you access the user's microphone audio stream and process it in r
   [@cl.on_audio_chunk](/api-reference/lifecycle-hooks/on-audio-chunk) decorator.
 </Note>
 
-<Frame caption="Voice Assistant Example">
+<Frame caption="OpenAI Realtime Example">
   <video
     controls
     loop
-    src="https://github.com/Chainlit/cookbook/assets/13104895/52d5ecc0-4b63-4971-98d6-59a0d4b1199a"
+    src="/images/openai-realtime.mp4"
   />
 </Frame>
 
-Check the [Audio Assistant](https://github.com/Chainlit/cookbook/tree/main/audio-assistant) cookbook example to see how to implement a voice assistant.
-
-### Audio capture settings
-
-You can configure audio capture the au through the Chainlit [config](/backend/config/features) file.
+Check the [OpenAI Realtime](https://github.com/Chainlit/cookbook/tree/main/realtime-assistant) cookbook example.
 
 ## Spontaneous File Uploads
 
@@ -57,10 +53,6 @@ async def on_message(msg: cl.Message):
     await cl.Message(content=f"Received {len(images)} image(s)").send()
 
 ```
-
-### Image Processing with Transformers
-
-Multi-modal capabilities are being added to Large Language Model (effectively making them Large Multi Modal Models). OpenAI's [vision API](https://platform.openai.com/docs/guides/vision) and the [LLaVa](https://github.com/Chainlit/cookbook/tree/main/llava) cookbook are good places to start for image processing with transformers.
 
 ### Disabling Spontaneous File Uploads
 

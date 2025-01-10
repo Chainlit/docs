@@ -40,32 +40,6 @@ title: Features
   Restrict uploading file size (MB).
 </ParamField>
 
-<ParamField path="audio.min_decibels" type="int">
-  Threshold for audio recording.
-</ParamField>
-
-<ParamField path="audio.initial_silence_timeout" type="int">
-  If the user does not speak for this duration (MS), the recording will be
-  ignored.
-</ParamField>
-
-<ParamField path="audio.silence_timeout" type="int">
-  Delay for the user to continue speaking in MS. If the user stops speaking for
-  this duration, the recording will stop.
-</ParamField>
-
-<ParamField path="audio.max_duration" type="int">
-  Above this duration (MS), the recording will forcefully stop.
-</ParamField>
-
-<ParamField path="audio.chunk_duration" type="int">
-  Duration of the audio chunks in MS.
-</ParamField>
-
-<ParamField path="audio.sample_rate" type="int">
-  Sample rate of the audio.
-</ParamField>
-
 <ParamField path="auto_tag_thread" type="bool">
   Automatically tag threads with the current chat profile (if a chat profile is
   used)
@@ -75,6 +49,7 @@ title: Features
 
 ```toml
 [features]
+edit_message = true
 unsafe_allow_html = false
 latex = false
 [features.spontaneous_file_upload]
@@ -82,12 +57,5 @@ latex = false
     accept = ["*/*"]
     max_files = 20
     max_size_mb = 500
-[features.audio]
-    min_decibels = -45
-    initial_silence_timeout = 3000
-    silence_timeout = 1500
-    max_duration = 15000
-    chunk_duration = 1000
-    sample_rate = 44100
 auto_tag_thread = true
 ```
