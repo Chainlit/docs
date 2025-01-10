@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS elements (
     "language" TEXT,
     "forId" UUID,
     "mime" TEXT,
+    "props" JSONB,
     FOREIGN KEY ("threadId") REFERENCES threads("id") ON DELETE CASCADE
 );
 
@@ -82,7 +83,7 @@ CREATE TABLE IF NOT EXISTS feedbacks (
 Here is an example of setting up this data layer on a PostgreSQL database with an Azure storage client. First install the required dependencies:
 
 ```bash
-pip install asyncpg SQLAlchemy azure-identity azure-storage-file-datalake
+pip install asyncpg SQLAlchemy azure-identity azure-storage-file-datalake aiohttp greenlet
 ```
 
 Import the custom data layer and storage client, and indicate which data layer to use with `@cl.data_layer` at the beginning of your Chainlit app:
