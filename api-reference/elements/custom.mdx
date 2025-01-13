@@ -219,7 +219,9 @@ Finally, we start the application with `chainlit run app.py` and send a first me
   <img src="/images/custom-element.png" />
 </Frame>
 
-## Update Props from Python
+## Advanced
+
+### Update Props from Python
 
 To update a custom element props from the python code, you can store the element instance in the user session and call `.update()` on it.
 
@@ -236,4 +238,42 @@ async def on_message():
     element = cl.user_session.get("element")
     element.props["foo"] = "baz"
     await element.update()
+```
+
+### Call a Function from Python
+
+If you need to call a function directly from the python code, you can use `cl.CopilotFunction`.
+
+```python call_func.py
+import chainlit as cl
+
+@cl.on_chat_start
+async def start():
+    element = cl.CustomElement(name="CallFn")
+    await cl.Message(content="Hello", elements=[element]).send()
+    
+@cl.on_message
+async def on_msg(msg: cl.Message):
+    fn = cl.CopilotFunction(name="test", args={"content": msg.content})
+    res = await fn.acall()
+```
+
+```jsx CallFn.jsx
+import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { callFnState } from '@chainlit/react-client';
+
+export default function CallFnExample() {
+    const callFn = useRecoilValue(callFnState);
+
+    useEffect(() => {
+        if (callFn?.name === "test") {
+          // Replace the console log with your actual function
+          console.log("Function called with", callFn.args.content)
+          callFn.callback()
+        }
+      }, [callFn]);
+
+      return null
+}
 ```
