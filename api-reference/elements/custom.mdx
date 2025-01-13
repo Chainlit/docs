@@ -104,7 +104,7 @@ interface APIs {
 }
 ```
 
-### Example of a Counter Element:
+### Example of a Counter Element
 
 ```jsx
 import { Button } from "@/components/ui/button"
@@ -217,3 +217,22 @@ Finally, we start the application with `chainlit run app.py` and send a first me
 <Frame caption="The LinearTicket custom element rendered.">
   <img src="/images/custom-element.png" />
 </Frame>
+
+## Update Props from Python
+
+To update a custom element props from the python code, you can store the element instance in the user session and call `.update()` on it.
+
+```python
+import chainlit as cl
+
+@cl.on_chat_start
+async def start():
+    element = cl.CustomElement(name="Foo", props={"foo": "bar"})
+    cl.user_session.set("element", element)
+
+@cl.on_message
+async def on_message():
+    element = cl.user_session.get("element")
+    element.props["foo"] = "baz"
+    await element.update()
+```
