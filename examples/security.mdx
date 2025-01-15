@@ -54,12 +54,12 @@ async def check_text(text: str):
     response = await cl.AskActionMessage(
       content="PII detected",
       actions=[
-        cl.Action(name="continue", value="continue", label="✅ Continue"),
-        cl.Action(name="cancel", value="cancel", label="❌ Cancel"),
+        cl.Action(name="continue", payload={"value": "continue"}, label="✅ Continue"),
+        cl.Action(name="cancel", payload={"value": "continue"}, label="❌ Cancel"),
       ],
     ).send()
 
-    if response is None or response.get("value") == "cancel":
+    if response is None or response.get("payload").get("value") == "cancel":
       raise InterruptedError
 
   yield
@@ -90,12 +90,12 @@ async def check_text(text: str):
     response = await cl.AskActionMessage(
       content="PII detected",
       actions=[
-        cl.Action(name="continue", value="continue", label="✅ Continue"),
-        cl.Action(name="cancel", value="cancel", label="❌ Cancel"),
+        cl.Action(name="continue", payload={"value": "continue"}, label="✅ Continue"),
+        cl.Action(name="cancel", payload={"value": "continue"}, label="❌ Cancel"),
       ],
     ).send()
 
-    if response is None or response.get("value") == "cancel":
+    if response is None or response.get("payload").get("value") == "cancel":
       raise InterruptedError
 
     yield anonymizer.anonymize(
