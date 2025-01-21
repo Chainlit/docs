@@ -1,0 +1,53 @@
+---
+title: "Command"
+---
+
+Commands are a great way to capture user intent in a deterministic way.
+
+## Attributes
+
+<ParamField path="id" type="str">
+  Identifier for the command, this will be used in the UI.
+</ParamField>
+
+<ParamField path="icon" type="str" optional>
+  The lucide icon name for the command. See https://lucide.dev/icons/.
+</ParamField>
+
+<ParamField path="description" type="str" optional>
+  The description of the command.
+</ParamField>
+
+## Set available commands
+
+You can set the available commands at any moment using the `cl.context.emitter.set_commands` method.
+
+```python
+import chainlit as cl
+
+commands = [
+    {"id": "Picture", "icon": "image", "description": "Use DALL-E"},
+    {"id": "Search", "icon": "globe", "description": "Find on the web"},
+    {
+        "id": "Canvas",
+        "icon": "pen-line",
+        "description": "Collaborate on writing and code",
+    },
+]
+
+@cl.on_chat_start
+async def start():
+    await cl.context.emitter.set_commands(commands)
+
+@cl.on_message
+async def message(msg: cl.Message):
+    if msg.command == "Picture":
+        # User is using the Picture command
+        pass
+    pass
+```
+
+<Frame caption="The user selecting a command">
+  <img src="/images/command.gif" />
+</Frame>
+

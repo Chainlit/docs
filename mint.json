@@ -113,7 +113,8 @@
         "concepts/step",
         "concepts/user-session",
         "concepts/element",
-        "concepts/action"
+        "concepts/action",
+        "concepts/command"
       ]
     },
     {
