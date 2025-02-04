@@ -96,7 +96,6 @@
               ]
             },
             "deploy/copilot",
-            "deploy/api",
             "deploy/teams",
             "deploy/slack",
             "deploy/discord"
