@@ -9,7 +9,8 @@ Software Copilot are a new kind of assistant embedded in your app/product. They 
 </Frame>
 
 <Note>
-  [Contact us](mailto:contact@literalai.com) to get advice on how to ship reliable and secure AI Copilots or Assistants in your product.
+  [Contact us](mailto:contact@literalai.com) to get advice on how to ship
+  reliable and secure AI Copilots or Assistants in your product.
 </Note>
 
 ## Supported Features
@@ -34,12 +35,12 @@ First, make sure your Chainlit server is running. Then, add the following script
 <body>
   <!-- ... -->
   <script src="http://localhost:8000/copilot/index.js"></script>
-<script>
-        window.addEventListener("chainlit-call-fn", (e) => {
-            const { name, args, callback } = e.detail;
-            callback("You sent: " + args.msg);
-        });
-    </script>
+  <script>
+    window.addEventListener("chainlit-call-fn", (e) => {
+      const { name, args, callback } = e.detail;
+      callback("You sent: " + args.msg);
+    });
+  </script>
   <script>
     window.mountChainlitWidget({
       chainlitServer: "http://localhost:8000",
@@ -153,11 +154,17 @@ Don't forget to add the origin of the host website to the [allow_origins](/backe
 
 ### Authentication
 
-If you want to restrict access to the Copilot per user, you can enable [authentication](/authentication) on the Chainlit server.
+If you want to authenticate users on the Copilot, you can enable [authentication](/authentication) on the Chainlit server.
+
+<Warning>
+  If the Chainlit app and the host website are deployed on different domains,
+  you will have to add `CHAINLIT_COOKIE_SAMESITE=none` to the Chainlit app env
+  variables.
+</Warning>
 
 While the standalone Chainlit application handles the authentication process, the Copilot needs to be configured with an access token. This token is used to authenticate the user with the Chainlit server.
 
-The host app/website is responsible for generating the token and passing it to the Copilot. Here are examples of how to generate the token in different languages:
+The host app/website is responsible for generating the token and passing it to the as `accessToken`. Here are examples of how to generate the token in different languages:
 
 <Note>
   You will need the `CHAINLIT_AUTH_SECRET` you generated when [configuring
