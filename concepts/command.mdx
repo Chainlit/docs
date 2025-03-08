@@ -18,6 +18,10 @@ Commands are a great way to capture user intent in a deterministic way.
   The description of the command.
 </ParamField>
 
+<ParamField path="button" type="boolean" optional>
+  Whether to display the command as a button in the message composer.
+</ParamField>
+
 ## Set available commands
 
 You can set the available commands at any moment using the `cl.context.emitter.set_commands` method.
