@@ -120,6 +120,7 @@
       "group": "Advanced Features",
       "pages": [
         "advanced-features/streaming",
+        "advanced-features/mcp",
         "advanced-features/ask-user",
         "advanced-features/multi-modal",
         "advanced-features/chat-profiles",

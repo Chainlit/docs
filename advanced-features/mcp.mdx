@@ -1,0 +1,141 @@
+---
+title: "MCP Servers"
+description: Model Control Protocol (MCP) allows you to integrate external tool providers with your Chainlit application. This enables your AI models to use tools through standardized interfaces.
+---
+
+## Overview
+
+MCP provides a mechanism for Chainlit applications to connect to either server-sent events (SSE) based services or command-line (stdio) based tools. Once connected, your application can discover available tools, execute them, and integrate their responses into your application's flow.
+
+ <Card
+    title="Chainlit MCP Cookbook"
+    icon="github"
+    href="https://github.com/Chainlit/cookbook/blob/main/openai-whisper/app.py"
+  >
+    End to end cookbook example showcasing MCP tool calling with Claude.
+  </Card>
+
+## Connections Types
+
+Chainlit supports two types of MCP connections:
+
+1. **SSE (Server-Sent Events)**: Connect to a remote service via HTTP
+2. **stdio**: Execute a local command and communicate via standard I/O
+
+> ⚠️ **Security Warning**: The stdio connection type spawns actual subprocesses on the Chainlit server. Only use this with trusted commands in controlled environments. Ensure proper validation of user inputs to prevent command injection vulnerabilities.
+
+## Setup
+
+### 1. Register Connection Handlers
+
+To use MCP in your Chainlit application, you need to implement the `on_mcp_connect` handler. The `on_mcp_disconnect` handler is optional but recommended for proper cleanup.
+
+```python
+import chainlit as cl
+from mcp import ClientSession
+
+@cl.on_mcp_connect
+async def on_mcp_connect(connection, session: ClientSession):
+    """Called when an MCP connection is established"""
+    # Your connection initialization code here
+    # This handler is required for MCP to work
+    
+@cl.on_mcp_disconnect
+async def on_mcp_disconnect(name: str, session: ClientSession):
+    """Called when an MCP connection is terminated"""
+    # Your cleanup code here
+    # This handler is optional
+```
+
+### 2. Client Configuration
+
+The client needs to provide the connection details through the Chainlit interface. This includes:
+
+- Connection name (unique identifier)
+- Client type (`sse` or `stdio`)
+- For SSE: URL endpoint
+- For stdio: Full command (e.g., `npx your-tool-package`)
+
+<Frame caption="Adding an MCP">
+  <img src="/images/add-mcp.png" />
+</Frame>
+
+## Working with MCP Connections
+
+### Retrieving Available Tools
+
+Upon connection, you can discover the available tools provided by the MCP service:
+
+```python
+@cl.on_mcp_connect
+async def on_mcp(connection, session: ClientSession):
+    # List available tools
+    result = await session.list_tools()
+    
+    # Process tool metadata
+    tools = [{
+        "name": t.name,
+        "description": t.description,
+        "input_schema": t.inputSchema,
+    } for t in result.tools]
+    
+    # Store tools for later use
+    mcp_tools = cl.user_session.get("mcp_tools", {})
+    mcp_tools[connection.name] = tools
+    cl.user_session.set("mcp_tools", mcp_tools)
+```
+
+### Executing Tools
+
+You can execute tools using the MCP session:
+
+```python
+@cl.step(type="tool") 
+async def call_tool(tool_use):
+    tool_name = tool_use.name
+    tool_input = tool_use.input
+    
+    # Find appropriate MCP connection for this tool
+    mcp_name = find_mcp_for_tool(tool_name)
+    
+    # Get the MCP session
+    mcp_session, _ = cl.context.session.mcp_sessions.get(mcp_name)
+    
+    # Call the tool
+    result = await mcp_session.call_tool(tool_name, tool_input)
+    
+    return result
+```
+
+## Integrating with LLMs
+
+MCP tools can be seamlessly integrated with LLMs that support tool calling:
+
+```python
+async def call_model_with_tools():
+    # Get tools from all MCP connections
+    mcp_tools = cl.user_session.get("mcp_tools", {})
+    all_tools = [tool for connection_tools in mcp_tools.values() for tool in connection_tools]
+    
+    # Call your LLM with the tools
+    response = await your_llm_client.call(
+        messages=messages,
+        tools=all_tools
+    )
+    
+    # Handle tool calls if needed
+    if response.has_tool_calls():
+        # Process tool calls
+        pass
+        
+    return response
+```
+
+## Session Management
+
+MCP connections are managed at the session level. Each WebSocket session can have multiple named MCP connections. The connections are cleaned up when:
+
+1. The user explicitly disconnects
+2. The same connection name is reused (old connection is replaced)
+3. The WebSocket session ends
+

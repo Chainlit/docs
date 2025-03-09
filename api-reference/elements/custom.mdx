@@ -102,6 +102,8 @@ interface APIs {
     deleteElement: () => Promise<{success: boolean}>;
     // Call an action defined in the Chainlit app
     callAction: (action: {name: string, payload: Record<string, unknown>}) =>Promise<{success: boolean}>;
+    // Send a user message
+    sendUserMessage: (message: string) => void;
 }
 ```
 
