@@ -24,6 +24,8 @@ Chainlit supports two types of MCP connections:
 
 > ⚠️ **Security Warning**: The stdio connection type spawns actual subprocesses on the Chainlit server. Only use this with trusted commands in controlled environments. Ensure proper validation of user inputs to prevent command injection vulnerabilities.
 
+<Note>**Command Availability Warning**: When using the stdio connection type with commands like `npx` or `uvx`, these commands must be available on the Chainlit server where the application is running. The subprocess is executed on the server, not on the client machine.</Note>
+
 ## Setup
 
 ### 1. Register Connection Handlers
@@ -54,7 +56,7 @@ The client needs to provide the connection details through the Chainlit interfac
 - Connection name (unique identifier)
 - Client type (`sse` or `stdio`)
 - For SSE: URL endpoint
-- For stdio: Full command (e.g., `npx your-tool-package`)
+- For stdio: Full command (e.g., `npx your-tool-package` or `uvx your-tool-package`)
 
 <Frame caption="Adding an MCP">
   <img src="/images/add-mcp.png" />
@@ -138,4 +140,3 @@ MCP connections are managed at the session level. Each WebSocket session can hav
 1. The user explicitly disconnects
 2. The same connection name is reused (old connection is replaced)
 3. The WebSocket session ends
-
