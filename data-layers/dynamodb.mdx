@@ -15,7 +15,7 @@ Import the custom data layer and storage client, and set the `cl_data._data_laye
 ```python
 import chainlit.data as cl_data
 from chainlit.data.dynamodb import DynamoDBDataLayer
-from chainlit.data.storage_clients import S3StorageClient
+from chainlit.data.storage_clients.s3 import S3StorageClient
 
 storage_client = S3StorageClient(bucket="<Your Bucket>")
 
