@@ -5,7 +5,7 @@ title: vLLM, LMStudio, HuggingFace
 We can leverage the OpenAI instrumentation to log calls from inference servers that use messages-based API, such as vLLM, LMStudio or HuggingFace's TGI. 
 
 <Warning>
-  You shouldn't configure this integration if you're already using another integration like Haystack, LangChain or LlamaIndex. Both integrations would record the same generation and create duplicate steps in the UI.
+  You shouldn't configure this integration if you're already using another integration like LangChain or LlamaIndex. Both integrations would record the same generation and create duplicate steps in the UI.
 </Warning>
 
 Create a new Python file named `app.py` in your project directory. This file will contain the main logic for your LLM application.

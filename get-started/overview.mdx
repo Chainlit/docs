@@ -5,13 +5,7 @@ title: "Overview"
 Chainlit is an open-source Python package to build production ready Conversational AI.
 
 <Frame caption="Build Conversational AI with Chainlit">
-  <video
-    controls
-    autoPlay
-    loop
-    muted
-    src="/images/overview.mp4"
-  />
+  <video controls autoPlay loop muted src="/images/overview.mp4" />
 </Frame>
 
 ## Key features
@@ -31,13 +25,19 @@ Chainlit is an open-source Python package to build production ready Conversation
 Chainlit is compatible with all Python programs and libraries. That being said, it comes with a set of integrations with popular libraries and frameworks.
 
 <CardGroup cols={2}>
-  <Card
-  title="OpenAI"
+<Card
+  title="LangChain"
   icon="circle"
-  color="#dddddd"
-  href="/integrations/openai">
-    Learn how to explore your OpenAI calls in Chainlit.
-  </Card>
+  color="#3afadc"
+  href="/integrations/langchain"
+>
+  Learn how to use any LangChain agent with Chainlit.
+</Card>
+
+{" "}
+<Card title="OpenAI" icon="circle" color="#dddddd" href="/integrations/openai">
+  Learn how to explore your OpenAI calls in Chainlit.
+</Card>
 
 <Card
   title="OpenAI Assistant"
@@ -58,6 +58,15 @@ Chainlit is compatible with all Python programs and libraries. That being said, 
 </Card>
 
 <Card
+  title="Semantic Kernel"
+  icon="circle"
+  color="#16a34a"
+  href="/integrations/semantic-kernel"
+>
+  Learn how to integrate your Semantic Kernel code with Chainlit.
+</Card>
+
+<Card
   title="Llama Index"
   icon="circle"
   color="#0285c7"
@@ -67,30 +76,12 @@ Chainlit is compatible with all Python programs and libraries. That being said, 
 </Card>
 
 <Card
-  title="LangChain"
-  icon="circle"
-  color="#3afadc"
-  href="/integrations/langchain"
->
-  Learn how to use any LangChain agent with Chainlit.
-</Card>
-
-<Card
   title="Autogen"
   icon="circle"
   color="#F80061"
   href="https://github.com/Chainlit/cookbook/tree/main/pyautogen"
 >
   Learn how to integrate your Autogen agents with Chainlit.
-</Card>
-
-<Card
-  title="Haystack"
-  icon="circle"
-  color="#16a34a"
-  href="/integrations/haystack"
->
-  Learn how to integrate your Haystack code with Chainlit.
 </Card>
 
 </CardGroup>

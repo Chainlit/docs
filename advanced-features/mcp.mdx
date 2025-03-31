@@ -40,6 +40,30 @@ Chainlit supports two types of MCP connections:
 
 <Note>**Command Availability Warning**: When using the stdio connection type with commands like `npx` or `uvx`, these commands must be available on the Chainlit server where the application is running. The subprocess is executed on the server, not on the client machine.</Note>
 
+### Server-Side Configuration (`config.toml`)
+
+You can control which MCP connection types are enabled globally and restrict allowed stdio commands by modifying your project's `config.toml` file (usually located at the root of your project or `.chainlit/config.toml`).
+
+Under the `[features.mcp]` section, you can configure SSE and stdio separately:
+
+```toml
+[features]
+# ... other feature flags
+
+[features.mcp.sse]
+    # Enable or disable the SSE connection type globally
+    enabled = true
+
+[features.mcp.stdio]
+    # Enable or disable the stdio connection type globally
+    enabled = true
+    # Define an allowlist of executables for the stdio type.
+    # Only the base names of executables listed here can be used.
+    # This is a crucial security measure for stdio connections.
+    # Example: allows running `npx ...` and `uvx ...` but blocks others.
+    allowed_executables = [ "npx", "uvx" ]
+```
+
 ## Setup
 
 ### 1. Register Connection Handlers

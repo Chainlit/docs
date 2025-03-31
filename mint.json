@@ -66,12 +66,12 @@
           "group": "Integrations",
           "pages": [
             "integrations/fastapi",
-            "integrations/mistralai",
-            "integrations/openai",
             "integrations/langchain",
-            "integrations/llama-index",
+            "integrations/openai",
+            "integrations/semantic-kernel",
+            "integrations/mistralai",
             "integrations/litellm",
-            "integrations/haystack",
+            "integrations/llama-index",
             "integrations/embedchain",
             "integrations/message-based"
           ]
@@ -255,8 +255,7 @@
       "group": "Integrations",
       "pages": [
         "api-reference/integrations/langchain",
-        "api-reference/integrations/llamaindex",
-        "api-reference/integrations/haystack"
+        "api-reference/integrations/llamaindex"
       ]
     },
     {
