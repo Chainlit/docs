@@ -25,3 +25,18 @@ Chainlit Application offers support for both dark and light modes. To accommodat
 ## Use your Favicon
 
 To further enhance branding, you can also update the application's favicon. Place an image file named `favicon` in the `public` folder next to your application. After restarting the application, the new favicon will take effect.
+
+## Customize Login Page Background image
+
+If authentication is enabled, a background image (defaulting to the Chainlit logo) will be displayed on the login page.
+You can customize it by editing the following fields of your `.chainlit/config.toml` file.
+
+```toml config.toml
+[UI]
+# Custom login page image, relative to public directory or external URL
+login_page_image = "/public/custom-background.jpg"
+
+# Custom login page image filter (Tailwind internal filters, no dark/light variants)
+# login_page_image_filter = "brightness-50 grayscale"
+# login_page_image_dark_filter = "contrast-200 blur-sm"
+```
