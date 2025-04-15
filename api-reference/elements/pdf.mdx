@@ -49,7 +49,7 @@ async def main():
       cl.Pdf(name="pdf1", display="inline", path="./pdf1.pdf", page=1)
     ]
 
-    cl.Message(content="Look at this local pdf!", elements=elements).send()
+    await cl.Message(content="Look at this local pdf!", elements=elements).send()
 ```
 
 ### Side and Page
