@@ -74,6 +74,10 @@ export interface IWidgetConfig {
     // The tailwind classname to apply to the button
     className?: string;
   };
+  // custom CSS styles in copilot
+  customCssUrl?: string;
+  // allows passing extra query parameters in API requests to the Chainlit server
+  additionalQueryParamsForAPI?: Record<string, string>;
 }
 ```
 
