@@ -1,0 +1,183 @@
+---
+title: "AskElementMessage"
+---
+
+Ask for the user to complete a custom element (fill a form) before continuing.
+This allows agents to send interactive, consent-gated UI components to the front end, let users review or edit their values, and submit them back to the backend.
+
+If the user does not answer in time (see timeout), a `TimeoutError` will be raised or `None` will be returned depending on `raise_on_timeout` parameter.
+If a project ID is configured, the messages will be uploaded to the cloud storage.
+
+### Attributes
+
+<ParamField path="content" type="str">
+  The content of the message.
+</ParamField>
+<ParamField path="element" type="CustomElement">
+  The [CustomElement](api-reference/elements/custom) to display to the user for interaction.
+</ParamField>
+<ParamField path="author" type="str" optional default="config.ui.name">
+  The author of the message, defaults to the chatbot name defined in your
+  config.
+</ParamField>
+<ParamField path="timeout" type="int" optional default={90}>
+  The number of seconds to wait for an answer before raising a TimeoutError.
+</ParamField>
+<ParamField path="raise_on_timeout" type="bool" optional default="False">
+  Whether to raise a socketio TimeoutError if the user does not answer in time.
+</ParamField>
+
+### Returns
+
+<ResponseField name="response" type="AskElementResponse | None">
+  The response from the user containing the submitted element data.
+</ResponseField>
+
+### Example
+
+#### Backend: Ask To Fill Jira Ticket Form
+
+```python
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def on_start():
+    element = cl.CustomElement(
+        name="JiraTicket",
+        display="inline",
+        props={
+            "timeout": 20,
+            "fields": [
+                {"id": "summary", "label": "Summary", "type": "text", "required": True},
+                {"id": "description", "label": "Description", "type": "textarea"},
+                {
+                    "id": "due",
+                    "label": "Due Date",
+                    "type": "date",
+                },
+                {
+                    "id": "priority",
+                    "label": "Priority",
+                    "type": "select",
+                    "options": ["Low", "Medium", "High"],
+                    "value": "Medium",
+                    "required": True,
+                },
+            ],
+        },
+    )
+    res = await cl.AskElementMessage(
+        content="Create a new Jira ticket:", element=element, timeout=10
+    ).send()
+    if res and res.get("submitted"):
+        await cl.Message(
+            content=f"Ticket '{res['summary']}' with priority {res['priority']} submitted"
+        ).send()
+```
+
+#### Frontend: Jira Ticket Custom Element Implementation
+
+The custom element should be implemented as a React component that handles form submission. Here's an example for the LogExpense component:
+
+```jsx
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import React, { useEffect, useMemo, useState } from 'react';
+
+export default function JiraTicket() {
+  const [timeLeft, setTimeLeft] = useState(props.timeout || 30);
+  const [values, setValues] = useState(() => {
+    const init = {};
+    (props.fields || []).forEach((f) => {
+      init[f.id] = f.value || '';
+    });
+    return init;
+  });
+
+  const allValid = useMemo(() => {
+    if (!props.fields) return true;
+    return props.fields.every((f) => {
+      if (!f.required) return true;
+      const val = values[f.id];
+      return val !== undefined && val !== '';
+    });
+  }, [props.fields, values]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft((t) => (t > 0 ? t - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleChange = (id, val) => {
+    setValues((v) => ({ ...v, [id]: val }));
+  };
+
+  const renderField = (field) => {
+    const value = values[field.id];
+    switch (field.type) {
+      case 'textarea':
+        return <Textarea id={field.id} value={value} onChange={(e) => handleChange(field.id, e.target.value)} />;
+      case 'select':
+        return (
+          <Select value={value} onValueChange={(val) => handleChange(field.id, val)}>
+            <SelectTrigger id={field.id}>
+              <SelectValue placeholder={field.label} />
+            </SelectTrigger>
+            <SelectContent>
+              {field.options.map((opt) => (
+                <SelectItem key={opt} value={opt}>
+                  {opt}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        );
+      case 'date':
+        return <Input type="date" id={field.id} value={value} onChange={(e) => handleChange(field.id, e.target.value)} />;
+      case 'datetime':
+        return <Input type="datetime-local" id={field.id} value={value} onChange={(e) => handleChange(field.id, e.target.value)} />;
+      default:
+        return <Input id={field.id} value={value} onChange={(e) => handleChange(field.id, e.target.value)} />;
+    }
+  };
+
+  return (
+    <Card id="jira-ticket" className="mt-4 w-full max-w-3xl grid grid-cols-2 gap-4">
+      <CardHeader className="col-span-2">
+        <CardTitle>Create JIRA Ticket</CardTitle>
+        <CardDescription>Provide details for the new issue. {timeLeft}s left</CardDescription>
+      </CardHeader>
+      <CardContent className="col-span-2 grid grid-cols-2 gap-4">
+        {props.fields.map((field) => (
+          <div key={field.id} className="flex flex-col gap-2">
+            <Label htmlFor={field.id}>
+              {field.label}
+              {field.required && <span className="text-red-500">*</span>}
+            </Label>
+            {renderField(field)}
+          </div>
+        ))}
+      </CardContent>
+      <CardFooter className="col-span-2 flex justify-end gap-2">
+        <Button id="ticket-cancel" variant="outline" onClick={() => cancelElement()}>
+          Cancel
+        </Button>
+        <Button
+          id="ticket-submit"
+          disabled={!allValid}
+          onClick={() => submitElement(values)}
+        >
+          Submit
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}
+```

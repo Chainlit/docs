@@ -211,7 +211,8 @@
             "pages": [
               "api-reference/ask/ask-for-input",
               "api-reference/ask/ask-for-file",
-              "api-reference/ask/ask-for-action"
+              "api-reference/ask/ask-for-action",
+              "api-reference/ask/ask-for-element"
             ]
           },
           {

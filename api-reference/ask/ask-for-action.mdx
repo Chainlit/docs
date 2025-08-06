@@ -14,7 +14,7 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 <ParamField path="actions" type="List[Action]">
   The list of [Action](/api-reference/action) to prompt the user.
 </ParamField>
-<ParamField path="author" type="str" optional>
+<ParamField path="author" type="str" optional default="config.ui.name">
   The author of the message, defaults to the chatbot name defined in your
   config.
 </ParamField>
@@ -27,7 +27,7 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 
 ### Returns
 
-<ResponseField name="response" type="AskActionResponse | None" required>
+<ResponseField name="response" type="AskActionResponse | None">
   The response of the user.
 </ResponseField>
 
