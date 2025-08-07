@@ -1,0 +1,17 @@
+---
+title: "audio_end"
+---
+
+Hook to react to the end of an audio recording coming from the user's microphone.
+
+## Usage
+
+```python
+from io import BytesIO
+import chainlit as cl
+
+
+@cl.on_audio_end
+async def on_audio_end():
+    pass
+```
