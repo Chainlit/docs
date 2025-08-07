@@ -1,5 +1,5 @@
 ---
-title: "MCP Servers"
+title: "MCP"
 description: Model Control Protocol (MCP) allows you to integrate external tool providers with your Chainlit application. This enables your AI models to use tools through standardized interfaces.
 ---
 
@@ -31,10 +31,15 @@ We're working with companies to create their MCP stacks, enabling AI agents to c
 
 ## Connections Types
 
-Chainlit supports two types of MCP connections:
+| WebSockets | HTTP+SSE | Streamable HTTP | stdio |
+| ---------- | -------- | --------------- | ----- |
+| ❌         | ✅       | ✅              | ✅    |
+
+Chainlit supports three types of MCP connections:
 
 1. **SSE (Server-Sent Events)**: Connect to a remote service via HTTP
-2. **stdio**: Execute a local command and communicate via standard I/O
+2. **Streamable HTTP**: Send HTTP requests to a server and receive JSON responses or connect using SSE streams
+3. **stdio**: Execute a local command and communicate via standard I/O
 
 > ⚠️ **Security Warning**: The stdio connection type spawns actual subprocesses on the Chainlit server. Only use this with trusted commands in controlled environments. Ensure proper validation of user inputs to prevent command injection vulnerabilities.
 
@@ -52,6 +57,10 @@ Under the `[features.mcp]` section, you can configure SSE and stdio separately:
 
 [features.mcp.sse]
     # Enable or disable the SSE connection type globally
+    enabled = true
+
+[features.mcp.streamable-http]
+    # Enable or disable the Streamable HTTP connection type globally
     enabled = true
 
 [features.mcp.stdio]
@@ -92,8 +101,8 @@ async def on_mcp_disconnect(name: str, session: ClientSession):
 The client needs to provide the connection details through the Chainlit interface. This includes:
 
 - Connection name (unique identifier)
-- Client type (`sse` or `stdio`)
-- For SSE: URL endpoint
+- Client type (`sse`, `streamable-http` or `stdio`)
+- For SSE and Streamable HTTP: URL endpoint
 - For stdio: Full command (e.g., `npx your-tool-package` or `uvx your-tool-package`)
 
 <Frame caption="Adding an MCP">
