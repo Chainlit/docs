@@ -2,23 +2,11 @@
 title: Features
 ---
 
-### Options
+## Options
 
-<ParamField path="unsafe_allow_html" type="bool" default={false}>
-  Process and display HTML in messages. This can be a security risk (see
-  https://stackoverflow.com/questions/19603097/why-is-it-dangerous-to-render-user-generated-html-or-javascript).
-</ParamField>
+### File Upload
 
-<ParamField path="edit_message" type="bool" default={true}>
-  Allow the user to edit their messages.
-</ParamField>
-
-<ParamField path="latex" type="bool" default={false}>
-  Process and display mathematical expressions. This can clash with "$"
-  characters in messages.
-</ParamField>
-
-<ParamField path="spontaneous_file_upload.enabled" type="bool" default={true}>
+<ParamField path="spontaneous_file_upload.enabled" type="bool" optional>
   Authorize users to upload files with messages. The files are then accessible
   in [cl.on_message](/api-reference/lifecycle-hooks/on-message).
 </ParamField>
@@ -26,36 +14,99 @@ title: Features
 <ParamField
   path="spontaneous_file_upload.accept"
   type="Union[List[str], Dict[str, List[str]]]"
-  default={["*/*"]}
+  optional
 >
   Restrict user to only upload accepted mime file types. Example: ["text/plain",
   "application/pdf", "image/x-png"]
 </ParamField>
 
-<ParamField path="spontaneous_file_upload.max_files" type="int" default={20}>
+<ParamField path="spontaneous_file_upload.max_files" type="int" optional>
   Restrict user to upload maximum number of files at a time.
 </ParamField>
 
-<ParamField path="spontaneous_file_upload.max_size_mb" type="int" default={500}>
+<ParamField path="spontaneous_file_upload.max_size_mb" type="int" optional>
   Restrict uploading file size (MB).
 </ParamField>
 
-<ParamField path="auto_tag_thread" type="bool">
+### Audio
+
+<ParamField path="audio.enabled" type="bool" default={false}>
+  Restrict uploading file size (MB).
+</ParamField>
+
+<ParamField path="audio.sample_rate" type="int" default={24000}>
+  Audio sample rate in hertz. Defaults to 24kHz
+</ParamField>
+
+### MCP
+
+See [MCP server-side configuration](/advanced-features/mcp#server-side-configuration-config-toml)
+
+### Slack
+
+See [Slack integration documentation](/deploy/slack)
+
+### Other
+
+<ParamField path="latex" type="bool" default={false}>
+  Process and display mathematical expressions. This can clash with "$"
+  characters in messages.
+</ParamField>
+
+<ParamField path="user_message_autoscroll" type="bool" default={true}>
+  Autoscroll new user messages at the top of the window.
+</ParamField>
+
+<ParamField path="unsafe_allow_html" type="bool" default={false}>
+  Process and display HTML in messages. This can be a security risk (see
+  https://stackoverflow.com/questions/19603097/why-is-it-dangerous-to-render-user-generated-html-or-javascript).
+</ParamField>
+
+<ParamField path="auto_tag_thread" type="bool" default={true}>
   Automatically tag threads with the current chat profile (if a chat profile is
   used)
 </ParamField>
 
-### Default configuration
+<ParamField path="edit_message" type="bool" default={true}>
+  Allow the user to edit their messages.
+</ParamField>
+
+## Default configuration
 
 ```toml
 [features]
-edit_message = true
+# Process and display HTML in messages. This can be a security risk (see https://stackoverflow.com/questions/19603097/why-is-it-dangerous-to-render-user-generated-html-or-javascript)
 unsafe_allow_html = false
+
+# Process and display mathematical expressions. This can clash with "$" characters in messages.
 latex = false
+
+# Autoscroll new user messages at the top of the window
+user_message_autoscroll = true
+
+# Automatically tag threads with the current chat profile (if a chat profile is used)
+auto_tag_thread = true
+
+# Allow users to edit their own messages
+edit_message = true
+
+# Authorize users to spontaneously upload files with messages
 [features.spontaneous_file_upload]
     enabled = true
+    # Define accepted file types using MIME types
+    # Examples:
+    # 1. For specific file types:
+    #    accept = ["image/jpeg", "image/png", "application/pdf"]
+    # 2. For all files of certain type:
+    #    accept = ["image/*", "audio/*", "video/*"]
+    # 3. For specific file extensions:
+    #    accept = {{ "application/octet-stream" = [".xyz", ".pdb"] }}
+    # Note: Using "*/*" is not recommended as it may cause browser warnings
     accept = ["*/*"]
     max_files = 20
     max_size_mb = 500
-auto_tag_thread = true
+
+[features.audio]
+    # Sample rate of the audio
+    sample_rate = 24000
 ```

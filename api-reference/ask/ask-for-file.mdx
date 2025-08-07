@@ -28,7 +28,7 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 <ParamField path="timeout" type="int" optional default={90}>
   The number of seconds to wait for an answer before raising a TimeoutError.
 </ParamField>
-<ParamField path="raise_on_timeout" type="bool" optional default="False">
+<ParamField path="raise_on_timeout" type="bool" optional default={false}>
   Whether to raise a socketio TimeoutError if the user does not answer in time.
 </ParamField>
 

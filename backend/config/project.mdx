@@ -2,50 +2,52 @@
 title: Project
 ---
 
-### Options
-
-<ParamField path="enable_telemetry" type="bool" default={true}>
-  Whether to enable telemetry (default: true). No personal data is collected.
-</ParamField>
+## Options
 
 <ParamField path="allow_origins" type="List[str]" default={["*"]}>
   Authorized origins to access the app/copilot.
 </ParamField>
 
-<ParamField path="user_env" type="List[str]" default={[]}>
-  List of environment variables to be provided by each user to use the app.
+<ParamField path="transports" type="List[str]" optional>
+  Socket.io client transports option
 </ParamField>
 
-<ParamField path="session_timeout" type="int" default={3600}>
-  Duration (in seconds) during which the session is saved when the connection is
-  lost
+<ParamField path="user_env" type="List[str]" optional>
+  List of environment variables to be provided by each user to use the app. If empty, no environment variables will be asked to the user.
+</ParamField>
+
+<ParamField path="lc_cache_path" type="str" optional>
+  Path to the local langchain cache database
+</ParamField>
+
+<ParamField path="session_timeout" type="int" default={300}>
+  Duration (in seconds) during which the session is saved when the connection is lost
+</ParamField>
+
+<ParamField path="user_session_timeout" type="int" default={1296000}>
+  Duration (in seconds) of the user session expiry. 15 days by default
 </ParamField>
 
 <ParamField path="cache" type="bool" default={false}>
   Enable third parties caching (e.g LangChain cache)
 </ParamField>
 
-<ParamField path="follow_symlink" type="bool" default={false}>
-  Follow symlink for asset mount (see
-  https://github.com/Chainlit/chainlit/issues/317)
-</ParamField>
-
-### Default configuration
+## Default configuration
 
 ```toml
 [project]
-# Whether to enable telemetry (default: true). No personal data is collected.
-enable_telemetry = true
-
 # List of environment variables to be provided by each user to use the app.
 user_env = []
 
 # Duration (in seconds) during which the session is saved when the connection is lost
 session_timeout = 3600
 
-# Enable third parties caching (e.g LangChain cache)
+# Duration (in seconds) of the user session expiry
+user_session_timeout = 1296000  # 15 days
+
+# Enable third parties caching (e.g., LangChain cache)
 cache = false
 
-# Follow symlink for asset mount (see https://github.com/Chainlit/chainlit/issues/317)
-# follow_symlink = false
+# Authorized origins
+allow_origins = ["*"]
 ```
