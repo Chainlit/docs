@@ -107,12 +107,16 @@ export interface IWidgetConfig {
     // The tailwind classname to apply to the button
     className?: string;
   };
-  // custom CSS styles in copilot
+  // Custom CSS styles in copilot
   customCssUrl?: string;
-  // allows passing extra query parameters in API requests to the Chainlit server
+  // Allows passing extra query parameters in API requests to the Chainlit server
   additionalQueryParamsForAPI?: Record<string, string>;
   // Start widget container expanded, i.e. wide
   expanded?: boolean;
+  // Set language of Chainlit's UI
+  // Defaults to preferred language of the user
+  // via navigator.language, then to en-US
+  language?: string;
 }
 ```
 
