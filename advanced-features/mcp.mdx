@@ -5,7 +5,7 @@ description: Model Control Protocol (MCP) allows you to integrate external tool 
 
 ## Overview
 
-MCP provides a mechanism for Chainlit applications to connect to either server-sent events (SSE) based services or command-line (stdio) based tools. Once connected, your application can discover available tools, execute them, and integrate their responses into your application's flow.
+MCP provides a mechanism for Chainlit applications to connect to either server-sent events (SSE) or streamable HTTP based services, or command-line (stdio) based tools. Once connected, your application can discover available tools, execute them, and integrate their responses into your application's flow.
 
  <Card
     title="Chainlit MCP Cookbook"
@@ -49,7 +49,7 @@ Chainlit supports three types of MCP connections:
 
 You can control which MCP connection types are enabled globally and restrict allowed stdio commands by modifying your project's `config.toml` file (usually located at the root of your project or `.chainlit/config.toml`).
 
-Under the `[features.mcp]` section, you can configure SSE and stdio separately:
+Under the `[features.mcp]` section, you can configure SSE, Streamable HTTP and stdio separately:
 
 ```toml
 [features]
