@@ -111,6 +111,29 @@ If you want to allow users to send direct messages to the app, go to App Home an
   <img src="/images/slack/allow-dm.png" />
 </Frame>
 
+## [Optional] Emoji Reaction on Message Received
+
+Adds an optional feature to show emoji reactions when Slack messages are received, providing immediate user feedback while the bot processes the request.
+
+<Note>
+  This feature requires the `reactions:write` OAuth scope. If you enable this feature, you'll need to add this scope to your Slack app's OAuth configuration.
+</Note>
+
+To enable this feature, add the following configuration to your `chainlit.md` file:
+
+```toml
+[features.slack]
+reaction_on_message_received = true
+```
+
+<Warning>
+  This feature is disabled by default to maintain backward compatibility. If you enable this feature, you'll need to add the `reactions:write` scope to your Slack app's OAuth configuration.
+</Warning>
+
+<Frame caption="How it will look like">
+  <img src="/images/slack/emoji-reaction.png" />
+</Frame>
+
 ## Install the Slack App to Your Workspace
 
 Navigate to the Install App tab and click on Install to Workspace.
