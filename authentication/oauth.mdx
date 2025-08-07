@@ -211,7 +211,8 @@ def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
-  default_user: cl.User,
+  default_app_user: cl.User,
+  id_token: Optional[str]
 ) -> Optional[cl.User]:
   return default_user
 ```
@@ -228,7 +229,8 @@ def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
-  default_user: cl.User,
+  default_app_user: cl.User,
+  id_token: Optional[str]
 ) -> Optional[cl.User]:
   if provider_id == "google":
     if raw_user_data["hd"] == "example.org":
