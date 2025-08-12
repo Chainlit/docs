@@ -37,7 +37,33 @@ Create a name for your bot, such as "ChainlitDemo". Select the workspace you wou
   <img src="/images/slack/create-app.png" />
 </Frame>
 
-## Working Locally
+## Connection Methods
+
+Chainlit supports two methods to connect with Slack:
+
+1. **HTTP Events API** - The traditional method using a public endpoint (requires a public URL)
+2. **Socket Mode** - A WebSocket-based connection that doesn't require a public URL (recommended)
+
+### Socket Mode (Recommended)
+
+Socket Mode establishes a WebSocket connection between your Chainlit app and Slack servers, eliminating the need for a public URL. This is especially useful during development or when deploying behind a firewall.
+
+To enable Socket Mode:
+
+1. Go to your app's settings on the Slack API dashboard
+2. Navigate to the "Socket Mode" section and enable it
+3. Generate an app-level token with the `connections:write` scope
+4. Set the generated token as the `SLACK_WEBSOCKET_TOKEN` environment variable
+
+<Frame caption="Enable Socket Mode">
+  <img src="/images/slack/socket-mode.png" />
+</Frame>
+
+### HTTP Events API
+
+If you prefer using the traditional HTTP method or cannot use Socket Mode, you'll need to expose your application to the internet.
+
+#### Working Locally
 
 If you are working locally, you will have to expose your local Chainlit app to the internet to receive incoming messages to Slack. You can use [ngrok](https://ngrok.com/) for this.
 
@@ -166,6 +192,18 @@ Navigate to the Basic Information tab and copy the Signing Secret. Then set it a
 SLACK_SIGNING_SECRET=your_signing_secret
 ```
 
+### WebSocket Token (For Socket Mode)
+
+If you're using Socket Mode, navigate to the Basic Information tab and find the App-Level Tokens section. Copy your WebSocket token that has the `connections:write` scope and set it as an environment variable.
+
+<Frame caption="Generate and copy Socket Token">
+  <img src="/images/slack/socket-token.png" />
+</Frame>
+
+```bash
+SLACK_WEBSOCKET_TOKEN=your_websocket_token
+```
+
 ## Start the Chainlit App
 
 Since the Chainlit app is not running, the Slack app will not be able to communicate with it.
@@ -201,6 +239,9 @@ chainlit run my_app.py -h
 
 <Note>
   Using -h to not open the default Chainlit UI since we are using Slack.
+
+  If using Socket Mode, you don't need to expose your app to the internet with ngrok.
+  If using HTTP Events API, make sure your Chainlit app is accessible via the URL you configured.
 </Note>
 
 You should now be able to interact with your Chainlit app through Slack.
