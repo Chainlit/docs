@@ -88,3 +88,37 @@ async def on_chat_start():
         content=f"starting chat with {user.identifier} using the {chat_profile} chat profile"
     ).send()
 ```
+
+## Dynamic Configuration
+
+You can override the global `config.toml` for specific ChatProfiles by configuring overrides 
+
+```python
+from chainlit.config import (
+    ChainlitConfigOverrides,
+    FeaturesSettings,
+    McpFeature,
+    UISettings,
+)
+
+@cl.set_chat_profiles
+async def chat_profile(current_user: cl.User):
+    return [
+        cl.ChatProfile(
+            name="MCP Enabled",
+            markdown_description="Profile with **MCP features enabled**. This profile has *Model Context Protocol* support activated. [Learn more](https://example.com/mcp)",
+            icon="https://picsum.photos/250",
+            starters=starters,
+            config_overrides=ChainlitConfigOverrides(
+                ui=UISettings(name="MCP UI"),
+                features=FeaturesSettings(
+                    mcp=McpFeature(
+                        enabled=True,
+                        stdio={"enabled": True},
+                        sse={"enabled": True},
+                        streamable_http={"enabled": True},
+                    )
+                ),
+            ),
+        ),
+```
