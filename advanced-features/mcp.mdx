@@ -109,6 +109,142 @@ The client needs to provide the connection details through the Chainlit interfac
   <img src="/images/add-mcp.png" />
 </Frame>
 
+## Static Server Configuration (Auto-Connection)
+
+Instead of manually connecting MCP servers through the UI, you can configure servers to automatically connect when a chat session starts. This is useful for production deployments where you want specific MCP servers available by default.
+
+### Configuration
+
+Add MCP servers to your `config.toml` file under the `[features.mcp]` section:
+
+```toml
+[features.mcp]
+enabled = true
+
+# HTTP-based MCP server (e.g., web services)
+[[features.mcp.servers]]
+name = "csv-editor"
+client = "streamable-http"
+url = "http://localhost:3001/mcp"
+auto_connect = true  # Automatically connect on chat start
+timeout = 30
+
+# Command-line MCP server  
+[[features.mcp.servers]]
+name = "local-tools"
+client = "stdio"
+command = "npx my-mcp-server"
+auto_connect = true  # Automatically connect on chat start
+timeout = 45
+
+# Server-sent events MCP server
+[[features.mcp.servers]]
+name = "sse-server"
+client = "sse"
+url = "http://localhost:3002/sse"
+auto_connect = false  # Manual connection only (default UI behavior)
+timeout = 30
+```
+
+### Configuration Parameters
+
+Each server configuration supports these parameters:
+
+| Parameter | Required | Type | Description |
+|-----------|----------|------|-------------|
+| `name` | ✅ | string | Unique identifier for the MCP server |
+| `client` | ✅ | string | Connection type: `"stdio"`, `"sse"`, or `"streamable-http"` |
+| `auto_connect` | ❌ | boolean | Whether to connect automatically on chat start (default: `true`) |
+| `timeout` | ❌ | integer | Connection timeout in seconds (default: `30`) |
+| `url` | ✅* | string | Server URL (required for `sse` and `streamable-http`) |
+| `headers` | ❌ | object | Additional HTTP headers (for `sse` and `streamable-http`) |
+| `command` | ✅* | string | Command to execute (required for `stdio`) |
+
+### Auto-Connection Behavior
+
+When `auto_connect` is set to `true` (which is the default):
+
+1. **Chat Start**: Servers are automatically connected when a new chat session begins
+2. **Concurrent Connections**: Multiple servers connect simultaneously for faster startup
+3. **Error Handling**: Individual connection failures don't prevent other servers from connecting
+4. **Session Binding**: Connected servers are available throughout the chat session
+
+**Connection Flow:**
+```python
+# Auto-connection happens before on_chat_start
+@cl.on_chat_start
+async def start():
+    # MCP servers are already connected and available
+    session = cl.context.session
+    if hasattr(session, 'mcp_sessions'):
+        connected_servers = list(session.mcp_sessions.keys())
+        await cl.Message(f"Connected to {len(connected_servers)} MCP servers: {', '.join(connected_servers)}").send()
+```
+
+### Connection States
+
+You can check connection status in your handlers:
+
+```python
+@cl.on_mcp_connect
+async def on_mcp_connect(connection, session: ClientSession):
+    """Called for each successful auto-connection"""
+    await cl.Message(f"✅ {connection.name} connected successfully").send()
+
+@cl.on_chat_start
+async def start():
+    """Check which servers auto-connected"""
+    session = cl.context.session
+    mcp_sessions = getattr(session, 'mcp_sessions', {})
+    
+    if mcp_sessions:
+        server_names = list(mcp_sessions.keys())
+        await cl.Message(f"🔌 Auto-connected to: {', '.join(server_names)}").send()
+    else:
+        await cl.Message("❌ No MCP servers auto-connected").send()
+```
+
+### Troubleshooting Auto-Connection
+
+**Common Issues:**
+
+1. **Connection Timeouts**: Increase the `timeout` value for slow-starting servers
+2. **Command Not Found**: Ensure `stdio` commands are available on the server (e.g., `npx`, `uvx`)
+3. **Partial Failures**: Check server logs - some servers may connect while others fail
+4. **Permission Issues**: Verify `allowed_executables` includes your `stdio` commands
+
+**Debug Information:**
+
+Auto-connection logs are available in the Chainlit server console:
+```
+INFO - Auto-connecting to 3 MCP servers
+INFO - Successfully auto-connected to MCP server 'csv-editor'
+ERROR - Failed to auto-connect to MCP server 'local-tools': Connection timeout (30s)
+INFO - MCP auto-connection completed: 2/3 successful
+```
+
+### Mixed Configuration
+
+You can mix auto-connection servers with manual UI connections:
+
+```toml
+# These servers auto-connect
+[[features.mcp.servers]]
+name = "core-tools"
+client = "stdio"
+command = "npx core-mcp-server"
+auto_connect = true
+
+# This server requires manual connection via UI
+[[features.mcp.servers]]
+name = "optional-service"  
+client = "streamable-http"
+url = "http://localhost:3003/mcp"
+auto_connect = false  # User must connect manually
+```
+
+Users can still manually connect additional servers through the UI, even when auto-connection is configured.
+
 ## Working with MCP Connections
 
 ### Retrieving Available Tools
