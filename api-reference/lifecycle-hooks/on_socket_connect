@@ -1,0 +1,17 @@
+---
+title: "on_socket_connect"
+---
+
+Hook to react to a new websocket connection to the front end. Note: this event should be triggered on all connection/reconnection events, including after client-side (eg browser moved to background on mobile), server-side (eg timeout) or connectivity issues.
+
+## Usage
+
+```python
+from io import BytesIO
+import chainlit as cl
+
+
+@cl.on_audio_chunk
+async def on_audio_chunk(chunk: cl.InputAudioChunk):
+    pass
+```
