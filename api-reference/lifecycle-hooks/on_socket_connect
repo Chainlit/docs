@@ -2,16 +2,27 @@
 title: "on_socket_connect"
 ---
 
-Hook to react to a new websocket connection to the front end. Note: this event should be triggered on all connection/reconnection events, including after client-side (eg browser moved to background on mobile), server-side (eg timeout) or connectivity issues.
+Hook to react to a new websocket connection to the front end. Note: this event should be triggered on all connection/reconnection events, including after client-side (eg browser moved to background on mobile), server-side (eg timeout) or connectivity issues. This event does not depend on authentication or data persistence - you can use the Chainlit session id to restore the chat state if required.
 
 ## Usage
 
 ```python
-from io import BytesIO
 import chainlit as cl
 
-
-@cl.on_audio_chunk
-async def on_audio_chunk(chunk: cl.InputAudioChunk):
-    pass
+@cl.on_socket_connect
+async def on_socket_connect:
+    print("Websocket connection established")
+    wsgi_env = cl.context.session.environ
+        # print(f"WSGI Environment: {wsgi_env}")
+        cookies = wsgi_env.get("HTTP_COOKIE", "No cookies found")
+        print(f"Cookies: {cookies}")
+        # Parse the cookie string to extract X-Chainlit-Session-id
+        session_id = "unknown"
+        if cookies != "No cookies found":
+            cookie_parts = [part.strip().split("=") for part in cookies.split(";")]
+            session_cookie = next((p[1] for p in cookie_parts if len(p) == 2 and p[0] == "X-Chainlit-Session-id"), None)
+            if session_cookie:
+                session_id = session_cookie
+                cl.user_session.set("session_id", session_id)
+        print(f"X-Chainlit-Session-id: {session_id}")
 ```
