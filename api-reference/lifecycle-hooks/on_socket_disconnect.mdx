@@ -1,0 +1,21 @@
+---
+title: "on_socket_disconnect"
+---
+
+Hook to react to websocket disconnection. Note: this event should be triggered on all disconnection events, including after client-side (eg browser moved to background on mobile), server-side (eg timeout) or connectivity issues. Unlike `on_chat_end` it is not called in response to user-initiated changes in chat context, eg clicking "New Chat." The session id should be available in subsequent reconnection events - see `on_socket_connect` for how to retrieve it.
+
+## Usage
+
+```python
+import chainlit as cl
+
+@cl.on_socket_disconnect
+async def on_socket_disconnect():
+    print("WebSocket connection closed")
+    print(f"Context available: {hasattr(cl, 'context')}")
+    if hasattr(cl, "context"):
+        print(f"Session ID: {getattr(cl.context, 'session', None) and cl.context.session.id}")
+        print(f"Session type: {type(getattr(cl.context, 'session', None)).__name__ if hasattr(cl.context, 'session') else 'No session'}")
+    else:
+        print("No context available in on_socket_disconnect")
+```
