@@ -10,8 +10,6 @@ title: OpenAI
 
 The benefits of this integration is that you can see the OpenAI API calls in a step in the UI, and you can explore them in the prompt playground.
 
-You will also get the full generation details (prompt, completion, tokens per second...) in your Literal AI dashboard, if your project is using [Literal AI](https://docs.literalai.com).
-
 You need to add `cl.instrument_openai()` after creating your OpenAI client.
 
 <Warning>
@@ -71,7 +69,7 @@ async def on_message(message: cl.Message):
 
 ## Step 3: Fill the environment variables
 
-Create a file named `.env` in the same folder as your `app.py` file. Add your OpenAI API key in the `OPENAI_API_KEY` variable. You can optionally add your Literal AI API key in the `LITERAL_API_KEY`.
+Create a file named `.env` in the same folder as your `app.py` file. Add your OpenAI API key in the `OPENAI_API_KEY` variable.
 
 ## Step 4: Run the Application
 

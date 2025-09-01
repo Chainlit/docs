@@ -103,7 +103,7 @@ interface APIs {
     // Call an action defined in the Chainlit app
     callAction: (action: {name: string, payload: Record<string, unknown>}) =>Promise<{success: boolean}>;
     // Send a user message
-    sendUserMessage: (message: string) => void;
+    sendUserMessage: (message: string, command?: string) => void;
 }
 ```
 

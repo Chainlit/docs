@@ -8,16 +8,11 @@ Software Copilot are a new kind of assistant embedded in your app/product. They 
   <img src="/images/copilot.gif" />
 </Frame>
 
-<Note>
-  [Contact us](mailto:contact@literalai.com) to get advice on how to ship
-  reliable and secure AI Copilots or Assistants in your product.
-</Note>
-
 ## Supported Features
 
 | Message | Streaming | Elements | Audio | Ask User | Chat History | Chat Profiles | Feedback |
 | ------- | --------- | -------- | ----- | -------- | ------------ | ------------- | -------- |
-| ✅      | ✅        | ✅       | ✅    | ✅       | ❌           | ✅            | ✅       |
+| ✅      | ✅        | ✅       | ✅    | ✅       | ✅           | ✅            | ✅       |
 
 ## Embedding the Copilot
 
@@ -58,6 +53,39 @@ That's it! You should now see a floating button on the bottom right corner of yo
 
 You can programmatically toggle the copilot with `window.toggleChainlitCopilot()`.
 
+## Thread Persistence
+
+The Copilot now supports persistent storage of the `threadId` in the browser's localStorage, enabling chat restoration after a page reload. This feature provides two JavaScript utility functions for managing thread persistence:
+
+### getChainlitCopilotThreadId()
+
+Retrieves the current threadId from localStorage.
+
+**Returns:** `string | null` - The current threadId or null if not found
+
+```javascript
+const threadId = window.getChainlitCopilotThreadId();
+console.log("Current thread ID:", threadId);
+```
+
+### clearChainlitCopilotThreadId(newThreadId?)
+
+Clears the existing threadId from localStorage. Optionally sets a new one.
+
+**Parameters:**
+- `newThreadId?` (optional): `string` - A new threadId to set after clearing
+
+```javascript
+// Start a new thread programmatically
+window.clearChainlitCopilotThreadId();
+
+// Or with predefined ID
+const newThreadId = crypto.randomUUID();
+window.clearChainlitCopilotThreadId(newThreadId);
+```
+
+These functions provide developers with greater control over thread management and session continuity in the Copilot experience.
+
 ## Widget Configuration
 
 The `mountChainlitWidget` function accepts the following options:
@@ -79,6 +107,16 @@ export interface IWidgetConfig {
     // The tailwind classname to apply to the button
     className?: string;
   };
+  // Custom CSS styles in copilot
+  customCssUrl?: string;
+  // Allows passing extra query parameters in API requests to the Chainlit server
+  additionalQueryParamsForAPI?: Record<string, string>;
+  // Start widget container expanded, i.e. wide
+  expanded?: boolean;
+  // Set language of Chainlit's UI
+  // Defaults to preferred language of the user
+  // via navigator.language, then to en-US
+  language?: string;
 }
 ```
 

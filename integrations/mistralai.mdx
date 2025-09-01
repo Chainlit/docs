@@ -2,8 +2,6 @@
 title: Mistral AI
 ---
 
-You will get the full generation details (prompt, completion, tokens per second...) in your Literal AI dashboard, if your project is using [Literal AI](https://docs.literalai.com).
-
 <Warning>
   You shouldn't configure this integration if you're already using another
   integration like Langchain or LlamaIndex. Both integrations would
@@ -60,7 +58,6 @@ async def on_message(message: cl.Message):
 ## Step 3: Fill the environment variables
 
 Create a file named `.env` in the same folder as your `app.py` file. Add your Mistral AI API key in the `MISTRAL_API_KEY` variable.
-You can optionally add your Literal AI API key in the `LITERAL_API_KEY`.
 
 ## Step 4: Run the Application
 

@@ -67,3 +67,13 @@ def get_data_layer():
 
 Follow the [reference](/api-reference/data-persistence/custom-data-layer) for an exhaustive list of the methods your custom data layer needs to implement.
 
+## Cloud Storage Providers supported out-of-the-box
+
+- AWS S3
+  - LocalStack via `DEV_AWS_ENDPOINT` environment variable
+- Azure
+  - Blob Storage
+  - Data Lake Storage (ADLS) Gen2
+- Google Cloud Storage
+  - via Private Key
+  - via Application Default Credentials (e.g. in Google Cloud Run)

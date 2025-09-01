@@ -21,16 +21,20 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 <ParamField path="max_files" type="int" optional>
   Maximum number of files to upload. Defaults to 1. Maximum value is 10.
 </ParamField>
-<ParamField path="timeout" type="int" optional>
+<ParamField path="author" type="str" optional default="config.ui.name">
+  The author of the message, defaults to the chatbot name defined in your
+  config.
+</ParamField>
+<ParamField path="timeout" type="int" optional default={90}>
   The number of seconds to wait for an answer before raising a TimeoutError.
 </ParamField>
-<ParamField path="raise_on_timeout" type="bool" optional>
+<ParamField path="raise_on_timeout" type="bool" optional default={false}>
   Whether to raise a socketio TimeoutError if the user does not answer in time.
 </ParamField>
 
 ### Returns
 
-<ResponseField name="response" type="List[AskFileResponse]" required>
+<ResponseField name="response" type="List[AskFileResponse] | None">
   The files uploaded by the user.
 </ResponseField>
 

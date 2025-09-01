@@ -11,20 +11,20 @@ If a project ID is configured, the messages will be uploaded to the cloud storag
 <ParamField path="content" type="str">
   The content of the message.
 </ParamField>
-<ParamField path="author" type="str" optional>
+<ParamField path="author" type="str" optional default="config.ui.name">
   The author of the message, defaults to the chatbot name defined in your
   config.
 </ParamField>
-<ParamField path="timeout" type="int" optional>
+<ParamField path="timeout" type="int" optional default={60}>
   The number of seconds to wait for an answer before raising a TimeoutError.
 </ParamField>
-<ParamField path="raise_on_timeout" type="bool" optional>
+<ParamField path="raise_on_timeout" type="bool" optional default={false}>
   Whether to raise a socketio TimeoutError if the user does not answer in time.
 </ParamField>
 
 ### Returns
 
-<ResponseField name="response" type="Step" required>
+<ResponseField name="response" type="StepDict | None">
   The response of the user.
 </ResponseField>
 
