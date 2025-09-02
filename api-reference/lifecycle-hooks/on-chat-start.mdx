@@ -2,7 +2,7 @@
 title: "on_chat_start"
 ---
 
-Hook to react to the user websocket connection event.
+Hook to react to the initial user websocket connection event. Note: this callback will only fire on the initial connection for a user's session - use `on_socket_connect` to react to the connection being reestablished.
 
 ## Usage
 
