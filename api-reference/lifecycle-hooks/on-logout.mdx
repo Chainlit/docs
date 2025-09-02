@@ -18,10 +18,10 @@ Decorator to react to a user logging out. Useful to clear cookies or other user 
 ```python
 from fastapi import Request, Response
 
-import chainlit as cl
+import chainlit
 
 
-@cl.on_logout
+@chainlit.on_logout
 def main(request: Request, response: Response):
     response.delete_cookie("my_cookie")
 ```
