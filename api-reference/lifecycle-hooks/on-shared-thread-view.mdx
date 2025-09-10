@@ -1,0 +1,84 @@
+---
+title: "on_shared_thread_view"
+---
+
+Decorator to authorize and optionally sanitize a shared (read-only) thread before it is displayed to another authenticated user.
+
+Requires that thread sharing is enabled via:
+
+- [Authentication](/authentication/overview)
+- [Data persistence](/data-persistence/overview)
+- `allow_thread_sharing = true` in the config (or via Chat Profile overrides)
+- The thread has been marked as shared (metadata `is_shared = true`)
+
+If any of these are missing, the decorator won't be invoked.
+
+This hook runs on every attempt to view a shared thread and must return `True` to allow the thread to be sent to the client. You can mutate the `thread` dict in-place to redact or filter content.
+
+## Usage
+
+```python
+import chainlit as cl
+from typing import Any, Dict
+
+
+@cl.on_shared_thread_view
+async def on_shared_thread_view(thread: Dict[str, Any], current_user: cl.User) -> bool:
+    # Deny if user not on same team
+    owner_team = thread.get("metadata", {}).get("team")
+    user_team = current_user.metadata.get("team")
+    if owner_team != user_team:
+        return False
+
+    # Remove messages created after it was shared (freeze at share time)
+    shared_at = thread.get("metadata", {}).get("shared_at")
+    if shared_at:
+        thread["steps"] = [
+            s for s in thread.get("steps", []) if s.get("created_at") <= shared_at
+        ]
+
+    # Redact sensitive outputs
+    for step in thread.get("steps", []):
+        if step.get("metadata", {}).get("sensitive"):
+            step["output"] = "[REDACTED]"
+
+    return True
+```
+
+```python
+# Simpler example: allow if the thread is marked as shared
+@cl.on_shared_thread_view
+async def on_shared_thread_view(thread, current_user: cl.User) -> bool:
+    return bool(thread.get("metadata", {}).get("is_shared"))
+```
+
+## Parameters
+
+<ParamField path="thread" type="ThreadDict">
+  The serialized thread (including messages/steps, elements and `metadata`). Mutate in-place to sanitize.
+</ParamField>
+
+<ParamField path="current_user" type="User">
+  The authenticated user requesting access to the shared thread.
+</ParamField>
+
+## Return Value
+
+Return `True` to allow the sanitized (or unmodified) thread to be returned.
+Return `False` (or raise) to deny with a `404` (the thread appears non-existent to the requester).
+
+## Common Patterns
+
+- Role gate: allow administrators regardless of team.
+- Expiry: compare `shared_at` with `now()` and deny after a duration.
+- Partial visibility: trim messages beyond a timestamp or with specific labels.
+- Redaction: scrub PII using regex before returning.
+- Audit: log each successful access (user id, thread id, time).
+
+## Minimal Example (Allow All)
+
+```python
+@cl.on_shared_thread_view
+async def on_shared_thread_view(thread, current_user: cl.User) -> bool:
+    return True  # Accept every view (demo only)
+```

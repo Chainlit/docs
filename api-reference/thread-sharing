@@ -1,0 +1,148 @@
+---
+title: "Thread Sharing"
+---
+
+Read-only sharing of an existing chat thread with other authenticated users.
+
+This feature lets a user deliberately expose the current state of a thread via a shareable URL, while preserving:
+
+- Ownership (only the owner can continue sending messages)
+- Read-only view for others (no message composer, no element uploads)
+- Backward compatibility (disabled unless explicitly turned on)
+
+## Prerequisites
+
+To enable thread sharing, you MUST have:
+
+1. [Authentication](/authentication/overview) enabled.
+2. [Data persistence](/data-persistence/overview) enabled.
+3. The feature flag set: `allow_thread_sharing = true` in `config.toml` (or via a Chat Profile `config_overrides`).
+4. An `@cl.on_shared_thread_view` callback implemented that returns `True` to authorize access.
+
+If any prerequisite is missing, the Share UI will not appear and the endpoints will reject requests.
+
+## How It Works
+
+When the owner decides to share a thread:
+
+1. A new backend endpoint marks the thread as shared by setting metadata:
+   - `is_shared = true`
+   - `shared_at = <UTC ISO timestamp>`
+2. A share URL is copied to the clipboard (e.g. `/threads/<thread_id>/shared`).
+3. Another authenticated user visiting the URL triggers the `@cl.on_shared_thread_view` callback.
+4. If the callback returns `True`, the sanitized thread is returned and rendered read-only.
+
+Subsequent messages added by the owner are NOT pushed live to viewers. Viewers must reload to see updates (keeps design simple and secure). You can optionally filter messages in the callback (e.g. only those created before `shared_at`).
+
+## Metadata Fields
+
+These are added (or updated) when a thread is shared:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `is_shared` | bool | Marks the thread as shareable. |
+| `shared_at` | str (ISO datetime) | Timestamp the share action occurred. Useful as a visibility cut-off. |
+
+You can remove sharing at any time by unsetting `is_shared` (e.g. updating metadata) or deleting the thread.
+
+## Configuration
+
+In `config.toml`:
+
+```toml
+[features]
+allow_thread_sharing = true
+```
+
+Or inside a Chat Profile override (example excerpt):
+
+```python
+from chainlit.config import ChainlitConfigOverrides, FeaturesSettings
+
+cl.ChatProfile(
+	name="Sharable",
+	markdown_description="Profile with thread sharing enabled.",
+	config_overrides=ChainlitConfigOverrides(
+		features=FeaturesSettings(allow_thread_sharing=True)
+	),
+)
+```
+
+## Authorization Callback
+
+Implement `on_shared_thread_view` to enforce custom rules and optionally redact content before it's sent.
+
+```python
+import chainlit as cl
+from typing import Any, Dict
+
+
+@cl.on_shared_thread_view
+async def on_shared_thread_view(thread: Dict[str, Any], current_user: cl.User) -> bool:
+	# Example 1: Only allow same team
+	owner_team = thread.get("metadata", {}).get("team")
+	user_team = current_user.metadata.get("team")
+	if owner_team != user_team:
+		return False
+
+	# Example 2: Remove messages created after share time
+	shared_at = thread.get("metadata", {}).get("shared_at")
+	if shared_at:
+		thread["steps"] = [
+			s for s in thread.get("steps", []) if s.get("created_at") <= shared_at
+		]
+
+	# Example 3: Redact sensitive labels
+	for msg in thread.get("steps", []):
+		if msg.get("metadata", {}).get("sensitive"):
+			msg["output"] = "[REDACTED]"
+	return True
+```
+
+Return `True` to allow the response to be sent. Return `False` (or raise) to return a 404 (conceals existence).
+
+## Typical Flow
+
+1. User A starts a chat (meets prerequisites).
+2. After first message, Share button appears (header + thread list item control).
+3. User A clicks Share → metadata updated, URL copied.
+4. User B logs in and visits URL → callback runs.
+5. If authorized → read-only thread view (no composer) is rendered.
+
+## Revoking Access
+
+Update the thread metadata to set `is_shared` to False. Viewers visiting the old URL will then receive 404 (assuming your callback denies or the server rejects without the flag).
+
+## Security Considerations
+
+- Opt-in flag prevents accidental exposure.
+- Callback centralizes policy (role checks, team membership, expiration logic, redaction).
+- Returning 404 on denial obscures whether a thread exists.
+- You can implement time-based expiry by comparing `shared_at` to `now()` in the callback.
+
+## Patterns & Ideas
+
+| Goal | Approach |
+|------|----------|
+| Expire links | Deny if `now - shared_at > timedelta(hours=24)` |
+| Admin override | Allow if `current_user.metadata.role == "ADMIN"` |
+| Freeze content | Filter messages > `shared_at` |
+| Redact PII | Regex scrub message `output` fields before returning |
+| Audit access | Log each successful view with user id + timestamp |
+
+## Minimal Example
+
+```python
+import chainlit as cl
+
+
+@cl.on_shared_thread_view
+async def on_shared_thread_view(thread, current_user: cl.User) -> bool:
+	# Allow everyone for demo purposes (NOT for production)
+	return True
+
+
+@cl.on_chat_start
+async def start():
+	await cl.Message("Ask me anything then click Share!").send()
+```
