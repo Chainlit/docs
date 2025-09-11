@@ -55,6 +55,8 @@ async def main():
     msg = await cl.Message(content="").send()
     for token in token_list:
         await msg.stream_token(token)
+
+    await msg.update()
 ```
 
 ## Update a message
