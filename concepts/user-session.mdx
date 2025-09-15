@@ -2,7 +2,7 @@
 title: User Session
 ---
 
-The user session is designed to persist data in memory through the [life cycle](/concepts/chat-lifecycle) of a chat session. Each user session is unique to a user and a given chat session.
+The user session is designed to persist data in memory through the [life cycle](/concepts/app-lifecycle) of a chat session. Each user session is unique to a user and a given chat session.
 
 ## Why use the user session?
 
@@ -60,21 +60,25 @@ The following keys are reserved for chat session related data:
 <ParamField path="id" type="str">
   The session id.
 </ParamField>
+
 <ParamField path="user" type="cl.User">
   Only set if you are enabled [Authentication](/authentication). Contains the
   user object of the user that started this chat session.
 </ParamField>
+
 <ParamField path="chat_profile" type="str">
   Only relevant if you are using the [Chat
   Profiles](/advanced-features/chat-profiles) feature. Contains the chat profile
   selected by this user.
 </ParamField>
+
 <ParamField path="chat_settings" type="Dict">
   Only relevant if you are using the [Chat
   Settings](/advanced-features/chat-settings) feature. Contains the chat
   settings given by this user.
 </ParamField>
+
 <ParamField path="env" type="Dict" default="{}">
-  Only relevant if you are using the [user_env](/backend/config/project) config.
+  Only relevant if you are using the [user\_env](/backend/config/project) config.
   Contains the environment variables given by this user.
 </ParamField>

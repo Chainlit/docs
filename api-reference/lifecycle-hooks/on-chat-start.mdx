@@ -7,11 +7,12 @@ Hook to react to the user websocket connection event.
 ## Usage
 
 ```python Code Example
-from chainlit import AskUserMessage, Message, on_chat_start
+import chainlit
+from chainlit import AskUserMessage, Message
 
 
-@on_chat_start
-async def main():
+@chainlit.on_chat_start
+async def on_chat_start():
     res = await AskUserMessage(content="What is your name?", timeout=30).send()
     if res:
         await Message(

@@ -1,0 +1,21 @@
+---
+title: "on_app_shutdown"
+---
+
+Hook to run code when the Chainlit application shuts down.
+
+Useful for cleaning up resources, closing connections, saving state, etc.
+
+The function can be synchronous or asynchronous.
+
+## Usage
+
+```python Code Example
+import chainlit
+
+
+@chainlit.on_app_shutdown
+async def on_app_shutdown():
+    print("Application is shutting down!")
+    # Clean up resources here
+```

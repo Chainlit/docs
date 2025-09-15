@@ -4,39 +4,44 @@ title: "Window Messaging"
 
 # on_window_message
 
-Decorator to react to messages coming from the Web App's parent window.
+Decorator to react to JavaScript [window message events](https://developer.mozilla.org/en-US/docs/Web/API/Window/message_event) coming from the Web App's parent window.
 The decorated function is called every time a new window message is received.
 
 ## Parameters
 
-<ParamField path="message" type="str">
-  The message coming from the Web App's parent window.
+<ParamField path="data" type="typing.Any">
+  Window message event data coming from the Web App's parent window.
 </ParamField>
 
 ## Usage
 
-```python
-import chainlit as cl
+```python Code Example
+from typing import Any
 
-@cl.on_window_message
-def main(message: str):
-  # do something
+import chainlit
+
+
+@chainlit.on_window_message
+async def on_window_message(message: Any):
+    print(message) # can be a string, dict, TypedDict, etc.
 ```
 
 # send_window_message
 
-Function to send messages to the Web App's parent window.
+Function to send messages to the Web App's parent window via a [window.postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) method.
 
 ## Parameters
 
-<ParamField path="message" type="str">
-  The message to send to the Web App's parent window.
+<ParamField path="data" type="typing.Any">
+  The data to send with the event to the Web App's parent window.
 </ParamField>
 
 ## Usage
 
-```python
-@cl.on_message
-async def message():
-  await cl.send_window_message("Server: Hello from Chainlit")
+```python Code Example
+import chainlit
+
+
+# can be a string, dict, TypedDict, etc
+chainlit.send_window_message({ "greeting": "Hello World!" })
 ```

@@ -14,13 +14,22 @@ This decorator will automatically:
   Only JSON serializable fields of the user session will be saved and restored.
 </Warning>
 
+## Parameters
+
+<ParamField path="thread" type="ThreadDict">
+  The persisted chat to resume.
+</ParamField>
+
 ## Usage
 
-At minimum, you will need to use the `@cl.on_chat_resume` decorator to resume conversations.
+At minimum, you will need to use the `@chainlit.on_chat_resume` decorator to resume conversations.
 
 ```python
-@cl.on_chat_resume
-async def on_chat_resume(thread):
+import chainlit
+from chainlit import ThreadDict
+
+@chainlit.on_chat_resume
+async def on_chat_resume(thread: ThreadDict):
     pass
 ```
 
@@ -34,9 +43,3 @@ However, if you are using a Langchain agent for instance, you will need to reins
 >
   Practical example of how to resume a chat with context.
 </Card>
-
-## Parameters
-
-<ParamField path="thread" type="ThreadDict">
-  The persisted chat to resume.
-</ParamField>

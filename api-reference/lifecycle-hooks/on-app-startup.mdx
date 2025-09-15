@@ -1,0 +1,21 @@
+---
+title: "on_app_startup"
+---
+
+Hook to run code when the Chainlit application starts.
+
+Useful for initializing resources, loading models, setting up database connections, etc.
+
+The function can be synchronous or asynchronous.
+
+## Usage
+
+```python Code Example
+import chainlit
+
+
+@chainlit.on_app_startup
+async def startup():
+    print("Application is starting!")
+    # Initialize resources here
+```

@@ -63,7 +63,7 @@
           {
             "group": "Basic Concepts",
             "pages": [
-              "concepts/chat-lifecycle",
+              "concepts/app-lifecycle",
               "concepts/starters",
               "concepts/message",
               "concepts/step",
@@ -170,13 +170,41 @@
           {
             "group": "Life Cycle Hooks",
             "pages": [
-              "api-reference/lifecycle-hooks/on-chat-start",
-              "api-reference/lifecycle-hooks/on-chat-end",
-              "api-reference/lifecycle-hooks/on-chat-resume",
-              "api-reference/lifecycle-hooks/on-message",
-              "api-reference/lifecycle-hooks/on-logout",
-              "api-reference/lifecycle-hooks/on-audio-chunk",
-              "api-reference/lifecycle-hooks/on-audio-end"
+              {
+                "group": "Application",
+                "pages": [
+                  "api-reference/lifecycle-hooks/on-app-startup",
+                  "api-reference/lifecycle-hooks/on-app-shutdown"
+                ]
+              },
+              {
+                "group": "Authentication",
+                "pages": [
+                  "api-reference/lifecycle-hooks/on-logout",
+                  "api-reference/lifecycle-hooks/password-auth-callback",
+                  "api-reference/lifecycle-hooks/header-auth-callback",
+                  "api-reference/lifecycle-hooks/oauth-callback"
+                ]
+              },
+              {
+                "group": "Chat",
+                "pages": [
+                  "api-reference/lifecycle-hooks/on-chat-start",
+                  "api-reference/lifecycle-hooks/on-chat-resume",
+                  "api-reference/lifecycle-hooks/on-message",
+                  "api-reference/lifecycle-hooks/on-chat-end"
+                ]
+              },
+              {
+                "group": "Audio",
+                "pages": [
+                  "api-reference/lifecycle-hooks/audio-start",
+                  "api-reference/lifecycle-hooks/audio-chunk",
+                  "api-reference/lifecycle-hooks/audio-end"
+                ]
+              },
+              "api-reference/lifecycle-hooks/send-window-message",
+              "api-reference/lifecycle-hooks/on-window-message"
             ]
           },
           {
@@ -260,6 +288,24 @@
       ]
     }
   },
+  "redirects": [
+    {
+      "source": "/concepts/chat-lifecycle",
+      "destination": "/concepts/app-lifecycle"
+    },
+    {
+      "source": "/api-reference/lifecycle-hooks/on-audio-start",
+      "destination": "/api-reference/lifecycle-hooks/audio-start"
+    },
+    {
+      "source": "/api-reference/lifecycle-hooks/on-audio-chunk",
+      "destination": "/api-reference/lifecycle-hooks/audio-chunk"
+    },
+    {
+      "source": "/api-reference/lifecycle-hooks/on-audio-end",
+      "destination": "/api-reference/lifecycle-hooks/audio-end"
+    }
+  ],
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg",
