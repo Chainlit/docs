@@ -6,7 +6,7 @@ OAuth lets you use third-party services to authenticate your users.
 
 <Note>
   To active an OAuth provider, you need to define both the OAuth callback in
-  your code and the provider(s) environment variables.
+  your code (`cl.oauth_callback`) and the provider(s) environment variables.
 </Note>
 
 ## Providers
@@ -197,7 +197,7 @@ This feature is particularly useful when you want to:
 
 The prompt parameter is defined in the OpenID Connect Core 1.0 specification. For more technical details, refer to the [OpenID Connect documentation](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest).
 
-## Examples
+## OAuth Callback
 
 ### Allow all users who passed the oauth authentication.
 
@@ -207,11 +207,12 @@ import chainlit as cl
 
 
 @cl.oauth_callback
-def oauth_callback(
+async def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
   default_user: cl.User,
+  profile: Optional[str] = None
 ) -> Optional[cl.User]:
   return default_user
 ```
@@ -224,11 +225,12 @@ import chainlit as cl
 
 
 @cl.oauth_callback
-def oauth_callback(
+async def oauth_callback(
   provider_id: str,
   token: str,
   raw_user_data: Dict[str, str],
   default_user: cl.User,
+  profile : Optional[str] = None
 ) -> Optional[cl.User]:
   if provider_id == "google":
     if raw_user_data["hd"] == "example.org":
