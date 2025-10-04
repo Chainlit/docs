@@ -1,0 +1,16 @@
+---
+title: "on_app_shutdown"
+---
+
+The `@cl.on_app_shutdown` decorator registers a function to run when the Chainlit application shuts down. This is useful for cleaning up resources, closing connections, or saving the application state before the application terminates.
+
+## Usage
+
+```python
+import chainlit as cl
+
+@cl.on_app_shutdown
+async def shutdown():
+    print("Application is shutting down!")
+    # Clean up resources here
+```

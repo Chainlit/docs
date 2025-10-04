@@ -6,8 +6,8 @@ The `Message` class is designed to send, stream, update or remove messages.
 
 ## Parameters
 
-<ParamField path="content" type="str">
-  The content of the message.
+<ParamField path="content" type="Union[str, Dict]">
+  The content of the message. Can be a string or a dictionary.
 </ParamField>
 <ParamField path="author" type="str" optional>
   The author of the message, defaults to the chatbot name defined in your config
@@ -92,4 +92,61 @@ async def main():
     await msg.send()
     await cl.sleep(2)
     await msg.remove()
+```
+
+## Sending Toast Notifications (`cl.context.emitter.send_toast`)
+
+The `cl.context.emitter.send_toast` function allows the backend to send transient notification messages (toasts) to the frontend UI.
+
+### Details
+
+The `send_toast` method takes a `message` string and an optional `type` parameter, which can be "info", "success", "warning", or "error". The `type` parameter determines the visual style of the toast in the frontend.
+
+### Example
+
+```python
+import chainlit as cl
+
+@cl.on_chat_start
+async def main():
+    await cl.context.emitter.send_toast(
+        message="This is an info toast!",
+        type="info",
+    )
+    await cl.context.emitter.send_toast(
+        message="This is a success toast!",
+        type="success",
+    )
+    await cl.context.emitter.send_toast(
+        message="This is a warning toast!",
+        type="warning",
+    )
+    await cl.context.emitter.send_toast(
+        message="This is an error toast!",
+        type="error",
+    )
+```
+
+## Remove Actions
+
+The `remove_actions` method on the `Message` class allows you to remove actions associated with a message.
+
+```python
+import chainlit as cl
+
+@cl.on_chat_start
+async def main():
+    actions = [
+        cl.Action(name="action_to_remove", value="remove_me", label="Remove Me"),
+        cl.Action(name="action_to_keep", value="keep_me", label="Keep Me"),
+    ]
+    msg = cl.Message(content="Message with actions.", actions=actions)
+    await msg.send()
+
+    await cl.sleep(2)
+
+    # Remove a specific action
+    await msg.remove_actions(["action_to_remove"])
+
+    await cl.Message(content="Action 'Remove Me' has been removed.").send()
 ```

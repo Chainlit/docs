@@ -4,20 +4,50 @@ title: "Custom"
 
 The `CustomElement` class allows you to render a custom `.jsx` snippet. The `.jsx` file should be placed in `public/elements/ELEMENT_NAME.jsx`.
 
-## Attributes
+## Usage
 
-<ParamField path="name" type="str">
-  The name of the custom Element. It should match the name of your JSX file (without the `.jsx` extension).
-</ParamField>
+```python
+import chainlit as cl
 
-<ParamField path="props" type="Dict">
-  The props to pass to the JSX.
-</ParamField>
+@cl.custom_element("my_custom_element")
+class MyCustomElement(cl.Element):
+    def __init__(self, content: str, name: str = "my_custom_element", display: str = "inline"):
+        super().__init__(name=name, display=display, content=content)
 
-<ParamField path="display" type="ElementDisplay" default="inline" optional>
-  Determines how the text element should be displayed in the UI. Choices are
-  "side", "inline", or "page".
-</ParamField>
+@cl.on_chat_start
+async def main():
+    await MyCustomElement(content="Hello from custom element!").send()
+```
+
+## Sending User Messages from Custom Elements (`sendUserMessage`)
+
+The `sendUserMessage` function is available within custom elements to allow them to send messages back to the Chainlit backend, simulating a user input. This functionality was added in version 2.3.0 of Chainlit.
+
+When a custom element calls `sendUserMessage`, it dispatches a message to the Chainlit backend. This message can optionally include a `command` string. The backend can then process this message, for example, by triggering an `@cl.on_message` handler if a command is present.
+
+### Example
+
+```jsx
+import { Button } from '@mui/material'; // Assuming MUI for Button, adjust as per actual framework
+
+export default function Commander() {
+  return (
+    <div id="custom-commander" className="mt-4 flex flex-col gap-2">
+      <Button
+        id="send"
+        onClick={() =>
+          sendUserMessage('Hello from custom element', 'my_command')
+        }
+      >
+        {' '}
+        Send with command
+      </Button>
+    </div>
+  );
+}
+```
+In this example, clicking the button sends the message "Hello from custom element" along with the command "my_command" to the backend. The backend then receives this message and can act upon the command.
+
 
 ## How to Write the JSX file
 

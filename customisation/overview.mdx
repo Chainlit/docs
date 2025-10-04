@@ -39,4 +39,39 @@ In this section we will go through the different options available.
   >
     Learn about creating your own theme.
   </Card>
+  <Card
+    title="Custom Header Buttons"
+    icon="plus-circle"
+    color="#8A2BE2"
+    href="#custom-header-buttons"
+  >
+    Learn how to add custom buttons to the chat header.
+  </Card>
 </CardGroup>
+
+## Custom Header Buttons
+
+You can add custom buttons to the header of your Chainlit application. These buttons can trigger specific actions or navigate to external links.
+
+### Usage
+
+```python
+import chainlit as cl
+
+@cl.on_chat_start
+async def main():
+    cl.context.emitter.send_action_button(
+        cl.Action(
+            name="my_custom_button",
+            label="My Custom Button",
+            value="custom_button_clicked",
+            description="Click me to trigger a custom action!",
+            for_id="header", # This indicates it's a header button
+        )
+    )
+
+@cl.action_callback("my_custom_button")
+async def on_custom_button_click(action: cl.Action):
+    await cl.Message(content=f"Custom button '{action.label}' clicked!").send()
+```
+

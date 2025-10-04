@@ -1,0 +1,19 @@
+---
+title: "on_thread_share_view"
+---
+
+Decorator to allow shared thread viewing if it returns `True`, enabling custom/admin viewing.
+
+## Usage
+
+```python
+import chainlit as cl
+
+@cl.on_thread_share_view
+def on_thread_share_view(thread_id: str, user_id: str) -> bool:
+    # Implement your logic here to determine if the user can view the shared thread
+    # For example, check if the user is an admin or has specific permissions
+    if user_id == "admin_user":
+        return True
+    return False
+```

@@ -1,0 +1,9 @@
+Instructions for documentation updates:
+1. Do NOT touch any files that appear in `git status`.
+2. Use the `tree` command to identify other documentation files that need updates.
+3. For each file identified, thoroughly research the subject in the DeepWiki (Chainlit/chainlit repository).
+4. Ask 3-4 specific, clarifying questions to the DeepWiki about the content and purpose of the document.
+5. Based on the confirmed information, update the content of that specific file.
+6. Do not create new files.
+7. Use the DeepWiki 4-5 times per file update.
+8. Do not edit files that have already been updated (by me in this session).

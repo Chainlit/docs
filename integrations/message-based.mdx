@@ -1,22 +1,45 @@
 ---
-title: vLLM, LMStudio, HuggingFace
+title: OpenAI-Compatible Message-Based APIs (vLLM, LMStudio, HuggingFace TGI)
 ---
 
-We can leverage the OpenAI instrumentation to log calls from inference servers that use messages-based API, such as vLLM, LMStudio or HuggingFace's TGI. 
+We can leverage the OpenAI instrumentation to log calls from inference servers that use messages-based API, such as vLLM, LMStudio or HuggingFace's TGI. This integration allows you to visualize these LLM calls as steps in the Chainlit UI and explore them in the prompt playground.
 
 <Warning>
-  You shouldn't configure this integration if you're already using another integration like LangChain or LlamaIndex. Both integrations would record the same generation and create duplicate steps in the UI.
+  You shouldn't configure this integration if you're already using another
+  integration like LangChain or LlamaIndex. Both integrations would
+  record the same generation and create duplicate steps in the UI.
 </Warning>
 
+## Prerequisites
+
+Before getting started, make sure you have the following:
+
+- A working installation of Chainlit
+- The `openai` Python package installed (`pip install openai`)
+- An OpenAI-compatible message-based inference server running (e.g., vLLM, LMStudio, HuggingFace TGI)
+- Basic understanding of Python programming
+
+## Step 1: Create a Python file
+
 Create a new Python file named `app.py` in your project directory. This file will contain the main logic for your LLM application.
+
+## Step 2: Write the Application Logic
 
 In `app.py`, import the necessary packages and define one function to handle messages incoming from the UI.
 
 ```python
 from openai import AsyncOpenAI
 import chainlit as cl
+
+# Configure your OpenAI-compatible client.
+# The api_key might be a placeholder or specific to your inference server.
+# For LM Studio, "lm-studio" is often used as a placeholder API key.
 client = AsyncOpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
-# Instrument the OpenAI client
+
+# Instrument the OpenAI client.
+# This should be called once at the top level of your application code,
+# outside of any on_chat_start or on_message functions, as it modifies
+# the OpenAI library globally.
 cl.instrument_openai()
 
 settings = {
@@ -27,23 +50,49 @@ settings = {
 
 @cl.on_message
 async def on_message(message: cl.Message):
-    response = await client.chat.completions.create(
-        messages=[
-            {
-                "content": "You are a helpful bot, you always reply in Spanish",
-                "role": "system"
-            },
-            {
-                "content": message.content,
-                "role": "user"
-            }
-        ],
-        **settings
-    )
-    await cl.Message(content=response.choices[0].message.content).send()
+    # General Python error handling is recommended for robustness
+    try:
+        response = await client.chat.completions.create(
+            messages=[
+                {
+                    "content": "You are a helpful bot, you always reply in Spanish",
+                    "role": "system"
+                },
+                {
+                    "content": message.content,
+                    "role": "user"
+                }
+            ],
+            stream=True, # Enable streaming for real-time updates
+            **settings
+        )
+        
+        # cl.instrument_openai() automatically handles streaming for OpenAI-compatible responses.
+        # You do not need to manually call await answer.stream_token(msg.content)
+        # for instrumented calls if the server streams in an OpenAI-compatible format.
+        answer = cl.Message(content="")
+        async for part in response:
+            if token := part.choices[0].delta.content or "":
+                await answer.stream_token(token)
+        await answer.send()
+
+    except Exception as e:
+        await cl.ErrorMessage(content=f"An error occurred: {e}").send()
 ```
 
-Create a file named `.env` in the same folder as your `app.py` file. Add your OpenAI API key in the `OPENAI_API_KEY` variable.
+### Compatibility and Limitations
+
+`cl.instrument_openai()` is designed to instrument the official OpenAI Python client library. Its ability to visualize interactions with message-based inference servers (like vLLM, LMStudio, HuggingFace TGI) depends on how accurately these servers mimic the OpenAI API specification.
+
+-   **Tool Use and Function Calling**: If your inference server supports OpenAI-compatible tool calls or function calling, `cl.instrument_openai()` will automatically visualize these interactions as `Step` objects in the Chainlit UI. Each tool call, its input, and its output will be displayed as a distinct step. However, deviations in the server's response format from OpenAI's specification might lead to incorrect or incomplete visualization.
+-   **Response Formats**: The instrumentation expects responses to conform to the structure of OpenAI's `ChatGeneration` or `CompletionGeneration` objects. If the inference server's response format deviates, the `step.input` and `step.output` fields might not be populated correctly.
+-   **Advanced Configuration**: Currently, `cl.instrument_openai()` provides direct instrumentation without advanced filtering options to selectively include or exclude specific API calls or customize how steps are displayed.
+
+## Step 3: Fill the environment variables
+
+If your inference server requires an API key, create a file named `.env` in the same folder as your `app.py` file and add your API key (e.g., `OPENAI_API_KEY` or a custom key expected by your server).
+
+## Step 4: Run the Application
 
 To start your app, open a terminal and navigate to the directory containing `app.py`. Then run the following command:
 
@@ -52,3 +101,4 @@ chainlit run app.py -w
 ```
 
 The `-w` flag tells Chainlit to enable auto-reloading, so you don't need to restart the server every time you make changes to your application. Your chatbot UI should now be accessible at http://localhost:8000.
+

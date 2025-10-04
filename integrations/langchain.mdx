@@ -13,8 +13,8 @@ In this tutorial, we'll walk through the steps to create a Chainlit application 
 Before getting started, make sure you have the following:
 
 - A working installation of Chainlit
-- The LangChain package installed
-- An OpenAI API key
+- The LangChain package installed (`pip install langchain langchain-openai`)
+- An OpenAI API key configured as an environment variable (e.g., `OPENAI_API_KEY`).
 - Basic understanding of Python programming
 
 ## Step 1: Create a Python file
@@ -121,7 +121,7 @@ async def on_message(message: cl.Message):
 
 </CodeGroup>
 
-This code sets up an instance of `Runnable` with a custom `ChatPromptTemplate` for each chat session. The `Runnable` is invoked everytime a user sends a message to generate the response.
+This code sets up an instance of `Runnable` with a custom `ChatPromptTemplate` for each chat session. The `Runnable` is invoked every time a user sends a message to generate the response.
 
 The callback handler is responsible for listening to the chain's intermediate steps and sending them to the UI.
 
@@ -219,18 +219,74 @@ graph = builder.compile()
 @cl.on_message
 async def on_message(msg: cl.Message):
     config = {"configurable": {"thread_id": cl.context.session.id}}
-    cb = cl.LangchainCallbackHandler()
+    # Configure LangchainCallbackHandler for automatic final answer streaming
+    cb = cl.LangchainCallbackHandler(stream_final_answer=True, answer_prefix_tokens=["Final", "Answer", ":"])
+    
     final_answer = cl.Message(content="")
     
-    for msg, metadata in graph.stream({"messages": [HumanMessage(content=msg.content)]}, stream_mode="messages", config=RunnableConfig(callbacks=[cb], **config)):
+    # The LangchainCallbackHandler will automatically stream the final answer.
+    # Manual iteration is still useful if you need to process intermediate steps
+    # or specific parts of the output that are not considered the "final answer".
+    for s_msg, metadata in graph.stream({"messages": [HumanMessage(content=msg.content)]}, stream_mode="messages", config=RunnableConfig(callbacks=[cb], **config)):
         if (
-            msg.content
-            and not isinstance(msg, HumanMessage)
+            s_msg.content
+            and not isinstance(s_msg, HumanMessage)
             and metadata["langgraph_node"] == "final"
         ):
-            await final_answer.stream_token(msg.content)
+            await final_answer.stream_token(s_msg.content)
 
     await final_answer.send()
+```
+
+## How `cl.LangchainCallbackHandler` Works
+
+The `cl.LangchainCallbackHandler` (aliased as `LangchainTracer`) integrates with LangChain by extending LangChain's `AsyncBaseTracer`. It captures various LangChain events and translates them into Chainlit Steps, providing detailed tracing and visualization of your LangChain application's execution.
+
+**Internal Mechanism:**
+-   It overrides `on_` methods from `AsyncBaseTracer` to capture events during LangChain runs.
+-   It maintains a dictionary of active steps (`self.steps`) and a mapping of parent IDs (`self.parent_id_map`) to reconstruct the hierarchical structure of LangChain runs within Chainlit.
+-   The `_should_ignore_run` method filters out verbose LangChain runs (e.g., `RunnableSequence`, `RunnableParallel`) to enhance readability in the Chainlit UI.
+
+**Captured LangChain Events and Metadata Recorded:**
+The handler captures events related to LLM calls, chains, agents, and tools, recording various metadata for Chainlit Steps:
+-   **LLM Starts**: Records prompts and input messages.
+-   **New Tokens**: Captures tokens for streaming responses.
+-   **Run Updates**: Processes outputs and updates corresponding Chainlit Steps.
+-   **Errors**: Captures exceptions and marks the Step as an error.
+-   **Metadata**: For each Step, it records `id`, `name` (from `run.name`), `type` (mapped from `run.run_type` like "llm", "chain", "agent", "tool"), `parent_id`, `start`/`end` timestamps, `input`/`output`, LLM generation details (provider, model, tools, settings, duration, token counts), and `tags`.
+
+## Advanced Configuration for `cl.LangchainCallbackHandler`
+
+You can customize the behavior of `cl.LangchainCallbackHandler` by passing configuration options during its initialization.
+
+### Final Answer Streaming
+
+Control how the final answer is streamed:
+-   `stream_final_answer` (bool): If set to `True`, the final answer from a LangChain run will be streamed to the UI. (Default: `False`)
+-   `answer_prefix_tokens` (List[str]): A list of tokens that prefixes the final answer. The handler uses these to identify when the final answer begins. (Default: `["Final", "Answer", ":"]`)
+-   `force_stream_final_answer` (bool): If `True`, streaming of the final answer is forced from the beginning. (Default: `False`)
+
+### Filtering LangChain Events
+
+Filter which LangChain runs are displayed as steps in Chainlit:
+-   `to_ignore` (Optional[List[str]]): A list of strings. Any LangChain run whose name contains one of these strings will be ignored and not displayed as a step. (Default: `["RunnableSequence", "RunnableParallel", "RunnableAssign", "RunnableLambda", "<lambda>"]`)
+-   `to_keep` (Optional[List[str]]): A list of strings. Even if a run's parent is ignored, if the run's `run_type` is in this list, it will still be displayed. (Default: `["retriever", "llm", "agent", "chain", "tool"]`)
+
+**Example:**
+```python
+from chainlit.langchain import LangchainCallbackHandler
+from langchain_core.callbacks import CallbackManager
+
+# Initialize the handler with custom streaming and filtering
+custom_handler = LangchainCallbackHandler(
+    stream_final_answer=True,
+    answer_prefix_tokens=["Answer:", "Result:"],
+    to_ignore=["MyCustomInternalRunnable"],
+    to_keep=["tool"]
+)
+
+# Use the custom handler in your LangChain config
+# config=RunnableConfig(callbacks=[custom_handler])
 ```
 
 ## Step 3: Run the Application
@@ -247,3 +303,4 @@ The `-w` flag tells Chainlit to enable auto-reloading, so you don't need to rest
   When using LangChain, prompts and completions are not cached by default. To
   enable the cache, set the `cache=true` in your chainlit config file.
 </Warning>
+

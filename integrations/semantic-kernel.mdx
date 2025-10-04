@@ -10,8 +10,19 @@ Before getting started, make sure you have the following:
 
 - A working installation of Chainlit
 - The `semantic-kernel` package installed
-- An LLM API key (e.g., OpenAI, Azure OpenAI) configured for Semantic Kernel
+- An LLM API key (e.g., OpenAI, Azure OpenAI) configured for Semantic Kernel. See [Environment Variable Setup](#environment-variable-setup) for details.
 - Basic understanding of Python programming and Semantic Kernel concepts (Kernel, Plugins, Functions)
+
+### Environment Variable Setup
+
+For your LLM API keys (e.g., `OPENAI_API_KEY`, `OPENAI_ORG_ID`), it is recommended to set them as environment variables. You can do this in your shell or by creating a `.env` file in your project root.
+
+**Example using a `.env` file:**
+```
+OPENAI_API_KEY="your_openai_api_key_here"
+OPENAI_ORG_ID="your_openai_org_id_here"
+```
+Chainlit automatically loads environment variables from a `.env` file if present.
 
 ## Step 1: Create a Python file
 
@@ -90,6 +101,7 @@ async def on_message(message: cl.Message):
         kernel=kernel,
     ):
         if msg.content:
+            # Stream tokens for real-time updates in the UI
             await answer.stream_token(msg.content)
 
     # Add the full assistant response to history
@@ -98,6 +110,18 @@ async def on_message(message: cl.Message):
     # Send the final message
     await answer.send()
 ```
+
+## How `cl.SemanticKernelFilter` Works
+
+The `cl.SemanticKernelFilter` integrates with Semantic Kernel by acting as a `function_invocation` filter. When a Semantic Kernel function is called:
+1.  It checks if the function or its plugin is configured to be excluded from tracking.
+2.  If not excluded, it creates a Chainlit `Step` of `type="tool"` with the function's fully qualified name.
+3.  The function's input arguments are captured and set as the `step.input`.
+4.  The `Step` is sent to the Chainlit UI, providing real-time visibility into tool execution.
+5.  After the Semantic Kernel function executes, its result is captured as `step.output`.
+6.  The `Step` in the Chainlit UI is then updated with the output, completing the visualization of the tool call.
+
+This process automatically enriches your Chainlit chat history with detailed traces of your Semantic Kernel application's internal workings, including the inputs and outputs of each tool invocation.
 
 ## Step 3: Run the Application
 
@@ -108,3 +132,9 @@ chainlit run app.py -w
 ```
 
 The `-w` flag tells Chainlit to enable auto-reloading, so you don't need to restart the server every time you make changes to your application. Your chatbot UI should now be accessible at http://localhost:8000. Interact with the bot, and if you ask for the weather (and the LLM uses the tool), you should see a "Weather-get_weather" step appear in the UI.
+
+## Best Practices and Advanced Usage
+
+-   **Excluding Functions/Plugins**: You can configure `cl.SemanticKernelFilter` to exclude specific plugins or functions from being tracked as steps, reducing noise in the UI for less critical operations.
+-   **Error Handling**: Implement `try-except` blocks within your `on_message` or plugin functions to gracefully handle Semantic Kernel-specific errors and provide informative feedback to the user via `cl.ErrorMessage`.
+-   **Lifecycle Hooks**: Utilize other Chainlit lifecycle hooks like `@cl.on_chat_end` for cleanup operations (e.g., closing Semantic Kernel resources) or `@cl.on_settings_update` to dynamically adjust Semantic Kernel behavior based on user settings.

@@ -2,26 +2,30 @@
 title: "Chat Profiles"
 ---
 
-Decorator to define the list of chat profiles.
+Chat Profiles allow you to define different configurations for your conversational AI, giving users the ability to choose from various agents or settings at the start of a chat. This is useful for offering different models (e.g., GPT-3.5 vs. GPT-4), enabling or disabling specific features, or customizing the UI.
 
-If authentication is enabled, you can access the user details to create the list of chat profiles conditionally.
+You define Chat Profiles using the `@cl.set_chat_profiles` decorator, which decorates an asynchronous function that returns a list of `cl.ChatProfile` objects.
 
-The icon is optional.
+## `ChatProfile` Class
 
-## Parameters
+A `cl.ChatProfile` object has the following attributes:
 
-<ParamField path="current_user" type="User">
-  The message coming from the UI.
-</ParamField>
+-   `name` (str): The unique name of the profile.
+-   `markdown_description` (str): A description of the profile that supports Markdown.
+-   `icon` (str, optional): A URL to an icon for the profile.
+-   `starters` (list, optional): A list of `cl.Starter` objects for predefined conversation starters.
+-   `default` (bool, optional): A boolean indicating if this profile should be selected by default.
+-   `config_overrides` (ChainlitConfigOverrides, optional): A way to override global `config.toml` settings for this specific profile.
 
-## Usage
+## Basic Usage
 
-```python Simple example
+Here is a simple example of how to define two chat profiles:
+
+```python
 import chainlit as cl
 
-
 @cl.set_chat_profiles
-async def chat_profile():
+async def chat_profiles():
     return [
         cl.ChatProfile(
             name="GPT-3.5",
@@ -34,43 +38,41 @@ async def chat_profile():
             icon="https://picsum.photos/250",
         ),
     ]
+```
 
+## Accessing the Current Profile
+
+You can access the currently selected chat profile from the `user_session`.
+
+```python
 @cl.on_chat_start
 async def on_chat_start():
     chat_profile = cl.user_session.get("chat_profile")
     await cl.Message(
-        content=f"starting chat using the {chat_profile} chat profile"
+        content=f"Starting chat using the {chat_profile} chat profile!"
     ).send()
 ```
 
-```python With authentication
-from typing import Optional
+## Conditional Profiles with Authentication
 
+The function decorated with `@cl.set_chat_profiles` can optionally receive the `current_user` object if authentication is enabled. This allows you to show different profiles to different users.
+
+```python
+from typing import Optional
 import chainlit as cl
 
-
 @cl.set_chat_profiles
-async def chat_profile(current_user: cl.User):
-    if current_user.metadata["role"] != "ADMIN":
+async def chat_profiles(current_user: cl.User):
+    # Only show profiles to admin users
+    if current_user.metadata.get("role") != "ADMIN":
         return None
 
     return [
         cl.ChatProfile(
-            name="GPT-3.5",
-            markdown_description="The underlying LLM model is **GPT-3.5**, a *175B parameter model* trained on 410GB of text data.",
-        ),
-        cl.ChatProfile(
-            name="GPT-4",
-            markdown_description="The underlying LLM model is **GPT-4**, a *1.5T parameter model* trained on 3.5TB of text data.",
-            icon="https://picsum.photos/250",
-        ),
-        cl.ChatProfile(
-            name="GPT-5",
-            markdown_description="The underlying LLM model is **GPT-5**.",
-            icon="https://picsum.photos/200",
+            name="Admin Profile",
+            markdown_description="A special profile only for admins.",
         ),
     ]
-
 
 @cl.password_auth_callback
 def auth_callback(username: str, password: str) -> Optional[cl.User]:
@@ -78,47 +80,52 @@ def auth_callback(username: str, password: str) -> Optional[cl.User]:
         return cl.User(identifier="admin", metadata={"role": "ADMIN"})
     else:
         return None
-
-
-@cl.on_chat_start
-async def on_chat_start():
-    user = cl.user_session.get("user")
-    chat_profile = cl.user_session.get("chat_profile")
-    await cl.Message(
-        content=f"starting chat with {user.identifier} using the {chat_profile} chat profile"
-    ).send()
 ```
 
-## Dynamic Configuration
+## Dynamic Configuration Overrides
 
-You can override the global `config.toml` for specific ChatProfiles by configuring overrides 
+You can override the global `config.toml` for specific Chat Profiles. This is powerful for enabling or disabling features on the fly.
 
 ```python
 from chainlit.config import (
     ChainlitConfigOverrides,
     FeaturesSettings,
-    McpFeature,
     UISettings,
 )
 
 @cl.set_chat_profiles
-async def chat_profile(current_user: cl.User):
+async def chat_profiles(current_user: cl.User):
     return [
         cl.ChatProfile(
-            name="MCP Enabled",
-            markdown_description="Profile with **MCP features enabled**. This profile has *Model Context Protocol* support activated. [Learn more](https://example.com/mcp)",
-            icon="https://picsum.photos/250",
-            starters=starters,
+            name="Default UI",
+            markdown_description="This profile uses the default UI.",
+        ),
+        cl.ChatProfile(
+            name="Custom UI",
+            markdown_description="This profile has a **custom UI name**.",
             config_overrides=ChainlitConfigOverrides(
-                ui=UISettings(name="MCP UI"),
-                features=FeaturesSettings(
-                    mcp=McpFeature(
-                        enabled=True,
-                        stdio={"enabled": True},
-                        sse={"enabled": True},
-                        streamable_http={"enabled": True},
-                    )
-                ),
+                ui=UISettings(name="My Custom UI"),
             ),
         ),
+    ]
 ```
+
+## How it Works
+
+Chat profiles are designed to dynamically adjust your application's behavior based on user selection. Here's a breakdown of how they function:
+
+### Frontend Usage
+
+On the frontend, chat profiles are typically presented in a dropdown menu, often located in the chat interface's header. When a user selects a chat profile:
+
+*   The frontend updates the `chatProfile` state, reflecting the user's choice.
+*   If there has been prior interaction in the current chat session, a confirmation dialog may appear before changing the profile to prevent accidental data loss.
+*   The selected chat profile's `markdown_description` and `icon` are used to customize the welcome screen and the assistant's avatar, providing immediate visual feedback.
+*   Any `starters` associated with the chosen profile are displayed, allowing users to quickly initiate conversations with predefined messages.
+
+### Backend Usage
+
+In the backend, the `WebsocketSession` plays a crucial role in managing chat profiles. When a chat profile is active and contains `config_overrides`:
+
+*   These overrides are applied to the global Chainlit configuration. This ensures that the application's settings, such as enabled features (e.g., MCP) or UI configurations, are dynamically adjusted according to the selected profile.
+*   The `project_settings` endpoint also incorporates these `config_overrides` before returning the project settings to the frontend, ensuring consistency across the application.

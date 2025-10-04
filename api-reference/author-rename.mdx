@@ -1,70 +1,64 @@
 ---
-title: "author_rename and Message author"
+title: "Author Rename"
 ---
 
-This documentation covers two methods for setting or renaming the author of a message to display more friendly author names in the UI: the `author_rename` decorator and the Message author specification at message creation.
+In Chainlit, you can customize the author name displayed in the UI for messages. This is useful for replacing default or technical author names (like "LLMMathChain" or "Chatbot") with more user-friendly names (like "Albert Einstein" or "Assistant").
 
-## Method 1: author_rename
+There are two primary ways to control the author name:
 
-Useful for renaming the author of a message dynamically during the message handling process.
+1.  **`@cl.author_rename` decorator**: A global way to dynamically rename authors for all messages.
+2.  **Directly on the `Message` object**: Set the author for a specific message when you create it.
 
-## Parameters
+## 1. @cl.author_rename Decorator
 
-<ParamField path="orig_author" type="str" required>
-  The original author name.
-</ParamField>
+This decorator allows you to define a function that will be called for every message to determine the author's name. This is the recommended approach for consistent author renaming across your application.
 
-## Returns
+Your decorated function should accept the original author name as a string and return the new author name as a string. This decorated function is automatically registered in `config.code.author_rename`. The function can be synchronous or asynchronous.
 
-<ResponseField name="author" type="str" required>
-  The renamed author
-</ResponseField>
-
-## Usage
-
-```python
-from langchain import OpenAI, LLMMathChain
-import chainlit as cl
-
-
-@cl.author_rename
-def rename(orig_author: str):
-    rename_dict = {"LLMMathChain": "Albert Einstein", "Chatbot": "Assistant"}
-    return rename_dict.get(orig_author, orig_author)
-
-
-@cl.on_message
-async def main(message: cl.Message):
-    llm = OpenAI(temperature=0)
-    llm_math = LLMMathChain.from_llm(llm=llm)
-    res = await llm_math.acall(message.content, callbacks=[cl.AsyncLangchainCallbackHandler()])
-
-    await cl.Message(content="Hello").send()
-```
-
-
-## Method 2: Message author
-
-Allows for naming the author of a message at the moment of the message creation.
+**Note:** While the `rename_author` function only receives the author name, you can access the current chat session context (e.g., user information, thread ID) by explicitly importing and using `chainlit.context.context` or `chainlit.user_session` within your function.
 
 ### Usage
 
-You can specify the author directly when creating a new message object:
+```python
+import chainlit as cl
+
+# Synchronous example
+@cl.author_rename
+def rename_author(original_author: str):
+    rename_dict = {
+        "LLMMathChain": "Albert Einstein",
+        "Chatbot": "Assistant"
+    }
+    return rename_dict.get(original_author, original_author)
+
+# Asynchronous example
+@cl.author_rename
+async def rename_author_async(original_author: str):
+    if original_author == "AI":
+        return "Assistant"
+    return original_author
+
+# This renaming applies to all message types, including `cl.Message`, `cl.AskUserMessage`, `cl.AskFileMessage`, and `cl.AskActionMessage`.
+
+@cl.on_message
+async def main(message: cl.Message):
+    # The author of this message will be renamed by the decorator
+    await cl.Message(content="Hello from the default author!").send()
+```
+
+## 2. Message Author Parameter
+
+You can also specify the author for a single message directly by using the `author` parameter when creating a `cl.Message` instance. This will override any global renaming for that specific message.
+
+### Usage
 
 ```python
-from langchain import OpenAI, LLMMathChain
 import chainlit as cl
 
 @cl.on_message
 async def main(message: cl.Message):
-    llm = OpenAI(temperature=0)
-    llm_math = LLMMathChain.from_llm(llm=llm)
-    res = await llm_math.acall(message.content, callbacks=[cl.AsyncLangchainCallbackHandler()])
-
     # Specify the author at message creation
-    response_message = cl.Message(content="Hello", author="NewChatBotName")
-    await response_message.send()
-```
-
-
-
+    await cl.Message(
+        content="Hello from a specific author!",
+        author="CustomBot"
+        ).send())

@@ -1,0 +1,16 @@
+---
+title: "on_mcp_connect"
+---
+
+The `@cl.on_mcp_connect` decorator registers a function to be called when a Multi-Chat Profile (MCP) connects.
+
+## Usage
+
+```python
+import chainlit as cl
+
+@cl.on_mcp_connect
+async def on_mcp_connect():
+    print("Multi-Chat Profile connected!")
+    # Perform actions when an MCP connects
+```

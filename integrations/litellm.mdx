@@ -2,13 +2,13 @@
 title: LiteLLM
 ---
 
-In this tutorial, we will guide you through the steps to create a Chainlit application integrated with [LiteLLM Proxy](https://docs.litellm.ai/docs/simple_proxy)
+In this tutorial, we will guide you through the steps to create a Chainlit application integrated with [LiteLLM Proxy](https://docs.litellm.ai/docs/simple_proxy).
 
-The benefits of using LiteLLM Proxy with Chainlit is:
+The benefits of using LiteLLM Proxy with Chainlit are:
 
 - You can [call 100+ LLMs in the OpenAI API format](https://docs.litellm.ai/docs/providers)
 - Use Virtual Keys to set budget limits and track usage
-- see LLM API calls in a step in the UI, and you can explore them in the prompt playground.
+- See LLM API calls in a step in the UI, and you can explore them in the prompt playground.
 
 <Warning>
   You shouldn't configure this integration if you're already using another
@@ -21,9 +21,9 @@ The benefits of using LiteLLM Proxy with Chainlit is:
 Before getting started, make sure you have the following:
 
 - A working installation of Chainlit
-- The OpenAI package installed
+- The `openai` Python package installed (`pip install openai`)
 - [LiteLLM Proxy Running](https://docs.litellm.ai/docs/proxy/deploy)
-- [A LiteLLM Proxy API Key](https://docs.litellm.ai/docs/proxy/virtual_keys)
+- [A LiteLLM Proxy API Key](https://docs.litellm.ai/docs/proxy/virtual_keys) (if required by your LiteLLM Proxy setup)
 - Basic understanding of Python programming
 
 ## Step 1: Create a Python file
@@ -37,37 +37,66 @@ In `app.py`, import the necessary packages and define one function to handle mes
 ```python
 from openai import AsyncOpenAI
 import chainlit as cl
+
+# Configure your LiteLLM Proxy client.
+# The api_key might be a placeholder or specific to your LiteLLM Proxy setup.
+# For example, "anything" is often used as a placeholder for LiteLLM Proxy virtual keys.
 client = AsyncOpenAI(
-    api_key="anything",            # litellm proxy virtual key
-    base_url="http://0.0.0.0:4000" # litellm proxy base_url
+    api_key="anything",            # LiteLLM Proxy virtual key or placeholder
+    base_url="http://0.0.0.0:4000" # LiteLLM Proxy base_url
 )
 
-# Instrument the OpenAI client
+# Instrument the OpenAI client.
+# This should be called once at the top level of your application code,
+# outside of any on_chat_start or on_message functions, as it modifies
+# the OpenAI library globally.
 cl.instrument_openai()
 
 settings = {
-    "model": "gpt-3.5-turbo", # model you want to send litellm proxy
+    "model": "gpt-3.5-turbo", # model you want to send to LiteLLM Proxy
     "temperature": 0,
     # ... more settings
 }
 
 @cl.on_message
 async def on_message(message: cl.Message):
-    response = await client.chat.completions.create(
-        messages=[
-            {
-                "content": "You are a helpful bot, you always reply in Spanish",
-                "role": "system"
-            },
-            {
-                "content": message.content,
-                "role": "user"
-            }
-        ],
-        **settings
-    )
-    await cl.Message(content=response.choices[0].message.content).send()
+    # General Python error handling is recommended for robustness
+    try:
+        response = await client.chat.completions.create(
+            messages=[
+                {
+                    "content": "You are a helpful bot, you always reply in Spanish",
+                    "role": "system"
+                },
+                {
+                    "content": message.content,
+                    "role": "user"
+                }
+            ],
+            stream=True, # Enable streaming for real-time updates
+            **settings
+        )
+        
+        # cl.instrument_openai() automatically handles streaming for OpenAI-compatible responses.
+        # You do not need to manually call await answer.stream_token(msg.content)
+        # for instrumented calls if LiteLLM Proxy streams in an OpenAI-compatible format.
+        answer = cl.Message(content="")
+        async for part in response:
+            if token := part.choices[0].delta.content or "":
+                await answer.stream_token(token)
+        await answer.send()
+
+    except Exception as e:
+        await cl.ErrorMessage(content=f"An error occurred: {e}").send()
 ```
+
+### Compatibility and Limitations
+
+`cl.instrument_openai()` is designed to instrument the official OpenAI Python client library. Its ability to visualize interactions with LiteLLM Proxy depends on how accurately LiteLLM Proxy mimics the OpenAI API specification, especially when translating responses from various LLMs.
+
+-   **Tool Use and Function Calling**: If LiteLLM Proxy supports OpenAI-compatible tool calls or function calling (from the LLMs it proxies), `cl.instrument_openai()` will automatically visualize these interactions as `Step` objects in the Chainlit UI. Each tool call, its input, and its output will be displayed as a distinct step. However, deviations in the proxied LLM's response format from OpenAI's specification might lead to incorrect or incomplete visualization.
+-   **Response Formats**: The instrumentation expects responses to conform to the structure of OpenAI's `ChatGeneration` or `CompletionGeneration` objects. If LiteLLM Proxy's translation layer alters these formats, the `step.input` and `step.output` fields might not be populated correctly.
+-   **Advanced Configuration**: Currently, `cl.instrument_openai()` provides direct instrumentation without advanced filtering options to selectively include or exclude specific API calls or customize how steps are displayed.
 
 ## Step 3: Run the Application
 
