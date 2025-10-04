@@ -14,6 +14,30 @@ The `init` command initializes a Chainlit project by creating a configuration fi
 chainlit init
 ```
 
+### `hello`
+
+The `hello` command runs a built-in "hello world" example application. It's useful for verifying your Chainlit installation.
+
+```bash
+chainlit hello
+```
+
+### `create-secret`
+
+The `create-secret` command generates a random secret key that you can use for authentication. You should copy this secret into your `.env` file.
+
+```bash
+chainlit create-secret
+```
+
+### `lint-translations`
+
+The `lint-translations` command checks the integrity of translation files.
+
+```bash
+chainlit lint-translations
+```
+
 ### `run`
 
 The `run` command starts a Chainlit application.
@@ -24,11 +48,13 @@ chainlit run [OPTIONS] TARGET
 
 Options:
 
-- `-w, --watch`: Reload the app when the module changes. When this option is specified, the file watcher will be started and any changes to files will cause the server to reload the app, allowing faster iterations.
-- `-h, --headless`: Prevents the app from opening in the browser.
-- `-d, --debug`: Sets the log level to debug. Default log level is error.
-- `-c, --ci`: Runs in CI mode.
-- `--no-cache`: Disables third parties cache, such as langchain.
-- `--host`: Specifies a different host to run the server on.
-- `--port`: Specifies a different port to run the server on.
-- `--root-path`: Specifies a subpath to run the server on.
+- `-w, --watch`: Reload the app when the module changes. When this option is specified, the file watcher will be started and any changes to files will cause the server to reload the app, allowing faster iterations. (Environment Variable: `WATCH`)
+- `-h, --headless`: Prevents the app from opening in the browser. (Environment Variable: `HEADLESS`)
+- `-d, --debug`: Sets the log level to debug. Default log level is error. (Environment Variable: `DEBUG`)
+- `-c, --ci`: Runs in CI mode. When enabled, it automatically sets `--no-cache` to `True` and sets a fake `OPENAI_API_KEY`. (Environment Variable: `CI`)
+- `--no-cache`: Disables third parties cache, such as langchain. (Environment Variable: `NO_CACHE`)
+- `--host`: Specifies a different host to run the server on. Defaults to `127.0.0.1`. (Environment Variable: `CHAINLIT_HOST`)
+- `--port`: Specifies a different port to run the server on. Defaults to `8000`. (Environment Variable: `CHAINLIT_PORT`)
+- `--root-path`: Specifies a subpath to run the server on. (Environment Variable: `CHAINLIT_ROOT_PATH`)
+- `--ssl-cert`: Specifies the file path for the SSL certificate. Must be provided along with `--ssl-key`. (Environment Variable: `CHAINLIT_SSL_CERT`)
+- `--ssl-key`: Specifies the file path for the SSL key. Must be provided along with `--ssl-cert`. (Environment Variable: `CHAINLIT_SSL_KEY`)

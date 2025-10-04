@@ -1,0 +1,16 @@
+---
+title: "on_mcp_disconnect"
+---
+
+The `@cl.on_mcp_disconnect` decorator registers a function to be called when a Multi-Chat Profile (MCP) disconnects.
+
+## Usage
+
+```python
+import chainlit as cl
+
+@cl.on_mcp_disconnect
+async def on_mcp_disconnect():
+    print("Multi-Chat Profile disconnected!")
+    # Perform cleanup or actions when an MCP disconnects
+```

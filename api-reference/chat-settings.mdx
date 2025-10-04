@@ -2,7 +2,7 @@
 title: "Chat Settings"
 ---
 
-The `ChatSettings` class is designed to create and send a dynamic form to the UI. This form can be updated by the user.
+The `ChatSettings` class is designed to create and send a dynamic form to the UI. This form can be updated by the user and is primarily configured within the `on_chat_start` callback.
 
 ## Attributes
 
@@ -14,7 +14,7 @@ The `ChatSettings` class is designed to create and send a dynamic form to the UI
 
 ```python
 import chainlit as cl
-from chainlit.input_widget import Select, Switch, Slider
+from chainlit.input_widget import Select, Switch, Slider, MultiSelect, RadioGroup, Checkbox
 
 
 @cl.on_chat_start
@@ -36,6 +36,19 @@ async def start():
                 max=2,
                 step=0.1,
             ),
+            MultiSelect(
+                id="Features",
+                label="Select Features",
+                values=["Feature A", "Feature B", "Feature C"],
+                initial_values=["Feature A"],
+            ),
+            RadioGroup(
+                id="Mode",
+                label="Select Mode",
+                values=["Mode 1", "Mode 2"],
+                initial_value="Mode 1",
+            ),
+            Checkbox(id="DebugMode", label="Enable Debug Mode", initial=False),
             Slider(
                 id="SAI_Steps",
                 label="Stability AI - Steps",
@@ -81,3 +94,99 @@ async def setup_agent(settings):
     print("on_settings_update", settings)
 
 ```
+
+## Handling Setting Updates (`@cl.on_settings_update`)
+
+To react to changes made by the user in the chat settings form, you can use the `@cl.on_settings_update` decorator. The function decorated with `@cl.on_settings_update` will be called whenever the user updates any of the settings.
+
+This function receives a `settings` dictionary as an argument, where keys are the `id` of your input widgets and values are their current states.
+
+### Usage
+
+```python
+import chainlit as cl
+
+@cl.on_settings_update
+async def setup_agent(settings):
+    # You can access individual settings by their ID
+    model = settings["Model"]
+    streaming_enabled = settings["Streaming"]
+    temperature = settings["Temperature"]
+
+    print(f"Settings updated: Model={model}, Streaming={streaming_enabled}, Temperature={temperature}")
+
+    # You can then use these settings to reconfigure your agent or application logic
+    # For example, update an LLM instance with the new temperature
+    # my_llm.temperature = temperature
+
+    await cl.Message(content="Chat settings have been updated!").send()
+```
+
+## Configuration Overrides with Chat Profiles
+
+Chat settings can be dynamically overridden for specific chat profiles, allowing for highly flexible and context-aware application behavior. This is achieved using `ChainlitConfigOverrides` within your `cl.ChatProfile` definitions.
+
+By leveraging this, you can, for example, enable or disable certain features, change UI elements, or adjust model parameters based on the chat profile selected by the user.
+
+For more details on defining and using chat profiles, refer to the [Chat Profiles documentation](/api-reference/chat-profiles).
+
+### Example
+
+```python
+import chainlit as cl
+from chainlit.config import (
+    ChainlitConfigOverrides,
+    FeaturesSettings,
+    UISettings,
+)
+from chainlit.input_widget import Select, Switch
+
+@cl.set_chat_profiles
+async def chat_profiles():
+    return [
+        cl.ChatProfile(
+            name="Default Profile",
+            markdown_description="Uses default chat settings.",
+        ),
+        cl.ChatProfile(
+            name="Advanced Profile",
+            markdown_description="Enables advanced features and custom UI.",
+            config_overrides=ChainlitConfigOverrides(
+                ui=UISettings(name="Advanced Chat"),
+                features=FeaturesSettings(
+                    # Example: enable a specific feature for this profile
+                    mcp=cl.McpFeature(enabled=True)
+                )
+            ),
+        ),
+    ]
+
+@cl.on_chat_start
+async def start():
+    # Define default chat settings
+    await cl.ChatSettings(
+        [
+            Select(
+                id="Model",
+                label="Model",
+                values=["gpt-3.5-turbo", "gpt-4"],
+                initial_index=0,
+            ),
+            Switch(id="DebugMode", label="Debug Mode", initial=False),
+        ]
+    ).send()
+
+@cl.on_settings_update
+async def setup_agent(settings):
+    print("Settings updated:", settings)
+```
+
+## Frontend Interaction
+
+On the frontend, the `ChatSettingsModal` component is responsible for rendering the chat settings UI. It leverages various React hooks and state management to provide a dynamic and interactive experience:
+
+*   `useChatData`: Accesses the current chat settings values and input definitions.
+*   `useChatInteract`: Handles user interactions with the settings, such as updating values.
+*   `chatSettingsValueState`: An internal state atom that holds the current values of the chat settings.
+
+When a user modifies a setting, these frontend components work together to update the UI, trigger the `@cl.on_settings_update` callback in the backend, and ensure the application reacts accordingly.

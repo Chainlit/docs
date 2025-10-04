@@ -1,0 +1,25 @@
+---
+title: "on_feedback"
+---
+
+The `@cl.on_feedback` decorator allows you to define a function that will be executed whenever a user provides feedback on a message in the UI. This feedback is typically a "thumbs up" or "thumbs down" action. The decorated function receives a `Feedback` object, which contains details about the feedback event, such as the feedback value and the ID of the message it's associated with.
+
+## `Feedback` Object Attributes
+
+*   `value`: The feedback value (e.g., 0 for thumbs down, 1 for thumbs up).
+*   `forId`: The ID of the step (message) for which the feedback was given.
+*   `comment`: An optional textual comment provided by the user.
+
+## Usage
+
+```python
+import chainlit as cl
+
+@cl.on_feedback
+async def on_feedback(feedback: cl.Feedback):
+    print(f"Received feedback: {feedback.value} for step {feedback.forId}")
+    # You can add custom logic here, such as storing feedback in a database
+    # or sending notifications.
+    if feedback.comment:
+        print(f"Comment: {feedback.comment}")
+```

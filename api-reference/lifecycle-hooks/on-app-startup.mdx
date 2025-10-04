@@ -1,0 +1,16 @@
+---
+title: "on_app_startup"
+---
+
+The `@cl.on_app_startup` decorator registers a function to run when the Chainlit application starts. This is ideal for tasks like loading models, setting up database connections, or any other initializations required by your application.
+
+## Usage
+
+```python
+import chainlit as cl
+
+@cl.on_app_startup
+async def startup():
+    print("Application is starting!")
+    # Initialize resources here
+```

@@ -10,7 +10,7 @@ title: OpenAI
 
 The benefits of this integration is that you can see the OpenAI API calls in a step in the UI, and you can explore them in the prompt playground.
 
-You need to add `cl.instrument_openai()` after creating your OpenAI client.
+You need to add `cl.instrument_openai()` after creating your OpenAI client. This function should be called once at the top level of your application code, outside of any `on_chat_start` or `on_message` functions, as it modifies the OpenAI library globally.
 
 <Warning>
   You shouldn't configure this integration if you're already using another
@@ -23,8 +23,8 @@ You need to add `cl.instrument_openai()` after creating your OpenAI client.
 Before getting started, make sure you have the following:
 
 - A working installation of Chainlit
-- The OpenAI package installed
-- An OpenAI API key
+- The `openai` Python package installed (`pip install openai`)
+- An OpenAI API key configured as an environment variable (e.g., `OPENAI_API_KEY`).
 - Basic understanding of Python programming
 
 ## Step 1: Create a Python file
@@ -41,6 +41,7 @@ import chainlit as cl
 client = AsyncOpenAI()
 
 # Instrument the OpenAI client
+# This should be called once at the top level of your application.
 cl.instrument_openai()
 
 settings = {
@@ -51,21 +52,44 @@ settings = {
 
 @cl.on_message
 async def on_message(message: cl.Message):
-    response = await client.chat.completions.create(
-        messages=[
-            {
-                "content": "You are a helpful bot, you always reply in Spanish",
-                "role": "system"
-            },
-            {
-                "content": message.content,
-                "role": "user"
-            }
-        ],
-        **settings
-    )
-    await cl.Message(content=response.choices[0].message.content).send()
+    # General Python error handling is recommended for robustness
+    try:
+        response = await client.chat.completions.create(
+            messages=[
+                {
+                    "content": "You are a helpful bot, you always reply in Spanish",
+                    "role": "system"
+                },
+                {
+                    "content": message.content,
+                    "role": "user"
+                }
+            ],
+            stream=True, # Enable streaming for real-time updates
+            **settings
+        )
+        
+        # cl.instrument_openai() automatically handles streaming.
+        # You do not need to manually call await answer.stream_token(msg.content)
+        # for instrumented OpenAI calls.
+        answer = cl.Message(content="")
+        async for part in response:
+            if token := part.choices[0].delta.content or "":
+                await answer.stream_token(token) # Manual streaming for demonstration, but often handled by instrumentation
+        await answer.send()
+
+    except Exception as e:
+        await cl.ErrorMessage(content=f"An error occurred: {e}").send()
+
 ```
+
+### Tool Use and Function Calling
+
+If your OpenAI model uses tool calls or function calling, `cl.instrument_openai()` will automatically visualize these interactions as `Step` objects in the Chainlit UI. Each tool call, its input, and its output will be displayed as a distinct step, providing clear visibility into the model's decision-making process.
+
+### Advanced Configuration
+
+Currently, `cl.instrument_openai()` provides direct instrumentation of OpenAI API calls without advanced filtering options to selectively include or exclude specific API calls or customize how steps are displayed.
 
 ## Step 3: Fill the environment variables
 

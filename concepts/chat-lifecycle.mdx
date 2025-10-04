@@ -44,14 +44,55 @@ def on_chat_end():
     print("The user disconnected!")
 ```
 
-## On Chat Resume
+## User Session
 
-The [on_chat_resume](/api-reference/lifecycle-hooks/on-chat-resume) decorator is used to define a hook that is called when a user resumes a chat session that was previously disconnected. This can only happen if [authentication](/authentication) and [data persistence](/data-persistence) are enabled.
+The user session is a dictionary that is unique to each user and each chat. It is reset when the user starts a new chat.
+
+You can access the user session using `cl.user_session`.
 
 ```python
-from chainlit.types import ThreadDict
+import chainlit as cl
 
-@cl.on_chat_resume
-async def on_chat_resume(thread: ThreadDict):
-    print("The user resumed a previous chat session!")
+@cl.on_chat_start
+async def main():
+    cl.user_session.set("some_var", "some_value")
+
+@cl.on_message
+async def main(message: cl.Message):
+    some_var = cl.user_session.get("some_var")
+    await cl.Message(content=f"some_var: {some_var}").send()
 ```
+
+## Chat Context (`cl.chat_context`)
+
+`cl.chat_context` is an instance of the `ChatContext` class, designed to help keep track of messages within the current chat thread. It provides methods to manage the conversation history.
+
+### Functionality
+
+*   `get()`: Retrieves a copy of the list of `Message` objects for the current session.
+*   `add(message: "Message")`: Adds a `Message` object to the current session's chat context.
+*   `remove(message: "Message")`: Removes a specific `Message` object from the current session's chat context.
+*   `clear()`: Clears all messages from the current session's chat context.
+*   `to_openai()`: Converts the stored messages into a format compatible with OpenAI's API.
+
+### Usage Example
+
+```python
+import chainlit as cl
+
+@cl.on_message
+async def main(message: cl.Message):
+    # Add the current message to the chat context
+    cl.chat_context.add(message)
+
+    # Retrieve the conversation history
+    history = cl.chat_context.get()
+    print("Conversation History:", [msg.content for msg in history])
+
+    # Example: Convert to OpenAI format
+    openai_messages = cl.chat_context.to_openai()
+    print("OpenAI formatted messages:", openai_messages)
+
+    await cl.Message(content=f"Message added to chat context.").send()
+```
+

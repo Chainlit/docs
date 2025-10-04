@@ -1,49 +1,188 @@
 ---
-title: "Action"
+title: Action
 ---
 
-The `Action` class is designed to create and manage actions to be sent and displayed in the chatbot user interface. Actions consist of buttons that the user can interact with, and these interactions trigger specific functionalities within your app.
+The `Action` class is designed to create and manage interactive buttons within the Chainlit user interface. These actions allow users to trigger specific functionalities in your application, and their interactions are handled by `@cl.action_callback` decorated functions.
 
-## Attributes
+## `cl.Action` Properties
+
+The `cl.Action` class has the following properties:
+
+<ParamField path="id" type="str">
+  A unique string identifier for the action. This is automatically generated using `uuid.uuid4()` and should not be set manually.
+</ParamField>
 
 <ParamField path="name" type="str">
-  Name of the action, this should match the action callback.
-</ParamField>
-
-<ParamField path="payload" type="Dict">
-  The payload associated with the action.
-</ParamField>
-
-<ParamField path="icon" type="str" optional>
-  The lucide icon name for the action button. See https://lucide.dev/icons/.
+  A string that identifies the action. This name is crucial as it links the action to its corresponding `@cl.action_callback` function.
 </ParamField>
 
 <ParamField path="label" type="str" optional>
-  The label of the action. This is what the user will see. If no label and no icon is provided, the name is display as a fallback.
+  The text displayed on the action button in the UI. If no label is provided, the `name` will be used as a fallback.
+</ParamField>
+
+<ParamField path="payload" type="dict">
+  A dictionary containing parameters to be passed to the action's callback function when it is triggered. This property replaced the `value` field in version 2.0.0.
 </ParamField>
 
 <ParamField path="tooltip" type="str" optional>
-  The description of the action. This is what the user will see when they hover
-  the action.
+  A string that provides additional information when the user hovers over the action button.
+</ParamField>
+
+<ParamField path="icon" type="str" optional>
+  The name of a Lucid icon to be displayed alongside the action label. This field was added in version 2.0.0.
+</ParamField>
+
+<ParamField path="forId" type="str" optional>
+  An optional string used internally to associate an action with a specific message or element. This should not be set manually.
 </ParamField>
 
 ## Usage
 
+### Defining Actions and Callbacks
+
+Actions are defined using the `cl.Action` class and can be attached to messages. The `name` property of the `Action` object corresponds to the name used in the `@cl.action_callback` decorator.
+
 ```python
 import chainlit as cl
 
-@cl.action_callback("action_button")
-async def on_action(action):
-    await cl.Message(content=f"Executed {action.name}").send()
-    # Optionally remove the action button from the chatbot user interface
+@cl.action_callback("test action")
+async def on_test_action(action: cl.Action):
+    await cl.Message(content=f"Executed {action.name} with payload: {action.payload['value']}!").send()
+
+@cl.on_chat_start
+async def start():
+    actions = [
+        cl.Action(id="test-action-1", name="test action", payload={"value": "test1"}, label="Test Action 1"),
+        cl.Action(id="test-action-2", name="test action", payload={"value": "test2"}, label="Test Action 2", tooltip="This is a tooltip", icon="Settings"),
+    ]
+    await cl.Message("Hello, this is a test message with actions!", actions=actions).send()
+```
+In this example, clicking either "Test Action 1" or "Test Action 2" will trigger the `on_test_action` callback. The `action` object passed to the callback will contain the `payload` specific to the clicked button.
+
+### Asking the User for an Action
+
+You can use `cl.AskActionMessage` to prompt the user to select an action, blocking further code execution until an action is chosen or a timeout occurs.
+
+```python
+import chainlit as cl
+
+@cl.action_callback("first_action")
+async def on_first_action(action: cl.Action):
+    await cl.Message(content=f"You chose: {action.label}").send()
+
+@cl.action_callback("second_action")
+async def on_second_action(action: cl.Action):
+    await cl.Message(content=f"You chose: {action.label}").send()
+
+@cl.on_chat_start
+async def start():
+    result = await cl.AskActionMessage(
+        content="Please, pick an action!",
+        actions=[
+            cl.Action(
+                id="first-action-id",
+                name="first_action",
+                payload={"value": "first-action"},
+                label="First action",
+            ),
+            cl.Action(
+                id="second-action-id",
+                name="second_action",
+                payload={"value": "second-action"},
+                label="Second action",
+            ),
+        ],
+    ).send()
+
+    if result is not None:
+        await cl.Message(f"Thanks for pressing: {result['payload']['value']}").send()
+```
+The `result` from `send()` will be an `AskActionResponse` dictionary containing the `name`, `payload`, `label`, `tooltip`, `forId`, and `id` of the selected action.
+
+## Action Lifecycle and Removal
+
+Actions have a lifecycle that includes creation, display, execution, and removal. You can programmatically remove actions from the UI.
+
+### Removing Individual Actions
+
+To remove an individual action, call the `remove()` method on an `Action` object within an `@cl.action_callback` function.
+
+```python
+import chainlit as cl
+
+@cl.action_callback("removable action")
+async def on_removable_action(action: cl.Action):
+    await cl.Message(content="Executed removable action!").send()
+    await action.remove() # This removes the specific action button from the UI
+
+@cl.on_chat_start
+async def start():
+    actions = [
+        cl.Action(id="removable-action-id", name="removable action", payload={"value": "remove_me"}, label="Remove Me")
+    ]
+    await cl.Message("Click the button to remove it:", actions=actions).send()
+```
+
+### Removing All Actions from a Message
+
+You can remove all actions associated with a specific message by calling the `remove_actions()` method on a `Message` object.
+
+```python
+import chainlit as cl
+
+@cl.action_callback("all actions removed")
+async def on_all_actions_removed(_: cl.Action):
+    await cl.Message(content="All actions have been removed!").send()
+    # Retrieve the message from user session (assuming it was stored)
+    message_with_actions = cl.user_session.get("message_with_actions")
+    if message_with_actions:
+        await message_with_actions.remove_actions() # Removes all action buttons from this message
+
+@cl.on_chat_start
+async def start():
+    actions = [
+        cl.Action(id="action-1", name="all actions removed", payload={"value": "action_1"}, label="Action 1"),
+        cl.Action(id="action-2", name="all actions removed", payload={"value": "action_2"}, label="Action 2")
+    ]
+    message = cl.Message("Click any button to remove all actions:", actions=actions)
+    cl.user_session.set("message_with_actions", message) # Store message for later removal
+    await message.send()
+```
+
+### Multiple Actions with Same Callback
+
+Multiple `cl.Action` instances can share the same `name` and thus trigger the same callback function. The `action` object passed to the callback contains the unique `id` and `payload` of the specific action that was triggered, allowing you to differentiate between them.
+
+```python
+import chainlit as cl
+
+@cl.action_callback("shared_callback")
+async def on_shared_callback(action: cl.Action):
+    await cl.Message(content=f"Action '{action.label}' (ID: {action.id}) was clicked with payload: {action.payload['value']}").send()
     await action.remove()
 
 @cl.on_chat_start
 async def start():
-    # Sending an action button within a chatbot message
     actions = [
-        cl.Action(name="action_button", payload={"value": "example_value"}, label="Click me!")
+        cl.Action(id="option-a", name="shared_callback", payload={"value": "option_a"}, label="Option A"),
+        cl.Action(id="option-b", name="shared_callback", payload={"value": "option_b"}, label="Option B"),
     ]
+    await cl.Message("Choose an option:", actions=actions).send()
+```
 
-    await cl.Message(content="Interact with this action button:", actions=actions).send()
+## Global Actions
+
+You can also define global actions that are always available to the user. These actions are typically displayed in the chat input area.
+
+```python
+import chainlit as cl
+
+@cl.action_callback("global_action")
+async def on_global_action(action: cl.Action):
+    await cl.Message(content=f"Executed global action: {action.label}").send()
+
+@cl.on_chat_start
+async def start():
+    # Sending a global action. It will appear in the chat input area.
+    cl.Action(id="global-action-id", name="global_action", payload={"value": "global_example"}, label="Global Action").send()
 ```

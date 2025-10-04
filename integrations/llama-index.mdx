@@ -13,9 +13,19 @@ In this tutorial, we will guide you through the steps to create a Chainlit appli
 Before diving in, ensure that the following prerequisites are met:
 
 - A working installation of Chainlit
-- The Llama Index package installed
-- An OpenAI API key
+- The Llama Index package installed (`pip install llama-index-core llama-index-llms-openai llama-index-embeddings-openai`)
+- An OpenAI API key configured as an environment variable (e.g., `OPENAI_API_KEY`). See [Environment Variable Setup](#environment-variable-setup) for details.
 - A basic understanding of Python programming
+
+### Environment Variable Setup
+
+For your OpenAI API key (`OPENAI_API_KEY`), it is recommended to set it as an environment variable. You can do this in your shell or by creating a `.env` file in your project root.
+
+**Example using a `.env` file:**
+```
+OPENAI_API_KEY="your_openai_api_key_here"
+```
+Chainlit automatically loads environment variables from a `.env` file if present. For more advanced management of user-provided environment variables, refer to Chainlit's `ProjectSettings` configuration.
 
 ## Step 1: Set Up Your Data Directory
 
@@ -48,7 +58,9 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.core.query_engine.retriever_query_engine import RetrieverQueryEngine
 from llama_index.core.callbacks import CallbackManager
 from llama_index.core.service_context import ServiceContext
+from llama_index.core.callbacks.schema import CBEventType # Import CBEventType for advanced configuration
 
+# Ensure OpenAI API key is set from environment variables
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 try:
@@ -64,13 +76,18 @@ except:
 
 @cl.on_chat_start
 async def start():
+    # Configure LlamaIndex settings
     Settings.llm = OpenAI(
         model="gpt-3.5-turbo", temperature=0.1, max_tokens=1024, streaming=True
     )
     Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
     Settings.context_window = 4096
 
-    service_context = ServiceContext.from_defaults(callback_manager=CallbackManager([cl.LlamaIndexCallbackHandler()]))
+    # Initialize Chainlit's LlamaIndex callback handler
+    # You can configure it to ignore specific events, e.g., event_starts_to_ignore=[CBEventType.EMBEDDING]
+    cl_callback_handler = cl.LlamaIndexCallbackHandler()
+    
+    service_context = ServiceContext.from_defaults(callback_manager=CallbackManager([cl_callback_handler]))
     query_engine = index.as_query_engine(streaming=True, similarity_top_k=2, service_context=service_context)
     cl.user_session.set("query_engine", query_engine)
 
@@ -83,18 +100,57 @@ async def start():
 async def main(message: cl.Message):
     query_engine = cl.user_session.get("query_engine") # type: RetrieverQueryEngine
 
-    msg = cl.Message(content="", author="Assistant")
+    # The LlamaIndexCallbackHandler automatically handles streaming and step creation.
+    # The query_engine.query method will be instrumented by the callback handler.
+    response = await cl.make_async(query_engine.query)(message.content)
 
-    res = await cl.make_async(query_engine.query)(message.content)
+    # If you need to display the final response in a Chainlit message,
+    # you can create a message and stream its content.
+    # The LlamaIndexCallbackHandler will already have created steps for the LLM calls.
+    final_message = cl.Message(content="", author="Assistant")
+    if response.response_gen:
+        for token in response.response_gen:
+            await final_message.stream_token(token)
+    else:
+        final_message.content = response.response
 
-    for token in res.response_gen:
-        await msg.stream_token(token)
-    await msg.send()
+    await final_message.send()
 ```
 
-This code sets up an instance of `RetrieverQueryEngine` for each chat session. The `RetrieverQueryEngine` is invoked everytime a user sends a message to generate the response.
+This code sets up an instance of `RetrieverQueryEngine` for each chat session. The `RetrieverQueryEngine` is invoked every time a user sends a message to generate the response.
 
-The callback handlers are responsible for listening to the intermediate steps and sending them to the UI.
+## How `cl.LlamaIndexCallbackHandler` Works
+
+The `cl.LlamaIndexCallbackHandler` is a Chainlit-specific callback handler that integrates LlamaIndex events with Chainlit's tracing and visualization features. It extends LlamaIndex's `TokenCountingHandler` to capture various LlamaIndex events and translate them into Chainlit Steps.
+
+**Internal Working:**
+-   It overrides `on_event_start` and `on_event_end` methods.
+-   For each LlamaIndex event, it creates a Chainlit `Step`, records its start/end times, input/output, and sends/updates the step in the UI.
+
+**Events Captured and Metadata Recorded:**
+The handler captures and processes various `CBEventType` events, mapping them to Chainlit `StepType`s and recording detailed metadata:
+-   **`CBEventType.FUNCTION_CALL`**: Mapped to `StepType.TOOL`. Records function name as `step.name`, input payload as `step.input`, and function output as `step.output`.
+-   **`CBEventType.RETRIEVE`**: Mapped to `StepType.TOOL`. Records retrieved nodes as `Text` elements attached to the step, with a summary of sources as `step.output`.
+-   **`CBEventType.QUERY`**: Mapped to `StepType.TOOL`. If a response with source nodes is present, these nodes are converted into `Text` elements and attached to the step, with a summary of sources as `step.output`.
+-   **`CBEventType.LLM`**: Mapped to `StepType.LLM`. Records the LLM response as `step.output` and includes detailed `ChatGeneration` or `CompletionGeneration` metadata (model, messages, prompt, completion, token count) in `step.generation`.
+
+By default, events like `CBEventType.CHUNKING`, `CBEventType.SYNTHESIZE`, `CBEventType.EMBEDDING`, `CBEventType.NODE_PARSING`, and `CBEventType.TREE` are ignored.
+
+## Advanced Configuration for `cl.LlamaIndexCallbackHandler`
+
+You can customize which LlamaIndex events are tracked by the `cl.LlamaIndexCallbackHandler` using the `event_starts_to_ignore` and `event_ends_to_ignore` parameters in its constructor. Both parameters accept a list of `CBEventType` enums.
+
+**Example:**
+```python
+from llama_index.core.callbacks.schema import CBEventType
+from chainlit.llama_index import LlamaIndexCallbackHandler
+
+# Initialize the handler to ignore EMBEDDING events at start and end
+cl_callback_handler = cl.LlamaIndexCallbackHandler(
+    event_starts_to_ignore=[CBEventType.EMBEDDING],
+    event_ends_to_ignore=[CBEventType.EMBEDDING],
+)
+```
 
 ## Step 4: Launch the Application
 

@@ -1,39 +1,110 @@
 ---
-title: "cache"
+title: "Cache"
 ---
 
-The `cache` decorator is a tool for caching results of resource-intensive calculations or loading processes. It can be conveniently combined with the [file watcher](/backend/command-line) to prevent resource reloading each time the application restarts. This not only saves time, but also enhances overall efficiency.
+Chainlit provides caching mechanisms to significantly improve the performance and efficiency of your applications by reducing redundant computations and external API calls. This is particularly useful for:
 
-## Parameters
+*   **Avoiding reloading expensive resources**: During development or frequent application reloads, caching prevents re-execution of computationally intensive functions.
+*   **Enabling third-party caching**: Integrations with libraries like LangChain can leverage caching to store results of LLM calls, reducing latency and costs.
 
-<ParamField path="func" type="Callable">
-  The target function whose results need to be cached.
-</ParamField>
+## `@cl.cache` Decorator
 
-## Returns
+The `@cl.cache` decorator provides an in-memory caching mechanism for Python functions. It memoizes function results, returning a cached value if the function is called again with the same arguments, thus avoiding re-execution.
 
-<ResponseField name="cached_value" type="Any" required>
-  The computed value that is stored in the cache after its initial calculation.
-</ResponseField>
+### How it Works
 
-## Usage
+This type of caching does not require explicit configuration in `config.toml`.
+
+When a function decorated with `@cl.cache` is called:
+
+1.  A unique cache key is generated based on the function's name, arguments, and keyword arguments.
+2.  The decorator checks if this key exists in a global in-memory dictionary.
+3.  If the key is found, the cached result is returned immediately.
+4.  If the key is not found, the original function is executed, its result is stored in the cache with the generated key, and then returned.
+
+Access to the in-memory cache is protected by a `threading.Lock()` to ensure thread-safe access, ensuring reliable operation in concurrent environments.
+
+### Parameters
+
+The `@cl.cache` decorator itself **does not accept any parameters**.
+
+### Best Practices
+
+Apply `@cl.cache` to functions that are:
+
+*   **Idempotent**: Calling the function multiple times with the same arguments produces the same result.
+*   **Computationally Expensive**: Functions that take a long time to execute.
+*   **Called Frequently**: Functions that are invoked many times with potentially repetitive arguments.
+
+### Limitations
+
+There is no explicit mechanism to invalidate or clear the in-memory cache managed by `@cl.cache` during runtime. The cache persists for the lifetime of the application process.
+
+### Usage
 
 ```python
-import time
 import chainlit as cl
+from chainlit.cache import cache
 
-@cl.cache
-def to_cache():
-    time.sleep(5)  # Simulate a time-consuming process
-    return "Hello!"
-
-value = to_cache()
+@cache
+def expensive_function(arg1: str, arg2: str) -> str:
+    # Simulate a time-consuming operation
+    import time
+    time.sleep(2)
+    return f"Result for {arg1}, {arg2}"
 
 @cl.on_message
 async def main(message: cl.Message):
-    await cl.Message(
-        content=value,
-    ).send()
+    # The first call will execute the function and cache the result
+    result1 = expensive_function("input1", "input2")
+    await cl.Message(content=f"First call: {result1}").send()
+
+    # The second call with the same arguments will return the cached result instantly
+    result2 = expensive_function("input1", "input2")
+    await cl.Message(content=f"Second call: {result2}").send()
+
+    # A call with different arguments will execute the function again and cache a new result
+    result3 = expensive_function("input3", "input4")
+    await cl.Message(content=f"Third call: {result3}").send()
 ```
 
-In this example, the `to_cache` function simulates a time-consuming process that returns a value. By using the `cl.cache` decorator, the result of the function is cached after its first execution. Future calls to the `to_cache` function return the cached value without running the time-consuming process again.
+## LangChain Caching
+
+Chainlit integrates with third-party libraries like LangChain to provide caching for their operations, particularly for LLM (Large Language Model) calls. This significantly reduces the need to re-query LLMs for identical prompts, leading to faster responses and reduced API costs.
+
+### Mechanism
+
+When enabled, Chainlit initializes LangChain's `SQLiteCache`, storing LLM call results in a local SQLite database. The path to this database can be configured. This initialization occurs during the Chainlit application startup, checking if caching is enabled (`config.project.cache` is `True`) and not explicitly disabled at runtime (`config.run.no_cache` is `False`).
+
+### Configuration
+
+LangChain caching can be configured via your `chainlit.toml` file or through command-line options:
+
+*   **`chainlit.toml`**: Under the `[project]` section, set `cache = true` to enable LangChain caching. You can also specify the `lc_cache_path` to define the location of the SQLite cache database.
+
+    ```toml
+    [project]
+    cache = true
+    lc_cache_path = ".langchain_cache.db"
+    ```
+
+*   **CLI Option**: You can disable LangChain caching at runtime using the `--no-cache` flag when running your Chainlit application:
+
+    ```bash
+    chainlit run your_app.py --no-cache
+    ```
+
+## Performance Implications
+
+Strategic use of caching in Chainlit applications offers substantial performance benefits:
+
+*   **Reduced Latency**: By serving results from cache, response times are significantly improved, especially for expensive computations or LLM calls.
+*   **Lower API Costs**: Caching LLM responses reduces the number of external API calls, leading to cost savings.
+*   **Improved User Experience**: Faster interactions and more responsive applications contribute to a better user experience.
+*   **Efficient Resource Utilization**: Avoids redundant processing, freeing up computational resources.
+
+## Limitations and Considerations
+
+-   The `@cl.cache` decorator uses an in-memory cache. This means that all cached data is lost when your Chainlit application restarts.
+-   The in-memory cache does not have a size limit, so be mindful of memory consumption when caching large objects.
+-   The LangChain cache is persistent as it uses a SQLite database file.

@@ -28,4 +28,36 @@ It is composed of three sections:
   <Card title="UI" icon="palette" color="#16a34a" href="/backend/config/ui">
     UI configuration.
   </Card>
+  <Card
+    title="Custom Endpoints"
+    icon="api"
+    color="#FFD700"
+    href="#custom-endpoints"
+  >
+    Add custom endpoints to the FastAPI server.
+  </Card>
 </CardGroup>
+
+## Custom Endpoints
+
+Chainlit allows you to add custom endpoints to its FastAPI server. This is useful for extending the functionality of your Chainlit application with custom API routes.
+
+### Usage
+
+You can define custom FastAPI routes in your Chainlit application. These routes will be mounted on the same FastAPI application that serves Chainlit.
+
+```python
+import chainlit as cl
+from fastapi import FastAPI
+
+# Create a FastAPI app instance
+custom_app = FastAPI()
+
+@custom_app.get("/my-custom-endpoint")
+async def my_custom_endpoint():
+    return {"message": "Hello from custom endpoint!"}
+
+# Mount the custom FastAPI app to Chainlit
+cl.fastapi_app = custom_app
+```
+

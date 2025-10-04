@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "aspen",
   "name": "Chainlit",
   "colors": {
     "primary": "#F80061",
@@ -294,5 +294,14 @@
       "x": "https://x.com/chainlit_io",
       "linkedin": "https://www.linkedin.com/company/chainlit"
     }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "chatgpt",
+      "cursor",
+      "claude",
+      "perplexity"
+    ]
   }
 }
