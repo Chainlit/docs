@@ -1,0 +1,64 @@
+---
+title: "LLM Picker"
+---
+
+The LLM Picker allows users to select which Large Language Model to use for their messages. This is useful when your application supports multiple models with different capabilities.
+
+## Attributes
+
+<ParamField path="id" type="str">
+  Unique identifier for the LLM (e.g., "gpt-4", "claude-3-opus").
+</ParamField>
+
+<ParamField path="name" type="str">
+  Display name shown in the UI (e.g., "GPT-4", "Claude 3 Opus").
+</ParamField>
+
+<ParamField path="description" type="str">
+  Brief description of the LLM's capabilities or use case.
+</ParamField>
+
+<ParamField path="icon" type="str" optional>
+  The lucide icon name for the LLM. See https://lucide.dev/icons/.
+</ParamField>
+
+<ParamField path="default" type="boolean" optional>
+  Whether this LLM should be selected by default. If no LLM has `default: true`, the first one in the list will be selected.
+</ParamField>
+
+## Set available LLMs
+
+You can define the available LLMs using the `@cl.set_llms` decorator. The selected LLM will be available in the `message.llm` field.
+
+```python
+import chainlit as cl
+
+@cl.set_llms
+async def set_llms(user, language):
+    return [
+        {
+            "id": "gpt-4",
+            "name": "GPT-4",
+            "description": "Most capable model",
+            "icon": "sparkles",
+            "default": True
+        },
+        {
+            "id": "gpt-3.5-turbo",
+            "name": "GPT-3.5 Turbo",
+            "description": "Fast and efficient",
+            "icon": "bolt"
+        }
+    ]
+
+@cl.on_message
+async def message(msg: cl.Message):
+    # Access the selected LLM
+    selected_llm = msg.llm  # e.g., "gpt-4"
+    
+    await cl.Message(
+        content=f"Using {selected_llm}: {msg.content}"
+    ).send()
+```
+
+The LLM picker appears as an inline dropdown in the message composer, allowing users to switch between models at any time. The selection persists across messages.
