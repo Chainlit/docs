@@ -70,7 +70,8 @@
               "concepts/user-session",
               "concepts/element",
               "concepts/action",
-              "concepts/command"
+              "concepts/command",
+              "concepts/modes"
             ]
           },
           {
