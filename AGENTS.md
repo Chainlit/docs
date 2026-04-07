@@ -2,6 +2,10 @@
 
 This is the **Chainlit documentation site**, built with [Mintlify](https://mintlify.com). Chainlit is an open-source Python package for building production-ready Conversational AI applications. This repo contains only the documentation content — not the Chainlit framework source code.
 
+## MCP-First Approach (CRITICAL)
+
+When available, **ALWAYS** prefer MCP servers over manual alternatives. Use **Context7** for docs/API references, **Serena** for code navigation/refactoring/memory, and **GitHub MCP** for issues/PRs/actions/commits/releases/code search. Fall back to CLI tools, direct file reads, or web searches **ONLY IF** the corresponding MCP is unavailable or cannot fulfill the request.
+
 ## Development
 
 ```bash
