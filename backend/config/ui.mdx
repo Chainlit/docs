@@ -69,6 +69,10 @@ title: UI
   Filter applied to the custom background image on the login page when the dark theme is selected
 </ParamField>
 
+<ParamField path="custom_meta_url" type="str" optional>
+  Content of the `<meta property="og:url">` tag. Used in link previews (e.g. iMessage, Twitter). Defaults to the Chainlit GitHub repository URL if not set.
+</ParamField>
+
 <ParamField path="custom_meta_image_url" type="str" optional>
   Content of the `<meta property="og:image">` tag used for site preview
 </ParamField>
@@ -86,7 +90,12 @@ title: UI
 </ParamField>
 
 <ParamField path="header_links" type="List[HeaderLink]" optional>
-  Additional links displayed in the header next to (or replacing, if not provided) the GitHub link
+  Additional links displayed in the header next to (or replacing, if not provided) the GitHub link.
+  Each link supports an optional `target` field to control how the link opens: `_blank` (default), `_self`, `_parent`, or `_top`.
+
+  <Note>
+    The `target` field is available since version **2.8.3**.
+  </Note>
 </ParamField>
 
 
@@ -134,6 +143,9 @@ alert_style = "classic"
 # login_page_image_dark_filter = "contrast-200 blur-sm"
 
 
+# Specify a custom meta url for link previews (og:url).
+# custom_meta_url = "https://example.com"
+
 # Specify a custom meta image url.
 # custom_meta_image_url = "https://chainlit-cloud.s3.eu-west-3.amazonaws.com/logo/chainlit_banner.png"
 
@@ -154,4 +166,5 @@ default_avatar_file_url = ""
 #     display_name = "Report Issue"
 #     icon_url = "https://avatars.githubusercontent.com/u/128686189?s=200&v=4"
 #     url = "https://github.com/Chainlit/chainlit/issues"
+#     target = "_self"  # Optional: _blank (default), _self, _parent, _top
 ```

@@ -40,6 +40,30 @@ async def set_starters():
   <img src="/images/starters.gif" />
 </Frame>
 
+## With Localization
+
+The `@cl.set_starters` callback accepts an optional `language` parameter, allowing you to return localized starters based on the user's language.
+
+```python localized_starters.py
+@cl.set_starters
+async def set_starters(current_user: cl.User, language: str):
+    if language == "fr":
+        return [
+            cl.Starter(
+                label="Routine matinale",
+                message="Pouvez-vous m'aider à créer une routine matinale personnalisée ?",
+                icon="/public/idea.svg",
+            ),
+        ]
+    return [
+        cl.Starter(
+            label="Morning routine ideation",
+            message="Can you help me create a personalized morning routine?",
+            icon="/public/idea.svg",
+        ),
+    ]
+```
+
 ## With Chat Profiles
 
 Starters also work with [Chat Profiles](/advanced-features/chat-profiles). You can define different starters for different chat profiles.

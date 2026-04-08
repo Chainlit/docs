@@ -240,6 +240,9 @@
           {
             "group": "Input Widgets",
             "pages": [
+              "api-reference/input-widgets/checkbox",
+              "api-reference/input-widgets/multiselect",
+              "api-reference/input-widgets/radiogroup",
               "api-reference/input-widgets/select",
               "api-reference/input-widgets/slider",
               "api-reference/input-widgets/switch",

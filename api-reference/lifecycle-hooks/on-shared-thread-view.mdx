@@ -9,11 +9,21 @@ Requires that thread sharing is enabled via:
 - [Authentication](/authentication/overview)
 - [Data persistence](/data-persistence/overview)
 - `allow_thread_sharing = true` in the config (or via Chat Profile overrides)
-- The thread has been marked as shared (metadata `is_shared = true`)
 
 If any of these are missing, the decorator won't be invoked.
 
-This hook runs on every attempt to view a shared thread and must return `True` to allow the thread to be sent to the client. You can mutate the `thread` dict in-place to redact or filter content.
+A thread is viewable when **either** of the following is true:
+
+- The callback returns `True`, **or**
+- The thread metadata has `is_shared = true`
+
+This means the callback can grant access to threads that have not been explicitly shared (e.g. for admin users), and conversely, threads marked as shared are viewable even if the callback is not defined.
+
+<Warning>
+  **Behavior change in 2.8.1:** In 2.8.0 the thread was viewable only when **both** the callback returned `True` **and** `is_shared` was `true` in metadata. Since 2.8.1, **either** condition is sufficient. This allows use cases like admin access to any thread without requiring it to be shared first.
+</Warning>
+
+This hook runs on every attempt to view a shared thread. You can mutate the `thread` dict in-place to redact or filter content.
 
 ## Usage
 

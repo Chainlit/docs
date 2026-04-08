@@ -89,6 +89,33 @@ async def on_chat_start():
     ).send()
 ```
 
+## With Localization
+
+The `@cl.set_chat_profiles` callback accepts an optional `language` parameter, allowing you to return localized chat profile labels and descriptions.
+
+```python With localization
+import chainlit as cl
+
+
+@cl.set_chat_profiles
+async def chat_profile(current_user: cl.User, language: str):
+    if language == "fr":
+        return [
+            cl.ChatProfile(
+                name="GPT-4",
+                markdown_description="Le modèle sous-jacent est **GPT-4**.",
+                icon="https://picsum.photos/250",
+            ),
+        ]
+    return [
+        cl.ChatProfile(
+            name="GPT-4",
+            markdown_description="The underlying LLM model is **GPT-4**.",
+            icon="https://picsum.photos/250",
+        ),
+    ]
+```
+
 ## Dynamic Configuration
 
 You can override the global `config.toml` for specific ChatProfiles by configuring overrides 
