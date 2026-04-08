@@ -90,7 +90,12 @@ title: UI
 </ParamField>
 
 <ParamField path="header_links" type="List[HeaderLink]" optional>
-  Additional links displayed in the header next to (or replacing, if not provided) the GitHub link
+  Additional links displayed in the header next to (or replacing, if not provided) the GitHub link.
+  Each link supports an optional `target` field to control how the link opens: `_blank` (default), `_self`, `_parent`, or `_top`.
+
+  <Note>
+    The `target` field is available since version **2.8.3**.
+  </Note>
 </ParamField>
 
 
@@ -161,4 +166,5 @@ default_avatar_file_url = ""
 #     display_name = "Report Issue"
 #     icon_url = "https://avatars.githubusercontent.com/u/128686189?s=200&v=4"
 #     url = "https://github.com/Chainlit/chainlit/issues"
+#     target = "_self"  # Optional: _blank (default), _self, _parent, _top
 ```

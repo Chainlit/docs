@@ -79,3 +79,22 @@ When renaming or moving pages, add a redirect entry in `docs.json` under the `re
 - Lifecycle hooks are documented both in `concepts/chat-lifecycle.mdx` (conceptual) and `api-reference/lifecycle-hooks/` (API detail)
 - British spelling is used for `customisation/` directory naming
 - The repo uses `main` as the default branch
+
+### Version mentions
+
+When documenting features or changes tied to a specific Chainlit version, use a callout block with the standard phrasing `Since version **X.Y.Z**.`:
+
+- **Non-breaking additions** — use `<Note>`:
+  ```mdx
+  <Note>
+    Since version **2.8.3**.
+  </Note>
+  ```
+- **Breaking changes** — use `<Warning>` and describe what action is required:
+  ```mdx
+  <Warning>
+    Since version **2.8.2**. This is a **breaking change** — description of what changed and what users must do.
+  </Warning>
+  ```
+
+Place the callout **after** the feature description, not before it. Keep the version note separate from the explanatory text.
