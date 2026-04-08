@@ -37,9 +37,24 @@ Create a name for your bot, such as "ChainlitDemo". Select the workspace you wou
   <img src="/images/slack/create-app.png" />
 </Frame>
 
+## Connection Modes
+
+Chainlit supports two ways to connect to Slack:
+
+- **HTTP Mode** (default): Slack sends events to your Chainlit server via HTTP. Requires a public URL.
+- **Socket Mode** (since 2.7.0): Chainlit connects to Slack via WebSocket. No public URL needed — ideal for local development or restrictive networks.
+
+To use Socket Mode, set the `SLACK_WEBSOCKET_TOKEN` environment variable (see [Environment Variables](#set-the-environment-variables)). When set, Socket Mode takes priority over the HTTP handler.
+
 ## Working Locally
 
-If you are working locally, you will have to expose your local Chainlit app to the internet to receive incoming messages to Slack. You can use [ngrok](https://ngrok.com/) for this.
+### With Socket Mode (recommended)
+
+If you use Socket Mode, no public URL or ngrok is needed. Chainlit connects to Slack over WebSocket directly. See the [Socket Mode app manifest](#socket-mode) below.
+
+### With HTTP Mode
+
+If you are working locally with HTTP mode, you will have to expose your local Chainlit app to the internet to receive incoming messages from Slack. You can use [ngrok](https://ngrok.com/) for this.
 
 ```bash
 ngrok http 8000
@@ -100,6 +115,27 @@ Click on Save Changes.
 </Frame>
 
 You will see a warning stating that the URL is not verified. You can ignore this for now.
+
+### Socket Mode
+
+If you are using Socket Mode, apply these changes to the manifest above: remove both `request_url` fields and set `socket_mode_enabled` to `true`.
+
+```yaml
+settings:
+  event_subscriptions:
+    request_url: https://{ CHAINLIT_APP_HOST }/slack/events # [!code --]
+    bot_events:
+      - app_home_opened
+      - app_mention
+      - message.im
+  interactivity:
+    is_enabled: true
+    request_url: https://{ CHAINLIT_APP_HOST }/slack/events # [!code --]
+  org_deploy_enabled: false
+  socket_mode_enabled: false # [!code --]
+  socket_mode_enabled: true # [!code ++]
+  token_rotation_enabled: false
+```
 
 ## [Optional] Allow users to send DMs to Chainlit
 
@@ -166,6 +202,18 @@ Navigate to the Basic Information tab and copy the Signing Secret. Then set it a
 SLACK_SIGNING_SECRET=your_signing_secret
 ```
 
+### App-Level Token (Socket Mode only)
+
+If you are using Socket Mode, you also need an App-Level Token. Navigate to **Basic Information** > **App-Level Tokens**, create a token with the `connections:write` scope, and set it as an environment variable.
+
+```bash
+SLACK_WEBSOCKET_TOKEN=your_app_level_token
+```
+
+<Note>
+  When `SLACK_WEBSOCKET_TOKEN` is set, Chainlit uses Socket Mode and the HTTP `/slack/events` endpoint is not registered. You do not need `SLACK_SIGNING_SECRET` in Socket Mode.
+</Note>
+
 ## Start the Chainlit App
 
 Since the Chainlit app is not running, the Slack app will not be able to communicate with it.
@@ -189,8 +237,8 @@ async def on_message(msg: cl.Message):
 ```
 
 <Note>
-  Reminder: Make sure the environment variables are set and that your local
-  chainlit app is exposed to the internet via ngrok.
+  Reminder: Make sure the environment variables are set. If using HTTP mode,
+  your local Chainlit app must be exposed to the internet via ngrok.
 </Note>
 
 Start the Chainlit app:

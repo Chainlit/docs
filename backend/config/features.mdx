@@ -31,8 +31,12 @@ title: Features
 ### Audio
 
 <ParamField path="audio.enabled" type="bool" default={false}>
-  Restrict uploading file size (MB).
+  Enable audio features.
 </ParamField>
+
+<Warning>
+  Since Chainlit 2.7.0, `audio.enabled` must be explicitly set to `true` in `config.toml`. It is no longer auto-inferred from the existence of an `on_audio_chunk` callback.
+</Warning>
 
 <ParamField path="audio.sample_rate" type="int" default={24000}>
   Audio sample rate in hertz. Defaults to 24kHz
@@ -71,6 +75,10 @@ See [Slack integration documentation](/deploy/slack)
   Allow the user to edit their messages.
 </ParamField>
 
+<ParamField path="allow_thread_sharing" type="bool" default={false}>
+  Allow users to share threads with other users. Requires [authentication](/authentication/overview), [data persistence](/data-persistence/overview), and an [`on_shared_thread_view`](/api-reference/lifecycle-hooks/on-shared-thread-view) callback.
+</ParamField>
+
 ## Default configuration
 
 ```toml
@@ -90,6 +98,9 @@ auto_tag_thread = true
 # Allow users to edit their own messages
 edit_message = true
 
+# Allow users to share threads (requires on_shared_thread_view callback)
+allow_thread_sharing = false
+
 # Authorize users to spontaneously upload files with messages
 [features.spontaneous_file_upload]
     enabled = true
@@ -107,6 +118,12 @@ edit_message = true
     max_size_mb = 500
 
 [features.audio]
+    # Enable audio features
+    enabled = false
     # Sample rate of the audio
     sample_rate = 24000
+
+[features.mcp]
+    # Enable Model Context Protocol (MCP) features
+    enabled = false
 ```
