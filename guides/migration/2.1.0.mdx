@@ -1,0 +1,42 @@
+---
+title: Migrate to Chainlit v2.1.0
+---
+
+## Updating Chainlit
+
+Begin the migration by updating Chainlit to the latest version:
+
+```bash
+pip install --upgrade chainlit
+```
+
+## What changes?
+
+Chainlit 2.1.0 introduces [Commands](/concepts/command) — a way to capture user intent in a deterministic way. Users can select a command before sending a message, and the selected command is persisted alongside the message in the `steps` table.
+
+Full changelog available [here](https://github.com/Chainlit/chainlit/blob/main/CHANGELOG.md).
+
+## How to migrate?
+
+### 1. Update the database schema
+
+A new `command` column must be added to the steps table so that the selected command can be persisted with each message.
+
+<Tabs>
+  <Tab title="Official data layer">
+    The [Official data layer](https://github.com/Chainlit/chainlit-datalayer) Prisma schema has not been updated to include this column. Run the following migration manually against your database:
+
+    ```sql
+    ALTER TABLE "Step" ADD COLUMN IF NOT EXISTS "command" TEXT;
+    ```
+  </Tab>
+  <Tab title="SQLAlchemy / Custom SQL">
+    ```sql
+    ALTER TABLE steps ADD COLUMN IF NOT EXISTS "command" TEXT;
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  DynamoDB users do not need to run any migration — the schema is dynamic.
+</Note>

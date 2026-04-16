@@ -61,6 +61,15 @@ See [Slack integration documentation](/deploy/slack)
   Autoscroll new user messages at the top of the window.
 </ParamField>
 
+<ParamField path="assistant_message_autoscroll" type="bool" default={true}>
+  Autoscroll assistant messages as they stream. Set to `false` to keep the
+  viewport stable while new assistant tokens arrive.
+
+  <Note>
+    Since version **2.9.4**.
+  </Note>
+</ParamField>
+
 <ParamField path="unsafe_allow_html" type="bool" default={false}>
   Process and display HTML in messages. This can be a security risk (see
   https://stackoverflow.com/questions/19603097/why-is-it-dangerous-to-render-user-generated-html-or-javascript).
@@ -91,6 +100,9 @@ latex = false
 
 # Autoscroll new user messages at the top of the window
 user_message_autoscroll = true
+
+# Autoscroll assistant messages as they stream
+assistant_message_autoscroll = true
 
 # Automatically tag threads with the current chat profile (if a chat profile is used)
 auto_tag_thread = true
