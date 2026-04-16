@@ -89,6 +89,16 @@ title: UI
   Directory containing custom frontend production build files, if applicable
 </ParamField>
 
+<ParamField path="language" type="str" optional>
+  Force a specific UI language for all users, overriding the browser's language preference.
+  Accepts any locale code present in `.chainlit/translations/` (e.g. `en-US`, `fr-FR`, `he-IL`).
+  When unset (default), the language is detected from the user's browser.
+
+  <Note>
+    Since version **2.9.3**.
+  </Note>
+</ParamField>
+
 <ParamField path="header_links" type="List[HeaderLink]" optional>
   Additional links displayed in the header next to (or replacing, if not provided) the GitHub link.
   Each link supports an optional `target` field to control how the link opens: `_blank` (default), `_self`, `_parent`, or `_top`.
@@ -117,6 +127,10 @@ name = "Assistant"
 
 # Chain of Thought (CoT) display mode. Can be "hidden", "tool_call" or "full".
 cot = "full"
+
+# Force a specific UI language for all users (overrides browser detection).
+# Accepts any locale available under .chainlit/translations/
+# language = "en-US"
 
 # Specify a CSS file that can be used to customize the user interface.
 # The CSS file can be served from the public directory or via an external link.
