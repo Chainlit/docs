@@ -108,6 +108,33 @@ title: UI
   </Note>
 </ParamField>
 
+<ParamField path="confirm_new_chat" type="bool" default={true}>
+  Whether to show a confirmation dialog when the user clicks "New Chat".
+  Set to `false` to skip the dialog and immediately clear the chat.
+
+  <Note>
+    Since version **2.9.6**.
+  </Note>
+</ParamField>
+
+<ParamField path="chat_settings_location" type="Literal['message_composer', 'sidebar']" default="'message_composer'">
+  Where to display chat settings. `"message_composer"` shows them in a modal triggered from the composer.
+  `"sidebar"` moves them to a resizable right sidebar with a gear icon toggle in the header.
+
+  <Note>
+    Since version **2.9.6**.
+  </Note>
+</ParamField>
+
+<ParamField path="default_chat_settings_open" type="bool" default={false}>
+  Whether the chat settings sidebar is open when the page loads. Only applies when
+  `chat_settings_location` is set to `"sidebar"`.
+
+  <Note>
+    Since version **2.9.6**.
+  </Note>
+</ParamField>
+
 
 ## Default configuration
 
@@ -121,6 +148,15 @@ name = "Assistant"
 # layout = "wide"
 
 # default_sidebar_state = "open"
+
+# Show confirmation dialog when creating a new chat
+# confirm_new_chat = true
+
+# Where to display chat settings: "message_composer" (default modal) or "sidebar"
+# chat_settings_location = "message_composer"
+
+# Whether the chat settings sidebar is open on page load (sidebar mode only)
+# default_chat_settings_open = false
 
 # Description of the assistant. This is used for HTML tags.
 # description = ""

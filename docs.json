@@ -254,6 +254,7 @@
             "group": "Input Widgets",
             "pages": [
               "api-reference/input-widgets/checkbox",
+              "api-reference/input-widgets/datepicker",
               "api-reference/input-widgets/multiselect",
               "api-reference/input-widgets/radiogroup",
               "api-reference/input-widgets/select",

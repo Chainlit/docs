@@ -50,6 +50,18 @@ See [MCP server-side configuration](/advanced-features/mcp#server-side-configura
 
 See [Slack integration documentation](/deploy/slack)
 
+### Favorites
+
+<ParamField path="favorites" type="bool" default={false}>
+  Enable favorite messages (prompt templates). When enabled, users can star their
+  own messages and reuse them as prompt templates from the composer. Requires
+  [data persistence](/data-persistence/overview) to store favorites.
+
+  <Note>
+    Since version **2.9.5**.
+  </Note>
+</ParamField>
+
 ### Other
 
 <ParamField path="latex" type="bool" default={false}>
@@ -112,6 +124,9 @@ edit_message = true
 
 # Allow users to share threads (requires on_shared_thread_view callback)
 allow_thread_sharing = false
+
+# Enable favorite messages (prompt templates)
+favorites = false
 
 # Authorize users to spontaneously upload files with messages
 [features.spontaneous_file_upload]

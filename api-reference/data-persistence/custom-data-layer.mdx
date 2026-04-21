@@ -71,6 +71,14 @@ This class outlines methods for managing users, feedback, elements, steps, and t
   Deletes a user session given its identifier `id`. Returns a boolean value indicating success.
 </ParamField>
 
+<ParamField path="async get_favorite_steps(self, user_id: str)" type="Coroutine">
+  Returns the list of steps that the user has marked as favorites. Used to populate the favorite messages (prompt templates) feature in the composer. Returns a `List[StepDict]`.
+
+  <Note>
+    Since version **2.9.5**.
+  </Note>
+</ParamField>
+
 <ParamField path="async close(self)" type="Coroutine">
   Called when the Chainlit server shuts down. Use this to close database connections, HTTP sessions, or other resources held by the data layer. Must be implemented by all subclasses.
 
