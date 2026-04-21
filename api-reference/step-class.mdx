@@ -44,6 +44,13 @@ The `Step` class is a Python Context Manager that can be used to create steps in
 <ParamField path="parent_id" type="str" optional>
   ID of the parent step. Automatically resolved from the context manager nesting hierarchy if not provided.
 </ParamField>
+<ParamField path="icon" type="str" optional>
+  Name of a Lucide icon to display instead of the default step avatar. See https://lucide.dev/icons for available icons.
+
+  <Note>
+    Since version **2.11.0**.
+  </Note>
+</ParamField>
 <ParamField path="thread_id" type="str" optional>
   ID of the thread this step belongs to. Automatically resolved from the current session context if not provided.
 </ParamField>

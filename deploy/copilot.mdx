@@ -98,6 +98,8 @@ export interface IWidgetConfig {
   accessToken?: string;
   // Theme of the copilot
   theme?: "light" | "dark";
+  // Display mode: "floating" popover (default) or "sidebar" full-height panel
+  displayMode?: "floating" | "sidebar";
   // Custom styling to apply to the widget button
   button?: {
     // ID of the container element to mount the button to
@@ -121,6 +123,23 @@ export interface IWidgetConfig {
   opened?: boolean;
 }
 ```
+
+## Sidebar Mode
+
+By default the copilot renders as a floating popover. Set `displayMode` to `"sidebar"` to render it as a full-height side panel anchored to the right edge of the viewport. The panel pushes the host page content to make room and includes a drag handle on its left edge for resizing (300 px min, 50 % viewport max).
+
+Users can switch between sidebar and floating modes via a dropdown in the copilot header. The selected mode and sidebar width are persisted in `localStorage` across sessions. An explicit `displayMode` in `mountChainlitWidget()` takes priority over the stored value.
+
+```js
+window.mountChainlitWidget({
+  chainlitServer: "http://localhost:8000",
+  displayMode: "sidebar",
+});
+```
+
+<Note>
+  Since version **2.11.0**.
+</Note>
 
 ## Function Calling
 

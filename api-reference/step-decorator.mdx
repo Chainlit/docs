@@ -40,6 +40,13 @@ Under the hood, the step decorator is using the [cl.Step](/api-reference/step-cl
 <ParamField path="id" type="str" optional>
   Unique identifier for the step. Auto-generated as a UUID if not provided.
 </ParamField>
+<ParamField path="icon" type="str" optional>
+  Name of a Lucide icon to display instead of the default step avatar. See https://lucide.dev/icons for available icons.
+
+  <Note>
+    Since version **2.11.0**.
+  </Note>
+</ParamField>
 <ParamField path="parent_id" type="str" optional>
   ID of the parent step. Automatically resolved from the decorator nesting hierarchy if not provided.
 </ParamField>

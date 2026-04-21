@@ -72,6 +72,34 @@ async def starter_categories(user: cl.User):
 - `icon` (str, optional) — URL for the category icon
 - `starters` (List[Starter]) — starters shown when the category is selected
 
+The callback accepts the same optional parameters as `@cl.set_starters`: `user`, `language`, and `chat_profile`. All are optional — declare only what you need.
+
+```python profile_categories.py
+@cl.set_starter_categories
+async def starter_categories(user: cl.User, language: str, chat_profile: str):
+    if chat_profile == "Advanced":
+        return [
+            cl.StarterCategory(
+                label="Advanced",
+                starters=[
+                    cl.Starter(label="Deep dive", message="Explain in detail"),
+                ],
+            ),
+        ]
+    return [
+        cl.StarterCategory(
+            label="General",
+            starters=[
+                cl.Starter(label="Hello", message="Say hello"),
+            ],
+        ),
+    ]
+```
+
+<Note>
+  The `chat_profile` parameter is available since version **2.11.1**.
+</Note>
+
 When both `@cl.set_starters` and `@cl.set_starter_categories` are defined, categories take precedence.
 
 <Note>
