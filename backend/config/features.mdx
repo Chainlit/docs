@@ -50,6 +50,18 @@ See [MCP server-side configuration](/advanced-features/mcp#server-side-configura
 
 See [Slack integration documentation](/deploy/slack)
 
+### Favorites
+
+<ParamField path="favorites" type="bool" default={false}>
+  Enable favorite messages (prompt templates). When enabled, users can star their
+  own messages and reuse them as prompt templates from the composer. Requires
+  [data persistence](/data-persistence/overview) to store favorites.
+
+  <Note>
+    Since version **2.9.5**.
+  </Note>
+</ParamField>
+
 ### Other
 
 <ParamField path="latex" type="bool" default={false}>
@@ -59,6 +71,15 @@ See [Slack integration documentation](/deploy/slack)
 
 <ParamField path="user_message_autoscroll" type="bool" default={true}>
   Autoscroll new user messages at the top of the window.
+</ParamField>
+
+<ParamField path="assistant_message_autoscroll" type="bool" default={true}>
+  Autoscroll assistant messages as they stream. Set to `false` to keep the
+  viewport stable while new assistant tokens arrive.
+
+  <Note>
+    Since version **2.9.4**.
+  </Note>
 </ParamField>
 
 <ParamField path="unsafe_allow_html" type="bool" default={false}>
@@ -92,6 +113,9 @@ latex = false
 # Autoscroll new user messages at the top of the window
 user_message_autoscroll = true
 
+# Autoscroll assistant messages as they stream
+assistant_message_autoscroll = true
+
 # Automatically tag threads with the current chat profile (if a chat profile is used)
 auto_tag_thread = true
 
@@ -100,6 +124,9 @@ edit_message = true
 
 # Allow users to share threads (requires on_shared_thread_view callback)
 allow_thread_sharing = false
+
+# Enable favorite messages (prompt templates)
+favorites = false
 
 # Authorize users to spontaneously upload files with messages
 [features.spontaneous_file_upload]

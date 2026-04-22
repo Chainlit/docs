@@ -1,0 +1,93 @@
+---
+title: "DatePicker"
+---
+
+### Attributes
+
+<ParamField path="id" type="str">
+  The identifier used to retrieve the widget value from the settings.
+</ParamField>
+
+<ParamField path="label" type="str">
+  The label of the input widget.
+</ParamField>
+
+<ParamField path="mode" type="Literal['single', 'range']" default="'single'">
+  Selection mode. `"single"` selects one date, `"range"` selects a start and end date.
+</ParamField>
+
+<ParamField path="initial" type="str | date | tuple[str | date, str | date] | None" optional>
+  The initial value. For `"single"` mode, pass an ISO date string or `date` object.
+  For `"range"` mode, pass a tuple of two values (start, end).
+</ParamField>
+
+<ParamField path="min_date" type="str | date | None" optional>
+  Minimum selectable date. Dates before this are disabled in the calendar.
+</ParamField>
+
+<ParamField path="max_date" type="str | date | None" optional>
+  Maximum selectable date. Dates after this are disabled in the calendar.
+</ParamField>
+
+<ParamField path="format" type="str | None" optional>
+  Display format string using [date-fns format tokens](https://date-fns.org/docs/format) (e.g. `"yyyy/MM/dd"`).
+</ParamField>
+
+<ParamField path="placeholder" type="str | None" optional>
+  Placeholder text shown when no date is selected.
+</ParamField>
+
+<ParamField path="tooltip" type="str" optional>
+  The tooltip text shown when hovering over the tooltip icon next to the label.
+</ParamField>
+
+<ParamField path="description" type="str" optional>
+  The text displayed underneath the input widget.
+</ParamField>
+
+<Note>
+  Since version **2.9.6**.
+</Note>
+
+### Usage
+
+```python Single date
+import chainlit as cl
+from chainlit.input_widget import DatePicker
+
+
+@cl.on_chat_start
+async def start():
+    settings = await cl.ChatSettings(
+        [
+            DatePicker(
+                id="start_date",
+                label="Start Date",
+                placeholder="Pick a date",
+                min_date="2025-01-01",
+                max_date="2026-12-31",
+            )
+        ]
+    ).send()
+    value = settings["start_date"]
+```
+
+```python Date range
+import chainlit as cl
+from chainlit.input_widget import DatePicker
+
+
+@cl.on_chat_start
+async def start():
+    settings = await cl.ChatSettings(
+        [
+            DatePicker(
+                id="date_range",
+                label="Date Range",
+                mode="range",
+                initial=("2025-06-01", "2025-06-30"),
+            )
+        ]
+    ).send()
+    value = settings["date_range"]
+```

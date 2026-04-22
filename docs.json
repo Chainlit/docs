@@ -143,8 +143,21 @@
           {
             "group": "Guides",
             "pages": [
-              "guides/sync-async",
-              "guides/migration/2.0.0"
+              "guides/sync-async"
+            ]
+          },
+          {
+            "group": "Migration Guides",
+            "pages": [
+              "guides/migration/2.9.4",
+              "guides/migration/2.3.0",
+              "guides/migration/2.1.0",
+              "guides/migration/2.0.0",
+              "guides/migration/1.1.404",
+              "guides/migration/1.1.400",
+              "guides/migration/1.1.300",
+              "guides/migration/1.1.0",
+              "guides/migration/1.0.500"
             ]
           }
         ]
@@ -241,6 +254,7 @@
             "group": "Input Widgets",
             "pages": [
               "api-reference/input-widgets/checkbox",
+              "api-reference/input-widgets/datepicker",
               "api-reference/input-widgets/multiselect",
               "api-reference/input-widgets/radiogroup",
               "api-reference/input-widgets/select",

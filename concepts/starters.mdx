@@ -40,6 +40,72 @@ async def set_starters():
   <img src="/images/starters.gif" />
 </Frame>
 
+## Starter Categories
+
+You can group starters into categories that appear as clickable buttons. Users select a category to reveal its starters. Define categories with `@cl.set_starter_categories`:
+
+```python starter_categories.py
+import chainlit as cl
+
+@cl.set_starter_categories
+async def starter_categories(user: cl.User):
+    return [
+        cl.StarterCategory(
+            label="Creative",
+            icon="https://example.com/creative.png",  # optional
+            starters=[
+                cl.Starter(label="Write a poem", message="Write a poem about the sea"),
+                cl.Starter(label="Write a story", message="Write a short story"),
+            ],
+        ),
+        cl.StarterCategory(
+            label="Educational",
+            starters=[
+                cl.Starter(label="Explain", message="Explain quantum computing"),
+            ],
+        ),
+    ]
+```
+
+`StarterCategory` accepts:
+- `label` (str) — the category button text
+- `icon` (str, optional) — URL for the category icon
+- `starters` (List[Starter]) — starters shown when the category is selected
+
+The callback accepts the same optional parameters as `@cl.set_starters`: `user`, `language`, and `chat_profile`. All are optional — declare only what you need.
+
+```python profile_categories.py
+@cl.set_starter_categories
+async def starter_categories(user: cl.User, language: str, chat_profile: str):
+    if chat_profile == "Advanced":
+        return [
+            cl.StarterCategory(
+                label="Advanced",
+                starters=[
+                    cl.Starter(label="Deep dive", message="Explain in detail"),
+                ],
+            ),
+        ]
+    return [
+        cl.StarterCategory(
+            label="General",
+            starters=[
+                cl.Starter(label="Hello", message="Say hello"),
+            ],
+        ),
+    ]
+```
+
+<Note>
+  The `chat_profile` parameter is available since version **2.11.1**.
+</Note>
+
+When both `@cl.set_starters` and `@cl.set_starter_categories` are defined, categories take precedence.
+
+<Note>
+  Since version **2.10.0**.
+</Note>
+
 ## With Localization
 
 The `@cl.set_starters` callback accepts an optional `language` parameter, allowing you to return localized starters based on the user's language.

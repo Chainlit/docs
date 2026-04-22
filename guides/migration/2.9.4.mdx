@@ -1,0 +1,42 @@
+---
+title: Migrate to Chainlit v2.9.4
+---
+
+## Updating Chainlit
+
+Begin the migration by updating Chainlit to the latest version:
+
+```bash
+pip install --upgrade chainlit
+```
+
+## What changes?
+
+Chainlit 2.9.4 introduces [Modes](/concepts/modes) — a multi-picker system that lets users configure categories like model, reasoning effort, or persona per message. The selected modes are persisted alongside each message in a new `modes` column in the `steps` table.
+
+Full changelog available [here](https://github.com/Chainlit/chainlit/blob/main/CHANGELOG.md).
+
+## How to migrate?
+
+### 1. Update the database schema
+
+A new `modes` column must be added to the steps table so that selected modes can be persisted with each message.
+
+<Tabs>
+  <Tab title="Official data layer">
+    The [Official data layer](https://github.com/Chainlit/chainlit-datalayer) Prisma schema has not been updated to include this column. Run the following migration manually against your database:
+
+    ```sql
+    ALTER TABLE "Step" ADD COLUMN IF NOT EXISTS "modes" JSONB;
+    ```
+  </Tab>
+  <Tab title="SQLAlchemy / Custom SQL">
+    ```sql
+    ALTER TABLE steps ADD COLUMN IF NOT EXISTS "modes" JSONB;
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  DynamoDB users do not need to run any migration — the schema is dynamic.
+</Note>

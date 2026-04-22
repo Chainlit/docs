@@ -25,6 +25,35 @@ The `Step` class is a Python Context Manager that can be used to create steps in
   show the input. You can also set this to a language like `json` or `python` to
   syntax highlight the input.
 </ParamField>
+<ParamField path="default_open" type="bool" default={false} optional>
+  Whether the step should render expanded by default in the UI.
+
+  <Note>
+    Since version **2.3.0**. Requires a `defaultOpen` column in the `steps` table for SQL-based data layers. See the [migration guide](/guides/migration/2.3.0).
+  </Note>
+</ParamField>
+<ParamField path="metadata" type="Dict" optional>
+  Custom metadata dictionary to attach to the step. Persisted with the step in the data layer.
+</ParamField>
+<ParamField path="tags" type="List[str]" optional>
+  Tags to attach to the step for filtering and categorization.
+</ParamField>
+<ParamField path="id" type="str" optional>
+  Unique identifier for the step. Auto-generated as a UUID if not provided.
+</ParamField>
+<ParamField path="parent_id" type="str" optional>
+  ID of the parent step. Automatically resolved from the context manager nesting hierarchy if not provided.
+</ParamField>
+<ParamField path="icon" type="str" optional>
+  Name of a Lucide icon to display instead of the default step avatar. See https://lucide.dev/icons for available icons.
+
+  <Note>
+    Since version **2.11.0**.
+  </Note>
+</ParamField>
+<ParamField path="thread_id" type="str" optional>
+  ID of the thread this step belongs to. Automatically resolved from the current session context if not provided.
+</ParamField>
 
 ## Send a Step
 

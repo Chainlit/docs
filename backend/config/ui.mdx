@@ -89,12 +89,49 @@ title: UI
   Directory containing custom frontend production build files, if applicable
 </ParamField>
 
+<ParamField path="language" type="str" optional>
+  Force a specific UI language for all users, overriding the browser's language preference.
+  Accepts any locale code present in `.chainlit/translations/` (e.g. `en-US`, `fr-FR`, `he-IL`).
+  When unset (default), the language is detected from the user's browser.
+
+  <Note>
+    Since version **2.9.3**.
+  </Note>
+</ParamField>
+
 <ParamField path="header_links" type="List[HeaderLink]" optional>
   Additional links displayed in the header next to (or replacing, if not provided) the GitHub link.
   Each link supports an optional `target` field to control how the link opens: `_blank` (default), `_self`, `_parent`, or `_top`.
 
   <Note>
     The `target` field is available since version **2.8.3**.
+  </Note>
+</ParamField>
+
+<ParamField path="confirm_new_chat" type="bool" default={true}>
+  Whether to show a confirmation dialog when the user clicks "New Chat".
+  Set to `false` to skip the dialog and immediately clear the chat.
+
+  <Note>
+    Since version **2.9.6**.
+  </Note>
+</ParamField>
+
+<ParamField path="chat_settings_location" type="Literal['message_composer', 'sidebar']" default="'message_composer'">
+  Where to display chat settings. `"message_composer"` shows them in a modal triggered from the composer.
+  `"sidebar"` moves them to a resizable right sidebar with a gear icon toggle in the header.
+
+  <Note>
+    Since version **2.9.6**.
+  </Note>
+</ParamField>
+
+<ParamField path="default_chat_settings_open" type="bool" default={false}>
+  Whether the chat settings sidebar is open when the page loads. Only applies when
+  `chat_settings_location` is set to `"sidebar"`.
+
+  <Note>
+    Since version **2.9.6**.
   </Note>
 </ParamField>
 
@@ -112,11 +149,24 @@ name = "Assistant"
 
 # default_sidebar_state = "open"
 
+# Show confirmation dialog when creating a new chat
+# confirm_new_chat = true
+
+# Where to display chat settings: "message_composer" (default modal) or "sidebar"
+# chat_settings_location = "message_composer"
+
+# Whether the chat settings sidebar is open on page load (sidebar mode only)
+# default_chat_settings_open = false
+
 # Description of the assistant. This is used for HTML tags.
 # description = ""
 
 # Chain of Thought (CoT) display mode. Can be "hidden", "tool_call" or "full".
 cot = "full"
+
+# Force a specific UI language for all users (overrides browser detection).
+# Accepts any locale available under .chainlit/translations/
+# language = "en-US"
 
 # Specify a CSS file that can be used to customize the user interface.
 # The CSS file can be served from the public directory or via an external link.

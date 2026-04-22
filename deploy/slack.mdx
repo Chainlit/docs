@@ -170,6 +170,39 @@ reaction_on_message_received = true
   <img src="/images/slack/emoji-reaction.png" />
 </Frame>
 
+## [Optional] Handling Emoji Reactions from Users
+
+React to emoji reactions that users add to messages in your Slack workspace.
+
+<Note>
+  This feature requires the `reactions:read` OAuth scope and the `reaction_added` bot event. Add both to your Slack app's manifest and OAuth configuration.
+</Note>
+
+```python
+from typing import Any, Dict
+import chainlit as cl
+
+@cl.on_slack_reaction_added
+async def handle_reaction(event: Dict[str, Any]):
+    reaction = event.get("reaction")       # e.g. "thumbsup"
+    user_id = event.get("user")            # Slack user ID
+    item = event.get("item", {})           # reacted item info
+
+    print(f"User {user_id} reacted with :{reaction}: in channel {item.get('channel')}")
+```
+
+The `event` dictionary contains:
+
+| Key | Description |
+| --- | ----------- |
+| `reaction` | Emoji name without colons (e.g. `"thumbsup"`) |
+| `user` | Slack user ID who added the reaction |
+| `item` | Dict with `type`, `ts` (timestamp), and `channel` of the reacted item |
+
+<Note>
+  Since version **2.8.5**.
+</Note>
+
 ## Install the Slack App to Your Workspace
 
 Navigate to the Install App tab and click on Install to Workspace.
