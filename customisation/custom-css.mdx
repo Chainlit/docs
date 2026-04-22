@@ -18,3 +18,41 @@ custom_css = '/public/stylesheet.css'
 </Note>
 
 Once the configuration is updated, restart the application. Your custom styling will now be applied.
+
+## CSS Variables
+
+Chainlit exposes CSS variables that let you customize specific UI elements without digging into class names.
+
+### Stop Icon & Loading Cursor
+
+You can override the appearance and animation of the stop button icon and the loading (blinking) cursor:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `--stop-icon-mask` | SVG data URI for the stop icon shape | Built-in square icon |
+| `--stop-icon-color` | Stop icon color | `currentColor` |
+| `--stop-icon-animation` | Stop icon CSS animation | `none` |
+| `--loading-cursor-mask` | SVG data URI for the loading cursor shape | Built-in circle |
+| `--loading-cursor-color` | Loading cursor color | `hsl(var(--foreground))` |
+| `--loading-cursor-size` | Loading cursor size | `0.875rem` |
+| `--loading-cursor-animation` | Loading cursor CSS animation | `pulse` |
+
+```css
+:root {
+    --stop-icon-animation: my-pulse 2s ease-in-out infinite;
+    --loading-cursor-animation: my-breathe 2s ease-in-out infinite;
+    --loading-cursor-size: 1.25rem;
+}
+@keyframes my-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.92); }
+}
+@keyframes my-breathe {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.85); }
+}
+```
+
+<Note>
+  Since version **2.11.0**.
+</Note>

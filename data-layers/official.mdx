@@ -19,6 +19,10 @@ adding the `DATABASE_URL` environment variable in your `.env`.
 If you wish to store elements, the same goes for your files system configuration.
 </Warning>
 
+<Warning>
+  The Official data layer Prisma schema has not been updated since Chainlit 2.0.0. If you are using Chainlit 2.1.0 or later, you need to manually add missing columns to the `"Step"` table. See the migration guides for [2.1.0](/guides/migration/2.1.0), [2.3.0](/guides/migration/2.3.0), and [2.9.4](/guides/migration/2.9.4).
+</Warning>
+
 <Tip>
 Custom element `props` are stored directly in PostgreSQL, not on cloud storage.
 </Tip>

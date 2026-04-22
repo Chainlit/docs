@@ -31,8 +31,12 @@ title: Features
 ### Audio
 
 <ParamField path="audio.enabled" type="bool" default={false}>
-  Restrict uploading file size (MB).
+  Enable audio features.
 </ParamField>
+
+<Warning>
+  Since Chainlit 2.7.0, `audio.enabled` must be explicitly set to `true` in `config.toml`. It is no longer auto-inferred from the existence of an `on_audio_chunk` callback.
+</Warning>
 
 <ParamField path="audio.sample_rate" type="int" default={24000}>
   Audio sample rate in hertz. Defaults to 24kHz
@@ -46,6 +50,18 @@ See [MCP server-side configuration](/advanced-features/mcp#server-side-configura
 
 See [Slack integration documentation](/deploy/slack)
 
+### Favorites
+
+<ParamField path="favorites" type="bool" default={false}>
+  Enable favorite messages (prompt templates). When enabled, users can star their
+  own messages and reuse them as prompt templates from the composer. Requires
+  [data persistence](/data-persistence/overview) to store favorites.
+
+  <Note>
+    Since version **2.9.5**.
+  </Note>
+</ParamField>
+
 ### Other
 
 <ParamField path="latex" type="bool" default={false}>
@@ -55,6 +71,15 @@ See [Slack integration documentation](/deploy/slack)
 
 <ParamField path="user_message_autoscroll" type="bool" default={true}>
   Autoscroll new user messages at the top of the window.
+</ParamField>
+
+<ParamField path="assistant_message_autoscroll" type="bool" default={true}>
+  Autoscroll assistant messages as they stream. Set to `false` to keep the
+  viewport stable while new assistant tokens arrive.
+
+  <Note>
+    Since version **2.9.4**.
+  </Note>
 </ParamField>
 
 <ParamField path="unsafe_allow_html" type="bool" default={false}>
@@ -71,6 +96,10 @@ See [Slack integration documentation](/deploy/slack)
   Allow the user to edit their messages.
 </ParamField>
 
+<ParamField path="allow_thread_sharing" type="bool" default={false}>
+  Allow users to share threads with other users. Requires [authentication](/authentication/overview), [data persistence](/data-persistence/overview), and an [`on_shared_thread_view`](/api-reference/lifecycle-hooks/on-shared-thread-view) callback.
+</ParamField>
+
 ## Default configuration
 
 ```toml
@@ -84,11 +113,20 @@ latex = false
 # Autoscroll new user messages at the top of the window
 user_message_autoscroll = true
 
+# Autoscroll assistant messages as they stream
+assistant_message_autoscroll = true
+
 # Automatically tag threads with the current chat profile (if a chat profile is used)
 auto_tag_thread = true
 
 # Allow users to edit their own messages
 edit_message = true
+
+# Allow users to share threads (requires on_shared_thread_view callback)
+allow_thread_sharing = false
+
+# Enable favorite messages (prompt templates)
+favorites = false
 
 # Authorize users to spontaneously upload files with messages
 [features.spontaneous_file_upload]
@@ -107,6 +145,12 @@ edit_message = true
     max_size_mb = 500
 
 [features.audio]
+    # Enable audio features
+    enabled = false
     # Sample rate of the audio
     sample_rate = 24000
+
+[features.mcp]
+    # Enable Model Context Protocol (MCP) features
+    enabled = false
 ```

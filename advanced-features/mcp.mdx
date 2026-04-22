@@ -51,9 +51,17 @@ You can control which MCP connection types are enabled globally and restrict all
 
 Under the `[features.mcp]` section, you can configure SSE, Streamable HTTP and stdio separately:
 
+<Warning>
+  Since Chainlit 2.7.0, `mcp.enabled` must be explicitly set to `true` in `config.toml`. It is no longer auto-inferred from the existence of an `on_mcp_connect` callback.
+</Warning>
+
 ```toml
 [features]
 # ... other feature flags
+
+[features.mcp]
+    # Enable or disable MCP features globally
+    enabled = false
 
 [features.mcp.sse]
     # Enable or disable the SSE connection type globally

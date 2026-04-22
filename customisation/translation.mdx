@@ -19,6 +19,52 @@ For example, to change the label of a navigation tab from "Readme" to "Documenta
 "components.organisms.header.readme": "Documentation"
 ```
 
+## Customizing the chat watermark
+
+The disclaimer text shown below the chat input ("LLMs can make mistakes. Check important info.") is defined under the `chat.watermark` key in your translation file:
+
+```json
+"chat": {
+  "watermark": "LLMs can make mistakes. [See our privacy policy](https://example.com/privacy)."
+}
+```
+
+The watermark text supports Markdown, so you can add links (e.g. to a privacy policy or usage notes) and basic formatting like `**bold**` and `*italic*`.
+
+<Note>
+  Markdown in the watermark is supported since version **2.9.1**.
+</Note>
+
+## Built-in languages
+
+Chainlit ships with translations for the following languages:
+
+| Code | Language |
+|------|----------|
+| `ar-SA` | Arabic (Saudi Arabia) |
+| `bn` | Bengali |
+| `da-DK` | Danish (Denmark) |
+| `de-DE` | German (Germany) |
+| `el-GR` | Greek (Greece) |
+| `en-US` | English (United States) — default |
+| `es` | Spanish |
+| `fr-FR` | French (France) |
+| `gu` | Gujarati |
+| `he-IL` | Hebrew (Israel) |
+| `hi` | Hindi |
+| `it` | Italian |
+| `ja` | Japanese |
+| `kn` | Kannada |
+| `ko` | Korean |
+| `ml` | Malayalam |
+| `mr` | Marathi |
+| `nl` | Dutch |
+| `pt-PT` | Portuguese (Portugal) |
+| `ta` | Tamil |
+| `te` | Telugu |
+| `zh-CN` | Chinese (Simplified) |
+| `zh-TW` | Chinese (Traditional) |
+
 ## Adding a new language
 
 To add a new language, create a new file in the `.chainlit/translations` directory with the language code as the filename. The language code should be in the format of `languageCode-COUNTRYCODE`, e.g. `en-US` for English (United States) or `en-GB` for English (United Kingdom).

@@ -4,6 +4,15 @@ title: "PDF viewer"
 
 The `Pdf` class allows you to display a PDF hosted remotely or locally in the chatbot UI. This class either takes a URL of a PDF hosted online, or the path of a local PDF.
 
+<Note>
+  Since version **2.11.0**, the PDF viewer uses a custom React-based renderer
+  with zoom, pagination, download, and print controls instead of the browser's
+  built-in iframe viewer. The `pdfjs-dist` worker is bundled locally — no
+  external CDN requests are made. If you relied on the previous iframe behavior
+  or applied custom CSS targeting the old viewer, you may need to update your
+  styles.
+</Note>
+
 ## Attributes
 
 <ParamField path="name" type="str">

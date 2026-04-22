@@ -1,0 +1,60 @@
+---
+title: "RadioGroup"
+---
+
+### Attributes
+
+<ParamField path="id" type="str">
+  The identifier used to retrieve the widget value from the settings.
+</ParamField>
+
+<ParamField path="label" type="str">
+  The label of the input widget.
+</ParamField>
+
+<ParamField path="values" type="List[str]" optional>
+  Labels for the radio options.
+</ParamField>
+
+<ParamField path="items" type="Dict[str, str]" optional>
+  Labels with corresponding values for the radio options.
+</ParamField>
+
+<ParamField path="initial_value" type="str" optional>
+  The initially selected value.
+</ParamField>
+
+<ParamField path="initial_index" type="int" optional>
+  Index of the initial value. Can only be used in combination with `values`.
+</ParamField>
+
+<ParamField path="tooltip" type="str" optional>
+  The tooltip text shown when hovering over the tooltip icon next to the label.
+</ParamField>
+
+<ParamField path="description" type="str" optional>
+  The text displayed underneath the input widget.
+</ParamField>
+
+### Usage
+
+```python Code Example
+import chainlit as cl
+from chainlit.input_widget import RadioGroup
+
+
+@cl.on_chat_start
+async def start():
+    settings = await cl.ChatSettings(
+        [
+            RadioGroup(
+                id="ResponseLength",
+                label="Response Length",
+                values=["Short", "Medium", "Long"],
+                initial_index=1,
+            )
+        ]
+    ).send()
+    value = settings["ResponseLength"]
+
+```
