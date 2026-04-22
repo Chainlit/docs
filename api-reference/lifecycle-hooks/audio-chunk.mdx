@@ -1,0 +1,16 @@
+---
+title: "audio_chunk"
+---
+
+Hook to react to an incoming audio chunk from the user's microphone.
+
+## Usage
+
+```python
+import chainlit
+
+
+@chainlit.on_audio_chunk
+async def on_audio_chunk(chunk: chainlit.InputAudioChunk):
+    pass
+```
