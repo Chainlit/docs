@@ -1,0 +1,42 @@
+---
+title: Migrate to Chainlit v2.3.0
+---
+
+## Updating Chainlit
+
+Begin the migration by updating Chainlit to the latest version:
+
+```bash
+pip install --upgrade chainlit
+```
+
+## What changes?
+
+Chainlit 2.3.0 adds the ability to render [Steps](/api-reference/step-class) expanded by default using `cl.Step(default_open=True)`. The chosen value is persisted in a new `defaultOpen` column in the `steps` table.
+
+Full changelog available [here](https://github.com/Chainlit/chainlit/blob/main/CHANGELOG.md).
+
+## How to migrate?
+
+### 1. Update the database schema
+
+A new `defaultOpen` column must be added to the steps table.
+
+<Tabs>
+  <Tab title="Official data layer">
+    The [Official data layer](https://github.com/Chainlit/chainlit-datalayer) Prisma schema has not been updated to include this column. Run the following migration manually against your database:
+
+    ```sql
+    ALTER TABLE "Step" ADD COLUMN IF NOT EXISTS "defaultOpen" BOOLEAN;
+    ```
+  </Tab>
+  <Tab title="SQLAlchemy / Custom SQL">
+    ```sql
+    ALTER TABLE steps ADD COLUMN IF NOT EXISTS "defaultOpen" BOOLEAN;
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  DynamoDB users do not need to run any migration — the schema is dynamic.
+</Note>

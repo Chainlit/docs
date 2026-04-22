@@ -2,7 +2,7 @@
 title: "Dataframe"
 ---
 
-The `Dataframe` class is designed to send a pandas dataframe to the chatbot user interface.
+The `Dataframe` class is designed to send a dataframe to the chatbot user interface. Both `pandas` and `polars` DataFrames are supported — neither library is a hard dependency, so you can use whichever you have installed.
 
 ## Attributes
 
@@ -15,8 +15,12 @@ The `Dataframe` class is designed to send a pandas dataframe to the chatbot user
   "side", "inline", or "page".
 </ParamField>
 
-<ParamField path="data" type="pd.DataFrame" optional>
-  The pandas dataframe instance.
+<ParamField path="data" type="Union[pd.DataFrame, pl.DataFrame]" optional>
+  A pandas or polars DataFrame instance.
+
+  <Note>
+    Polars support added in version **2.11.0**.
+  </Note>
 </ParamField>
 
 ## Example
@@ -86,6 +90,29 @@ async def start():
     }
 
     df = pd.DataFrame(data)
+
+    elements = [cl.Dataframe(data=df, display="inline", name="Dataframe")]
+
+    await cl.Message(content="This message has a Dataframe", elements=elements).send()
+```
+
+### Polars
+
+```python
+import polars as pl
+
+import chainlit as cl
+
+
+@cl.on_chat_start
+async def start():
+    df = pl.DataFrame(
+        {
+            "Name": ["Alice", "Bob", "Charlie"],
+            "Age": [25, 30, 35],
+            "City": ["New York", "Los Angeles", "Chicago"],
+        }
+    )
 
     elements = [cl.Dataframe(data=df, display="inline", name="Dataframe")]
 

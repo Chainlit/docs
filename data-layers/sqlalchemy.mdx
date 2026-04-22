@@ -6,6 +6,16 @@ This custom layer has been tested for PostgreSQL, however it should support more
 
 This data layer also supports the `BaseStorageClient` that enables you to store your elements into Azure Blob Storage or AWS S3.
 
+<Warning>
+  The schema below reflects the latest version of Chainlit. If you are upgrading from an earlier version, three columns have been added to the `steps` table since 2.0.0:
+
+  | Column | Since | Migration guide |
+  |--------|-------|-----------------|
+  | `command` | 2.1.0 | [Migrate to 2.1.0](/guides/migration/2.1.0) |
+  | `defaultOpen` | 2.3.0 | [Migrate to 2.3.0](/guides/migration/2.3.0) |
+  | `modes` | 2.9.4 | [Migrate to 2.9.4](/guides/migration/2.9.4) |
+</Warning>
+
 Here is the SQL used to create the schema for this data layer:
 
 ```sql
@@ -49,6 +59,7 @@ CREATE TABLE IF NOT EXISTS steps (
     "language" TEXT,
     "indent" INT,
     "defaultOpen" BOOLEAN,
+    "modes" JSONB,
     FOREIGN KEY ("threadId") REFERENCES threads("id") ON DELETE CASCADE
 );
 

@@ -1,0 +1,101 @@
+---
+title: "Modes"
+---
+
+The Modes system allows you to define multiple picker categories (e.g., Model, Reasoning Effort, Persona) that users can configure for their chat session. This is more flexible than a single LLM picker and persists across messages.
+
+## Data Structure
+
+### ModeOption
+
+A single selectable option within a Mode.
+
+<ParamField path="id" type="str">
+  Unique identifier for this option (e.g., "gpt-4", "planning").
+</ParamField>
+
+<ParamField path="name" type="str">
+  Display name shown in the UI (e.g., "GPT-4", "Planning").
+</ParamField>
+
+<ParamField path="description" type="str" optional>
+  Brief description shown in the dropdown.
+</ParamField>
+
+<ParamField path="icon" type="str" optional>
+  The lucide icon name or URL for the option. See https://lucide.dev/icons/.
+</ParamField>
+
+<ParamField path="default" type="boolean" optional>
+  Whether this option should be selected by default.
+</ParamField>
+
+### Mode
+
+A category of options (e.g., "Model", "Reasoning").
+
+<ParamField path="id" type="str">
+  Unique identifier for the mode (e.g., "model").
+</ParamField>
+
+<ParamField path="name" type="str">
+  Display name for the picker trigger.
+</ParamField>
+
+<ParamField path="options" type="List[ModeOption]">
+  List of available options for this mode.
+</ParamField>
+
+## Set available Modes
+
+You can define available modes using `cl.context.emitter.set_modes` inside the `on_chat_start` handler.
+
+```python
+import chainlit as cl
+
+@cl.on_chat_start
+async def start():
+    # Define a Model picker
+    model_mode = cl.Mode(
+        id="model",
+        name="Model",
+        options=[
+            cl.ModeOption(id="gpt-4", name="GPT-4", icon="sparkles", default=True),
+            cl.ModeOption(id="gpt-3.5", name="GPT-3.5", icon="bolt"),
+        ]
+    )
+
+    # Define a Reasoning Effort picker
+    reasoning_mode = cl.Mode(
+        id="reasoning",
+        name="Reasoning",
+        options=[
+            cl.ModeOption(id="high", name="High Effort", description="Think harder"),
+            cl.ModeOption(id="low", name="Low Effort", description="Faster response"),
+        ]
+    )
+    
+    # Send modes to the UI
+    await cl.context.emitter.set_modes([model_mode, reasoning_mode])
+
+@cl.on_message
+async def message(msg: cl.Message):
+    # Access selected modes directly from the message object
+    # Returns a dict of {mode_id: option_id}
+    print(msg.modes) 
+    # Output: {'model': 'gpt-4', 'reasoning': 'low'}
+    
+    selected_model = msg.modes.get("model")
+    
+    await cl.Message(
+        content=f"Using model: {selected_model}"
+    ).send()
+```
+
+<Frame caption="The user picking modes">
+  <img src="/images/mode.png" />
+</Frame>
+
+<Warning>
+  Since version **2.9.4**. If you use a SQL-based data layer, the `steps` table requires a `modes` column. See the [migration guide](/guides/migration/2.9.4).
+</Warning>

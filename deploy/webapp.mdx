@@ -14,6 +14,26 @@ The native Chainlit UI that is available on port 8000. Should open in your defau
   <img src="/images/starters.gif" />
 </Frame>
 
+## URL Parameters
+
+The Chainlit web app supports the following URL query parameters:
+
+| Parameter | Description |
+| --------- | ----------- |
+| `prompt` | Pre-fills the chat input with the given text. The user can edit or clear it before sending. |
+
+**Example** — open the chat with a pre-typed message:
+
+```
+https://your-app.com/?prompt=Hello%20World
+```
+
+This is useful for creating deep-links into specific conversations, e.g. from a help widget or an email campaign.
+
+<Note>
+  Since version **2.9.1**.
+</Note>
+
 ## Window Messaging
 
 When running the Web App inside an iframe, the server and parent window can communicate using window messages. This is useful for sending context information to the Chainlit server and updating your parent window based on the server's response.

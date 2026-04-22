@@ -24,6 +24,38 @@ The `Message` class is designed to send, stream, update or remove messages.
   https://react-code-blocks-rajinwonderland.vercel.app/?path=/story/codeblock--supported-languages
   for a list of supported languages.
 </ParamField>
+<ParamField path="metadata" type="Dict" optional>
+  Custom metadata dictionary to attach to the message. Persisted with the message in the data layer.
+</ParamField>
+<ParamField path="tags" type="List[str]" optional>
+  Tags to attach to the message for filtering and categorization.
+</ParamField>
+<ParamField path="command" type="str" optional>
+  The [command](/concepts/command) selected by the user for this message. Set automatically by the UI when the user picks a command. Access this value in the [on_message](/api-reference/lifecycle-hooks/on-message) handler via `msg.command`.
+
+  <Note>
+    Since version **2.1.0**.
+  </Note>
+</ParamField>
+<ParamField path="modes" type="Dict[str, str]" optional>
+  The [modes](/concepts/modes) selected by the user for this message, as a dict of `{mode_id: option_id}`. Set automatically by the UI when the user configures mode pickers. Access this value in the [on_message](/api-reference/lifecycle-hooks/on-message) handler via `msg.modes`.
+
+  <Note>
+    Since version **2.9.4**.
+  </Note>
+</ParamField>
+<ParamField path="id" type="str" optional>
+  Unique identifier for the message. Auto-generated as a UUID if not provided.
+</ParamField>
+<ParamField path="parent_id" type="str" optional>
+  ID of the parent step or message. Automatically resolved from the current step context if not provided.
+</ParamField>
+<ParamField path="type" type="str" default="assistant_message" optional>
+  The message type (`assistant_message` or `user_message`). Automatically set based on the message direction.
+</ParamField>
+<ParamField path="created_at" type="str" optional>
+  ISO 8601 timestamp for the message creation. Automatically set to the current UTC time when `.send()` is called.
+</ParamField>
 
 ## Send a message
 

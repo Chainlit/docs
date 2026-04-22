@@ -14,6 +14,17 @@ The icon is optional.
   The message coming from the UI.
 </ParamField>
 
+## ChatProfile Fields
+
+| Field | Type | Required | Description |
+| ----- | ---- | -------- | ----------- |
+| `name` | `str` | Yes | Internal identifier. Stored in `user_session` as `"chat_profile"`. |
+| `markdown_description` | `str` | Yes | Description shown in the profile selector, supports Markdown. |
+| `icon` | `str` | No | URL of the profile icon. |
+| `display_name` | `str` | No | User-facing label shown in the UI. Falls back to `name` if omitted. |
+| `starters` | `list[Starter]` | No | Starter messages shown when this profile is selected. |
+| `config_overrides` | `ChainlitConfigOverrides` | No | Per-profile config overrides. |
+
 ## Usage
 
 ```python Simple example
@@ -88,6 +99,65 @@ async def on_chat_start():
         content=f"starting chat with {user.identifier} using the {chat_profile} chat profile"
     ).send()
 ```
+
+## With Localization
+
+The `@cl.set_chat_profiles` callback accepts an optional `language` parameter, allowing you to return localized chat profile labels and descriptions.
+
+```python With localization
+import chainlit as cl
+
+
+@cl.set_chat_profiles
+async def chat_profile(current_user: cl.User, language: str):
+    if language == "fr":
+        return [
+            cl.ChatProfile(
+                name="GPT-4",
+                markdown_description="Le modèle sous-jacent est **GPT-4**.",
+                icon="https://picsum.photos/250",
+            ),
+        ]
+    return [
+        cl.ChatProfile(
+            name="GPT-4",
+            markdown_description="The underlying LLM model is **GPT-4**.",
+            icon="https://picsum.photos/250",
+        ),
+    ]
+```
+
+## Display Name
+
+Use `display_name` to show a user-friendly label in the UI while keeping a stable internal identifier in `name`. This is useful for localised names or names containing special characters.
+
+```python
+import chainlit as cl
+
+@cl.set_chat_profiles
+async def chat_profile():
+    return [
+        cl.ChatProfile(
+            name="ad_designer",          # internal ID stored in user_session
+            display_name="广告设计师",    # shown in the UI
+            markdown_description="Profile for ad design tasks.",
+        ),
+        cl.ChatProfile(
+            name="copywriter",
+            display_name="Copywriter",
+            markdown_description="Profile for writing tasks.",
+        ),
+    ]
+
+@cl.on_chat_start
+async def on_chat_start():
+    # user_session always holds the internal `name`, not display_name
+    chat_profile = cl.user_session.get("chat_profile")  # "ad_designer"
+```
+
+<Note>
+  Since version **2.8.5**.
+</Note>
 
 ## Dynamic Configuration
 

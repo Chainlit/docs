@@ -16,6 +16,14 @@ title: Project
   List of environment variables to be provided by each user to use the app. If empty, no environment variables will be asked to the user.
 </ParamField>
 
+<ParamField path="persist_user_env" type="bool" default={false}>
+  Whether to persist user environment variables (API keys) to the database. When enabled, users do not need to re-enter their keys on each session.
+</ParamField>
+
+<ParamField path="mask_user_env" type="bool" default={false}>
+  Whether to mask user environment variables in the UI using a password-type input field.
+</ParamField>
+
 <ParamField path="lc_cache_path" type="str" optional>
   Path to the local langchain cache database
 </ParamField>
@@ -38,6 +46,12 @@ title: Project
 [project]
 # List of environment variables to be provided by each user to use the app.
 user_env = []
+
+# Whether to persist user environment variables (API keys) to the database
+persist_user_env = false
+
+# Whether to mask user environment variables (API keys) in the UI with password type
+mask_user_env = false
 
 # Duration (in seconds) during which the session is saved when the connection is lost
 session_timeout = 3600

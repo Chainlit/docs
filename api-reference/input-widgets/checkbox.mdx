@@ -1,0 +1,47 @@
+---
+title: "Checkbox"
+---
+
+### Attributes
+
+<ParamField path="id" type="str">
+  The identifier used to retrieve the widget value from the settings.
+</ParamField>
+
+<ParamField path="label" type="str">
+  The label displayed next to the checkbox.
+</ParamField>
+
+<ParamField path="initial" type="bool" default={false}>
+  The initial checked state of the checkbox.
+</ParamField>
+
+<ParamField path="tooltip" type="str" optional>
+  The tooltip text shown when hovering over the label.
+</ParamField>
+
+<ParamField path="description" type="str" optional>
+  The text displayed underneath the input widget.
+</ParamField>
+
+### Usage
+
+```python Code Example
+import chainlit as cl
+from chainlit.input_widget import Checkbox
+
+
+@cl.on_chat_start
+async def start():
+    settings = await cl.ChatSettings(
+        [
+            Checkbox(
+                id="VerboseMode",
+                label="Enable verbose output",
+                initial=False,
+            )
+        ]
+    ).send()
+    value = settings["VerboseMode"]
+
+```

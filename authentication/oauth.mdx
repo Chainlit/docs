@@ -66,11 +66,15 @@ You need to set the following environment variables:
 - `OAUTH_AZURE_AD_CLIENT_SECRET`: Client secret
 - `OAUTH_AZURE_AD_TENANT_ID`: Azure tenant ID
 
+Optional environment variables:
+
+- `OAUTH_AZURE_AD_ENABLE_SINGLE_TENANT`: Set to `true` if your application supports "Accounts in this organizational directory only" (Single tenant). If not, do not set this environment variable at all.
+- `OAUTH_AZURE_AD_SCOPES`: Space-separated list of OAuth scopes (default: `https://graph.microsoft.com/User.Read offline_access`).
+- `OAUTH_AZURE_AD_HYBRID_SCOPES`: Space-separated list of scopes for the hybrid flow (default: `https://graph.microsoft.com/User.Read https://graph.microsoft.com/openid offline_access`).
+
 <Note>
-  If your application supports "Accounts in this organizational directory only"
-  (Single tenant), you will need to explicitly set:
-  `OAUTH_AZURE_AD_ENABLE_SINGLE_TENANT=true`. If not, do not set this
-  environment variable at all.
+  `OAUTH_AZURE_AD_SCOPES` and `OAUTH_AZURE_AD_HYBRID_SCOPES` are available
+  since version **2.11.0**.
 </Note>
 
 ### Okta
@@ -164,7 +168,11 @@ It's possible to plug-in for any OAuth provider using Chainlit. Required steps a
 
 ## Prompt Configuration
 
-Starting from version 1.3.0, Chainlit allows you to configure how OAuth providers handle re-authentication through the `prompt` parameter. This is particularly useful for controlling the login behavior when users log out.
+<Note>
+  Since version **1.3.0**.
+</Note>
+
+Chainlit allows you to configure how OAuth providers handle re-authentication through the `prompt` parameter. This is particularly useful for controlling the login behavior when users log out.
 
 You can configure this behavior using two environment variables:
 - `OAUTH_PROMPT`: Sets the default prompt behavior for all OAuth providers
