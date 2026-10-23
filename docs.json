@@ -2,6 +2,10 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Chainlit",
+  "banner": {
+    "content": "Chainlit is archived and no longer maintained. No bug fixes, security updates, or support are provided. [Read the project status](/get-started/project-status).",
+    "dismissible": false
+  },
   "colors": {
     "primary": "#F80061",
     "light": "#FFE7EB",
@@ -17,6 +21,7 @@
             "group": "Get Started",
             "pages": [
               "get-started/overview",
+              "get-started/project-status",
               "get-started/installation",
               "get-started/pure-python",
               {
