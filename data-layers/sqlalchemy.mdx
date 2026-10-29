@@ -14,6 +14,7 @@ This data layer also supports the `BaseStorageClient` that enables you to store 
   | `command` | 2.1.0 | [Migrate to 2.1.0](/guides/migration/2.1.0) |
   | `defaultOpen` | 2.3.0 | [Migrate to 2.3.0](/guides/migration/2.3.0) |
   | `modes` | 2.9.4 | [Migrate to 2.9.4](/guides/migration/2.9.4) |
+  | `autoCollapse` | 2.10.0 | - |
 </Warning>
 
 Here is the SQL used to create the schema for this data layer:
@@ -59,6 +60,7 @@ CREATE TABLE IF NOT EXISTS steps (
     "language" TEXT,
     "indent" INT,
     "defaultOpen" BOOLEAN,
+    "autoCollapse" BOOLEAN,
     "modes" JSONB,
     FOREIGN KEY ("threadId") REFERENCES threads("id") ON DELETE CASCADE
 );
