@@ -81,7 +81,7 @@ async def main(message: cl.Message):
     msg = await cl.Message(content="", language="sql").send()
 
     async for part in stream:
-        if token := part.choices[0].delta.content or "":
+        if part.choices and (token := part.choices[0].delta.content or ""):
             await msg.stream_token(token)
 
     await msg.update()
